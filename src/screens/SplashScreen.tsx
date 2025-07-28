@@ -1,22 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useRef } from 'react';
-import { IMAGES } from '../../assets/Images';
-import { SCREEN_NAMES } from '../../navigation/screenNames';
-import { getAsyncToken, getAsyncUserInfo } from '../../Hooks/asyncStorage';
-import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
-import { setAuthToken, setUserInfo } from '../../features/authSlice';
-import { useAppDispatch } from '../../Hooks/hooks';
-import { resetNavigation } from '../../components/common/commonFunction';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {SCREEN_NAMES} from '../navigation/screenNames';
+import {getAsyncToken, getAsyncUserInfo} from '../Hooks/asyncStorage';
+import {RootState} from '../store';
+import {useSelector} from 'react-redux';
+import {setAuthToken, setUserInfo} from '../features/authSlice';
+import {useAppDispatch} from '../Hooks/hooks';
+import {resetNavigation} from '../components/common/commonFunction';
+import {GeneralStyle} from '@/constants/GeneralStyle';
 
 const SplashScreen = () => {
-  const { userInfo: userData, token: authToken } = useSelector(
+  const {userInfo: userData, token: authToken} = useSelector(
     (state: RootState) => state.auth,
   );
 
   useEffect(() => {
     setTimeout(() => {
-      // SplashScreen.hide();
       getToken();
     }, 2300);
   }, []);
@@ -36,20 +36,15 @@ const SplashScreen = () => {
       }
       resetNavigation(SCREEN_NAMES.TabNavigation);
     } else {
-      resetNavigation(SCREEN_NAMES.LoginScreen);
+      resetNavigation(SCREEN_NAMES.OnBoarding);
     }
   };
 
-  const onError = () => {};
-  const onBuffer = () => {};
-
   return (
-    <View style={{ flex: 1 }}>
+    <View style={GeneralStyle.flex}>
       <Text>SplashScreen</Text>
     </View>
   );
 };
 
 export default SplashScreen;
-
-const styles = StyleSheet.create({});

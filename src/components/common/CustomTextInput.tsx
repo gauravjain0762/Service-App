@@ -6,10 +6,12 @@ import CustomImage from './CustomImage';
 import {IMAGES} from '../../assets/images';
 import {commonFontStyle, getFontSize} from '../../utils/responsiveFn';
 import {rowReverseRTL} from '../../utils/arabicStyles';
+import CommonText from './CommonText';
 
 interface CustomTextInputProps extends TextInputProps {
-  label: string;
+  label?: string;
   required?: boolean;
+  secureTextEntry?: boolean;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -18,7 +20,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   secureTextEntry = false,
   ...rest
 }) => {
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const styles = React.useMemo(
     () => getGlobalStyles(i18n.language),
     [i18n.language],
@@ -27,10 +29,11 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
-        {label}
-        {required && <Text style={styles.required}>*</Text>}
-      </Text>
+      {label && (
+        <CommonText text={label} style={styles.label}>
+          {required && <Text style={styles.required}>*</Text>}
+        </CommonText>
+      )}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}

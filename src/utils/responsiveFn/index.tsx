@@ -7,6 +7,7 @@ import {
   Platform,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  TextStyle,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -86,7 +87,11 @@ export const onScroll = (
   }
 };
 
-export const commonFontStyle = (fontWeight: any, fontSize: any, color: any):any => {
+export const commonFontStyle = (
+  fontWeight: any,
+  fontSize: any,
+  color: any,
+): TextStyle => {
   return {
     fontFamily: getFontType(fontWeight),
     fontSize: getFontSize(fontSize),

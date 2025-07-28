@@ -1,3 +1,5 @@
+import {ViewStyle} from 'react-native';
+
 export const textRTL = (language: string): any => {
   return {textAlign: language === 'ar' ? 'right' : 'left'};
 };
@@ -8,7 +10,7 @@ export const flipImage = (language: string): any => {
   return {transform: [{scaleX: language == 'en' ? 1 : -1}]};
 };
 
-export const rowReverseRTL = (language: string): any => {
+export const rowReverseRTL = (language: string): ViewStyle => {
   return {
     flexDirection: language === 'ar' ? 'row-reverse' : 'row',
   };

@@ -1,10 +1,10 @@
 import {FC} from 'react';
-import TabNavigation from './TabNavigation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SCREENS} from './screenNames';
-import LoginScreen from '../screens/auth/LoginScreen';
-import SplashScreen from '../screens/auth/SplashScreen';
-import OTPScreen from '../screens/auth/OTPScreen';
+import OnBoarding from '@/screens/OnBoarding';
+import ProviderNavigator from './Provider/navigation';
+import SeekerStackNavigator from './Seeker/navigation';
+import SplashScreen from '@/screens/SplashScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -15,9 +15,9 @@ const Stack = createNativeStackNavigator<any>();
 const StackNavigator: FC = () => {
   let screens = [
     {name: SCREENS.Splash, component: SplashScreen},
-    {name: SCREENS.LoginScreen, component: LoginScreen},
-    {name: SCREENS.TabNavigation, component: TabNavigation},
-    {name: SCREENS.OtpVerifyScreen, component: OTPScreen},
+    {name: SCREENS.OnBoarding, component: OnBoarding},
+    {name: SCREENS.ProviderNavigator, component: ProviderNavigator},
+    {name: SCREENS.SeekerStackNavigator, component: SeekerStackNavigator},
   ];
   return (
     <Stack.Navigator

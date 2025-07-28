@@ -48,7 +48,7 @@ const LoginScreen = () => {
 
 export default LoginScreen;
 
-const getGlobalStyles = (language: any) => {
+const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
     topLabel: {
       marginTop: getFontSize(2),

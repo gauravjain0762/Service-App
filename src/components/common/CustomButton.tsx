@@ -1,21 +1,19 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {FC, ReactNode, memo} from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacity,
-  View,
-  ViewStyle,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {rowReverseRTL} from '../../utils/arabicStyles';
-import {Colors} from '../../constants/Colors';
-import { commonFontStyle, getFontSize } from '../../utils/responsiveFn';
+import {rowReverseRTL} from '@/utils/arabicStyles';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import CommonText from './CommonText';
 
 type Props = {
   disabled?: boolean;
-  isFilled?: boolean;
   title: any;
   onPress?: () => void;
   btnStyle?: any;
@@ -24,11 +22,12 @@ type Props = {
   type?: 'fill' | 'outline';
   RightImg?: ReactNode;
   loading?: boolean;
+  isPrimary?: 'seeker' | 'provider';
 };
+
 const CustomButton: FC<Props> = ({
   title,
   btnStyle,
-  isFilled,
   disabled,
   leftImg,
   textStyle,
@@ -36,25 +35,37 @@ const CustomButton: FC<Props> = ({
   type = 'fill',
   RightImg,
   loading,
+  isPrimary,
 }) => {
-  const {t, i18n} = useTranslation();
+  const {i18n} = useTranslation();
   const styles = React.useMemo(
     () => getGlobalStyles(i18n.language),
     [i18n.language],
   );
-  return type == 'fill' ? (
+  return type === 'fill' ? (
     <TouchableOpacity
       disabled={disabled}
       onPress={() => onPress()}
-      style={[styles.buttonStyle, {opacity: disabled ? 0.7 : 1}, btnStyle]}>
+      style={[
+        styles.buttonStyle,
+        {
+          opacity: disabled ? 0.7 : 1,
+          backgroundColor:
+            isPrimary === 'seeker'
+              ? Colors.Seeker_primary
+              : Colors.provider_primary,
+        },
+        btnStyle,
+      ]}>
       {loading ? (
         <ActivityIndicator color={Colors.white} />
       ) : (
         <>
           {leftImg && leftImg}
-          <Text style={[{...commonFontStyle(500, 2, Colors.white)}, textStyle]}>
-            {title}
-          </Text>
+          <CommonText
+            text={title}
+            style={[{...commonFontStyle(500, 2, Colors.white)}, textStyle]}
+          />
           {RightImg && RightImg}
         </>
       )}
@@ -63,16 +74,37 @@ const CustomButton: FC<Props> = ({
     <TouchableOpacity
       disabled={disabled}
       onPress={() => onPress()}
-      style={[styles.buttonStyle, styles.outline_buttonStyle, btnStyle]}>
+      style={[
+        styles.buttonStyle,
+        styles.outline_buttonStyle,
+        {
+          borderColor:
+            isPrimary === 'seeker'
+              ? Colors.Seeker_primary
+              : Colors.provider_primary,
+        },
+        btnStyle,
+      ]}>
       {loading ? (
         <ActivityIndicator color={Colors.white} />
       ) : (
         <>
           {leftImg && leftImg}
-          <Text
-            style={[{...commonFontStyle(500, 2, Colors._484848)}, textStyle]}>
-            {title}
-          </Text>
+          <CommonText
+            text={title}
+            style={[
+              {
+                ...commonFontStyle(
+                  500,
+                  2,
+                  isPrimary === 'seeker'
+                    ? Colors.Seeker_primary
+                    : Colors.provider_primary,
+                ),
+              },
+              textStyle,
+            ]}
+          />
           {RightImg && RightImg}
         </>
       )}
@@ -84,7 +116,7 @@ export default memo(CustomButton);
 const getGlobalStyles = (language: any) => {
   return StyleSheet.create({
     buttonStyle: {
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.provider_primary,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 100,
