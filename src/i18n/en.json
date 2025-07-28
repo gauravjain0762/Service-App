@@ -1,0 +1,27 @@
+{
+  "translation": {
+   "Welcome Back":"Welcome Back",
+   "Get Started Now":"Get Started Now",
+   "Login to access your account":"Login to access your account",
+   "Create an account":"Create an account",
+   "Login":"Login",
+   "Sign Up":"Sign Up",
+   "Email":"Email",
+   "Password":"Password",
+   "Login as a Guest":"Login as a Guest",
+   "Full name":"Full name",
+   "Phone Number":"Phone Number",
+   "Or Sign In With":"Or Sign In With",
+   "Google":"Google",
+   "Apple":"Apple",
+   "Remember me":"Remember me",
+   "Forgot Password?":"Forgot Password?",
+   "Don’t have an account?":"Don’t have an account?",
+   "Verification":"Verification",
+   "Verification code":"Verification code",
+   "Enter the verification code we’ve send to your":"Enter the verification code we’ve send to your",
+   "Confirm":"Confirm"
+
+
+  }
+}
