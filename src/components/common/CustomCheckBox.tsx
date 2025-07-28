@@ -27,6 +27,10 @@ const CustomCheckBox = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   checkedBox: {
     width: 20,
     height: 20,

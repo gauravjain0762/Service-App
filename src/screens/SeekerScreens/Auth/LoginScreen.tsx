@@ -1,17 +1,16 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CheckBox from 'react-native-check-box';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
-import {navigateTo} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
+
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 
-const LoginScreen = ({setActiveTab}: any) => {
+const LoginScreen = ({}: any) => {
   const {t, i18n} = useTranslation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
@@ -74,7 +73,7 @@ const getGlobalStyles = (language: any) => {
       paddingVertical: getFontSize(3),
     },
     signUpAccountText: {
-      ...commonFontStyle(600, 2, Colors.provider_primary),
+      ...commonFontStyle(600, 2, Colors.black),
     },
     checkBoxText: {
       ...commonFontStyle(400, 1.9, Colors._5E5D5D),
