@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {IMAGES} from '../../assets/images';
@@ -9,12 +10,7 @@ import CustomImage from '../common/CustomImage';
 import {goBack} from '../common/commonFunction';
 
 const OTPHeader = () => {
-  const {t, i18n} = useTranslation();
-  const styles = React.useMemo(
-    () => getGlobalStyles(i18n.language),
-    [i18n.language],
-  );
-  console.log(getFontSize(3.4), 'getFontSize(2.5)');
+  const {t} = useTranslation();
 
   return (
     <View style={styles.headerContainer}>
@@ -25,7 +21,7 @@ const OTPHeader = () => {
         source={IMAGES.backArrow}
         size={getFontSize(2.5)}
         containerStyle={{alignSelf: 'center'}}
-        imageStyle={{...flipImage(i18n.language)}}
+        imageStyle={{...flipImage()}}
       />
       <Text style={styles.headerText}>{t('Verification')}</Text>
       <CustomImage
@@ -41,15 +37,14 @@ const OTPHeader = () => {
 
 export default OTPHeader;
 
-const getGlobalStyles = (language: string) =>
-  StyleSheet.create({
-    headerContainer: {
-      paddingVertical: getFontSize(1.8),
-      ...rowReverseRTL(language),
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    headerText: {
-      ...commonFontStyle(600, 3.4, Colors.black),
-    },
-  });
+const styles = StyleSheet.create({
+  headerContainer: {
+    paddingVertical: getFontSize(1.8),
+    ...rowReverseRTL(),
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  headerText: {
+    ...commonFontStyle(600, 3.4, Colors.black),
+  },
+});

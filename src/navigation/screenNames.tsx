@@ -1,7 +1,7 @@
 export const SCREENS = {
   OnBoarding: 'OnBoarding',
   ProviderNavigator: 'ProviderNavigator',
-  SeekerStackNavigator: 'SeekerStackNavigator',
+  SeekerNavigator: 'SeekerNavigator',
   Dashboard: 'Dashboard',
   LoginScreen: 'LoginScreen',
   Splash: 'Splash',
@@ -15,7 +15,7 @@ export const SEEKER_SCREENS = {
   LoginScreen: 'LoginScreen',
   Splash: 'Splash',
   SignUpScreen: 'SignUpScreen',
-  OtpVerifyScreen: 'OtpVerifyScreen',
+  OtpScreen: 'OtpScreen',
   TabNavigation: 'TabNavigation',
 };
 

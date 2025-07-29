@@ -52,7 +52,7 @@ const CustomButton: FC<Props> = ({
           opacity: disabled ? 0.7 : 1,
           backgroundColor:
             isPrimary === 'seeker'
-              ? Colors.Seeker_primary
+              ? Colors.seeker_primary
               : Colors.provider_primary,
         },
         btnStyle,
@@ -80,7 +80,7 @@ const CustomButton: FC<Props> = ({
         {
           borderColor:
             isPrimary === 'seeker'
-              ? Colors.Seeker_primary
+              ? Colors.seeker_primary
               : Colors.provider_primary,
         },
         btnStyle,
@@ -98,7 +98,7 @@ const CustomButton: FC<Props> = ({
                   500,
                   2,
                   isPrimary === 'seeker'
-                    ? Colors.Seeker_primary
+                    ? Colors.seeker_primary
                     : Colors.provider_primary,
                 ),
               },

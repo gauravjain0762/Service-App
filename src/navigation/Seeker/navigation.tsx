@@ -1,9 +1,10 @@
 import {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TabNavigation from '../TabNavigation';
-import OTPScreen from '@/screens/auth/OTPScreen';
 import {SEEKER_SCREENS} from '../screenNames';
 import LoginScreen from '@/screens/SeekerScreens/Auth/LoginScreen';
+import SignUpScreen from '@/screens/SeekerScreens/Auth/SignUpScreen';
+import OTPScreen from '@/screens/SeekerScreens/Auth/OTPScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -11,11 +12,12 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<any>();
 
-const ProviderNavigator: FC = () => {
+const SeekerNavigator: FC = () => {
   let screens = [
-    {name: SEEKER_SCREENS.Dashboard, component: LoginScreen},
+    {name: SEEKER_SCREENS.LoginScreen, component: LoginScreen},
+    {name: SEEKER_SCREENS.SignUpScreen, component: SignUpScreen},
+    {name: SEEKER_SCREENS.OtpScreen, component: OTPScreen},
     {name: SEEKER_SCREENS.TabNavigation, component: TabNavigation},
-    {name: SEEKER_SCREENS.OtpVerifyScreen, component: OTPScreen},
   ];
   return (
     <Stack.Navigator
@@ -35,4 +37,4 @@ const ProviderNavigator: FC = () => {
     </Stack.Navigator>
   );
 };
-export default ProviderNavigator;
+export default SeekerNavigator;

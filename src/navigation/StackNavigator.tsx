@@ -3,8 +3,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {SCREENS} from './screenNames';
 import OnBoarding from '@/screens/OnBoarding';
 import ProviderNavigator from './Provider/navigation';
-import SeekerStackNavigator from './Seeker/navigation';
 import SplashScreen from '@/screens/SplashScreen';
+import SeekerNavigator from './Seeker/navigation';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -17,7 +17,7 @@ const StackNavigator: FC = () => {
     {name: SCREENS.Splash, component: SplashScreen},
     {name: SCREENS.OnBoarding, component: OnBoarding},
     {name: SCREENS.ProviderNavigator, component: ProviderNavigator},
-    {name: SCREENS.SeekerStackNavigator, component: SeekerStackNavigator},
+    {name: SCREENS.SeekerNavigator, component: SeekerNavigator},
   ];
   return (
     <Stack.Navigator

@@ -1,4 +1,4 @@
-import {Alert, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
@@ -14,7 +14,7 @@ const OnBoarding = () => {
       <CustomButton
         isPrimary="seeker"
         title={'Job Seeker'}
-        onPress={() => Alert.alert('Under Development')}
+        onPress={() => navigateTo(SCREENS.SeekerNavigator)}
       />
       <CustomButton
         title={'Service Provider'}

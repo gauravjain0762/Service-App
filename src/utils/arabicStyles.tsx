@@ -1,82 +1,83 @@
+import i18n from '@/i18n/i18n';
 import {ViewStyle} from 'react-native';
 
-export const textRTL = (language: string): any => {
-  return {textAlign: language === 'ar' ? 'right' : 'left'};
+export const textRTL = (): any => {
+  return {textAlign: i18n.language === 'ar' ? 'right' : 'left'};
 };
-export const textLTR = (language: string): any => {
-  return {textAlign: language === 'en' ? 'right' : 'left'};
+export const textLTR = (): any => {
+  return {textAlign: i18n.language === 'en' ? 'right' : 'left'};
 };
-export const flipImage = (language: string): any => {
-  return {transform: [{scaleX: language == 'en' ? 1 : -1}]};
-};
-
-export const rowReverseRTL = (language: string): ViewStyle => {
-  return {
-    flexDirection: language === 'ar' ? 'row-reverse' : 'row',
-  };
-};
-export const alignItemsRTL = (language: string): any => {
-  return {
-    alignItems: language === 'ar' ? 'flex-start' : 'flex-end',
-  };
+export const flipImage = (): any => {
+  return {transform: [{scaleX: i18n.language == 'en' ? 1 : -1}]};
 };
 
-export const alignItemsLTR = (language: string): any => {
+export const rowReverseRTL = (): ViewStyle => {
   return {
-    alignItems: language === 'en' ? 'flex-end' : 'flex-start',
+    flexDirection: i18n.language === 'ar' ? 'row-reverse' : 'row',
+  };
+};
+export const alignItemsRTL = (): any => {
+  return {
+    alignItems: i18n.language === 'ar' ? 'flex-start' : 'flex-end',
   };
 };
 
-export const alignSelfRTL = (language: string): any => {
+export const alignItemsLTR = (): any => {
   return {
-    alignSelf: language === 'ar' ? 'flex-start' : 'flex-end',
+    alignItems: i18n.language === 'en' ? 'flex-end' : 'flex-start',
   };
 };
 
-export const alignItemsFlexRTL = (language: string): any => {
+export const alignSelfRTL = (): any => {
   return {
-    alignItems: language === 'ar' ? 'flex-end' : 'flex-start',
+    alignSelf: i18n.language === 'ar' ? 'flex-start' : 'flex-end',
   };
 };
 
-export const marginRTLRight = (language: string, number: any): any => {
+export const alignItemsFlexRTL = (): any => {
   return {
-    marginRight: language == 'ar' ? 0 : number,
-    marginLeft: language == 'en' ? 0 : number,
+    alignItems: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
   };
 };
 
-export const paddingRTLRight = (language: string, number: any): any => {
+export const marginRTLRight = (number: any): any => {
   return {
-    paddingRight: language == 'ar' ? 0 : number,
-    paddingLeft: language == 'en' ? 0 : number,
+    marginRight: i18n.language == 'ar' ? 0 : number,
+    marginLeft: i18n.language == 'en' ? 0 : number,
   };
 };
 
-export const marginRTLLeft = (language: string, number: any): any => {
+export const paddingRTLRight = (number: any): any => {
   return {
-    marginLeft: language == 'ar' ? 0 : number,
-    marginRight: language == 'en' ? 0 : number,
+    paddingRight: i18n.language == 'ar' ? 0 : number,
+    paddingLeft: i18n.language == 'en' ? 0 : number,
   };
 };
 
-export const paddingRTLLeft = (language: string, number: any): any => {
+export const marginRTLLeft = (number: any): any => {
   return {
-    paddingLeft: language == 'ar' ? 0 : number,
-    paddingRight: language == 'en' ? 0 : number,
+    marginLeft: i18n.language == 'ar' ? 0 : number,
+    marginRight: i18n.language == 'en' ? 0 : number,
   };
 };
 
-export const rightRTL = (language: string, number: any): any => {
+export const paddingRTLLeft = (number: any): any => {
   return {
-    right: language === 'ar' ? undefined : number,
-    left: language === 'en' ? undefined : number,
+    paddingLeft: i18n.language == 'ar' ? 0 : number,
+    paddingRight: i18n.language == 'en' ? 0 : number,
   };
 };
-export const leftRTL = (language: string, number: any): any => {
+
+export const rightRTL = (number: any): any => {
   return {
-    left: language === 'ar' ? undefined : number,
-    right: language === 'en' ? undefined : number,
+    right: i18n.language === 'ar' ? undefined : number,
+    left: i18n.language === 'en' ? undefined : number,
+  };
+};
+export const leftRTL = (number: any): any => {
+  return {
+    left: i18n.language === 'ar' ? undefined : number,
+    right: i18n.language === 'en' ? undefined : number,
   };
 };
 

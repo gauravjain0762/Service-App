@@ -1,7 +1,6 @@
 import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import React from 'react';
 import FastImage, {FastImageProps, ImageStyle} from 'react-native-fast-image';
-import {Colors} from '../../constants/Colors';
 import {getFontSize} from '../../utils/responsiveFn';
 
 interface Props {

@@ -1,8 +1,8 @@
 export const IMAGES = {
   //icon
 
-  cancel: require("./icons/cancel.png"),
-  checked: require("./icons/checked.png"),
+  cancel: require('./icons/cancel.png'),
+  checked: require('./icons/checked.png'),
   hide: require('./icons/hide.png'),
   view: require('./icons/view.png'),
   google: require('./icons/google.png'),
@@ -12,7 +12,7 @@ export const IMAGES = {
   home: require('./icons/home.png'),
   create: require('./icons/create.png'),
   profile: require('./icons/profile.png'),
-  
+  downArrow: require('./icons/downArrow.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
