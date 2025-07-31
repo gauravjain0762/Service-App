@@ -16,6 +16,7 @@ export const IMAGES = {
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
+  Welcome_bg: require('./Images/Welcome_bg.png'),
 };
 
 export const Animation = {};

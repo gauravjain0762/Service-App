@@ -10,6 +10,10 @@ import {
   TextStyle,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
+import {
+  heightPercentageToDP,
+  widthPercentageToDP,
+} from 'react-native-responsive-screen';
 
 export function getFontType(fontWeight: any) {
   if (fontWeight == 600) {
@@ -48,6 +52,14 @@ export function getWidth(w: string | number) {
   const elemWidth = parseFloat(w.toString());
   return PixelRatio.roundToNearestPixel((width * elemWidth) / 100);
 }
+
+export const hp = (i: any) => {
+  return widthPercentageToDP((i * 100) / SCREEN_WIDTH);
+};
+
+export const wp = (i: any) => {
+  return heightPercentageToDP((i * 100) / SCREEN_HEIGHT);
+};
 
 export function getFontSize(font: number) {
   const deviceHeight = isIphoneX()

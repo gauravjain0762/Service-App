@@ -18,7 +18,7 @@ const SplashScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       getToken();
-    }, 2300);
+    }, 200);
   }, []);
 
   const dispatch = useAppDispatch();

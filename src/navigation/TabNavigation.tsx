@@ -10,8 +10,6 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import {getFontSize} from '../utils/responsiveFn';
 import {IMAGES} from '../assets/images';
-import HomeScreen from '../screens/Home/HomeScreen';
-import ProfileScreen from '../screens/Profile/ProfileScreen';
 import {Colors} from '../constants/Colors';
 import CustomShadow from '../components/common/CustomShadow';
 
@@ -43,7 +41,7 @@ const TabNavigation = () => {
   return (
     <CustomShadow shadowStyle={{flex: 1}}>
       <Tab.Navigator
-        initialRouteName="Home"
+        // initialRouteName="Home"
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -100,7 +98,6 @@ const TabNavigation = () => {
             <CustomTabBarButton {...props} route={route} />
           ),
         })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen
           name="Create"
           component={CreateScreen}
@@ -110,7 +107,6 @@ const TabNavigation = () => {
             },
           }}
         />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </CustomShadow>
   );
