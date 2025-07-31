@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {getFontSize} from '../../utils/responsiveFn';
+import {getFontSize, hp} from '../../utils/responsiveFn';
 import CustomTextInput from '../common/CustomTextInput';
 import CustomButton from '../common/CustomButton';
 

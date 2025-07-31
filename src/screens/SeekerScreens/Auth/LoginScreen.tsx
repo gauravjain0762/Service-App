@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CheckBox from 'react-native-check-box';
 import CustomButton from '@/components/common/CustomButton';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
@@ -22,34 +22,37 @@ const LoginScreen = ({}: any) => {
       showsVerticalScrollIndicator={false}
       style={styles.container}>
       <CommonText text="Login to Your Account" style={styles.topLabel} />
-      <CustomTextInput placeholder="Email" />
-      <CustomTextInput placeholder="Password" secureTextEntry={true} />
-      <View style={styles.midContainer}>
-        <CheckBox
-          onClick={() => {
-            setToggleCheckBox(!toggleCheckBox);
-          }}
-          isChecked={toggleCheckBox}
-          uncheckedCheckBoxColor="#878787"
-          checkedCheckBoxColor={Colors.seeker_primary}
-        />
-        <CommonText text="I agree to follow the" style={styles.checkBoxText}>
-          {' '}
-          <CommonText text="terms of use" style={styles.checkBoxText2} />
-        </CommonText>
+      <View style={{gap: hp(34)}}>
+        <CustomTextInput placeholder="Email" />
+        <CustomTextInput placeholder="Password" secureTextEntry={true} />
+        <View style={styles.midContainer}>
+          <CheckBox
+            onClick={() => {
+              setToggleCheckBox(!toggleCheckBox);
+            }}
+            isChecked={toggleCheckBox}
+            uncheckedCheckBoxColor="#878787"
+            checkedCheckBoxColor={Colors.seeker_primary}
+          />
+          <CommonText text="I agree to follow the" style={styles.checkBoxText}>
+            {' '}
+            <CommonText text="terms of use" style={styles.checkBoxText2} />
+          </CommonText>
+        </View>
       </View>
-      <CustomButton
-        isPrimary="seeker"
-        title={'Login'}
-        btnStyle={{marginTop: getFontSize(7)}}
-        onPress={() => navigateTo(SEEKER_SCREENS.OtpScreen)}
-      />
-      <CustomButton
-        isPrimary="seeker"
-        title={'Login as a Guest'}
-        btnStyle={{marginTop: getFontSize(2)}}
-        type="outline"
-      />
+
+      <View style={{marginTop: hp(60), gap: hp(45)}}>
+        <CustomButton
+          isPrimary="seeker"
+          title={'Login'}
+          onPress={() => navigateTo(SEEKER_SCREENS.OtpScreen)}
+        />
+        <CustomButton
+          isPrimary="seeker"
+          title={'Login as a Guest'}
+          type="outline"
+        />
+      </View>
 
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -123,16 +126,18 @@ const styles = StyleSheet.create({
   dividerContainer: {
     ...rowReverseRTL(),
     alignItems: 'center',
-    paddingVertical: getFontSize(3),
+    paddingVertical: hp(45),
+    marginHorizontal: wp(23),
   },
   label: {
     ...commonFontStyle(400, 1.9, Colors._6B6969),
-    paddingHorizontal: getFontSize(1.4),
+    paddingHorizontal: wp(15),
   },
   divider: {
-    height: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
     flex: 1,
+    height: hp(1),
+    alignSelf: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
   },
 
   socialContainer: {

@@ -9,6 +9,7 @@ const tintColorDark = '#fff';
 export const Colors = {
   provider_primary: '#2DC1FF',
   seeker_primary: '#03B463',
+  seeker_tab: '#25b463',
 
   white: '#fff',
   black: '#000',
@@ -24,6 +25,19 @@ export const Colors = {
   _5C5C5C: '#5C5C5C',
   _CDCDCD: '#CDCDCD',
   _4E4E4E: '#4E4E4E',
+  _DDDDDD: '#DDDDDD',
+  _888888: '#888888',
+  _2B2B2B: '#2B2B2B',
+  _68d2a1: '#68d2a1',
+  _F6F6F6: '#F6F6F6',
+  _F5F4F9: '#F5F4F9',
+  _868686: '#868686',
+  _7D7D7D: '#7D7D7D',
+  _EBFCF4: '#EBFCF4',
+  _039B55: '#039B55',
+  _F2EDED: '#F2EDED',
+  _9A9A9A: "#9A9A9A",
+  _4F4F4F: "#4F4F4F",
 
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(99, 45, 1, 0.9)',

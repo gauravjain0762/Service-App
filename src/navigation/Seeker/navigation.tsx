@@ -1,10 +1,12 @@
 import {FC} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import TabNavigation from '../TabNavigation';
+
 import {SEEKER_SCREENS} from '../screenNames';
-import LoginScreen from '@/screens/SeekerScreens/Auth/LoginScreen';
-import SignUpScreen from '@/screens/SeekerScreens/Auth/SignUpScreen';
+import SeekerTabNavigation from './SeekerTabNavigation';
 import OTPScreen from '@/screens/SeekerScreens/Auth/OTPScreen';
+import LoginScreen from '@/screens/SeekerScreens/Auth/LoginScreen';
+import MyBookings from '@/screens/SeekerScreens/Seekers/MyBookings';
+import SignUpScreen from '@/screens/SeekerScreens/Auth/SignUpScreen';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -17,7 +19,8 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.LoginScreen, component: LoginScreen},
     {name: SEEKER_SCREENS.SignUpScreen, component: SignUpScreen},
     {name: SEEKER_SCREENS.OtpScreen, component: OTPScreen},
-    {name: SEEKER_SCREENS.TabNavigation, component: TabNavigation},
+    {name: SEEKER_SCREENS.MyBookings, component: MyBookings},
+    {name: SEEKER_SCREENS.SeekerTabNavigation, component: SeekerTabNavigation},
   ];
   return (
     <Stack.Navigator
@@ -25,6 +28,7 @@ const SeekerNavigator: FC = () => {
         headerShown: false,
       }}
       initialRouteName={SEEKER_SCREENS.LoginScreen}>
+      {/* initialRouteName={SEEKER_SCREENS.SeekerTabNavigation}> */}
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen

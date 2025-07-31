@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import PhoneInput from '@/components/common/PhoneInput';
@@ -27,51 +27,50 @@ const SignUpScreen = () => {
       style={styles.container}>
       <CommonText text="Create New Account" style={styles.topLabel} />
 
-      <CustomTextInput
-        placeholder="Full name"
-        value={userData?.name}
-        onChangeText={e => {
-          setUserData({...userData, name: e});
-        }}
-      />
-      <CustomTextInput
-        placeholder="Email"
-        value={userData?.email}
-        onChangeText={e => {
-          setUserData({...userData, email: e});
-        }}
-        keyboardType="email-address"
-      />
-      <PhoneInput
-        placeholder="00 000 0000"
-        value={userData?.phone}
-        onChangeText={e => {
-          setUserData({...userData, phone: e});
-        }}
-        callingCode={callingCode}
-        setCallingCode={setCallingCode}
-        maxLength={9}
-      />
-      <CustomTextInput
-        placeholder="Password"
-        value={userData?.password}
-        onChangeText={e => {
-          setUserData({...userData, password: e});
-        }}
-        secureTextEntry={true}
-      />
+      <View style={{gap: hp(34), marginTop: hp(45)}}>
+        <CustomTextInput
+          placeholder="Full name"
+          value={userData?.name}
+          onChangeText={e => {
+            setUserData({...userData, name: e});
+          }}
+        />
+        <CustomTextInput
+          placeholder="Email"
+          value={userData?.email}
+          onChangeText={e => {
+            setUserData({...userData, email: e});
+          }}
+          keyboardType="email-address"
+        />
+        <PhoneInput
+          placeholder="00 000 0000"
+          value={userData?.phone}
+          onChangeText={e => {
+            setUserData({...userData, phone: e});
+          }}
+          callingCode={callingCode}
+          setCallingCode={setCallingCode}
+          maxLength={9}
+        />
+        <CustomTextInput
+          placeholder="Password"
+          value={userData?.password}
+          onChangeText={e => {
+            setUserData({...userData, password: e});
+          }}
+          secureTextEntry={true}
+        />
+      </View>
 
-      <CustomButton
-        isPrimary="seeker"
-        title={'Sign Up'}
-        btnStyle={{marginTop: getFontSize(2)}}
-      />
-      <CustomButton
-        isPrimary="seeker"
-        title={'Login as a Guest'}
-        btnStyle={{marginTop: getFontSize(2)}}
-        type="outline"
-      />
+      <View style={{marginTop: hp(52), gap: hp(29)}}>
+        <CustomButton isPrimary="seeker" title={'Sign Up'} />
+        <CustomButton
+          isPrimary="seeker"
+          title={'Login as a Guest'}
+          type="outline"
+        />
+      </View>
 
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -116,12 +115,12 @@ const styles = StyleSheet.create({
   topLabel: {
     ...commonFontStyle(600, 3.4, Colors.black),
     textAlign: 'center',
-    paddingBottom: getFontSize(3),
   },
 
   dividerContainer: {
     ...rowReverseRTL(),
     alignItems: 'center',
+    marginHorizontal: wp(23),
     paddingVertical: getFontSize(3),
   },
   label: {
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: getFontSize(1.4),
   },
   divider: {
-    height: 1,
+    height: hp(1),
     backgroundColor: 'rgba(0, 0, 0, 0.1)',
     flex: 1,
   },

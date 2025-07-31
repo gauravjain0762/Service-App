@@ -5,25 +5,27 @@ import {
   StyleSheet,
   TextStyle,
   TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import CommonText from './CommonText';
 
 type Props = {
   disabled?: boolean;
   title: any;
   onPress?: () => void;
-  btnStyle?: any;
+  btnStyle?: ViewStyle;
   leftImg?: ReactNode;
   textStyle?: TextStyle;
   type?: 'fill' | 'outline';
   RightImg?: ReactNode;
   loading?: boolean;
   isPrimary?: 'seeker' | 'provider';
-};
+} & TouchableOpacityProps;
 
 const CustomButton: FC<Props> = ({
   title,
@@ -119,10 +121,9 @@ const getGlobalStyles = (language: any) => {
       backgroundColor: Colors.provider_primary,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 100,
+      borderRadius: hp(100),
       gap: getFontSize(1.5),
-      height: getFontSize(7),
-      marginVertical: getFontSize(1),
+      height: hp(55),
       ...rowReverseRTL(language),
     },
     outline_buttonStyle: {

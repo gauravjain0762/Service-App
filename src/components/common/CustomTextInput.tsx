@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet, TextInputProps} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TextInputProps,
+  Image,
+} from 'react-native';
 import {Colors} from '../../constants/Colors';
 import CustomImage from './CustomImage';
 import {IMAGES} from '../../assets/images';
-import {commonFontStyle, getFontSize} from '../../utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '../../utils/responsiveFn';
 import {rowReverseRTL} from '../../utils/arabicStyles';
 import CommonText from './CommonText';
 import {useTranslation} from 'react-i18next';
@@ -13,6 +20,8 @@ interface CustomTextInputProps extends TextInputProps {
   required?: boolean;
   secureTextEntry?: boolean;
   placeholder?: string;
+  leftIcon?: any;
+  rightIcon?: any;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -20,6 +29,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   required = false,
   secureTextEntry = false,
   placeholder,
+  leftIcon,
+  rightIcon,
   ...rest
 }) => {
   const {t} = useTranslation();
@@ -33,6 +44,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         </CommonText>
       )}
       <View style={styles.inputContainer}>
+        {leftIcon && leftIcon}
         <TextInput
           style={styles.input}
           placeholder={placeholder ? t(placeholder) : ''}
@@ -40,6 +52,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           secureTextEntry={secureTextEntry ? !showPassword : false}
           {...rest}
         />
+        {rightIcon && rightIcon}
         {secureTextEntry && (
           <CustomImage
             onPress={() => {
@@ -57,11 +70,11 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: getFontSize(2),
-    flex: 1,
+    // marginBottom: hp(10),
+    // flex: 1,
   },
   label: {
-    marginBottom: getFontSize(1.3),
+    marginBottom: hp(5),
     ...commonFontStyle(400, 1.9, Colors._5E5D5D),
   },
   required: {
@@ -75,13 +88,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     backgroundColor: Colors._F9F9F9,
-    borderRadius: getFontSize(100),
-    paddingHorizontal: getFontSize(2),
-    marginTop: getFontSize(0.5),
+    borderRadius: hp(100),
+    paddingHorizontal: wp(30),
+    // marginTop: hp(5),
     height: getFontSize(7),
     alignItems: 'center',
     ...rowReverseRTL(),
-    flex: 1,
+    // flex: 1,
   },
 });
 

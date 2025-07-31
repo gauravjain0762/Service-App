@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator<any>();
 const ProviderNavigator: FC = () => {
   let screens = [
     {name: PROVIDER_SCREENS.LoginScreen, component: LoginScreen},
-    {name: PROVIDER_SCREENS.TabNavigation, component: TabNavigation},
+    // {name: PROVIDER_SCREENS.TabNavigation, component: TabNavigation},
   ];
   return (
     <Stack.Navigator

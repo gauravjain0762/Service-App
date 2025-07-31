@@ -27,8 +27,6 @@ const OTPScreen = () => {
 
   const {t} = useTranslation();
 
-
-
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [_props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -48,7 +46,7 @@ const OTPScreen = () => {
   }, []);
 
   const onLoginSubmit = async () => {
-    navigateTo(SCREENS.TabNavigation);
+    navigateTo(SCREENS.SeekerTabNavigation);
     // let data = {
     //   otp: value,
     //   user_id: params?.userData?._id,
