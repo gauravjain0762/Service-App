@@ -1,6 +1,7 @@
-import React from 'react';
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import moment from 'moment';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
@@ -10,7 +11,6 @@ const generateDates = () => {
   const dates = [];
   const start = moment();
   const end = moment().add(1, 'year');
-
   let current = start.clone();
 
   while (current.isSameOrBefore(end, 'day')) {
@@ -36,41 +36,75 @@ type Props = {
 };
 
 const CustomDates = ({onDatePress, selectedDate, setSelectedDate}: Props) => {
+  const flatListRef = useRef<FlatList>(null);
+
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const index = dates.findIndex(d => d.key === selectedDate.key);
+    if (index !== -1 && flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        index,
+        animated: true,
+        viewPosition: 0.5,
+      });
+    }
+  }, [selectedDate]);
+
   const isSelected = (item: any) => selectedDate?.key === item.key;
 
   return (
     <View style={styles.container}>
       <CommonText
         text={'Select Date'}
-        style={{...commonFontStyle(700, 2.2, Colors.black)}}
+        style={commonFontStyle(700, 2.2, Colors.black)}
       />
-      <FlatList
-        data={dates}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatList}
-        renderItem={({item}) => {
-          const selected = isSelected(item);
-          return (
-            <TouchableOpacity
-              style={[styles.dateBox, selected && styles.selectedBox]}
-              onPress={() => {
-                setSelectedDate?.(item);
-                onDatePress?.(item.fullDate);
-              }}>
-              <Text style={[styles.month, selected && styles.selectedText]}>
-                {item.month}
-              </Text>
-              <Text style={[styles.day, selected && styles.selectedText]}>
-                {item.day}
-              </Text>
-              <Text style={[styles.weekday, selected && styles.selectedText]}>
-                {item.weekday}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
+
+      <View style={styles.listWrapper}>
+        <FlatList
+          ref={flatListRef}
+          data={dates}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatList}
+          renderItem={({item}) => {
+            const selected = isSelected(item);
+            return (
+              <TouchableOpacity
+                style={[styles.dateBox, selected && styles.selectedBox]}
+                onPress={() => {
+                  setSelectedDate?.(item);
+                  onDatePress?.(item.fullDate);
+                }}>
+                <CommonText
+                  style={[styles.month, selected && styles.selectedText]}
+                  text={item.month}
+                />
+                <CommonText
+                  style={[styles.day, selected && styles.selectedText]}
+                  text={item.day}
+                />
+                <CommonText
+                  style={[styles.weekday, selected && styles.selectedText]}
+                  text={item.weekday}
+                />
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={item => item.key}
+        />
+
+        <LinearGradient
+          colors={[Colors.white, 'rgba(255,255,255,0.6)']}
+          style={styles.leftFade}
+          pointerEvents="none"
+        />
+        <LinearGradient
+          colors={['rgba(255,255,255,0.6)', Colors.white]}
+          style={styles.rightFade}
+          pointerEvents="none"
+        />
+      </View>
     </View>
   );
 };
@@ -80,9 +114,13 @@ export default CustomDates;
 const styles = StyleSheet.create({
   container: {
     gap: hp(22),
-    paddingVertical: hp(10),
   },
-  flatList: {},
+  listWrapper: {
+    position: 'relative',
+  },
+  flatList: {
+    paddingHorizontal: wp(16),
+  },
   dateBox: {
     width: wp(60),
     height: hp(90),
@@ -110,5 +148,21 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: Colors.white,
+  },
+  leftFade: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: wp(50),
+    zIndex: 1,
+  },
+  rightFade: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: wp(50),
+    zIndex: 1,
   },
 });

@@ -7,20 +7,39 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
 type props = {
+  text1?: string;
+  text2?: string;
   style?: ViewStyle;
+  imageSource?: any;
+  titleStyle?: ViewStyle;
+  subtitleStyle?: ViewStyle;
   handleCardPress?: () => void;
 };
 
-const RequestCard = ({style, handleCardPress}: props) => {
+const RequestCard = ({
+  style,
+  text1,
+  text2,
+  titleStyle,
+  imageSource,
+  subtitleStyle,
+  handleCardPress,
+}: props) => {
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
       <View style={styles.imageContainer}>
-        <Image source={IMAGES.dummy} />
+        <Image source={imageSource ? imageSource : IMAGES.dummy} />
       </View>
 
       <View style={styles.textContainer}>
-        <CommonText text={'AC Regular Services'} style={styles.title} />
-        <CommonText text={'1 Ton - 1.5 Ton x3'} style={styles.subtitle} />
+        <CommonText
+          text={text1 ? text1 : 'AC Regular Services'}
+          style={[styles.title, titleStyle]}
+        />
+        <CommonText
+          text={text2 ? text2 : '1 Ton - 1.5 Ton x3'}
+          style={[styles.subtitle, subtitleStyle]}
+        />
       </View>
     </Pressable>
   );

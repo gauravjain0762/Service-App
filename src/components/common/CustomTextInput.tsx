@@ -5,7 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TextInputProps,
-  Image,
+  ViewStyle,
 } from 'react-native';
 import {Colors} from '../../constants/Colors';
 import CustomImage from './CustomImage';
@@ -22,6 +22,8 @@ interface CustomTextInputProps extends TextInputProps {
   placeholder?: string;
   leftIcon?: any;
   rightIcon?: any;
+  containerStyle?: ViewStyle,
+  inputStyle?: ViewStyle
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -31,6 +33,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   placeholder,
   leftIcon,
   rightIcon,
+  containerStyle,
+  inputStyle,
   ...rest
 }) => {
   const {t} = useTranslation();
@@ -43,10 +47,10 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           {required && <Text style={styles.required}>*</Text>}
         </CommonText>
       )}
-      <View style={styles.inputContainer}>
+      <View style={[styles.inputContainer, containerStyle]}>
         {leftIcon && leftIcon}
         <TextInput
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           placeholder={placeholder ? t(placeholder) : ''}
           placeholderTextColor={Colors._5E5D5D}
           secureTextEntry={secureTextEntry ? !showPassword : false}

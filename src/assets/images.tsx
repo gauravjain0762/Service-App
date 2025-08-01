@@ -23,6 +23,11 @@ export const IMAGES = {
   close: require('./icons/close.png'),
   right: require('./icons/right.png'),
   backArrow2: require('./icons/backArrow2.png'),
+  pdf: require('./icons/pdf.png'),
+  star: require('./icons/star.png'),
+  currency: require('./icons/currency.png'),
+  marker: require('./icons/marker.png'),
+  home_marker: require('./icons/home_marker.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
@@ -42,6 +47,7 @@ export const IMAGES = {
   handyman_service: require('./Images/handyman_service.png'),
   dummy: require('./Images/dummy.png'),
   dummy_map: require('./Images/dummy_map.png'),
+  dummy2: require('./Images/dummy2.png'),
 };
 
 export const Animation = {};

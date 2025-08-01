@@ -24,8 +24,8 @@ const StackNavigator: FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-       initialRouteName={SCREENS.Splash}>
-      {/* // initialRouteName={SCREENS.SeekerNavigator}> */}
+      //  initialRouteName={SCREENS.Splash}>
+      initialRouteName={SCREENS.SeekerNavigator}>
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen

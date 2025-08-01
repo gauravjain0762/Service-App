@@ -9,6 +9,9 @@ export const SCREENS = {
   OtpVerifyScreen: 'OtpVerifyScreen',
   SeekerTabNavigation: 'SeekerTabNavigation',
   MyBookings: 'My Bookings',
+  Offers: 'Offers',
+  OffersDetail: 'Offers Detail',
+  AddCard: "Add Card"
 };
 
 export const SEEKER_SCREENS = {
@@ -19,6 +22,9 @@ export const SEEKER_SCREENS = {
   OtpScreen: 'OtpScreen',
   SeekerTabNavigation: 'SeekerTabNavigation',
   MyBookings: 'My Bookings',
+  Offers: 'Offers',
+  OffersDetail: 'Offers Detail',
+  AddCard: "Add Card"
 };
 
 export const PROVIDER_SCREENS = {
