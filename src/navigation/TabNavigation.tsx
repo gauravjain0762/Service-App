@@ -97,17 +97,7 @@ const TabNavigation = () => {
           tabBarButton: props => (
             <CustomTabBarButton {...props} route={route} />
           ),
-        })}>
-        <Tab.Screen
-          name="Create"
-          component={CreateScreen}
-          listeners={{
-            tabPress: e => {
-              e.preventDefault();
-            },
-          }}
-        />
-      </Tab.Navigator>
+        })}></Tab.Navigator>
     </CustomShadow>
   );
 };

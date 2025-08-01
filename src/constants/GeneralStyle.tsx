@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
-import { Colors } from "./Colors";
+import {StyleSheet} from 'react-native';
+import {Colors} from './Colors';
+import {wp} from '@/utils/responsiveFn';
 
 export const GeneralStyle = StyleSheet.create({
   flex: {
@@ -7,10 +8,11 @@ export const GeneralStyle = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingHorizontal: wp(20),
     backgroundColor: Colors.white,
   },
   flexRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

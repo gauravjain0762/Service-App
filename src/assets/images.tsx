@@ -28,6 +28,15 @@ export const IMAGES = {
   currency: require('./icons/currency.png'),
   marker: require('./icons/marker.png'),
   home_marker: require('./icons/home_marker.png'),
+  language: require('./icons/language.png'),
+  flag: require('./icons/flag.png'),
+  iBtn: require('./icons/iBtn.png'),
+  rightArrow: require('./icons/rightArrow.png'),
+  privacy: require('./icons/privacy.png'),
+  file: require('./icons/file.png'),
+  delete: require('./icons/delete.png'),
+  logout: require('./icons/logout.png'),
+  phone: require('./icons/phone.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
