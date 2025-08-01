@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   FlatList,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -74,9 +75,11 @@ const HomeScreen = () => {
             text={'Whats service do you need?'}
           />
         </View>
-        <View style={styles.bellContainer}>
+        <Pressable
+          onPress={() => navigateTo(SCREENS.Notifications)}
+          style={styles.bellContainer}>
           <Image source={IMAGES.bell} style={styles.bellIcon} />
-        </View>
+        </Pressable>
       </View>
 
       <View style={styles.searchContainer}>

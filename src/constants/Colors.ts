@@ -47,6 +47,9 @@ export const Colors = {
   _5E5E5E: '#5E5E5E',
   _2C2C2C: '#2C2C2C',
   _202020: '#202020',
+  _E6E6E6: '#E6E6E6',
+  _EEEEEE: '#EEEEEE',
+  _828282: "#828282",
 
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(99, 45, 1, 0.9)',

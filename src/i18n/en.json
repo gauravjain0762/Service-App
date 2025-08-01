@@ -54,6 +54,13 @@
     "Add Card": "Add Card",
     "Choose Location": "Choose Location",
     "My Location": "My Location",
-    "Your Location": "Your Location"
+    "Your Location": "Your Location",
+    "Set Your Location": "Set Your Location",
+    "Location": "Location",
+    "Continue": "Continue",
+    "Address Details": "Address Details",
+    "Save Address": "Save Address",
+    "Job Detail": "Job Detail",
+    "Payment Method": "Payment Method"
   }
 }

@@ -27,10 +27,13 @@ const Offers = () => {
 
       <View style={styles.offersContainer}>
         <OfferCard
+          onPressOffer={() => {}}
           onCardPress={() => {
             navigateTo(SCREENS.OffersDetail);
           }}
-          onPressOffer={() => {}}
+          onPressAcceptOffer={() => {
+            navigateTo(SCREENS.JobDetails);
+          }}
         />
       </View>
     </SafeareaProvider>

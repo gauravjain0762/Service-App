@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -45,22 +46,32 @@ const MyBookings = () => {
         contentContainerStyle={styles.scrollViewContent}>
         <RequestCard style={styles.requestCard} />
 
-        {/* <CommonText
+        <CommonText
           text={'Choose Location'}
           style={{
             ...commonFontStyle(700, 2.2, Colors.black),
           }}
         />
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.locationTab}>
           <CustomButton
             title={'My Location'}
-            style={{flex: 1}}
+            onPress={() => {
+              navigateTo(SCREENS.SetLocation);
+            }}
+            btnStyle={styles.myLocationBtn}
             leftImg={<Image source={IMAGES.marker} />}
           />
-          <CustomButton title={'Your Location'} style={{flex: 1}} />
-        </View> */}
+          <CustomButton
+            title={'Your Location'}
+            btnStyle={styles.yourLocationBtn}
+            textStyle={{...commonFontStyle(500, 1.8, Colors._4F4F4F)}}
+            leftImg={<Image source={IMAGES.home_marker} />}
+          />
+        </View>
 
-        <View style={styles.locationContainer}>
+        <Pressable
+          onPress={() => navigateTo(SCREENS.SetLocation)}
+          style={styles.locationContainer}>
           <Image source={IMAGES.dummy_map} />
           <View style={styles.locationDetails}>
             <CommonText text={'Add Location'} style={styles.locationTitle} />
@@ -72,7 +83,7 @@ const MyBookings = () => {
           <View style={styles.changeBtn}>
             <CommonText text={'Change'} style={styles.changeBtnText} />
           </View>
-        </View>
+        </Pressable>
 
         <View style={styles.sectionSpacing}>
           <CustomDates
@@ -358,5 +369,22 @@ const styles = StyleSheet.create({
   },
   selectedMileageText: {
     color: Colors.white,
+  },
+  locationTab: {
+    gap: wp(23),
+    marginTop: hp(18),
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: hp(30),
+  },
+  myLocationBtn: {
+    flex: 1,
+    backgroundColor: Colors.seeker_primary,
+  },
+  yourLocationBtn: {
+    flex: 1,
+    borderWidth: hp(1),
+    borderColor: Colors._F2EDED,
+    backgroundColor: Colors.white,
   },
 });

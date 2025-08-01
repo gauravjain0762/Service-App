@@ -5,9 +5,26 @@ import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
+import ImagePicker from 'react-native-image-crop-picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
 const UploadBox = () => {
+  const handleBrowseFiles = () => {
+    ImagePicker.openPicker({
+      multiple: false,
+      mediaType: 'any', // 'photo', 'video', or 'any'
+    })
+      .then(image => {
+        console.log('Selected:', image);
+        // handle the selected file (image.path or image.mime etc.)
+      })
+      .catch(error => {
+        if (error.code !== 'E_PICKER_CANCELLED') {
+          console.log('Error picking file:', error);
+        }
+      });
+  };
+
   return (
     <ShadowCard>
       <CommonText style={styles.title} text={'Upload Video/Image'} />
@@ -19,7 +36,11 @@ const UploadBox = () => {
         text={'Upload video files and images here.'}
       />
 
-      <TouchableOpacity style={styles.browseBtn}>
+      <TouchableOpacity
+        onPress={() => {
+          handleBrowseFiles();
+        }}
+        style={styles.browseBtn}>
         <CommonText style={styles.browseText} text={'Browse Files'} />
       </TouchableOpacity>
     </ShadowCard>

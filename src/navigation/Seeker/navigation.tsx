@@ -10,6 +10,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Offers from '@/screens/SeekerScreens/Seekers/Offers';
 import OffersDetails from '@/screens/SeekerScreens/Seekers/OffersDetails';
 import AddCard from '@/screens/SeekerScreens/Seekers/AddCard';
+import SetLocation from '@/screens/SeekerScreens/Seekers/SetLocation';
+import Notifications from '@/screens/SeekerScreens/Seekers/Notifications';
+import JobDetails from '@/screens/SeekerScreens/Seekers/JobDetails';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -26,6 +29,9 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.Offers, component: Offers},
     {name: SEEKER_SCREENS.OffersDetail, component: OffersDetails},
     {name: SEEKER_SCREENS.AddCard, component: AddCard},
+    {name: SEEKER_SCREENS.SetLocation, component: SetLocation},
+    {name: SEEKER_SCREENS.Notifications, component: Notifications},
+    {name: SEEKER_SCREENS.JobDetails, component: JobDetails},
     {name: SEEKER_SCREENS.SeekerTabNavigation, component: SeekerTabNavigation},
   ];
   return (
@@ -33,8 +39,7 @@ const SeekerNavigator: FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={SEEKER_SCREENS.MyBookings}>
-      {/* initialRouteName={SEEKER_SCREENS.SeekerTabNavigation}> */}
+      initialRouteName={SEEKER_SCREENS.SeekerTabNavigation}>
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen

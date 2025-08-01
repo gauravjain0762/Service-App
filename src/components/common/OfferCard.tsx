@@ -11,9 +11,10 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 type Props = {
   onPressOffer: () => void;
   onCardPress?: () => void;
+  onPressAcceptOffer?: () => void;
 };
 
-const OfferCard = ({onPressOffer, onCardPress}: Props) => {
+const OfferCard = ({onPressOffer, onCardPress, onPressAcceptOffer}: Props) => {
   return (
     <ShadowCard onCardPress={onCardPress} style={styles.card}>
       <View style={styles.offerBadge}>
@@ -55,6 +56,7 @@ const OfferCard = ({onPressOffer, onCardPress}: Props) => {
           title={'Accept Offer'}
           textStyle={styles.acceptText}
           btnStyle={styles.acceptBtn}
+          onPress={onPressAcceptOffer}
         />
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />

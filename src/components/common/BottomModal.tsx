@@ -16,6 +16,7 @@ import {hp, wp} from '@/utils/responsiveFn';
 import Modal from 'react-native-modal';
 
 type BottomModalProps = {
+  close?: boolean;
   visible: boolean;
   style?: ViewStyle;
   onClose: () => void;
@@ -29,6 +30,7 @@ const BottomModal = ({
   visible,
   onClose,
   children,
+  close,
   onPressCancel,
   backgroundColor = '#fff',
 }: BottomModalProps) => {
@@ -41,9 +43,9 @@ const BottomModal = ({
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoiding}>
-        <Pressable onPress={onPressCancel} style={styles.closeContainer}>
+        {close && <Pressable onPress={onPressCancel} style={styles.closeContainer}>
           <Image source={IMAGES.close} />
-        </Pressable>
+        </Pressable>}
         <View style={[styles.container, {backgroundColor}, style]}>
           {children}
         </View>

@@ -13,7 +13,7 @@ type props = {
 const ShadowCard = ({children, style, onCardPress}: props) => {
   return (
     <Pressable onPress={onCardPress} style={[styles.container, style]}>
-      {children}{' '}
+      {children}
     </Pressable>
   );
 };

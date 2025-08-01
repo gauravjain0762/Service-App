@@ -11,7 +11,10 @@ export const SCREENS = {
   MyBookings: 'My Bookings',
   Offers: 'Offers',
   OffersDetail: 'Offers Detail',
-  AddCard: "Add Card"
+  AddCard: 'Add Card',
+  SetLocation: "Set Location",
+  "Notifications": "Notifications",
+  "JobDetails": "JobDetails"
 };
 
 export const SEEKER_SCREENS = {
@@ -24,7 +27,10 @@ export const SEEKER_SCREENS = {
   MyBookings: 'My Bookings',
   Offers: 'Offers',
   OffersDetail: 'Offers Detail',
-  AddCard: "Add Card"
+  AddCard: 'Add Card',
+  SetLocation: 'Set Location',
+  Notifications: "Notifications",
+  "JobDetails": "JobDetails"
 };
 
 export const PROVIDER_SCREENS = {

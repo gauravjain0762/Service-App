@@ -120,7 +120,7 @@ const OffersDetails = () => {
             title={'Accept Offer'}
             btnStyle={styles.acceptBtn}
             textStyle={styles.acceptText}
-            onPress={() => navigateTo(SCREENS.AddCard)}
+            onPress={() => navigateTo(SCREENS.JobDetails)}
           />
           <View style={styles.priceRow}>
             <Image source={IMAGES.currency} style={styles.currencyIcon} />
