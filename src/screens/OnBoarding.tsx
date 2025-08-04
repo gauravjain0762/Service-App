@@ -43,7 +43,7 @@ const OnBoarding = () => {
               />
               <CustomButton
                 title={'Service Provider'}
-                btnStyle={{backgroundColor: Colors._2B2B2B}}
+                btnStyle={{backgroundColor: Colors.provider_primary}}
                 onPress={() => navigateTo(SCREENS.ProviderNavigator)}
                 textStyle={styles.btnText}
               />

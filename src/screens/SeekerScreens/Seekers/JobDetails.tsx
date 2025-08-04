@@ -67,8 +67,52 @@ const JobDetails = () => {
         style={{...commonFontStyle(600, 2.2, Colors.black), marginTop: hp(30)}}
       />
 
+      <View
+        style={{
+          gap: wp(20),
+          padding: hp(16),
+          marginTop: hp(16),
+          borderRadius: hp(20),
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: Colors.seeker_primary,
+        }}>
+        <View
+          style={{
+            padding: hp(22),
+            borderRadius: hp(20),
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: Colors._F4F4FE,
+          }}>
+          <Image
+            resizeMode="contain"
+            source={IMAGES.profile}
+            style={{height: hp(40), width: wp(40)}}
+          />
+        </View>
+        <View>
+          <CommonText
+            text={'Royal Santary Store'}
+            style={{...commonFontStyle(600, 1.9, Colors.white)}}
+          />
+          <CommonText
+            text={'AC Regular Services'}
+            style={{
+              ...commonFontStyle(400, 1.7, Colors.white),
+              marginTop: hp(11),
+            }}
+          />
+        </View>
+        <View style={styles.ratingRow}>
+          <Image source={IMAGES.star} />
+          <CommonText text={'4.9'} style={styles.ratingText} />
+        </View>
+      </View>
+
       <ShadowCard
         style={{
+          width: '100%',
           marginTop: hp(25),
           alignItems: 'flex-start',
           paddingHorizontal: wp(25),
@@ -123,5 +167,13 @@ const styles = StyleSheet.create({
   },
   bookingValue: {
     ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+  },
+  ratingRow: {
+    gap: wp(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
+    ...commonFontStyle(500, 2, Colors.black),
   },
 });
