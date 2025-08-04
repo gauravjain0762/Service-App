@@ -25,6 +25,11 @@ const LoginScreen = ({}: any) => {
       <View style={{gap: hp(34)}}>
         <CustomTextInput placeholder="Email" />
         <CustomTextInput placeholder="Password" secureTextEntry={true} />
+        <CommonText
+          text="Forgot Password?"
+          style={styles.forgotPasswordText}
+          onPress={() => navigateTo(SEEKER_SCREENS.ForgotPassword)}
+        />
         <View style={styles.midContainer}>
           <CheckBox
             onClick={() => {
@@ -45,12 +50,13 @@ const LoginScreen = ({}: any) => {
         <CustomButton
           isPrimary="seeker"
           title={'Login'}
-          onPress={() => navigateTo(SEEKER_SCREENS.OtpScreen)}
+          onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
         />
         <CustomButton
           isPrimary="seeker"
           title={'Login as a Guest'}
           type="outline"
+          onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
         />
       </View>
 
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
   topLabel: {
     ...commonFontStyle(600, 3.4, Colors.black),
     textAlign: 'center',
-    paddingBottom: getFontSize(6),
+    paddingBottom: getFontSize(5),
   },
 
   midContainer: {
@@ -105,6 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     marginLeft: getFontSize(0.5),
+    marginTop: hp(-15)
   },
 
   accountText: {
@@ -155,5 +162,11 @@ const styles = StyleSheet.create({
     width: getFontSize(9),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  forgotPasswordText: {
+    ...commonFontStyle(400, 1.9, Colors.seeker_primary),
+    textAlign: 'right',
+    paddingRight: getFontSize(0.5),
+    marginTop: hp(-20),
   },
 });
