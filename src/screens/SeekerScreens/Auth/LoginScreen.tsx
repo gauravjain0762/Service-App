@@ -22,7 +22,7 @@ const LoginScreen = ({}: any) => {
       showsVerticalScrollIndicator={false}
       style={styles.container}>
       <CommonText text="Login to Your Account" style={styles.topLabel} />
-      <View style={{gap: hp(34)}}>
+      <View style={{gap: hp(20)}}>
         <CustomTextInput placeholder="Email" />
         <CustomTextInput placeholder="Password" secureTextEntry={true} />
         <View style={styles.midContainer}>
@@ -36,12 +36,16 @@ const LoginScreen = ({}: any) => {
           />
           <CommonText text="I agree to follow the" style={styles.checkBoxText}>
             {' '}
-            <CommonText text="terms of use" style={styles.checkBoxText2} />
+            <CommonText
+              onPress={() => navigateTo(SEEKER_SCREENS.TermsWebScreen)}
+              text="terms of use"
+              style={styles.checkBoxText2}
+            />
           </CommonText>
         </View>
       </View>
 
-      <View style={{marginTop: hp(60), gap: hp(45)}}>
+      <View style={{marginTop: hp(50), gap: hp(30)}}>
         <CustomButton
           isPrimary="seeker"
           title={'Login'}
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
   accountText: {
     ...commonFontStyle(400, 2, Colors._909090),
     textAlign: 'center',
-    paddingTop: getFontSize(5),
+    paddingTop: hp(35),
   },
 
   signUpAccountText: {
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
   dividerContainer: {
     ...rowReverseRTL(),
     alignItems: 'center',
-    paddingVertical: hp(45),
+    paddingVertical: hp(30),
     marginHorizontal: wp(23),
   },
   label: {

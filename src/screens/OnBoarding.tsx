@@ -5,7 +5,7 @@ import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import {commonFontStyle, hp} from '@/utils/responsiveFn';
-import {navigateTo} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
@@ -38,13 +38,13 @@ const OnBoarding = () => {
               <CustomButton
                 isPrimary="seeker"
                 title={'Job Seeker'}
-                onPress={() => navigateTo(SCREENS.SeekerNavigator)}
+                onPress={() => resetNavigation(SCREENS.SeekerNavigator)}
                 textStyle={styles.btnText}
               />
               <CustomButton
                 title={'Service Provider'}
                 btnStyle={{backgroundColor: Colors.provider_primary}}
-                onPress={() => navigateTo(SCREENS.ProviderNavigator)}
+                onPress={() => resetNavigation(SCREENS.ProviderNavigator)}
                 textStyle={styles.btnText}
               />
             </View>

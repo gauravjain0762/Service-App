@@ -12,9 +12,14 @@ export const SCREENS = {
   Offers: 'Offers',
   OffersDetail: 'Offers Detail',
   AddCard: 'Add Card',
-  SetLocation: "Set Location",
-  "Notifications": "Notifications",
-  "JobDetails": "JobDetails"
+  SetLocation: 'Set Location',
+  Notifications: 'Notifications',
+  JobDetails: 'JobDetails',
+  TermsWebScreen: 'TermsWebScreen',
+  Home: 'Home',
+  MyRequest: 'My Request',
+  MyBookingsTab: 'My BookingsTab',
+  Profile: 'Profile',
 };
 
 export const SEEKER_SCREENS = {
@@ -25,12 +30,17 @@ export const SEEKER_SCREENS = {
   OtpScreen: 'OtpScreen',
   SeekerTabNavigation: 'SeekerTabNavigation',
   MyBookings: 'My Bookings',
+  MyBookingsTab: 'My BookingsTab',
   Offers: 'Offers',
   OffersDetail: 'Offers Detail',
   AddCard: 'Add Card',
   SetLocation: 'Set Location',
-  Notifications: "Notifications",
-  "JobDetails": "JobDetails"
+  Notifications: 'Notifications',
+  JobDetails: 'JobDetails',
+  TermsWebScreen: 'TermsWebScreen',
+  Home: 'Home',
+  MyRequest: 'My Request',
+  Profile: "Profile"
 };
 
 export const PROVIDER_SCREENS = {

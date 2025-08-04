@@ -21,14 +21,17 @@ import UploadBox from '@/components/common/UploadBox';
 import ShadowCard from '@/components/common/ShadowCard';
 import {useTranslation} from 'react-i18next';
 import CustomButton from '@/components/common/CustomButton';
-import {navigateTo} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {SCREEN_NAMES, SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import BackHeader from '@/components/common/BackHeader';
+import BottomModal from '@/components/common/BottomModal';
+import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 
 const MyBookings = () => {
   const {t} = useTranslation();
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
+  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [selectedMileage, setSelectedMileage] = useState<string | null>(null);
   const [selectedProfessional, setSelectedProfessional] = useState<
     number | null
@@ -62,7 +65,7 @@ const MyBookings = () => {
             leftImg={<Image source={IMAGES.marker} />}
           />
           <CustomButton
-            title={'Your Location'}
+            title={'Store Location'}
             btnStyle={styles.yourLocationBtn}
             textStyle={{...commonFontStyle(500, 1.8, Colors._4F4F4F)}}
             leftImg={<Image source={IMAGES.home_marker} />}
@@ -205,9 +208,28 @@ const MyBookings = () => {
         <CustomButton
           title={'Send Request'}
           btnStyle={styles.sendRequestBtn}
-          onPress={() => navigateTo(SCREENS.Offers)}
+          onPress={() => setIsSubmitModalVisible(true)}
         />
       </ScrollView>
+
+      <BottomModal
+        close
+        style={{paddingTop: hp(40)}}
+        visible={isSubmitModalVisible}
+        onPressCancel={() => {
+          setIsSubmitModalVisible(false);
+          resetNavigation(SCREENS.SeekerTabNavigation, SCREENS.Home);
+        }}
+        onClose={() => {
+          setIsSubmitModalVisible(false);
+        }}>
+        <RequestSubmitModal
+          handleCardPress={() => {
+            setIsSubmitModalVisible(false);
+            resetNavigation(SCREEN_NAMES.Offers);
+          }}
+        />
+      </BottomModal>
     </SafeareaProvider>
   );
 };

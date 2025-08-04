@@ -9,8 +9,9 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import {goBack} from '@/components/common/commonFunction';
+import {goBack, navigateTo} from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
 const SignUpScreen = () => {
   const [callingCode, setCallingCode] = React.useState('971');
@@ -27,7 +28,7 @@ const SignUpScreen = () => {
       style={styles.container}>
       <CommonText text="Create New Account" style={styles.topLabel} />
 
-      <View style={{gap: hp(34), marginTop: hp(45)}}>
+      <View style={{gap: hp(20), marginTop: hp(45)}}>
         <CustomTextInput
           placeholder="Full name"
           value={userData?.name}
@@ -52,6 +53,7 @@ const SignUpScreen = () => {
           callingCode={callingCode}
           setCallingCode={setCallingCode}
           maxLength={9}
+          containerStyle={{marginBottom: 0}}
         />
         <CustomTextInput
           placeholder="Password"
@@ -63,8 +65,14 @@ const SignUpScreen = () => {
         />
       </View>
 
-      <View style={{marginTop: hp(52), gap: hp(29)}}>
-        <CustomButton isPrimary="seeker" title={'Sign Up'} />
+      <View style={{marginTop: hp(52), gap: hp(20)}}>
+        <CustomButton
+          isPrimary="seeker"
+          title={'Sign Up'}
+          onPress={() => {
+            navigateTo(SEEKER_SCREENS.OtpScreen);
+          }}
+        />
         <CustomButton
           isPrimary="seeker"
           title={'Login as a Guest'}
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
   accountText: {
     ...commonFontStyle(400, 2, Colors._909090),
     textAlign: 'center',
-    paddingTop: getFontSize(5),
+    paddingTop: hp(35),
   },
 
   signUpAccountText: {

@@ -5,7 +5,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
 
@@ -17,9 +16,10 @@ import {IMAGES} from '@/assets/images';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import ServiceCard from '@/components/common/ServiceCard';
 import BottomModal from '@/components/common/BottomModal';
-import RequestCard from '@/components/common/RequestCard';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
+import ServicesModal from '@/components/modals/ServicesModal';
+import {useRoute} from '@react-navigation/native';
 
 const services = [
   {
@@ -61,9 +61,11 @@ const services = [
 ];
 
 const HomeScreen = () => {
+  const {params} = useRoute();
+  console.log('openReviewModal', params?.openReviewModal);
+
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -88,13 +90,13 @@ const HomeScreen = () => {
           leftIcon={
             <Image source={IMAGES.search} style={styles.searchImages} />
           }
-          rightIcon={
-            <Image
-              source={IMAGES.sort}
-              style={styles.searchImages}
-              tintColor={Colors.seeker_primary}
-            />
-          }
+          // rightIcon={
+          //   <Image
+          //     source={IMAGES.sort}
+          //     style={styles.searchImages}
+          //     tintColor={Colors.seeker_primary}
+          //   />
+          // }
         />
       </View>
 
@@ -136,6 +138,7 @@ const HomeScreen = () => {
         />
       </ScrollView>
       <BottomModal
+        close
         style={{paddingTop: hp(40)}}
         visible={isModalVisible}
         onPressCancel={() => {
@@ -144,70 +147,10 @@ const HomeScreen = () => {
         onClose={() => {
           setIsModalVisible(false);
         }}>
-        <View>
-          <CommonText text={serviceName} />
-          <FlatList
-            numColumns={3}
-            contentContainerStyle={{marginTop: hp(40)}}
-            data={Array(6).fill('')}
-            renderItem={({item, index}) => {
-              return (
-                <ServiceCard
-                  source={item.image || IMAGES.handyman_service}
-                  handleCardPress={() => {
-                    console.log('object');
-                    setIsModalVisible(false);
-                    setTimeout(() => {
-                      setIsSubmitModalVisible(true);
-                    }, 500);
-                  }}
-                  text={item.name || 'Handyman Services'}
-                  containerStyle={{marginRight: wp(10), marginBottom: hp(30)}}
-                />
-              );
-            }}
-          />
-        </View>
-      </BottomModal>
-      <BottomModal
-        style={{paddingTop: hp(40)}}
-        visible={isSubmitModalVisible}
-        onPressCancel={() => {
-          setIsSubmitModalVisible(false);
-        }}
-        onClose={() => {
-          setIsSubmitModalVisible(false);
-        }}>
-        <View style={styles.submitModalContainer}>
-          <CommonText text={'Request Submitted'} style={styles.submitTitle} />
-
-          <View style={styles.submitDashedCircle}>
-            <View style={styles.submitInnerCircle}>
-              <Image source={IMAGES.right} style={styles.rightIcon} />
-            </View>
-          </View>
-
-          <CommonText
-            style={styles.submitText}
-            text={'Your request has been Submitted wait for the offers!'}
-          />
-
-          <View style={styles.referenceRow}>
-            <CommonText
-              text={'Reference Code:'}
-              style={styles.referenceLabel}
-            />
-            <CommonText text={'#D-698321'} style={styles.referenceValue} />
-          </View>
-
-          <RequestCard
-            handleCardPress={() => {
-              setIsSubmitModalVisible(false);
-              navigateTo(SCREENS.MyBookings);
-            }}
-            style={styles.requestCardMargin}
-          />
-        </View>
+        <ServicesModal
+          serviceName={serviceName}
+          setIsModalVisible={setIsModalVisible}
+        />
       </BottomModal>
     </SafeareaProvider>
   );
@@ -277,53 +220,5 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: wp(130),
     height: hp(130),
-  },
-  submitModalContainer: {
-    alignItems: 'center',
-  },
-  submitTitle: {
-    ...commonFontStyle(700, 2.3, Colors.black),
-  },
-  submitDashedCircle: {
-    width: wp(120),
-    height: hp(120),
-    borderWidth: hp(1),
-    alignItems: 'center',
-    borderStyle: 'dashed',
-    borderRadius: hp(120),
-    marginVertical: hp(24),
-    justifyContent: 'center',
-    backgroundColor: Colors.white,
-    borderColor: Colors.seeker_primary,
-  },
-  submitInnerCircle: {
-    width: wp(102),
-    height: hp(102),
-    alignItems: 'center',
-    borderRadius: hp(120),
-    justifyContent: 'center',
-    backgroundColor: Colors.seeker_primary,
-  },
-  rightIcon: {
-    height: '50%',
-    width: '50%',
-  },
-  submitText: {
-    textAlign: 'center',
-    ...commonFontStyle(500, 2.2, Colors.black),
-  },
-  referenceRow: {
-    marginTop: hp(11),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  referenceLabel: {
-    ...commonFontStyle(400, 1.9, Colors._868686),
-  },
-  referenceValue: {
-    ...commonFontStyle(400, 1.9, Colors.black),
-  },
-  requestCardMargin: {
-    marginVertical: hp(25),
   },
 });

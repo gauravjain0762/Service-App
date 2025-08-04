@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, View} from 'react-native';
+import {Image, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
 
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
@@ -9,18 +9,21 @@ import {navigationRef} from '@/navigation/RootContainer';
 
 type Props = {
   text: string;
+  style?: ViewStyle;
+  onPressBack?: () => void;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
 };
 
-const BackHeader = ({leftIcon, rightIcon, text}: Props) => {
+const BackHeader = ({leftIcon, rightIcon, text, style, onPressBack}: Props) => {
   return (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer, style]}>
       <View style={styles.headerLeft}>
         {leftIcon ? (
           leftIcon
         ) : (
-          <Pressable onPress={() => navigationRef?.current?.goBack()}>
+          <Pressable
+            onPress={onPressBack ?? (() => navigationRef?.current?.goBack())}>
             <Image source={IMAGES.backArrow2} />
           </Pressable>
         )}

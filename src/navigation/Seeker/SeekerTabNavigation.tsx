@@ -12,18 +12,18 @@ import {Colors} from '@/constants/Colors';
 import {hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
-import Feed1 from '@/screens/SeekerScreens/Tabs/Feed2';
-import Bookings from '@/screens/SeekerScreens/Tabs/Bookings';
 import Profile from '@/screens/SeekerScreens/Tabs/Profile';
-import Feed from '@/screens/SeekerScreens/Tabs/Feed';
-import { navigateTo } from '@/components/common/commonFunction';
+import {navigateTo} from '@/components/common/commonFunction';
+import {SEEKER_SCREENS} from '../screenNames';
+import MyBookingsTab from '@/screens/SeekerScreens/Tabs/MyBookingsTab';
+import MyRequest from '@/screens/SeekerScreens/Tabs/MyRequest';
 
 const Tab = createBottomTabNavigator();
 
 const SeekerTabNavigation = () => {
   const CustomTabBarButton = ({children, onPress, route, ...props}: any) => {
     const handlePress = () => {
-      navigateTo(route.name)
+      navigateTo(route.name);
     };
 
     return (
@@ -36,7 +36,7 @@ const SeekerTabNavigation = () => {
   return (
     <CustomShadow shadowStyle={{flex: 1}}>
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={SEEKER_SCREENS.Home}
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -58,15 +58,13 @@ const SeekerTabNavigation = () => {
             let iconWidth = wp(30);
             let iconHeight = hp(25);
 
-            if (route.name === 'Home') {
+            if (route.name === SEEKER_SCREENS.Home) {
               iconName = IMAGES.home;
-            } else if (route.name === 'Feed') {
+            } else if (route.name === SEEKER_SCREENS.MyRequest) {
               iconName = IMAGES.feed;
-            } else if (route.name === 'Feed2') {
-              iconName = IMAGES.feed2;
-            } else if (route.name === 'Bookings') {
+            } else if (route.name === SEEKER_SCREENS.MyBookingsTab) {
               iconName = IMAGES.calendar;
-            } else if (route.name === 'Profile') {
+            } else if (route.name === SEEKER_SCREENS.Profile) {
               iconName = IMAGES.profile;
             }
             return (
@@ -88,12 +86,14 @@ const SeekerTabNavigation = () => {
             <CustomTabBarButton {...props} route={route} />
           ),
         })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Feed" component={Feed} />
-        <Tab.Screen name="Feed2" component={Feed1} />
+        <Tab.Screen name={SEEKER_SCREENS.Home} component={HomeScreen} />
         <Tab.Screen
-          name="Bookings"
-          component={Bookings}
+          name={SEEKER_SCREENS.MyBookingsTab}
+          component={MyBookingsTab}
+        />
+        <Tab.Screen
+          name={SEEKER_SCREENS.MyRequest}
+          component={MyRequest}
           listeners={{
             tabPress: e => {
               e.preventDefault();

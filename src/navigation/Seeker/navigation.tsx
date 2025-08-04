@@ -13,6 +13,7 @@ import AddCard from '@/screens/SeekerScreens/Seekers/AddCard';
 import SetLocation from '@/screens/SeekerScreens/Seekers/SetLocation';
 import Notifications from '@/screens/SeekerScreens/Seekers/Notifications';
 import JobDetails from '@/screens/SeekerScreens/Seekers/JobDetails';
+import TermsWebScreen from '@/screens/SeekerScreens/Auth/TermsWebScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -25,6 +26,7 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.LoginScreen, component: LoginScreen},
     {name: SEEKER_SCREENS.SignUpScreen, component: SignUpScreen},
     {name: SEEKER_SCREENS.OtpScreen, component: OTPScreen},
+    {name: SEEKER_SCREENS.TermsWebScreen, component: TermsWebScreen},
     {name: SEEKER_SCREENS.MyBookings, component: MyBookings},
     {name: SEEKER_SCREENS.Offers, component: Offers},
     {name: SEEKER_SCREENS.OffersDetail, component: OffersDetails},

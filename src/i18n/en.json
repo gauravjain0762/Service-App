@@ -61,6 +61,11 @@
     "Address Details": "Address Details",
     "Save Address": "Save Address",
     "Job Detail": "Job Detail",
-    "Payment Method": "Payment Method"
+    "Payment Method": "Payment Method",
+    "View Profile": "View Profile",
+    "Service Charges": "Service Charges",
+    "Sub Total": "Sub Total",
+    "Total Bill": "Total Bill",
+    "Notification": "Notification"
   }
 }

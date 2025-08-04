@@ -19,6 +19,8 @@ import Divider from '@/components/common/Divider';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import {navigationRef} from '@/navigation/RootContainer';
+import SearchLocationModal from '@/components/modals/SearchLocationModal';
+import AddLocation from '@/components/modals/AddLocation';
 
 const SetLocation = () => {
   const mapRef = useRef<any | null>(null);
@@ -27,7 +29,7 @@ const SetLocation = () => {
   const [selectedType, setSelectedType] = useState('Home');
 
   return (
-    <SafeareaProvider style={styles.safeArea}>
+    <SafeareaProvider style={styles.safeArea} edges={['bottom']}>
       <View style={styles.headerPadding}>
         <BackHeader
           text={'Set Your Location'}
@@ -63,87 +65,19 @@ const SetLocation = () => {
           <BottomModal
             visible={isLocationModalVisible}
             onClose={() => setIsLocationModalVisible(false)}>
-            <View>
-              <View style={styles.modalHandle} />
-
-              <CommonText text={'Location'} style={styles.modalTitle} />
-
-              <Divider />
-
-              <CustomTextInput
-                containerStyle={styles.textInput}
-                placeholder={'Search Location'}
-                rightIcon={
-                  <Image source={IMAGES.marker} tintColor={Colors.black} />
-                }
-              />
-
-              <CustomButton
-                title={'Continue'}
-                onPress={() => {
-                  setIsLocationModalVisible(false);
-                  setTimeout(() => {
-                    setIsAddressModalVisible(true);
-                  }, 500);
-                }}
-                btnStyle={styles.continueButton}
-              />
-            </View>
+            <SearchLocationModal
+              setIsAddressModalVisible={setIsAddressModalVisible}
+              setIsLocationModalVisible={setIsLocationModalVisible}
+            />
           </BottomModal>
 
           <BottomModal
             visible={isAddressModalVisible}
             onClose={() => setIsAddressModalVisible(false)}>
-            <CommonText text={'Address Details'} style={styles.addressTitle} />
-
-            <Divider />
-
-            <View style={styles.addressTypeRow}>
-              {['Home', 'Work', 'Other'].map((item, index) => {
-                const isSelected = selectedType === item;
-                return (
-                  <Pressable
-                    key={index}
-                    onPress={() => setSelectedType(item)}
-                    style={[
-                      styles.addressTypeItem,
-                      isSelected && styles.addressTypeItemSelected,
-                    ]}>
-                    <CommonText
-                      text={item}
-                      style={[
-                        styles.addressTypeText,
-                        isSelected && styles.addressTypeTextSelected,
-                      ]}
-                    />
-                  </Pressable>
-                );
-              })}
-            </View>
-
-            <CustomTextInput
-              placeholder={'Flat No. / House No.'}
-              containerStyle={styles.inputUnderline}
-              inputStyle={styles.inputText}
-            />
-            <CustomTextInput
-              placeholder={'Street / Area / Locality'}
-              containerStyle={styles.inputUnderline}
-              inputStyle={styles.inputText}
-            />
-            <CustomTextInput
-              placeholder={'City / District'}
-              containerStyle={styles.inputUnderline}
-              inputStyle={styles.inputText}
-            />
-
-            <CustomButton
-              title={'Save Address'}
-              onPress={() => {
-                setIsAddressModalVisible(false);
-                navigationRef?.current?.goBack();
-              }}
-              btnStyle={styles.continueButton}
+            <AddLocation
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+              setIsAddressModalVisible={setIsAddressModalVisible}
             />
           </BottomModal>
         </View>
@@ -181,17 +115,6 @@ const styles = StyleSheet.create({
   mapStyle: {
     ...StyleSheet.absoluteFillObject,
   },
-  modalHandle: {
-    width: wp(40),
-    height: hp(5),
-    alignSelf: 'center',
-    backgroundColor: Colors._E6E6E6,
-  },
-  modalTitle: {
-    marginVertical: hp(25),
-    textAlign: 'center',
-    ...commonFontStyle(600, 2.4, Colors.black),
-  },
   textInput: {
     marginTop: hp(38),
     borderRadius: hp(10),
@@ -199,44 +122,5 @@ const styles = StyleSheet.create({
   continueButton: {
     marginVertical: hp(30),
     backgroundColor: Colors.seeker_primary,
-  },
-  addressTitle: {
-    marginBottom: hp(25),
-    ...commonFontStyle(600, 2.4, Colors.black),
-  },
-  addressTypeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: hp(16),
-  },
-  addressTypeItem: {
-    marginRight: wp(9),
-    borderWidth: hp(1),
-    borderRadius: hp(25),
-    paddingVertical: hp(14),
-    paddingHorizontal: wp(25),
-    borderColor: Colors._F2EDED,
-  },
-  addressTypeText: {
-    ...commonFontStyle(500, 1.8, Colors.black),
-  },
-  inputUnderline: {
-    borderRadius: 0,
-    marginTop: hp(25),
-    paddingHorizontal: 0,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors._EEEEEE,
-  },
-  inputText: {
-    ...commonFontStyle(400, 1.8, Colors.black),
-    paddingHorizontal: 0,
-    backgroundColor: Colors.white,
-  },
-  addressTypeItemSelected: {
-    backgroundColor: Colors.seeker_primary,
-    borderColor: Colors.seeker_primary,
-  },
-  addressTypeTextSelected: {
-    color: Colors.white,
   },
 });

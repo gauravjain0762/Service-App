@@ -1,14 +1,40 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+
+import {Colors} from '@/constants/Colors';
+import BackHeader from '@/components/common/BackHeader';
+import CommonText from '@/components/common/CommonText';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import NotificationCard from '@/components/common/NotificationCard';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const Notifications = () => {
   return (
-    <View>
-      <Text>Notification</Text>
-    </View>
+    <SafeareaProvider style={styles.safeArea}>
+      <BackHeader
+        text={'Notification'}
+        rightIcon={
+          <CommonText
+            text={'Mark All As Read'}
+            style={{
+              ...commonFontStyle(400, 1.7, Colors.seeker_primary),
+            }}
+          />
+        }
+      />
+      <View style={{marginTop: hp(40), flex: 1}}>
+        <NotificationCard />
+      </View>
+    </SafeareaProvider>
   );
 };
 
 export default Notifications;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    paddingHorizontal: wp(24),
+    backgroundColor: Colors.white,
+  },
+});

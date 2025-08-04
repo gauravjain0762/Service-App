@@ -37,6 +37,8 @@ export const IMAGES = {
   delete: require('./icons/delete.png'),
   logout: require('./icons/logout.png'),
   phone: require('./icons/phone.png'),
+  call: require('./icons/call.png'),
+  message: require('./icons/message.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

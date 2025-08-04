@@ -1,11 +1,15 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, ViewStyle} from 'react-native';
 
 import {hp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 
-const Divider = () => {
-  return <View style={styles.divider} />;
+type Props = {
+  style?: ViewStyle;
+};
+
+const Divider = ({style}: Props) => {
+  return <View style={[styles.divider, style]} />;
 };
 
 export default Divider;

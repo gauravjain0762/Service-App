@@ -7,14 +7,20 @@ import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import OfferCard from '@/components/common/OfferCard';
-import {navigateTo} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 
 const Offers = () => {
   return (
     <SafeareaProvider style={styles.safeArea}>
       <View style={styles.topContainer}>
-        <BackHeader text={'Create Request'} />
+        <BackHeader
+          text={'Request'}
+          onPressBack={() => resetNavigation(
+            SCREENS.SeekerTabNavigation,
+            SCREENS.Home,
+          )}
+        />
 
         <RequestCard
           style={styles.requestCard}

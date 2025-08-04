@@ -10,7 +10,7 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {SCREENS} from '@/navigation/screenNames';
-import {navigateTo} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import OTPHeader from '@/components/auth/OTPHeader';
 import CustomImage from '@/components/common/CustomImage';
 import {GeneralStyle} from '@/constants/GeneralStyle';
@@ -46,7 +46,7 @@ const OTPScreen = () => {
   }, []);
 
   const onLoginSubmit = async () => {
-    navigateTo(SCREENS.SeekerTabNavigation);
+    resetNavigation(SCREENS.SeekerTabNavigation);
     // let data = {
     //   otp: value,
     //   user_id: params?.userData?._id,
@@ -104,6 +104,7 @@ const OTPScreen = () => {
           <CodeField
             ref={ref}
             value={value}
+            autoFocus={false}
             onChangeText={setValue}
             cellCount={CELL_COUNT}
             rootStyle={styles.codeFieldRoot}
@@ -117,7 +118,6 @@ const OTPScreen = () => {
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             )}
-            autoFocus
           />
         </View>
 
