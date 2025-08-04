@@ -40,7 +40,11 @@ export const SEEKER_SCREENS = {
   TermsWebScreen: 'TermsWebScreen',
   Home: 'Home',
   MyRequest: 'My Request',
-  Profile: "Profile"
+  Profile: "Profile",
+  UserProfile: 'UserProfile',
+  ForgotPassword: 'ForgotPassword',
+  EmailVerification: 'EmailVerification',
+  CreateNewPass: 'CreateNewPass'
 };
 
 export const PROVIDER_SCREENS = {

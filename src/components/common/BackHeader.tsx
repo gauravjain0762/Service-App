@@ -13,9 +13,10 @@ type Props = {
   onPressBack?: () => void;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  customBackArrow?: any;
 };
 
-const BackHeader = ({leftIcon, rightIcon, text, style, onPressBack}: Props) => {
+const BackHeader = ({leftIcon, rightIcon, text, style, onPressBack, customBackArrow}: Props) => {
   return (
     <View style={[styles.headerContainer, style]}>
       <View style={styles.headerLeft}>
@@ -24,7 +25,10 @@ const BackHeader = ({leftIcon, rightIcon, text, style, onPressBack}: Props) => {
         ) : (
           <Pressable
             onPress={onPressBack ?? (() => navigationRef?.current?.goBack())}>
-            <Image source={IMAGES.backArrow2} />
+            <Image 
+              source={customBackArrow || IMAGES.backArrow2} 
+              style={styles.backArrow}
+            />
           </Pressable>
         )}
         <CommonText text={text} style={styles.headerTitle} />
@@ -50,5 +54,10 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...commonFontStyle(700, 2.4, Colors.black),
+  },
+  backArrow: {
+    width: hp(24),
+    height: hp(24),
+    resizeMode: 'contain',
   },
 });

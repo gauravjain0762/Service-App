@@ -14,6 +14,10 @@ import SetLocation from '@/screens/SeekerScreens/Seekers/SetLocation';
 import Notifications from '@/screens/SeekerScreens/Seekers/Notifications';
 import JobDetails from '@/screens/SeekerScreens/Seekers/JobDetails';
 import TermsWebScreen from '@/screens/SeekerScreens/Auth/TermsWebScreen';
+import UserProfile from '@/screens/SeekerScreens/Seekers/UserProfile';
+import ForgotPassword from '@/screens/SeekerScreens/Auth/ForgotPassword';
+import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
+import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -27,6 +31,8 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.SignUpScreen, component: SignUpScreen},
     {name: SEEKER_SCREENS.OtpScreen, component: OTPScreen},
     {name: SEEKER_SCREENS.TermsWebScreen, component: TermsWebScreen},
+    {name: SEEKER_SCREENS.ForgotPassword, component: ForgotPassword},
+    {name: SEEKER_SCREENS.EmailVerification, component: EmailVerification},
     {name: SEEKER_SCREENS.MyBookings, component: MyBookings},
     {name: SEEKER_SCREENS.Offers, component: Offers},
     {name: SEEKER_SCREENS.OffersDetail, component: OffersDetails},
@@ -35,12 +41,15 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.Notifications, component: Notifications},
     {name: SEEKER_SCREENS.JobDetails, component: JobDetails},
     {name: SEEKER_SCREENS.SeekerTabNavigation, component: SeekerTabNavigation},
+    {name: SEEKER_SCREENS.UserProfile, component: UserProfile},
+    {name: SEEKER_SCREENS.CreateNewPass, component: CreateNewPass},
   ];
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName={SEEKER_SCREENS.LoginScreen}>
       initialRouteName={SEEKER_SCREENS.LoginScreen}>
       {screens.map((item: any, index: any) => {
         return (

@@ -1,3 +1,5 @@
+import { Flag } from "react-native-country-picker-modal";
+
 export const IMAGES = {
   //icon
 
@@ -10,23 +12,34 @@ export const IMAGES = {
   otpImage: require('./icons/otpImage.png'),
   backArrow: require('./icons/backArrow.png'),
   create: require('./icons/create.png'),
+  language: require('./icons/language.png'),
   profile: require('./icons/profile.png'),
   downArrow: require('./icons/downArrow.png'),
   home: require('./icons/home.png'),
   feed: require('./icons/feed.png'),
   feed2: require('./icons/feed2.png'),
   calendar: require('./icons/calendar.png'),
-  new_profile: require('./icons/new_profile.png'),
+  new_profile: require('./icons/new_profile.png'),  
+  face: require('./icons/face.png'),
   bell: require('./icons/bell.png'),
+  iBtn: require('./icons/iBtn.png'),
+  rightArrow: require('./icons/rightArrow.png'),
+  privacy: require('./icons/privacy.png'),
+  file: require('./icons/file.png'),
+  delete: require('./icons/delete.png'),
+  logout: require('./icons/logout.png'),
   search: require('./icons/search.png'),
   sort: require('./icons/sort.png'),
   close: require('./icons/close.png'),
+  flag: require('./icons/flag.png'),
+  phone: require('./icons/phone.png'),
   right: require('./icons/right.png'),
   backArrow2: require('./icons/backArrow2.png'),
   pdf: require('./icons/pdf.png'),
   star: require('./icons/star.png'),
   currency: require('./icons/currency.png'),
   marker: require('./icons/marker.png'),
+  location: require('./icons/location.png'),
   home_marker: require('./icons/home_marker.png'),
   language: require('./icons/language.png'),
   flag: require('./icons/flag.png'),
@@ -59,6 +72,10 @@ export const IMAGES = {
   dummy: require('./Images/dummy.png'),
   dummy_map: require('./Images/dummy_map.png'),
   dummy2: require('./Images/dummy2.png'),
+  taprepair: require('./Images/tap_repair.png'),
+  acrepair: require('./Images/ac_repair.png'),
+  carrepair: require('./Images/car_repair.png'),
+  petService: require('./Images/petService.png'),
 };
 
 export const Animation = {};
