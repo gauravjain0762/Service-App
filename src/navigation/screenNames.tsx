@@ -24,7 +24,11 @@ export const SEEKER_SCREENS = {
   MyBookings: 'My Bookings',
   Offers: 'Offers',
   OffersDetail: 'Offers Detail',
-  AddCard: "Add Card"
+  AddCard: "Add Card",
+  UserProfile: 'UserProfile',
+  ForgotPassword: 'ForgotPassword',
+  EmailVerification: 'EmailVerification',
+  CreateNewPass: 'CreateNewPass'
 };
 
 export const PROVIDER_SCREENS = {
