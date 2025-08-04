@@ -39,7 +39,7 @@ const SeekerNavigator: FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={SEEKER_SCREENS.SeekerTabNavigation}>
+      initialRouteName={SEEKER_SCREENS.LoginScreen}>
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen
