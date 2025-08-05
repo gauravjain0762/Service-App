@@ -8,7 +8,6 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from 'react-native';
-import {useTranslation} from 'react-i18next';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
@@ -39,15 +38,10 @@ const CustomButton: FC<Props> = ({
   loading,
   isPrimary,
 }) => {
-  const {i18n} = useTranslation();
-  const styles = React.useMemo(
-    () => getGlobalStyles(i18n.language),
-    [i18n.language],
-  );
   return type === 'fill' ? (
     <TouchableOpacity
-      disabled={disabled}
-      onPress={() => onPress()}
+      disabled={loading || disabled}
+      onPress={onPress}
       style={[
         styles.buttonStyle,
         {
@@ -66,7 +60,7 @@ const CustomButton: FC<Props> = ({
           {leftImg && leftImg}
           <CommonText
             text={title}
-            style={[{...commonFontStyle(500, 2, Colors.white)}, textStyle]}
+            style={{...commonFontStyle(500, 2, Colors.white), ...textStyle}}
           />
           {RightImg && RightImg}
         </>
@@ -75,7 +69,7 @@ const CustomButton: FC<Props> = ({
   ) : (
     <TouchableOpacity
       disabled={disabled}
-      onPress={() => onPress()}
+      onPress={onPress}
       style={[
         styles.buttonStyle,
         styles.outline_buttonStyle,
@@ -94,18 +88,16 @@ const CustomButton: FC<Props> = ({
           {leftImg && leftImg}
           <CommonText
             text={title}
-            style={[
-              {
-                ...commonFontStyle(
-                  500,
-                  2,
-                  isPrimary === 'seeker'
-                    ? Colors.seeker_primary
-                    : Colors.provider_primary,
-                ),
-              },
-              textStyle,
-            ]}
+            style={{
+              ...commonFontStyle(
+                500,
+                2,
+                isPrimary === 'seeker'
+                  ? Colors.seeker_primary
+                  : Colors.provider_primary,
+              ),
+              ...textStyle,
+            }}
           />
           {RightImg && RightImg}
         </>
@@ -115,21 +107,19 @@ const CustomButton: FC<Props> = ({
 };
 export default memo(CustomButton);
 
-const getGlobalStyles = (language: any) => {
-  return StyleSheet.create({
-    buttonStyle: {
-      backgroundColor: Colors.provider_primary,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: hp(100),
-      gap: getFontSize(1.5),
-      height: hp(55),
-      ...rowReverseRTL(language),
-    },
-    outline_buttonStyle: {
-      backgroundColor: Colors.white,
-      borderWidth: 1.3,
-      borderColor: Colors._878787,
-    },
-  });
-};
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: Colors.provider_primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: hp(100),
+    gap: getFontSize(1.5),
+    height: hp(55),
+    ...rowReverseRTL(),
+  },
+  outline_buttonStyle: {
+    backgroundColor: Colors.white,
+    borderWidth: 1.3,
+    borderColor: Colors._878787,
+  },
+});

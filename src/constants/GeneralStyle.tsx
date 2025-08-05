@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {Colors} from './Colors';
-import {wp} from '@/utils/responsiveFn';
+import {getFontSize} from '@/utils/responsiveFn';
 
 export const GeneralStyle = StyleSheet.create({
   flex: {
@@ -14,5 +14,9 @@ export const GeneralStyle = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  back: {
+    marginBottom: getFontSize(2),
+    paddingHorizontal: getFontSize(2),
   },
 });

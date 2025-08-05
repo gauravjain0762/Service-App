@@ -24,7 +24,7 @@ export const useKeyboard = () => {
     );
     const hideListener = Keyboard.addListener(
       Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
-      e => {
+      _e => {
         onKeyboardHide();
         setKeyboardVisible(false);
       },

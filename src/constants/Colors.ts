@@ -11,7 +11,7 @@ export const Colors = {
   provider_tab: '#81daff',
   seeker_primary: '#03B463',
   seeker_tab: '#25b463',
-
+  _03B463: '#03B463',
   white: '#fff',
   black: '#000',
   _5E5D5D: '#5E5D5D',
@@ -59,7 +59,7 @@ export const Colors = {
   _7F7F7F: '#7F7F7F',
   _FDFDFD: '#FDFDFD',
   _525252: '#525252',
-
+  _333333: '#333333',
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(99, 45, 1, 0.9)',
   red: 'rgba(255, 0, 0, 0.9)',
