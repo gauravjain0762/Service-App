@@ -1,15 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import CommonText from '@/components/common/CommonText';
-import { IMAGES } from '@/assets/images';
-import { Colors } from '@/constants/Colors';
-import { hp, wp, commonFontStyle } from '@/utils/responsiveFn';
-import { navigationRef } from '@/navigation/RootContainer';
-import { navigateTo } from '@/components/common/commonFunction';
-import { SEEKER_SCREENS } from '@/navigation/screenNames';
+import {IMAGES} from '@/assets/images';
+import {Colors} from '@/constants/Colors';
+import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
+import {navigationRef} from '@/navigation/RootContainer';
+import {navigateTo} from '@/components/common/commonFunction';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const ForgotPassword = () => {
   const handleSubmit = () => {
@@ -18,47 +19,51 @@ const ForgotPassword = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={hp(20)}
-      extraHeight={hp(100)}
-    >
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigationRef?.current?.goBack()}
-        >
-          <Image
-            source={IMAGES.backArrow2}
-            style={styles.backArrow}
-          />
-        </TouchableOpacity>
-      </View>
+    <>
+      <SafeareaProvider
+        style={{
+          paddingHorizontal: wp(20),
+          flex: 1,
+          backgroundColor: Colors.white,
+        }}>
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid={true}
+          enableAutomaticScroll={true}
+          extraScrollHeight={hp(20)}
+          extraHeight={hp(100)}>
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigationRef?.current?.goBack()}>
+              <Image source={IMAGES.backArrow2} style={styles.backArrow} />
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.mainContent}>
-        <CommonText text="Forgot Password" style={styles.headerText} />
-        <CommonText
-          text="We sent the OTP code to your email, please check it and enter below"
-          style={styles.description}
-        />
-        <View style={styles.textInput}>
-            <CustomTextInput placeholder="Email" />
-        </View>
+          <View style={styles.mainContent}>
+            <CommonText text="Forgot Password" style={styles.headerText} />
+            <CommonText
+              text="We sent the OTP code to your email, please check it and enter below"
+              style={styles.description}
+            />
+            <View style={styles.textInput}>
+              <CustomTextInput placeholder="Email" />
+            </View>
 
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            isPrimary="seeker"
-            title="Send"
-            onPress={() => navigateTo(SEEKER_SCREENS.EmailVerification)}
-          />
-        </View>
-      </View>
-    </KeyboardAwareScrollView>
+            <View style={styles.buttonContainer}>
+              <CustomButton
+                isPrimary="seeker"
+                title="Send"
+                onPress={() => navigateTo(SEEKER_SCREENS.EmailVerification)}
+              />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
+      </SafeareaProvider>
+    </>
   );
 };
 
@@ -104,7 +109,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(10),
   },
   textInput: {
-    marginBottom: hp(40)
+    marginBottom: hp(40),
   },
   inputContainer: {
     marginBottom: hp(40),

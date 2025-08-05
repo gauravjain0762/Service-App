@@ -1,205 +1,131 @@
-// import {
-//   Image,
-//   StyleSheet,
-//   Text,
-//   ViewStyle,
-//   TouchableOpacity,
-//   View,
-//   Platform,
-//   Keyboard,
-// } from 'react-native';
-// import React, {useState} from 'react';
-// import {colors} from '../../theme/colors';
-// import {commonFontStyle, hp, wp} from '../../theme/fonts';
-// import {Dropdown as DropdownElement} from 'react-native-element-dropdown';
-// import { IMAGES } from '../../assets/Images';
+import React from 'react';
+import {Image, Keyboard, StyleSheet, Text, View, ViewStyle} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
 
-// type Props = {
-//   title?: string;
-//   extraStyle?: ViewStyle;
-//   onPress?: () => void;
-//   titleColor?: any;
-//   type?: 'blue' | 'gray';
-//   disable?: boolean;
-//   leftIcon?: any;
-//   data?: any;
-//   label?: any;
-//   value?: any;
-//   onChange?: (text: string) => void;
-//   isSearch?: any;
-//   inputContainer?: any;
-//   container?: any;
-//   placeholder?: any;
-//   dropdownStyle?: any;
-//   mendate?: boolean;
-//   subStyle?: boolean;
-//   labelField?: string;
-//   valueField?: string;
-//   minimumDate?: string;
-//   dropIcon?: string;
-//   dateMode?: string;
-// };
+import {IMAGES} from '@/assets/images';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
-// const CustomDropdown = ({
-//   data,
-//   value,
-//   onChange,
-//   label,
-//   isSearch,
-//   inputContainer,
-//   container,
-//   placeholder = '',
-//   dropdownStyle,
-//   disable,
-//   disabled,
-//   title,
-//   titleColor,
-//   mendate,
-//   onPress,
-//   datePicker,
-//   icon,
-//   subStyle,
-//   labelField,
-//   valueField,
-//   minimumDate,
-//   dropIcon,
-//   dateMode,
-//   renderEmptyComponent,
-//   flatListProps,
-//   required
-// }: Props) => {
+export type DropdownItem = {
+  label: string;
+  value: string | number;
+};
 
-//   return (
-//     <>
-//       <View style={container}>
-//         <Text style={styles.label}>
-//                {label}
-//                {required && <Text style={styles.required}>*</Text>}
-//              </Text>
-//         <DropdownElement
-//           onFocus={() => {
-//             Keyboard.dismiss();
-//           }}
-//           data={data}
-//           value={value}
-//           onChange={item => onChange(item)}
-//           disable={disable}
-//           dropdownPosition={'bottom'}
-//           style={[styles.dropdownStyle, dropdownStyle]}
-//           flatListProps={flatListProps}
-//           labelField={labelField === undefined ? 'label' : labelField}
-//           valueField={valueField === undefined ? 'value' : valueField}
-//           placeholder={placeholder}
-//           placeholderStyle={styles.placeholderStyle}
-//           // itemContainerStyle={{backgroundColor: colors.modalBg}}
-//           selectedTextStyle={styles.inputStyle}
-//           search={isSearch || false}
-//           autoScroll={false}
-//           maxHeight={200}
-//           minHeight={30}
-//           keyboardAvoiding={true}
-//           activeColor={colors.mainColor}
-//           renderRightIcon={() => {
-//             return (
-//               <Image
-//                 source={IMAGES.ic_down}
-//                 style={{
-//                   width: 10,
-//                   height: 5,
-//                   // bottom: 7,
-//                   // right: -9,
-//                   tintColor: '#3B4256',
-//                   // opacity: disable ? 0.6 : 1,
-//                   resizeMode: 'contain',
-//                 }}
-//               />
-//             );
-//           }}
-//           renderItem={res => {
-//             return (
-//               <View style={styles.rowStyle}>
-//                 <Text style={styles.inputStyle}>{res?.label}</Text>
-//               </View>
-//             );
-//           }}
-//         />
-//       </View>
-//     </>
-//   );
-// };
+type Props = {
+  label?: string;
+  data: DropdownItem[];
+  value: string | number;
+  onChange: (item: DropdownItem) => void;
+  placeholder?: string;
+  required?: boolean;
+  containerStyle?: ViewStyle;
+  dropdownStyle?: ViewStyle;
+  disabled?: boolean;
+  labelField?: string;
+  valueField?: string;
+  isSearchable?: boolean;
+  setSelected?: React.Dispatch<React.SetStateAction<string | number>>;
+};
 
-// export default CustomDropdown;
+const CustomDropdown = ({
+  label,
+  data,
+  value,
+  onChange,
+  placeholder = 'Select an option',
+  required = false,
+  containerStyle,
+  dropdownStyle,
+  disabled = false,
+  labelField = 'label',
+  valueField = 'value',
+  isSearchable = false,
+  setSelected,
+}: Props) => {
+  const handleChange = (item: DropdownItem) => {
+    setSelected?.(item.value); // only call if setSelected is passed
+    onChange(item);
+  };
 
-// const styles = StyleSheet.create({
-//   label: {
-//     marginBottom: 5,
-//     ...commonFontStyle(500, 16, colors.black),
-//   },
-//   required: {
-//     color: 'red',
-//   },
-//   labelTextStyle: {
-//     ...commonFontStyle(600, 25, colors.black),
-//   },
-//   titleTextStyle: {
-//     ...commonFontStyle(700, 17, colors.black),
-//   },
-//   container: {
-//     marginTop: hp(1.5),
-//     marginBottom: hp(0.7),
-//     paddingHorizontal: wp(4),
-//   },
-//   inputContainer: {
-//     borderWidth: 0.5,
-//     // height: hp(5.8),
-//     borderRadius: 6,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     marginVertical: hp(0.3),
-//     borderColor: "#ccc",
-//     // backgroundColor: colors.white,
-//     // shadowColor: colors.shadow,
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//   },
-//   inputStyle: {
-//     ...commonFontStyle(400, 17, colors.black),
-//   },
-//   placeholderStyle: {
-//     flex: 1,
-//     margin: 0,
-//     padding: 0,
-//     marginHorizontal: wp(3),
-//     ...commonFontStyle(400, 17, '#969595'),
-//   },
+  return (
+    <View style={[styles.container, containerStyle]}>
+      {label ? (
+        <Text style={styles.label}>
+          {label}
+          {required && <Text style={styles.required}>*</Text>}
+        </Text>
+      ) : null}
 
-//   selectedTextStyle: {
-//     ...commonFontStyle(600, 25, colors.black),
-//   },
-//   dropdownStyle: {
-//     paddingHorizontal: wp(16),
-//     borderRadius: 10,
-//     height: 50,
-//     borderWidth: 1,
-//     borderColor: '#ccc',
-//     // height: 55,
-//   },
-//   rowStyle: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     height: hp(30),
-//     marginHorizontal: wp(16),
-//     marginVertical: hp(8),
-//   },
-//   imageStyle1: {
-//     width: 24,
-//     height: 24,
-//     resizeMode: 'contain',
-//     marginRight: 6,
-//   },
-// });
+      <Dropdown
+        data={data}
+        value={value}
+        onChange={handleChange}
+        disable={disabled}
+        labelField={labelField}
+        valueField={valueField}
+        placeholder={placeholder}
+        placeholderStyle={styles.placeholder}
+        selectedTextStyle={styles.selectedText}
+        iconStyle={styles.iconStyle}
+        style={[styles.dropdown, dropdownStyle]}
+        search={isSearchable}
+        maxHeight={250}
+        keyboardAvoiding
+        itemContainerStyle={{}}
+        onFocus={() => Keyboard.dismiss}
+        renderRightIcon={() => (
+          <Image
+            source={IMAGES.downArrow}
+            style={styles.arrowIcon}
+            resizeMode="contain"
+          />
+        )}
+        renderItem={(item: DropdownItem) => (
+          <View style={styles.itemContainer}>
+            <Text style={styles.itemText}>{item.label}</Text>
+          </View>
+        )}
+      />
+    </View>
+  );
+};
+
+export default CustomDropdown;
+
+const styles = StyleSheet.create({
+  container: {},
+  label: {
+    ...commonFontStyle(500, 1.8, Colors.black),
+  },
+  required: {
+    color: 'red',
+  },
+  dropdown: {
+    height: hp(55),
+    borderRadius: hp(50),
+    paddingHorizontal: wp(16),
+    backgroundColor: Colors._F9F9F9,
+  },
+  placeholder: {
+    ...commonFontStyle(400, 1.9, '#969595'),
+  },
+  selectedText: {
+    ...commonFontStyle(400, 1.9, Colors.black),
+  },
+  arrowIcon: {
+    width: wp(20),
+    height: hp(20),
+    tintColor: '#3B4256',
+  },
+  iconStyle: {
+    width: wp(20),
+    height: hp(20),
+  },
+  itemContainer: {
+    paddingVertical: hp(10),
+    paddingHorizontal: wp(10),
+  },
+  itemText: {
+    ...commonFontStyle(400, 1.9, Colors.black),
+  },
+});

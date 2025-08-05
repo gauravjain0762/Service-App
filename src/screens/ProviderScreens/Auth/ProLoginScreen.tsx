@@ -1,5 +1,5 @@
-import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CheckBox from 'react-native-check-box';
 import CustomButton from '@/components/common/CustomButton';
@@ -8,14 +8,12 @@ import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
-import CustomImage from '@/components/common/CustomImage';
-import {IMAGES} from '@/assets/images';
 import {navigateTo} from '@/components/common/commonFunction';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 
-const LoginScreen = ({}: any) => {
+const ProLoginScreen = ({}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   return (
@@ -24,7 +22,7 @@ const LoginScreen = ({}: any) => {
         showsVerticalScrollIndicator={false}
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />
-        <View style={{gap: hp(20)}}>
+        <View style={{gap: hp(20), marginTop: hp(60)}}>
           <CustomTextInput placeholder="Email" />
           <CustomTextInput placeholder="Password" secureTextEntry={true} />
           <CommonText
@@ -39,7 +37,7 @@ const LoginScreen = ({}: any) => {
               }}
               isChecked={toggleCheckBox}
               uncheckedCheckBoxColor="#878787"
-              checkedCheckBoxColor={Colors.seeker_primary}
+              checkedCheckBoxColor={Colors.provider_primary}
             />
             <CommonText
               text="I agree to follow the"
@@ -58,39 +56,14 @@ const LoginScreen = ({}: any) => {
           <CustomButton
             isPrimary="seeker"
             title={'Login'}
-            onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
-          />
-          <CustomButton
-            isPrimary="seeker"
-            title={'Login as a Guest'}
-            type="outline"
-            onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
-          />
-        </View>
-
-        <View style={styles.dividerContainer}>
-          <View style={styles.divider} />
-          <CommonText text="or continue with" style={styles.label} />
-          <View style={styles.divider} />
-        </View>
-
-        <View style={styles.socialContainer}>
-          <CustomImage
-            source={IMAGES.google}
-            size={getFontSize(2.5)}
-            containerStyle={styles.socialBtn}
-          />
-
-          <CustomImage
-            source={IMAGES.apple}
-            size={getFontSize(2.5)}
-            containerStyle={styles.socialBtn}
+            btnStyle={{backgroundColor: Colors.provider_primary}}
+            onPress={() => navigateTo(PROVIDER_SCREENS.ProviderTabNavigation)}
           />
         </View>
 
         <CommonText
-          onPress={() => navigateTo(SEEKER_SCREENS.SignUpScreen)}
-          text="Don't have an account?"
+          onPress={() => navigateTo(PROVIDER_SCREENS.ProSignupScreen)}
+          text="Already have an account?"
           style={styles.accountText}>
           {' '}
           <CommonText text="Sign Up" style={styles.signUpAccountText} />
@@ -100,19 +73,18 @@ const LoginScreen = ({}: any) => {
   );
 };
 
-export default LoginScreen;
+export default ProLoginScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: getFontSize(10),
     backgroundColor: Colors.white,
     paddingHorizontal: getFontSize(2.2),
-    paddingTop: getFontSize(10),
   },
   topLabel: {
-    ...commonFontStyle(600, 3.4, Colors.black),
     textAlign: 'center',
-    paddingBottom: getFontSize(5),
+    ...commonFontStyle(600, 3.4, Colors.black),
   },
 
   midContainer: {
@@ -130,13 +102,13 @@ const styles = StyleSheet.create({
   },
 
   signUpAccountText: {
-    ...commonFontStyle(600, 2, Colors.seeker_primary),
+    ...commonFontStyle(600, 2, Colors.provider_primary),
   },
   checkBoxText: {
     ...commonFontStyle(400, 1.9, Colors._5E5D5D),
   },
   checkBoxText2: {
-    ...commonFontStyle(400, 1.9, Colors.seeker_primary),
+    ...commonFontStyle(400, 1.9, Colors.provider_primary),
   },
 
   dividerContainer: {
@@ -173,9 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   forgotPasswordText: {
-    ...commonFontStyle(400, 1.9, Colors.seeker_primary),
-    textAlign: 'right',
-    paddingRight: getFontSize(0.5),
     marginTop: hp(4),
+    textAlign: 'right',
+    ...commonFontStyle(400, 1.9, Colors.provider_primary),
   },
 });

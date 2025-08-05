@@ -66,6 +66,12 @@
     "Service Charges": "Service Charges",
     "Sub Total": "Sub Total",
     "Total Bill": "Total Bill",
-    "Notification": "Notification"
+    "Notification": "Notification",
+    "Create Account": "Create Account",
+    "Type of Category": "Type of Category",
+    "Type of Subcategory": "Type of Subcategory",
+    "Upload Your Picture": "Upload Your Picture",
+    "Upload Certificate": "Upload Certificate",
+    "License": "License"
   }
 }

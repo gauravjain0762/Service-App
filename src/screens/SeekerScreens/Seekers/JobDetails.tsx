@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -15,10 +15,15 @@ import {SCREENS} from '@/navigation/screenNames';
 import ServiceProvider from '@/components/common/ServiceProvider';
 import ServiceDetails from '@/components/common/ServiceDetails';
 import ServiceBillSummary from '@/components/common/ServiceBillSummary';
+import {useNavigation} from '@react-navigation/native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const JobDetails = () => {
+  const navigation = useNavigation();
+  const {bottom} = useSafeAreaInsets();
+
   return (
-    <SafeareaProvider style={styles.safeArea}>
+    <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
       <BackHeader text={'Job Detail'} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -65,8 +70,25 @@ const JobDetails = () => {
           title={'Back To Home'}
           btnStyle={styles.backToHomeBtn}
           onPress={() =>
-            resetNavigation(SCREENS.SeekerTabNavigation, SCREENS.Home, {
-              openReviewModal: true,
+            // resetNavigation(SCREENS.SeekerTabNavigation, SCREENS.Home, {
+            //   openReviewModal: true,
+            // })
+            navigation.reset({
+              index: 0,
+              routes: [
+                {
+                  name: 'SeekerTabNavigation' as never,
+                  state: {
+                    index: 0,
+                    routes: [
+                      {
+                        name: 'Home',
+                        params: {openReviewModal: true},
+                      },
+                    ],
+                  },
+                },
+              ],
             })
           }
         />

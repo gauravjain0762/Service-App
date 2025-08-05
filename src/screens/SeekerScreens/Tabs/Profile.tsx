@@ -1,48 +1,41 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {View, StyleSheet, ScrollView, Pressable} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomImage from '@/components/common/CustomImage';
 import CommonText from '@/components/common/CommonText';
-import CustomButton from '@/components/common/CustomButton';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
-import {hp, wp, getFontSize, commonFontStyle} from '@/utils/responsiveFn';
-import {GeneralStyle} from '@/constants/GeneralStyle';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import BackHeader from '@/components/common/BackHeader';
-import CustomImage from '@/components/common/CustomImage';
-import CommonText from '@/components/common/CommonText';
+import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import ProfileActionItem from '@/components/common/ProfileActionItem';
-import { IMAGES } from '@/assets/images';
-import { Colors } from '@/constants/Colors';
-import { hp, wp, commonFontStyle } from '@/utils/responsiveFn';
-import { GeneralStyle } from '@/constants/GeneralStyle';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {SCREEN_NAMES} from '@/navigation/screenNames';
 
 const Profile = () => {
-
   return (
-    <View style={GeneralStyle.container}>
-      <BackHeader text="Profile" customBackArrow={IMAGES.backArrow} />
+    <SafeareaProvider
+      style={{
+        flex: 1,
+        backgroundColor: Colors.white,
+        paddingHorizontal: wp(20),
+      }}>
+      <BackHeader text="Profile"  />
 
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
-        <View style={styles.avatarSection}>
+        contentContainerStyle={styles.scrollContent}>
+        <Pressable
+          onPress={() => navigateTo(SCREEN_NAMES.UserProfile)}
+          style={styles.avatarSection}>
           <CustomImage
-            source={IMAGES.new_profile}
+            source={IMAGES.user_profile}
             size={hp(80)}
+            disabled={true}
             containerStyle={styles.avatar}
           />
           <CommonText text="Jason Wiliams" style={styles.name} />
-        </View>
+        </Pressable>
 
         <View style={styles.actionList}>
           <ProfileActionItem
@@ -51,10 +44,7 @@ const Profile = () => {
             languageSection={
               <View style={styles.languageSection}>
                 <CustomImage source={IMAGES.flag} size={hp(20)} />
-                <CustomImage
-                  source={IMAGES.downArrow}
-                  size={hp(20)}
-                />
+                <CustomImage source={IMAGES.downArrow} size={hp(20)} />
               </View>
             }
           />
@@ -90,12 +80,13 @@ const Profile = () => {
           />
 
           <ProfileActionItem
-            leftIcon={IMAGES.logout}
+            leftIcon={IMAGES.newlogout}
             title="Logout"
+            onPress={() => resetNavigation(SCREEN_NAMES.LoginScreen)}
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeareaProvider>
   );
 };
 
@@ -119,9 +110,7 @@ const styles = StyleSheet.create({
   name: {
     ...commonFontStyle(700, 2.4, Colors.black),
   },
-  actionList: {
-    marginHorizontal: wp(16),
-  },
+  actionList: {},
   languageSection: {
     flexDirection: 'row',
     alignItems: 'center',

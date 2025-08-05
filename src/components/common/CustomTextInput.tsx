@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     borderRadius: hp(100),
     paddingHorizontal: wp(30),
     // marginTop: hp(5),
-    height: getFontSize(7),
+    height: hp(55),
     alignItems: 'center',
     ...rowReverseRTL(),
     // flex: 1,

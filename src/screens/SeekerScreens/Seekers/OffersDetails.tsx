@@ -11,14 +11,17 @@ import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import ShadowCard from '@/components/common/ShadowCard';
 import CustomButton from '@/components/common/CustomButton';
-import { navigateTo } from '@/components/common/commonFunction';
-import { SCREENS } from '@/navigation/screenNames';
+import {navigateTo} from '@/components/common/commonFunction';
+import {SCREENS} from '@/navigation/screenNames';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2]
+const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const OffersDetails = () => {
+  const {bottom} = useSafeAreaInsets();
+
   return (
-    <SafeareaProvider style={styles.safeArea}>
+    <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
       <View style={styles.topContainer}>
         <BackHeader
           text={'Create Request'}

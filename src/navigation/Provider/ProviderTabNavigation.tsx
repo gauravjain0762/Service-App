@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
@@ -12,14 +8,17 @@ import {IMAGES} from '@/assets/images';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
 import Profile from '@/screens/SeekerScreens/Tabs/Profile';
 import {navigateTo} from '@/components/common/commonFunction';
-import {SEEKER_SCREENS} from '../screenNames';
+import {PROVIDER_SCREENS, SEEKER_SCREENS} from '../screenNames';
 import MyRequest from '@/screens/SeekerScreens/Tabs/MyRequest';
 import MyBookingsTab from '@/screens/SeekerScreens/Tabs/MyBookingsTab';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import ProDashboard from '@/screens/ProviderScreens/Tabs/ProDashboard';
+import ProMyBookings from '@/screens/ProviderScreens/Tabs/ProMyBookings';
+import ProProfile from '@/screens/ProviderScreens/Tabs/ProProfile';
 
 const Tab = createBottomTabNavigator();
 
-const SeekerTabNavigation = () => {
+const ProviderTabNavigation = () => {
   const CustomTabBarButton = ({children, onPress, route, ...props}: any) => {
     const handlePress = () => {
       navigateTo(route.name);
@@ -36,9 +35,8 @@ const SeekerTabNavigation = () => {
     <SafeAreaView
       edges={['bottom']}
       style={{backgroundColor: Colors.white, flex: 1}}>
-      {/* <CustomShadow shadowStyle={{flex: 1}}> */}
       <Tab.Navigator
-        initialRouteName={SEEKER_SCREENS.Home}
+        initialRouteName={PROVIDER_SCREENS.ProDashboard}
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -51,8 +49,7 @@ const SeekerTabNavigation = () => {
             position: 'absolute',
             borderRadius: hp(100),
             marginHorizontal: wp(24),
-            backgroundColor: Colors.seeker_tab,
-            // bottom: Platform.OS === 'ios' ? 0 : hp(15),
+            backgroundColor: Colors.provider_primary,
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused, color}) => {
@@ -60,13 +57,11 @@ const SeekerTabNavigation = () => {
             let iconWidth = wp(30);
             let iconHeight = hp(25);
 
-            if (route.name === SEEKER_SCREENS.Home) {
+            if (route.name === PROVIDER_SCREENS.ProDashboard) {
               iconName = IMAGES.home;
-            } else if (route.name === SEEKER_SCREENS.MyRequest) {
-              iconName = IMAGES.feed;
-            } else if (route.name === SEEKER_SCREENS.MyBookingsTab) {
+            } else if (route.name === PROVIDER_SCREENS.ProMyBookings) {
               iconName = IMAGES.calendar;
-            } else if (route.name === SEEKER_SCREENS.Profile) {
+            } else if (route.name === PROVIDER_SCREENS.ProProfile) {
               iconName = IMAGES.profile;
             }
             return (
@@ -79,7 +74,7 @@ const SeekerTabNavigation = () => {
                     height: iconHeight,
                   }}
                   resizeMode={FastImage.resizeMode.contain}
-                  tintColor={focused ? Colors.white : Colors._68d2a1}
+                  tintColor={focused ? Colors.white : Colors.provider_tab}
                 />
               </View>
             );
@@ -88,21 +83,16 @@ const SeekerTabNavigation = () => {
             <CustomTabBarButton {...props} route={route} />
           ),
         })}>
-        <Tab.Screen name={SEEKER_SCREENS.Home} component={HomeScreen} />
-
         <Tab.Screen
-          name={SEEKER_SCREENS.MyBookingsTab}
-          component={MyBookingsTab}
-          listeners={{
-            tabPress: e => {
-              e.preventDefault();
-            },
-          }}
+          name={PROVIDER_SCREENS.ProDashboard}
+          component={ProDashboard}
         />
-        <Tab.Screen name={SEEKER_SCREENS.MyRequest} component={MyRequest} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen
+          name={PROVIDER_SCREENS.ProMyBookings}
+          component={ProMyBookings}
+        />
+        <Tab.Screen name={PROVIDER_SCREENS.ProProfile} component={ProProfile} />
       </Tab.Navigator>
-      {/* </CustomShadow> */}
     </SafeAreaView>
   );
 };
@@ -120,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SeekerTabNavigation;
+export default ProviderTabNavigation;

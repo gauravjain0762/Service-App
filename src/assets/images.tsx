@@ -1,4 +1,4 @@
-import { Flag } from "react-native-country-picker-modal";
+import {Flag} from 'react-native-country-picker-modal';
 
 export const IMAGES = {
   //icon
@@ -19,7 +19,7 @@ export const IMAGES = {
   feed: require('./icons/feed.png'),
   feed2: require('./icons/feed2.png'),
   calendar: require('./icons/calendar.png'),
-  new_profile: require('./icons/new_profile.png'),  
+  new_profile: require('./icons/new_profile.png'),
   face: require('./icons/face.png'),
   bell: require('./icons/bell.png'),
   iBtn: require('./icons/iBtn.png'),
@@ -28,6 +28,7 @@ export const IMAGES = {
   file: require('./icons/file.png'),
   delete: require('./icons/delete.png'),
   logout: require('./icons/logout.png'),
+  newlogout: require('./icons/newlogout.png'),
   search: require('./icons/search.png'),
   sort: require('./icons/sort.png'),
   close: require('./icons/close.png'),
@@ -41,17 +42,11 @@ export const IMAGES = {
   marker: require('./icons/marker.png'),
   location: require('./icons/location.png'),
   home_marker: require('./icons/home_marker.png'),
-  language: require('./icons/language.png'),
-  flag: require('./icons/flag.png'),
-  iBtn: require('./icons/iBtn.png'),
-  rightArrow: require('./icons/rightArrow.png'),
-  privacy: require('./icons/privacy.png'),
-  file: require('./icons/file.png'),
-  delete: require('./icons/delete.png'),
-  logout: require('./icons/logout.png'),
-  phone: require('./icons/phone.png'),
   call: require('./icons/call.png'),
   message: require('./icons/message.png'),
+  profile_avatar: require('./icons/profile_avatar.png'),
+  dashed_rec: require('./icons/dashed_rec.png'),
+  upload: require('./icons/upload.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
@@ -76,6 +71,8 @@ export const IMAGES = {
   acrepair: require('./Images/ac_repair.png'),
   carrepair: require('./Images/car_repair.png'),
   petService: require('./Images/petService.png'),
+  user_profile: require('./Images/user_profile.png'),
+  battery: require('./Images/battery.png'),
 };
 
 export const Animation = {};

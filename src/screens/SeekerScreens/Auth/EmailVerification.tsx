@@ -13,8 +13,9 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {navigationRef} from '@/navigation/RootContainer';
-import { navigateTo } from '@/components/common/commonFunction';
-import { SEEKER_SCREENS } from '@/navigation/screenNames';
+import {navigateTo} from '@/components/common/commonFunction';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const CELL_COUNT = 4;
 
@@ -27,69 +28,71 @@ const EmailVerification = () => {
   });
 
   return (
-    <KeyboardAwareScrollView
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={hp(20)}
-    >
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigationRef?.current?.goBack()}
-        >
-          <Image
-            source={IMAGES.backArrow2}
-            style={styles.backArrow}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.mainContent}>
-        <CommonText text="Email Verification" style={styles.headerText} />
-        <CommonText
-          text="Please enter your email below and we will send you the OTP code"
-          style={styles.description}
-        />
-
-        <View style={styles.otpContainer}>
-          <CodeField
-            ref={ref}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <View
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                <CommonText
-                  text={symbol || ''}
-                  style={[styles.cellText, isFocused && styles.focusCellText]}
-                />
-                {isFocused && !symbol && <Cursor />}
-              </View>
-            )}
-            autoFocus
-          />
+    <SafeareaProvider
+      style={{
+        paddingHorizontal: wp(20),
+        flex: 1,
+        backgroundColor: Colors.white,
+      }}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={hp(20)}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigationRef?.current?.goBack()}>
+            <Image source={IMAGES.backArrow2} style={styles.backArrow} />
+          </TouchableOpacity>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            isPrimary="seeker"
-            title="Send"
-            btnStyle={styles.sendButton}
-            onPress={()=> navigateTo(SEEKER_SCREENS.CreateNewPass)}
+        <View style={styles.mainContent}>
+          <CommonText text="Email Verification" style={styles.headerText} />
+          <CommonText
+            text="Please enter your email below and we will send you the OTP code"
+            style={styles.description}
           />
+
+          <View style={styles.otpContainer}>
+            <CodeField
+              ref={ref}
+              value={value}
+              onChangeText={setValue}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.codeFieldRoot}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={({index, symbol, isFocused}) => (
+                <View
+                  key={index}
+                  style={[styles.cell, isFocused && styles.focusCell]}
+                  onLayout={getCellOnLayoutHandler(index)}>
+                  <CommonText
+                    text={symbol || ''}
+                    style={[styles.cellText, isFocused && styles.focusCellText]}
+                  />
+                  {isFocused && !symbol && <Cursor />}
+                </View>
+              )}
+              autoFocus
+            />
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              isPrimary="seeker"
+              title="Send"
+              btnStyle={styles.sendButton}
+              onPress={() => navigateTo(SEEKER_SCREENS.CreateNewPass)}
+            />
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeareaProvider>
   );
 };
 

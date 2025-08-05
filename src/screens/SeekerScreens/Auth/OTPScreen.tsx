@@ -19,6 +19,7 @@ import {IMAGES} from '@/assets/images';
 import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const CELL_COUNT = 4;
 
@@ -80,7 +81,7 @@ const OTPScreen = () => {
   };
 
   return (
-    <View style={GeneralStyle.container}>
+    <SafeareaProvider style={GeneralStyle.container}>
       <View style={styles.subContainer}>
         <OTPHeader />
         <CustomImage
@@ -148,7 +149,7 @@ const OTPScreen = () => {
           </CommonText>
         )}
       </View>
-    </View>
+    </SafeareaProvider>
   );
 };
 

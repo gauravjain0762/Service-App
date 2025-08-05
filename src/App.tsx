@@ -34,7 +34,7 @@ const App = ({}) => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaView style={GeneralStyle.flex}>
+        {/* <SafeAreaView style={GeneralStyle.flex}> */}
           <RootContainer />
           <Toast
             config={ToastConfig(lineAnim)}
@@ -42,10 +42,10 @@ const App = ({}) => {
             topOffset={0}
             visibilityTime={3000}
             onShow={() => {
-              startLineAnimation(); // Reset and trigger the animation
+              startLineAnimation();
             }}
           />
-        </SafeAreaView>
+        {/* </SafeAreaView> */}
       </PersistGate>
     </Provider>
   );

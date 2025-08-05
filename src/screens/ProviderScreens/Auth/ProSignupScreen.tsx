@@ -1,5 +1,5 @@
 import {StyleSheet, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
@@ -11,10 +11,12 @@ import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import {goBack, navigateTo} from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import CustomDropdown from '@/components/common/CustomDropdown';
+import UploadImage from '@/components/common/UploadImage';
 
-const SignUpScreen = () => {
+const ProSignupScreen = () => {
   const [callingCode, setCallingCode] = React.useState('971');
   const [userData, setUserData] = React.useState<any>({
     name: '',
@@ -23,12 +25,17 @@ const SignUpScreen = () => {
     password: '',
   });
 
+  const [selectedOption, setSelectedOption] = useState('');
+
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
-        <CommonText text="Create New Account" style={styles.topLabel} />
+        <View style={styles.headerRow}>
+          <CustomImage source={IMAGES.backArrow2} size={hp(20)} />
+          <CommonText text="Create New Account" style={styles.topLabel} />
+        </View>
 
         <View style={{gap: hp(20), marginTop: hp(45)}}>
           <CustomTextInput
@@ -65,40 +72,57 @@ const SignUpScreen = () => {
             }}
             secureTextEntry={true}
           />
+          <CustomDropdown
+            data={[
+              {label: 'Option 1', value: '1'},
+              {label: 'Option 2', value: '2'},
+            ]}
+            value={selectedOption}
+            placeholder="Type of Service"
+            onChange={item => console.log('Selected:', item)}
+          />
+          <CustomDropdown
+            data={[
+              {label: 'Option 1', value: '1'},
+              {label: 'Option 2', value: '2'},
+            ]}
+            value={selectedOption}
+            placeholder=" Type of Category"
+            onChange={item => console.log('Selected:', item)}
+          />
+          <CustomDropdown
+            data={[
+              {label: 'Option 1', value: '1'},
+              {label: 'Option 2', value: '2'},
+            ]}
+            value={selectedOption}
+            placeholder="Type of Subcategory"
+            onChange={item => console.log('Selected:', item)}
+          />
         </View>
+
+        <View style={{marginTop: hp(52), marginBottom: hp(35)}}>
+          <UploadImage />
+        </View>
+
+        <CustomTextInput
+          multiline
+          containerStyle={{
+            height: hp(120),
+            borderRadius: hp(14),
+            paddingVertical: hp(12),
+          }}
+          placeholder="About Your Self"
+        />
 
         <View style={{marginTop: hp(52), gap: hp(20)}}>
           <CustomButton
             isPrimary="seeker"
-            title={'Sign Up'}
+            title={'Create Account'}
+            btnStyle={{backgroundColor: Colors.provider_primary}}
             onPress={() => {
-              navigateTo(SEEKER_SCREENS.OtpScreen);
+              navigateTo(PROVIDER_SCREENS.ProviderTabNavigation);
             }}
-          />
-          <CustomButton
-            isPrimary="seeker"
-            title={'Login as a Guest'}
-            type="outline"
-          />
-        </View>
-
-        <View style={styles.dividerContainer}>
-          <View style={styles.divider} />
-          <CommonText text="or continue with" style={styles.label} />
-          <View style={styles.divider} />
-        </View>
-
-        <View style={styles.socialContainer}>
-          <CustomImage
-            source={IMAGES.google}
-            size={getFontSize(2.5)}
-            containerStyle={styles.socialBtn}
-          />
-
-          <CustomImage
-            source={IMAGES.apple}
-            size={getFontSize(2.5)}
-            containerStyle={styles.socialBtn}
           />
         </View>
 
@@ -114,7 +138,7 @@ const SignUpScreen = () => {
   );
 };
 
-export default SignUpScreen;
+export default ProSignupScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -123,9 +147,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: getFontSize(2.2),
     paddingTop: getFontSize(3),
   },
+  headerRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   topLabel: {
-    ...commonFontStyle(600, 3.4, Colors.black),
+    flex: 3,
     textAlign: 'center',
+    ...commonFontStyle(600, 3.4, Colors.black),
   },
 
   dividerContainer: {
@@ -161,12 +191,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accountText: {
-    ...commonFontStyle(400, 2, Colors._909090),
     textAlign: 'center',
     paddingTop: hp(35),
+    ...commonFontStyle(400, 2, Colors._909090),
   },
 
   signUpAccountText: {
-    ...commonFontStyle(600, 2, Colors.seeker_primary),
+    ...commonFontStyle(600, 2, Colors.provider_primary),
   },
 });

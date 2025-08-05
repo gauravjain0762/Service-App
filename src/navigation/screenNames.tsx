@@ -20,6 +20,7 @@ export const SCREENS = {
   MyRequest: 'My Request',
   MyBookingsTab: 'My BookingsTab',
   Profile: 'Profile',
+  UserProfile: 'UserProfile',
 };
 
 export const SEEKER_SCREENS = {
@@ -40,20 +41,25 @@ export const SEEKER_SCREENS = {
   TermsWebScreen: 'TermsWebScreen',
   Home: 'Home',
   MyRequest: 'My Request',
-  Profile: "Profile",
+  Profile: 'Profile',
   UserProfile: 'UserProfile',
   ForgotPassword: 'ForgotPassword',
   EmailVerification: 'EmailVerification',
-  CreateNewPass: 'CreateNewPass'
+  CreateNewPass: 'CreateNewPass',
 };
 
 export const PROVIDER_SCREENS = {
-  Dashboard: 'Dashboard',
-  LoginScreen: 'LoginScreen',
+  ProDashboard: 'ProDashboard',
+  ProLoginScreen: 'ProLoginScreen',
   Splash: 'Splash',
   SignUpScreen: 'SignUpScreen',
   OtpVerifyScreen: 'OtpVerifyScreen',
   TabNavigation: 'TabNavigation',
+  TermsWebScreen: 'TermsWebScreen',
+  ProSignupScreen: 'ProSignupScreen',
+  ProviderTabNavigation: 'ProviderTabNavigation',
+  ProMyBookings: "ProMyBookings",
+  ProProfile: 'ProProfile',
 };
 
 export interface ScreenNames {

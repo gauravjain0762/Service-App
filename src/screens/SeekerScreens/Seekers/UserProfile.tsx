@@ -1,19 +1,17 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
 import {Colors} from '@/constants/Colors';
-import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
+import {hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const UserProfile = () => {
+  const {bottom} = useSafeAreaInsets();
   const [formData, setFormData] = useState({
     name: 'Jofra Williamson',
     dateOfBirth: '12/27/1995',
@@ -35,14 +33,13 @@ const UserProfile = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeareaProvider style={[styles.container, {paddingBottom: bottom}]}>
       <BackHeader text="Profile" />
 
       <ScrollView
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-      >
+        contentContainerStyle={styles.scrollContent}>
         <View style={styles.avatarContainer}>
           <View style={styles.avatar}>
             <CustomImage
@@ -56,28 +53,28 @@ const UserProfile = () => {
         <View style={styles.formContainer}>
           <CustomTextInput
             value={formData.name}
-            onChangeText={(text) => handleInputChange('name', text)}
+            onChangeText={text => handleInputChange('name', text)}
             placeholder="Full Name"
             containerStyle={styles.inputContainer}
           />
 
           <CustomTextInput
             value={formData.dateOfBirth}
-            onChangeText={(text) => handleInputChange('dateOfBirth', text)}
+            onChangeText={text => handleInputChange('dateOfBirth', text)}
             placeholder="Date of Birth"
             containerStyle={styles.dateInput}
           />
 
           <CustomTextInput
             value={formData.gender}
-            onChangeText={(text) => handleInputChange('gender', text)}
+            onChangeText={text => handleInputChange('gender', text)}
             placeholder="Gender"
             containerStyle={styles.inputContainer}
           />
 
           <CustomTextInput
             value={formData.email}
-            onChangeText={(text) => handleInputChange('email', text)}
+            onChangeText={text => handleInputChange('email', text)}
             placeholder="Email"
             containerStyle={styles.inputContainer}
             keyboardType="email-address"
@@ -85,7 +82,7 @@ const UserProfile = () => {
 
           <CustomTextInput
             value={formData.phone}
-            onChangeText={(text) => handleInputChange('phone', text)}
+            onChangeText={text => handleInputChange('phone', text)}
             placeholder="Phone Number"
             containerStyle={styles.inputContainer}
             keyboardType="phone-pad"
@@ -93,7 +90,7 @@ const UserProfile = () => {
 
           <CustomTextInput
             value={formData.location}
-            onChangeText={(text) => handleInputChange('location', text)}
+            onChangeText={text => handleInputChange('location', text)}
             placeholder="Location"
             containerStyle={styles.inputContainer}
           />
@@ -108,7 +105,7 @@ const UserProfile = () => {
           />
         </View>
       </ScrollView>
-    </View>
+    </SafeareaProvider>
   );
 };
 
@@ -133,7 +130,7 @@ const styles = StyleSheet.create({
     width: hp(120),
     height: hp(120),
     borderRadius: hp(100),
-    backgroundColor: "#F4F4FE",
+    backgroundColor: '#F4F4FE',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -158,7 +155,7 @@ const styles = StyleSheet.create({
   },
   updateButton: {
     height: hp(55),
-    borderRadius: hp(12),
+    borderRadius: hp(100),
   },
 });
 

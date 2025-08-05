@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -62,7 +62,18 @@ const services = [
 
 const HomeScreen = () => {
   const {params} = useRoute();
-  console.log('openReviewModal', params?.openReviewModal);
+  // const {openReviewModal} = params as {
+  //   openReviewModal: boolean;
+  // };
+
+  // const [isReviewModalVisible, setIsReviewModalVisible] =
+  //   useState<boolean>(false);
+
+  // useEffect(() => {
+  //   if (openReviewModal) {
+  //     setIsReviewModalVisible(true);
+  //   }
+  // }, []);
 
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);

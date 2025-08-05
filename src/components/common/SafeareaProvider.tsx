@@ -21,7 +21,8 @@ const SafeareaProvider = ({
     <SafeAreaView
       {...SafeAreaProps}
       style={[styles.main, style]}
-      edges={['top']}>
+      // edges={['top']}
+      >
       <View style={[styles.containerStyle, containerStyle]}>{children}</View>
     </SafeAreaView>
   );

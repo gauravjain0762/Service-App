@@ -1,15 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import CommonText from '@/components/common/CommonText';
-import { IMAGES } from '@/assets/images';
-import { Colors } from '@/constants/Colors';
-import { hp, wp, commonFontStyle } from '@/utils/responsiveFn';
-import { navigationRef } from '@/navigation/RootContainer';
-import { resetNavigation } from '@/components/common/commonFunction';
-import { SEEKER_SCREENS } from '@/navigation/screenNames';
+import {IMAGES} from '@/assets/images';
+import {Colors} from '@/constants/Colors';
+import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
+import {navigationRef} from '@/navigation/RootContainer';
+import {resetNavigation} from '@/components/common/commonFunction';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const CreateNewPass = () => {
   const handleSubmit = () => {
@@ -18,50 +19,54 @@ const CreateNewPass = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      showsVerticalScrollIndicator={false}
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
-      enableAutomaticScroll={true}
-      extraScrollHeight={hp(20)}
-      extraHeight={hp(100)}
-    >
-      <View style={styles.headerContainer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigationRef?.current?.goBack()}
-        >
-          <Image
-            source={IMAGES.backArrow2}
-            style={styles.backArrow}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.mainContent}>
-        <CommonText text="Create New Password" style={styles.headerText} />
-        <CommonText
-          text="And now, you can create the new password and confirm it"
-          style={styles.description}
-        />
-        <View style={styles.textInput}>
-            <CustomTextInput placeholder="New Password"/>
+    <SafeareaProvider
+      style={{
+        paddingHorizontal: wp(20),
+        flex: 1,
+        backgroundColor: Colors.white,
+      }}>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        enableOnAndroid={true}
+        enableAutomaticScroll={true}
+        extraScrollHeight={hp(20)}
+        extraHeight={hp(100)}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={() => navigationRef?.current?.goBack()}>
+            <Image source={IMAGES.backArrow2} style={styles.backArrow} />
+          </TouchableOpacity>
         </View>
-        <View style={styles.textInput2}>
+
+        <View style={styles.mainContent}>
+          <CommonText text="Create New Password" style={styles.headerText} />
+          <CommonText
+            text="And now, you can create the new password and confirm it"
+            style={styles.description}
+          />
+          <View style={styles.textInput}>
+            <CustomTextInput placeholder="New Password" />
+          </View>
+          <View style={styles.textInput2}>
             <CustomTextInput placeholder="Confirm Password" />
-        </View>
+          </View>
 
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            isPrimary="seeker"
-            title="Send"
-            onPress={()=>resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
-          />
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              isPrimary="seeker"
+              title="Submit"
+              onPress={() =>
+                resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)
+              }
+            />
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeareaProvider>
   );
 };
 
