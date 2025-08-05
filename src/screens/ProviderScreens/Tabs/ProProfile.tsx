@@ -7,7 +7,7 @@ import CustomImage from '@/components/common/CustomImage';
 import ProfileListItem from '@/components/Provider/ProfileListItem';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import React from 'react';
 import {
   FlatList,
@@ -56,7 +56,9 @@ const ProProfile = () => {
           />
         }
       />
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}>
         <CustomImage
           source={IMAGES.user_profile_icon}
           containerStyle={styles.userImageStyle}
@@ -110,6 +112,7 @@ export default ProProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: hp(20),
   },
   editBtn: {
     height: getFontSize(5),

@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {Image, ScrollView, StyleSheet, View} from 'react-native'
+import React, {useState} from 'react';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
@@ -11,46 +11,36 @@ import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import ShadowCard from '@/components/common/ShadowCard';
 import CustomButton from '@/components/common/CustomButton';
-import {navigateTo} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import BackHeader from '@/components/common/BackHeader'
-import RequestCard from '@/components/common/RequestCard'
-import SafeareaProvider from '@/components/common/SafeareaProvider'
-import {Colors} from '@/constants/Colors'
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn'
-import CommonText from '@/components/common/CommonText'
-import Divider from '@/components/common/Divider'
-import {IMAGES} from '@/assets/images'
-import ShadowCard from '@/components/common/ShadowCard'
-import CustomButton from '@/components/common/CustomButton'
-import PaymentMethodModal from '@/components/common/PaymentMethodModel'
-import PaymentSuccessModal from '@/components/common/PaymentSuccessModel'
+import PaymentMethodModal from '@/components/common/PaymentMethodModel';
+import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const OffersDetails = () => {
-  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] = useState(false)
-  const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] = useState(false)
+  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
+    useState(false);
+  const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
+    useState(false);
 
   const openPaymentMethodModal = () => {
-    setIsPaymentMethodModalVisible(true)
-  }
+    setIsPaymentMethodModalVisible(true);
+  };
 
   const closePaymentMethodModal = () => {
-    setIsPaymentMethodModalVisible(false)
-  }
+    setIsPaymentMethodModalVisible(false);
+  };
 
   const handlePaymentSelect = () => {
-    closePaymentMethodModal()
+    closePaymentMethodModal();
     setTimeout(() => {
-      setIsPaymentSuccessModalVisible(true)
-    }, 500)
-  }
+      setIsPaymentSuccessModalVisible(true);
+    }, 500);
+  };
 
   const closePaymentSuccessModal = () => {
-    setIsPaymentSuccessModalVisible(false)
-  }
+    setIsPaymentSuccessModalVisible(false);
+  };
 
   const {bottom} = useSafeAreaInsets();
 
@@ -175,10 +165,10 @@ const OffersDetails = () => {
         </View>
       </ScrollView>
     </SafeareaProvider>
-  )
-}
+  );
+};
 
-export default OffersDetails
+export default OffersDetails;
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -350,4 +340,4 @@ const styles = StyleSheet.create({
   overlayText: {
     ...commonFontStyle(700, 2.5, Colors.white),
   },
-})
+});
