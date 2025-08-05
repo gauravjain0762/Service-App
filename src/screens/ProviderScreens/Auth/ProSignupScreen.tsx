@@ -33,7 +33,12 @@ const ProSignupScreen = () => {
         showsVerticalScrollIndicator={false}
         style={styles.container}>
         <View style={styles.headerRow}>
-          <CustomImage source={IMAGES.backArrow2} size={hp(20)} />
+          <CustomImage
+            size={hp(20)}
+            disabled={false}
+            onPress={() => goBack()}
+            source={IMAGES.backArrow2}
+          />
           <CommonText text="Create New Account" style={styles.topLabel} />
         </View>
 

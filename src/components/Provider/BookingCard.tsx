@@ -54,7 +54,7 @@ const BookingCard = ({
               btnStyle={{
                 ...styles.status,
                 backgroundColor:
-                  item?.status === 'Active'
+                  item?.status === 'Active' || item?.status === "Accepted"
                     ? Colors.provider_primary
                     : Colors._03B463,
               }}

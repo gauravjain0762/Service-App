@@ -1,14 +1,93 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+
+import {IMAGES} from '@/assets/images';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
+import CommonText from '@/components/common/CommonText';
+import ProviderHeader from '@/components/Provider/ProviderHeader';
+import ProviderCards from '@/components/Provider/ProviderCards';
+import BookingCard from '@/components/Provider/BookingCard';
+
+const DashboarData = [
+  {amount: '4254', desc: 'Total Booking', image: IMAGES.ic_booking},
+  {amount: '2678.00', desc: 'Total Earning', image: IMAGES.ic_earning},
+  {amount: '1500', desc: 'Total Request', image: IMAGES.ic_request},
+  {amount: '900', desc: 'Completed Job', image: IMAGES.ic_completed},
+];
+
+const BookingData = [
+  {
+    id: '#D-698321',
+    title: 'Repair & Maintenance',
+    subtitle: 'AC Regular Services',
+    status: 'Accepted',
+    address: 'Dubai Internet City UAE',
+    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
+    customer: 'Luis Fernando Salazar',
+  },
+  {
+    id: '#D-698321',
+    title: 'Repair & Maintenance',
+    subtitle: 'AC Regular Services',
+    status: 'Accepted',
+    address: 'Dubai Internet City UAE',
+    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
+    customer: 'Luis Fernando Salazar',
+  },
+];
 
 const ProDashboard = () => {
   return (
-    <View>
-      <Text>ProDashboard</Text>
-    </View>
-  )
-}
+    <SafeareaProvider style={styles.safearea}>
+      <ProviderHeader />
 
-export default ProDashboard
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp(50)}}>
+        <View style={styles.dashboardContainer}>
+          {DashboarData.map((item, index: any) => {
+            return <ProviderCards item={item} key={index} />;
+          })}
+        </View>
 
-const styles = StyleSheet.create({})
+        <CommonText
+          text={'Recently Booking'}
+          style={{...commonFontStyle(700, 2.2, Colors.black)}}
+        />
+
+        <FlatList
+          data={BookingData}
+          scrollEnabled={false}
+          keyExtractor={(_, index) => index.toString()}
+          renderItem={({item, index}) => {
+            return <BookingCard item={item} index={index} />;
+          }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.contentContainer}
+        />
+      </ScrollView>
+    </SafeareaProvider>
+  );
+};
+
+export default ProDashboard;
+
+const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    padding: hp(25),
+    backgroundColor: Colors.white,
+  },
+  dashboardContainer: {
+    gap: wp(16),
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    marginVertical: hp(34),
+  },
+  contentContainer: {
+    gap: hp(20),
+    paddingTop: hp(20),
+  },
+});

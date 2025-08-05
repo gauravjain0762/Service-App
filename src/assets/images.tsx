@@ -47,6 +47,10 @@ export const IMAGES = {
   profile_avatar: require('./icons/profile_avatar.png'),
   dashed_rec: require('./icons/dashed_rec.png'),
   upload: require('./icons/upload.png'),
+  ic_booking: require('./icons/ic_booking.png'),
+  ic_completed: require('./icons/ic_completed.png'),
+  ic_earning: require('./icons/ic_earning.png'),
+  ic_request: require('./icons/ic_request.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
