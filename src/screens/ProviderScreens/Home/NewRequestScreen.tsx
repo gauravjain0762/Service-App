@@ -35,16 +35,16 @@ const DATA = [
   },
 ];
 
-const ProMyBookings = () => {
+const NewRequestScreen = () => {
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <View style={styles.mainContainer}>
-        <BackHeader text="My Bookings" style={GeneralStyle.back} />
+        <BackHeader text="New Request" style={GeneralStyle.back} />
 
         <FlatList
           data={DATA}
           renderItem={({item, index}) => {
-            return <BookingCard item={item} index={index} isBooking={true} />;
+            return <BookingCard item={item} index={index} isBooking={false} />;
           }}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
@@ -55,7 +55,7 @@ const ProMyBookings = () => {
   );
 };
 
-export default ProMyBookings;
+export default NewRequestScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {

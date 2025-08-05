@@ -58,8 +58,9 @@ export const PROVIDER_SCREENS = {
   TermsWebScreen: 'TermsWebScreen',
   ProSignupScreen: 'ProSignupScreen',
   ProviderTabNavigation: 'ProviderTabNavigation',
-  ProMyBookings: "ProMyBookings",
+  ProMyBookings: 'ProMyBookings',
   ProProfile: 'ProProfile',
+  NewRequestScreen: 'NewRequestScreen',
 };
 
 export interface ScreenNames {

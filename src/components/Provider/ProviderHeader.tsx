@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: hp(20),
   },
   leftSection: {
     flexDirection: 'row',

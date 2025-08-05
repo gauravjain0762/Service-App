@@ -19,7 +19,6 @@
     "Confirm": "Confirm",
     "or continue with": "or continue with",
     "Already have an account?": "Already have an account?",
-    "Don't have an account?": "Don't have an account?",
     "Sign In": "Sign In",
     "terms of use": "terms of use",
     "I agree to follow the": "I agree to follow the",
@@ -73,6 +72,14 @@
     "Upload Your Picture": "Upload Your Picture",
     "Upload Certificate": "Upload Certificate",
     "License": "License",
-    "Recently Booking": "Recently Booking"
+    "Recently Booking": "Recently Booking",
+    "Years of Experience": "Years of\nExperience",
+    "Services Delivered": "Services\nDelivered",
+    "Profile": "Profile",
+    "My Bookings": "My Bookings",
+    "Address": "Address",
+    "Date & Time": "Date & Time",
+    "Customer": "Customer",
+    "Make an Offer": "Make an Offer"
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -5,7 +7,6 @@ import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
 import {hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
-import {navigateTo} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '../screenNames';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import ProDashboard from '@/screens/ProviderScreens/Tabs/ProDashboard';
@@ -15,9 +16,32 @@ import ProProfile from '@/screens/ProviderScreens/Tabs/ProProfile';
 const Tab = createBottomTabNavigator();
 
 const ProviderTabNavigation = () => {
+  const tabs = [
+    {
+      name: PROVIDER_SCREENS.ProDashboard,
+      icon: IMAGES.home,
+      component: ProDashboard,
+    },
+    {
+      name: PROVIDER_SCREENS.ProMyBookings,
+      icon: IMAGES.calendar,
+      component: ProMyBookings,
+    },
+    {
+      name: PROVIDER_SCREENS.ProProfile,
+      icon: IMAGES.profile,
+      component: ProProfile,
+    },
+  ];
+
   const CustomTabBarButton = ({children, onPress, route, ...props}: any) => {
     const handlePress = () => {
-      navigateTo(route.name);
+      if (route.name === '') {
+        // screen name
+        console.log('helle');
+      } else {
+        onPress();
+      }
     };
 
     return (
@@ -32,7 +56,6 @@ const ProviderTabNavigation = () => {
       edges={['bottom']}
       style={{backgroundColor: Colors.white, flex: 1}}>
       <Tab.Navigator
-        initialRouteName={PROVIDER_SCREENS.ProDashboard}
         screenOptions={({route}) => ({
           headerShown: false,
           tabBarHideOnKeyboard: true,
@@ -48,26 +71,16 @@ const ProviderTabNavigation = () => {
             backgroundColor: Colors.provider_primary,
           },
           tabBarShowLabel: false,
-          tabBarIcon: ({focused, color}) => {
-            let iconName;
-            let iconWidth = wp(30);
-            let iconHeight = hp(25);
-
-            if (route.name === PROVIDER_SCREENS.ProDashboard) {
-              iconName = IMAGES.home;
-            } else if (route.name === PROVIDER_SCREENS.ProMyBookings) {
-              iconName = IMAGES.calendar;
-            } else if (route.name === PROVIDER_SCREENS.ProProfile) {
-              iconName = IMAGES.profile;
-            }
+          tabBarIcon: ({focused}) => {
+            const {icon} = tabs.find(tab => tab.name === route.name) || {};
             return (
               <View style={[styles.iconContainer]}>
                 <FastImage
-                  source={iconName}
-                  defaultSource={iconName}
+                  source={icon}
+                  defaultSource={icon}
                   style={{
-                    width: iconWidth,
-                    height: iconHeight,
+                    width: wp(30),
+                    height: hp(25),
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   tintColor={focused ? Colors.white : Colors.provider_tab}
@@ -78,16 +91,15 @@ const ProviderTabNavigation = () => {
           tabBarButton: props => (
             <CustomTabBarButton {...props} route={route} />
           ),
-        })}>
-        <Tab.Screen
-          name={PROVIDER_SCREENS.ProDashboard}
-          component={ProDashboard}
-        />
-        <Tab.Screen
-          name={PROVIDER_SCREENS.ProMyBookings}
-          component={ProMyBookings}
-        />
-        <Tab.Screen name={PROVIDER_SCREENS.ProProfile} component={ProProfile} />
+        })}
+        initialRouteName={PROVIDER_SCREENS.ProDashboard}>
+        {tabs.map(tab => (
+          <Tab.Screen
+            key={tab.name}
+            name={tab.name}
+            component={tab.component}
+          />
+        ))}
       </Tab.Navigator>
     </SafeAreaView>
   );

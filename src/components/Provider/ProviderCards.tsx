@@ -1,18 +1,33 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
+import {navigateTo} from '../common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 
 type Props = {
   item?: any;
+  index?: number;
 };
 
-const ProviderCards = ({item}: Props) => {
+const ProviderCards = ({item, index}: Props) => {
+  const onPress = () => {
+    if (index === 0) {
+    } else if (index === 1) {
+    } else if (index === 2) {
+      navigateTo(PROVIDER_SCREENS.NewRequestScreen);
+    } else if (index === 3) {
+    }
+  };
+
   return (
-    <View style={styles.cardContainer}>
+    <TouchableOpacity
+      key={index?.toString()}
+      onPress={onPress}
+      style={styles.cardContainer}>
       <View style={styles.row}>
         <CommonText text={item?.amount} style={styles.text} />
         <View style={styles.iconContainer}>
@@ -21,7 +36,7 @@ const ProviderCards = ({item}: Props) => {
       </View>
 
       <CommonText text={item?.desc} style={styles.subtext} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

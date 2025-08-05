@@ -1,5 +1,3 @@
-import {Flag} from 'react-native-country-picker-modal';
-
 export const IMAGES = {
   //icon
 
@@ -51,6 +49,11 @@ export const IMAGES = {
   ic_completed: require('./icons/ic_completed.png'),
   ic_earning: require('./icons/ic_earning.png'),
   ic_request: require('./icons/ic_request.png'),
+  user_profile_icon: require('./icons/user_profile_icon.png'),
+  delete_account: require('./icons/Provider/delete_account.png'),
+  pro_language: require('./icons/Provider/language.png'),
+  lock: require('./icons/Provider/lock.png'),
+  pro_logout: require('./icons/Provider/logout.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

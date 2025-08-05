@@ -3,7 +3,7 @@ import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CommonText from '@/components/common/CommonText';
 import ProviderHeader from '@/components/Provider/ProviderHeader';
@@ -45,17 +45,17 @@ const ProDashboard = () => {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        style={{
+          marginTop: hp(25),
+        }}
         contentContainerStyle={{paddingBottom: hp(50)}}>
         <View style={styles.dashboardContainer}>
           {DashboarData.map((item, index: any) => {
-            return <ProviderCards item={item} key={index} />;
+            return <ProviderCards item={item} index={index} />;
           })}
         </View>
 
-        <CommonText
-          text={'Recently Booking'}
-          style={{...commonFontStyle(700, 2.2, Colors.black)}}
-        />
+        <CommonText text={'Recently Booking'} style={styles.headingText} />
 
         <FlatList
           data={BookingData}
@@ -77,17 +77,23 @@ export default ProDashboard;
 const styles = StyleSheet.create({
   safearea: {
     flex: 1,
-    padding: hp(25),
+    // padding: hp(25),
     backgroundColor: Colors.white,
   },
   dashboardContainer: {
     gap: wp(16),
     flexWrap: 'wrap',
     flexDirection: 'row',
-    marginVertical: hp(34),
+    marginBottom: hp(34),
+    paddingHorizontal: hp(20),
   },
   contentContainer: {
     gap: hp(20),
-    paddingTop: hp(20),
+    paddingVertical: hp(20),
+    paddingHorizontal: hp(20),
+  },
+  headingText: {
+    ...commonFontStyle(700, 2.2, Colors.black),
+    paddingHorizontal: hp(20),
   },
 });

@@ -17,7 +17,6 @@ interface Props {
   isBackGround?: boolean;
   bgColor?: string;
   viewRef?: any;
-  imageShow?: any;
 }
 
 const CustomImage = ({
@@ -33,40 +32,14 @@ const CustomImage = ({
   isBackGround = false,
   bgColor,
   viewRef,
-  imageShow,
   ...props
 }: Props) => {
-  if (imageShow) {
-    return (
-      <TouchableOpacity
-        activeOpacity={onPress ? 0.5 : 1}
-        onPress={onPress}
-        ref={viewRef}
-        disabled={disabled}
-        style={{
-          ...containerStyle,
-
-          ...(isBackGround ? styles.btnContainer : {}),
-
-          ...(bgColor ? {backgroundColor: bgColor} : {}),
-        }}>
-        <FastImage
-          source={uri ? {uri: uri} : source}
-          defaultSource={source ? source : undefined}
-          style={[{width: size, height: size}, imageStyle]}
-          resizeMode={resizeMode}
-          tintColor={uri ? undefined : tintColor}
-          {...props}
-        />
-      </TouchableOpacity>
-    );
-  }
   return (
     <TouchableOpacity
       activeOpacity={onPress ? 0.5 : 1}
       onPress={onPress}
       ref={viewRef}
-      disabled={disabled}
+      disabled={onPress ? disabled : true}
       style={{
         ...containerStyle,
 

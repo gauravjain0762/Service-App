@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {Colors} from '@/constants/Colors';
@@ -11,7 +12,7 @@ import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import {goBack, navigateTo} from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
-import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import UploadImage from '@/components/common/UploadImage';
@@ -84,7 +85,7 @@ const ProSignupScreen = () => {
             ]}
             value={selectedOption}
             placeholder="Type of Service"
-            onChange={item => console.log('Selected:', item)}
+            onChange={item => setSelectedOption(item.label)}
           />
           <CustomDropdown
             data={[

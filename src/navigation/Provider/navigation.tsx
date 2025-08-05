@@ -5,6 +5,7 @@ import TermsWebScreen from '@/screens/SeekerScreens/Auth/TermsWebScreen';
 import ProLoginScreen from '@/screens/ProviderScreens/Auth/ProLoginScreen';
 import ProSignupScreen from '@/screens/ProviderScreens/Auth/ProSignupScreen';
 import ProviderTabNavigation from './ProviderTabNavigation';
+import NewRequestScreen from '@/screens/ProviderScreens/Home/NewRequestScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -17,8 +18,11 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.ProLoginScreen, component: ProLoginScreen},
     {name: PROVIDER_SCREENS.ProSignupScreen, component: ProSignupScreen},
     {name: PROVIDER_SCREENS.TermsWebScreen, component: TermsWebScreen},
-    {name: PROVIDER_SCREENS.ProviderTabNavigation, component: ProviderTabNavigation},
-
+    {
+      name: PROVIDER_SCREENS.ProviderTabNavigation,
+      component: ProviderTabNavigation,
+    },
+    {name: PROVIDER_SCREENS.NewRequestScreen, component: NewRequestScreen},
   ];
   return (
     <Stack.Navigator

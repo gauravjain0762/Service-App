@@ -54,7 +54,7 @@ const BookingCard = ({
               btnStyle={{
                 ...styles.status,
                 backgroundColor:
-                  item?.status === 'Active' || item?.status === "Accepted"
+                  item?.status === 'Active' || item?.status === 'Accepted'
                     ? Colors.provider_primary
                     : Colors._03B463,
               }}
@@ -155,14 +155,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: getFontSize(2),
+    gap: getFontSize(1),
   },
 
   label: {
     ...commonFontStyle(500, 2.2, Colors._868686),
+    width: '30%',
   },
   value: {
     ...commonFontStyle(500, 2.2, Colors._333333),
     textAlign: 'left',
+    flex: 1,
   },
 
   btn: {

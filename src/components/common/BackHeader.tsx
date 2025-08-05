@@ -1,11 +1,17 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
-import {navigationRef} from '@/navigation/RootContainer';
+import {goBack} from './commonFunction';
 
 type Props = {
   text: string;
@@ -16,23 +22,29 @@ type Props = {
   customBackArrow?: any;
 };
 
-const BackHeader = ({leftIcon, rightIcon, text, style, onPressBack, customBackArrow}: Props) => {
+const BackHeader = ({
+  leftIcon,
+  rightIcon,
+  text,
+  style,
+  onPressBack,
+  customBackArrow,
+}: Props) => {
   return (
     <View style={[styles.headerContainer, style]}>
-      <View style={styles.headerLeft}>
+      <TouchableOpacity
+        onPress={onPressBack ?? (() => goBack())}
+        style={styles.headerLeft}>
         {leftIcon ? (
           leftIcon
         ) : (
-          <Pressable
-            onPress={onPressBack ?? (() => navigationRef?.current?.goBack())}>
-            <Image 
-              source={customBackArrow || IMAGES.backArrow2} 
-              style={styles.backArrow}
-            />
-          </Pressable>
+          <Image
+            source={customBackArrow || IMAGES.backArrow2}
+            style={styles.backArrow}
+          />
         )}
         <CommonText text={text} style={styles.headerTitle} />
-      </View>
+      </TouchableOpacity>
       {rightIcon && rightIcon}
     </View>
   );
