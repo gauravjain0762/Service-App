@@ -1,16 +1,38 @@
-import React from 'react';
-import {StyleSheet, View, StatusBar} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
 import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
-import {commonFontStyle, hp} from '@/utils/responsiveFn';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {resetNavigation} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
+import {IMAGES} from '@/assets/images';
+import LanguageModal from '@/components/common/LanguageModel';
 
 const OnBoarding = () => {
+  const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
+
+  const openLanguageModal = () => {
+    setIsLanguageModalVisible(true);
+  };
+
+  const closeLanguageModal = () => {
+    setIsLanguageModalVisible(false);
+  };
+
+  const handleLanguageSelect = () => {
+    closeLanguageModal();
+  };
+
   return (
     <>
       <StatusBar
@@ -22,6 +44,23 @@ const OnBoarding = () => {
         SafeAreaProps={{edges: ['top']}}
         style={{backgroundColor: Colors.seeker_primary}}>
         <View style={styles.wrapper}>
+          <TouchableOpacity
+            onPress={openLanguageModal}
+            style={styles.topRightContainer}>
+            <View style={styles.flagContainer}>
+              <Image source={IMAGES.flag} style={styles.flagIcon} />
+            </View>
+            <View style={styles.dropdownContainer}>
+              <Image source={IMAGES.dropDown} style={styles.dropdownIcon} />
+            </View>
+          </TouchableOpacity>
+
+          <LanguageModal
+            visible={isLanguageModalVisible}
+            onClose={closeLanguageModal}
+            onLanguageSelect={handleLanguageSelect}
+          />
+
           <CustomCarousel />
 
           <View style={styles.bottomSection}>
@@ -61,6 +100,31 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  topRightContainer: {
+    position: 'absolute',
+    top: hp(50),
+    right: wp(20),
+    flexDirection: 'row',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  flagContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flagIcon: {
+    width: wp(30),
+    height: hp(30),
+  },
+  dropdownContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: wp(5),
+  },
+  dropdownIcon: {
+    width: wp(11),
+    height: hp(8),
   },
   bottomSection: {
     flex: 1,

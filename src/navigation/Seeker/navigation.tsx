@@ -18,6 +18,8 @@ import UserProfile from '@/screens/SeekerScreens/Seekers/UserProfile';
 import ForgotPassword from '@/screens/SeekerScreens/Auth/ForgotPassword';
 import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
 import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
+import SearchScreen from '@/screens/SeekerScreens/Seekers/SearchScreen';
+import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -43,6 +45,8 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.SeekerTabNavigation, component: SeekerTabNavigation},
     {name: SEEKER_SCREENS.UserProfile, component: UserProfile},
     {name: SEEKER_SCREENS.CreateNewPass, component: CreateNewPass},
+    {name: SEEKER_SCREENS.SearchScreen, component: SearchScreen},
+    {name: SEEKER_SCREENS.HomeScreen, component: HomeScreen},
   ];
   return (
     <Stack.Navigator

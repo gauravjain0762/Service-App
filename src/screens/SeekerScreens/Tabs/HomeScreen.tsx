@@ -5,6 +5,8 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
+  Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -17,9 +19,10 @@ import CustomTextInput from '@/components/common/CustomTextInput';
 import ServiceCard from '@/components/common/ServiceCard';
 import BottomModal from '@/components/common/BottomModal';
 import {navigateTo} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
+import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import ServicesModal from '@/components/modals/ServicesModal';
 import {useRoute} from '@react-navigation/native';
+import ReviewModal from '@/components/common/ReviewModel';
 
 const services = [
   {
@@ -77,6 +80,16 @@ const HomeScreen = () => {
 
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+  const [isSubmitReviewModalVisible, setIsSubmitReviewModalVisible] = useState(false)
+
+  const openModal = () => {
+    setIsSubmitReviewModalVisible(true);
+  }
+
+  const closeModal = () => {
+    setIsSubmitReviewModalVisible(false);
+  }
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -97,6 +110,7 @@ const HomeScreen = () => {
 
       <View style={styles.searchContainer}>
         <CustomTextInput
+        onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
           placeholder="Search by Services or Category"
           leftIcon={
             <Image source={IMAGES.search} style={styles.searchImages} />
@@ -114,9 +128,14 @@ const HomeScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.bannerContainer}>
           <View style={styles.bannerTextContainer}>
+            <ReviewModal
+              visible={isSubmitReviewModalVisible}
+              onClose={closeModal}
+            />
             <CommonText
               text={'Cleaning & Sanitation'}
               style={styles.bannerTitle}
+              onPress={openModal}
             />
             <CommonText
               text={'Basic Home Cleaning Kitchen/Bathroom Cleaning'}

@@ -23,6 +23,7 @@ type BottomModalProps = {
   backgroundColor?: string;
   children: React.ReactNode;
   onPressCancel?: () => void;
+  showCloseButton?: boolean;
 };
 
 const BottomModal = ({
@@ -33,6 +34,7 @@ const BottomModal = ({
   close,
   onPressCancel,
   backgroundColor = '#fff',
+  showCloseButton = true,
 }: BottomModalProps) => {
   return (
     <Modal

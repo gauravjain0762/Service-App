@@ -21,6 +21,9 @@ export const SCREENS = {
   MyBookingsTab: 'My BookingsTab',
   Profile: 'Profile',
   UserProfile: 'UserProfile',
+  AddCard: "Add Card",
+  HomeScreen: "HomeScreen",
+  SearchScreen: "SearchScreen",
 };
 
 export const SEEKER_SCREENS = {
@@ -46,6 +49,9 @@ export const SEEKER_SCREENS = {
   ForgotPassword: 'ForgotPassword',
   EmailVerification: 'EmailVerification',
   CreateNewPass: 'CreateNewPass',
+  HomeScreen: "HomeScreen",
+  SearchScreen: "SearchScreen",
+,
 };
 
 export const PROVIDER_SCREENS = {
