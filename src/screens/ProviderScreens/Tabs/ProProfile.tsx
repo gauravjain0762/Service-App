@@ -1,5 +1,6 @@
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
+import { navigateTo } from '@/components/common/commonFunction';
 // import CommonSwitch from '@/components/common/CommonSwitch';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
@@ -7,6 +8,7 @@ import CustomImage from '@/components/common/CustomImage';
 import ProfileListItem from '@/components/Provider/ProfileListItem';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
+import { PROVIDER_SCREENS } from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import React from 'react';
 import {
@@ -63,6 +65,7 @@ const ProProfile = () => {
           source={IMAGES.user_profile_icon}
           containerStyle={styles.userImageStyle}
           size={getFontSize(7)}
+          onPress={() => navigateTo(PROVIDER_SCREENS.ProfileDetail)}
         />
 
         <CommonText text="Master Sanitary Fittings" style={styles.name} />
@@ -162,16 +165,15 @@ const styles = StyleSheet.create({
     gap: getFontSize(1),
   },
   value: {
-    ...commonFontStyle(700, 3.9, Colors.white),
+    ...commonFontStyle(700, 3.7, Colors.white),
     textAlign: 'center',
   },
   label: {
-    ...commonFontStyle(500, 2.8, Colors.white),
-    flex: 1,
+    ...commonFontStyle(500, 2, Colors.white),
     textAlign: 'center',
   },
   line: {
-    width: 1.5,
+    width: hp(1.5),
     height: '50%',
     backgroundColor: Colors.white,
     marginRight: 2,

@@ -23,6 +23,8 @@ export const SCREENS = {
   UserProfile: 'UserProfile',
   HomeScreen: 'HomeScreen',
   SearchScreen: 'SearchScreen',
+  ProfileDetail: 'ProfileDetail',
+  ProRequestDetail: 'ProRequestDetail',
 };
 
 export const SEEKER_SCREENS = {
@@ -65,6 +67,8 @@ export const PROVIDER_SCREENS = {
   ProMyBookings: 'ProMyBookings',
   ProProfile: 'ProProfile',
   NewRequestScreen: 'NewRequestScreen',
+  ProfileDetail: 'ProfileDetail',
+  ProRequestDetail: 'ProRequestDetail',
 };
 
 export interface ScreenNames {

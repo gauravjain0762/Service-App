@@ -6,6 +6,8 @@ import ProLoginScreen from '@/screens/ProviderScreens/Auth/ProLoginScreen';
 import ProSignupScreen from '@/screens/ProviderScreens/Auth/ProSignupScreen';
 import ProviderTabNavigation from './ProviderTabNavigation';
 import NewRequestScreen from '@/screens/ProviderScreens/Home/NewRequestScreen';
+import ProfileDetailScreen from '@/screens/ProviderScreens/Profile/ProfileDetailScreen';
+import ProRequestDetail from '@/screens/ProviderScreens/Others/ProRequestDetail';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -23,6 +25,8 @@ const ProviderNavigator: FC = () => {
       component: ProviderTabNavigation,
     },
     {name: PROVIDER_SCREENS.NewRequestScreen, component: NewRequestScreen},
+    {name: PROVIDER_SCREENS.ProfileDetail, component: ProfileDetailScreen},
+    {name: PROVIDER_SCREENS.ProRequestDetail, component: ProRequestDetail},
   ];
   return (
     <Stack.Navigator

@@ -1,11 +1,26 @@
+import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
+import BottomModal from '@/components/common/BottomModal';
+import {navigateTo} from '@/components/common/commonFunction';
+import CommonText from '@/components/common/CommonText';
+import CustomDropdown from '@/components/common/CustomDropdown';
+import CustomImage from '@/components/common/CustomImage';
+import CustomTextInput from '@/components/common/CustomTextInput';
 import BookingCard from '@/components/Provider/BookingCard';
+import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import {getFontSize} from '@/utils/responsiveFn';
-import React from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import React, {useState} from 'react';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-const DATA = [
+export const DATA = [
   {
     id: 'D-698321',
     title: 'Repair & Maintenance',
@@ -36,21 +51,82 @@ const DATA = [
 ];
 
 const ProMyBookings = () => {
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedOption, setSelectedOption] = useState('All');
+  const [allOptions] = useState(['All', 'Accepted', 'Active', 'Completed']);
+
+  const handleOptionSelect = (option: string) => {
+    setSelectedOption(option);
+    setIsModalVisible(false);
+  };
+
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <View style={styles.mainContainer}>
         <BackHeader text="My Bookings" style={GeneralStyle.back} />
 
+        <CustomTextInput
+          editable={false}
+          placeholder={selectedOption}
+          onPressIn={() => {
+            setIsModalVisible(true);
+          }}
+          containerStyle={{marginHorizontal: wp(32)}}
+          rightIcon={
+            <CustomImage
+              source={IMAGES.downArrow}
+              onPress={() => {
+                setIsModalVisible(true);
+              }}
+              size={hp(25)}
+            />
+          }
+        />
+
         <FlatList
           data={DATA}
           renderItem={({item, index}) => {
-            return <BookingCard item={item} index={index} isBooking={true} />;
+            return (
+              <BookingCard
+                item={item}
+                index={index}
+                isBooking={true}
+                onPress={() => navigateTo(PROVIDER_SCREENS.ProRequestDetail)}
+              />
+            );
           }}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
         />
       </View>
+
+      <BottomModal
+        close
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onPressCancel={() => setIsModalVisible(false)}
+        style={styles.modalContainer}>
+        <View style={styles.paymentContainer}>
+          {allOptions.map(option => (
+            <TouchableOpacity
+              key={option}
+              style={styles.paymentOption}
+              onPress={() => handleOptionSelect(option)}>
+              <CommonText text={option} style={styles.paymentText} />
+              <View
+                style={[
+                  styles.radioButton,
+                  selectedOption === option && styles.radioButtonSelected,
+                ]}>
+                {selectedOption === option && (
+                  <View style={styles.radioButtonInner} />
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </BottomModal>
     </SafeAreaView>
   );
 };
@@ -66,5 +142,69 @@ const styles = StyleSheet.create({
     paddingTop: getFontSize(2),
     paddingBottom: getFontSize(12),
     gap: getFontSize(1.5),
+  },
+  modalContainer: {
+    paddingTop: hp(30),
+    paddingBottom: hp(40),
+    paddingHorizontal: wp(20),
+    position: 'relative',
+  },
+  title: {
+    ...commonFontStyle(700, 2.2, Colors.black),
+    textAlign: 'left',
+    marginBottom: hp(25),
+    marginTop: hp(10),
+    marginLeft: wp(5),
+  },
+  paymentContainer: {
+    gap: hp(23),
+  },
+  paymentOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp(10),
+    borderRadius: hp(12),
+    backgroundColor: Colors.white,
+  },
+  paymentInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  iconCard: {
+    width: wp(32),
+    height: hp(22),
+    resizeMode: 'contain',
+  },
+  iconApple: {
+    width: wp(28),
+    height: hp(28),
+    resizeMode: 'contain',
+  },
+  iconCash: {
+    width: wp(28),
+    height: hp(28),
+    resizeMode: 'contain',
+  },
+  paymentText: {
+    ...commonFontStyle(500, 2.0, Colors.black),
+  },
+  radioButton: {
+    width: wp(25),
+    height: hp(25),
+    borderRadius: wp(100),
+    borderWidth: 2,
+    borderColor: Colors.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioButtonSelected: {
+    borderColor: '#000000',
+  },
+  radioButtonInner: {
+    width: wp(12),
+    height: hp(12),
+    borderRadius: wp(100),
+    backgroundColor: Colors.black,
   },
 });

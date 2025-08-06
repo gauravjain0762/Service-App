@@ -1,7 +1,7 @@
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import CustomImage from '../common/CustomImage';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import CommonText from '../common/CommonText';
 import {IMAGES} from '@/assets/images';
@@ -17,7 +17,7 @@ const ProfileListItem = ({item}: Props) => {
       style={styles.container}>
       <CustomImage
         source={item?.icon}
-        size={getFontSize(3.5)}
+        size={hp(22)}
         resizeMode="contain"
         tintColor={Colors._808080}
         disabled={true}
@@ -25,7 +25,7 @@ const ProfileListItem = ({item}: Props) => {
       <CommonText text={item?.title} style={styles.title} />
       <CustomImage
         source={IMAGES.rightArrow}
-        size={getFontSize(2)}
+        size={hp(22)}
         resizeMode="contain"
         tintColor={Colors._808080}
         disabled={true}
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     gap: getFontSize(1.5),
   },
   title: {
-    ...commonFontStyle(500, 2.6, Colors._616161),
+    ...commonFontStyle(500, 2, Colors._616161),
     flex: 1,
   },
 });

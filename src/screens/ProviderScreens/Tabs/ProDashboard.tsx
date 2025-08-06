@@ -51,7 +51,7 @@ const ProDashboard = () => {
         contentContainerStyle={{paddingBottom: hp(50)}}>
         <View style={styles.dashboardContainer}>
           {DashboarData.map((item, index: any) => {
-            return <ProviderCards item={item} index={index} />;
+            return <ProviderCards item={item} index={index} key={index}/>;
           })}
         </View>
 

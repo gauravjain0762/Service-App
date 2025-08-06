@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   },
   topRightContainer: {
     position: 'absolute',
-    top: hp(50),
+    top: '2%',
     right: wp(20),
     flexDirection: 'row',
     alignItems: 'center',

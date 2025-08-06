@@ -93,7 +93,8 @@ const CustomDropdown = ({
 export default CustomDropdown;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+  },
   label: {
     ...commonFontStyle(500, 1.8, Colors.black),
   },

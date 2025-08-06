@@ -80,6 +80,10 @@
     "Address": "Address",
     "Date & Time": "Date & Time",
     "Customer": "Customer",
-    "Make an Offer": "Make an Offer"
+    "Make an Offer": "Make an Offer",
+    "Profile Detail": "Profile Detail",
+    "Request Detail": "Request Detail",
+    "Service Type": "Service Type",
+    "Service Detail": "Service Detail"
   }
 }

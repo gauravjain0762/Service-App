@@ -1353,7 +1353,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-drop-shadow (1.0.3):
     - React
-  - react-native-maps/Generated (1.25.0):
+  - react-native-maps/Generated (1.24.13):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1377,7 +1377,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps/Google (1.25.0):
+  - react-native-maps/Google (1.24.13):
     - DoubleConversion
     - glog
     - Google-Maps-iOS-Utils (= 6.1.0)
@@ -1405,7 +1405,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps/Maps (1.25.0):
+  - react-native-maps/Maps (1.24.13):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2328,7 +2328,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: fae8da2c01aeb7f26ad739731b6dba61fd02fd97
   React-microtasksnativemodule: 20454ffccff553f0ee73fd20873aa8555a5867fb
   react-native-drop-shadow: aeb76e4b46c09924b4a8ee3d454dd00fdb5c62d9
-  react-native-maps: 0390b3a84104a73e262626710a3d5032bcd37e19
+  react-native-maps: 6e4a37b6256b5bc6e523b77099b69b9624a2bbcc
   react-native-safe-area-context: 7e926a200d4bc9c56562275743705c6b56176455
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   react-native-webview: 85c8fc8ca09f4e67b68afbc86207a1442af5dc80

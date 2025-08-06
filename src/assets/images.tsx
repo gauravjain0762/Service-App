@@ -62,6 +62,7 @@ export const IMAGES = {
   filter: require('./icons/filter.png'),
   card: require('./icons/card.png'),
   cash: require('./icons/cash.png'),
+  empty_star: require('./icons/empty_star.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

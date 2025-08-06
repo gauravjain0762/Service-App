@@ -19,7 +19,6 @@ export const Colors = {
   black: '#000',
   _4C4C4C: '#4C4C4C',
   _E7E7E7: '#E7E7E7',
-  _03B463: '#03B463',
   _5E5D5D: '#5E5D5D',
   _F9F9F9: '#F9F9F9',
   _878787: '#878787',
@@ -73,6 +72,9 @@ export const Colors = {
   _333333: '#333333',
   _F6FFFB: '#F6FFFB',
   _616161: '#616161',
+  _919191: '#919191',
+  _55B4FD : '#55B4FD',
+
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(99, 45, 1, 0.9)',
   red: 'rgba(255, 0, 0, 0.9)',
