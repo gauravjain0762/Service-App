@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
@@ -44,15 +40,17 @@ const SeekerTabNavigation = () => {
           tabBarHideOnKeyboard: true,
           animation: 'none',
           tabBarStyle: {
-            left: 0,
-            right: 0,
             height: hp(70),
             borderTopWidth: 0,
+            paddingTop: hp(10),
+            alignItems: 'center',
             position: 'absolute',
+            marginBottom: hp(10),
             borderRadius: hp(100),
+            paddingBottom: hp(10),
+            justifyContent: 'center',
             marginHorizontal: wp(24),
-            backgroundColor: Colors.seeker_tab,
-            // bottom: Platform.OS === 'ios' ? 0 : hp(15),
+            backgroundColor: Colors.seeker_primary,
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused, color}) => {
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconContainer: {
-    paddingTop: '100%',
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },

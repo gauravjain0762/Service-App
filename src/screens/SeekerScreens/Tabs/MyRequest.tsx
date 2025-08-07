@@ -94,10 +94,14 @@ const MyRequest = () => {
     <SafeareaProvider
       style={{
         flex: 1,
-        paddingHorizontal: wp(20),
         backgroundColor: Colors.white,
       }}>
-      <BackHeader text="My Request" />
+      <BackHeader
+        text="My Request"
+        style={{
+          paddingHorizontal: wp(20),
+        }}
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -110,11 +114,10 @@ const MyRequest = () => {
         nestedScrollEnabled={true}>
         <View style={styles.cardsContainer}>
           {serviceRequests.map((item, index) => (
-            <TouchableOpacity
-              key={item.id}
-              style={styles.card}
-              onPress={() => handleCardPress(item)}
-              activeOpacity={0.7}>
+            <ShadowCard
+              key={index}
+              onCardPress={() => handleCardPress(item)}
+              style={{width: '100%', marginBottom: hp(24)}}>
               <View style={styles.cardContent}>
                 <View style={styles.imageContainer}>
                   <CustomImage
@@ -136,7 +139,7 @@ const MyRequest = () => {
                   <CommonText text={item.date} style={styles.dateText} />
                 </View>
               </View>
-            </TouchableOpacity>
+            </ShadowCard>
           ))}
         </View>
       </ScrollView>
@@ -149,26 +152,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: '30%',
+    paddingBottom: '20%',
+    paddingHorizontal: wp(20),
   },
   cardsContainer: {
     marginTop: hp(20),
   },
-  card: {
-    marginBottom: hp(11),
-    backgroundColor: Colors._F9F9F9,
-    borderRadius: hp(16),
-    paddingVertical: hp(12),
-    paddingHorizontal: wp(14),
-    shadowColor: Colors.black,
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
   cardContent: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingHorizontal: wp(20),
   },
   imageContainer: {
     width: hp(60),

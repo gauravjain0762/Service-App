@@ -17,6 +17,7 @@ import BottomModal from '@/components/common/BottomModal';
 import {resetNavigation} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const MakeOffer = () => {
   const [selectedDate, setSelectedDate] = useState<any>(null);
@@ -32,9 +33,11 @@ const MakeOffer = () => {
         }}
       />
 
-      <ScrollView
-        style={{flex: 1}}
-        contentContainerStyle={{paddingBottom: hp(30)}}
+      <KeyboardAwareScrollView
+        // style={{flex: 1}}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
         showsVerticalScrollIndicator={false}>
         <View style={styles.attachmentSection}>
           <CommonText text="Attach Document" style={styles.attachTitle} />
@@ -110,7 +113,7 @@ const MakeOffer = () => {
             />
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <BottomModal
         close

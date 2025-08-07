@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInputProps,
   ViewStyle,
+  Pressable,
 } from 'react-native';
 import {Colors} from '../../constants/Colors';
 import CustomImage from './CustomImage';
@@ -25,6 +26,7 @@ interface CustomTextInputProps extends TextInputProps {
   containerStyle?: ViewStyle;
   inputStyle?: ViewStyle;
   mainStyle?: ViewStyle;
+  onPressSearchBar?: () => void;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -37,6 +39,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   containerStyle,
   inputStyle,
   mainStyle,
+  onPressSearchBar,
   ...rest
 }) => {
   const {t} = useTranslation();
@@ -49,7 +52,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           {required && <Text style={styles.required}>*</Text>}
         </CommonText>
       )}
-      <View style={[styles.inputContainer, containerStyle]}>
+      <Pressable onPress={onPressSearchBar} style={[styles.inputContainer, containerStyle]}>
         {leftIcon && leftIcon}
         <TextInput
           style={[styles.input, inputStyle]}
@@ -69,7 +72,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
             tintColor={Colors._5E5D5D}
           />
         )}
-      </View>
+      </Pressable>
     </View>
   );
 };

@@ -5,15 +5,13 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  TextInput,
   Image,
 } from 'react-native';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import {IMAGES} from '@/assets/images';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {HeaderBackButton} from '@react-navigation/elements';
-import {navigationRef} from '@/navigation/RootContainer';
 import {goBack} from '@/components/common/commonFunction';
 import CustomImage from '@/components/common/CustomImage';
 import CustomTextInput from '@/components/common/CustomTextInput';
@@ -58,7 +56,7 @@ const SearchScreen = () => {
         <HeaderBackButton
           onPress={() => goBack()}
           backImage={() => (
-            <CustomImage source={IMAGES.backArrow2} size={hp(16)} />
+            <CustomImage source={IMAGES.backArrow2} size={hp(24)} />
           )}
         />
 

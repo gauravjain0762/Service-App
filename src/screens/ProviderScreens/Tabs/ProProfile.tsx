@@ -1,7 +1,6 @@
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-// import CommonSwitch from '@/components/common/CommonSwitch';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
@@ -13,11 +12,11 @@ import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import React from 'react';
 import {
   FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const List = [
   {

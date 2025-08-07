@@ -1,9 +1,11 @@
+import React from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+
 import BackHeader from '@/components/common/BackHeader';
 import BookingCard from '@/components/Provider/BookingCard';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import {getFontSize} from '@/utils/responsiveFn';
-import React from 'react';
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const DATA = [
   {

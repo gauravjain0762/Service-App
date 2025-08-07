@@ -9,7 +9,11 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import {goBack, navigateTo} from '@/components/common/commonFunction';
+import {
+  goBack,
+  navigateTo,
+  resetNavigation,
+} from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -79,6 +83,7 @@ const SignUpScreen = () => {
             isPrimary="seeker"
             title={'Login as a Guest'}
             type="outline"
+            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
           />
         </View>
 

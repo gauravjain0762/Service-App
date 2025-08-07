@@ -103,9 +103,11 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 2, Colors.black),
   },
   featuresRow: {
+    flexWrap: 'wrap',
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: hp(20),
+    gap: wp(10),
   },
   featureBadge: {
     borderRadius: hp(50),
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors._F5F5F5,
   },
   featureSpacing: {
-    marginRight: wp(10),
+    // marginRight: wp(10),
   },
   featureText: {
     ...commonFontStyle(500, 1.3, Colors.black),

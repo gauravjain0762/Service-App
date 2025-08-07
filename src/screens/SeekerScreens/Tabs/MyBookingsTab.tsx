@@ -8,6 +8,9 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import BookingCard from '@/components/common/BookingCard';
 import TabSwitch from '@/components/common/TabSwitch';
+import CustomImage from '@/components/common/CustomImage';
+import {navigateTo} from '@/components/common/commonFunction';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
 const MyBookingsTab = () => {
   const [activeTab, setActiveTab] = useState<'active' | 'complete'>('active');
@@ -16,7 +19,13 @@ const MyBookingsTab = () => {
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
         text="My Bookings"
-        rightIcon={<Image source={IMAGES.search} style={styles.searchIcon} />}
+        rightIcon={
+          <CustomImage
+            source={IMAGES.search}
+            size={hp(40)}
+            onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
+          />
+        }
       />
 
       <TabSwitch

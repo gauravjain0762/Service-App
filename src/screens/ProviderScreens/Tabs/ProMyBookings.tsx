@@ -12,13 +12,8 @@ import {GeneralStyle} from '@/constants/GeneralStyle';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import React, {useState} from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const DATA = [
   {
@@ -68,7 +63,13 @@ const ProMyBookings = () => {
         <CustomTextInput
           editable={false}
           placeholder={selectedOption}
+          onPressSearchBar={() => {
+            setIsModalVisible(true);
+          }}
           onPressIn={() => {
+            setIsModalVisible(true);
+          }}
+          onPress={() => {
             setIsModalVisible(true);
           }}
           containerStyle={{marginHorizontal: wp(32)}}
