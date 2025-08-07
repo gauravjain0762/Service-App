@@ -8,7 +8,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {resetNavigation} from '@/components/common/commonFunction';
 import OTPHeader from '@/components/auth/OTPHeader';
 import CustomImage from '@/components/common/CustomImage';
@@ -44,7 +44,11 @@ const OTPScreen = () => {
   }, []);
 
   const onLoginSubmit = async () => {
-    resetNavigation(SCREENS.SeekerTabNavigation);
+    if (isProvider) {
+      resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+    } else {
+      resetNavigation(SCREENS.SeekerTabNavigation);
+    }
   };
 
   const onResendOtp = async () => {
