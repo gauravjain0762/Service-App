@@ -1,4 +1,4 @@
-import {StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
+import {StyleProp, StyleSheet, TouchableOpacity, ViewStyle} from 'react-native';
 import React from 'react';
 import FastImage, {FastImageProps, ImageStyle} from 'react-native-fast-image';
 import {getFontSize} from '../../utils/responsiveFn';
@@ -8,7 +8,7 @@ interface Props {
   source?: any;
   size?: number;
   containerStyle?: ViewStyle;
-  imageStyle?: ImageStyle;
+  imageStyle?: StyleProp<ImageStyle>;
   tintColor?: any | undefined;
   uri?: string;
   disabled?: boolean;

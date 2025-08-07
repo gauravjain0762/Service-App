@@ -1,12 +1,12 @@
 import React from 'react';
-import {Pressable, StyleSheet, ViewStyle} from 'react-native';
+import {Pressable, StyleProp, StyleSheet, ViewStyle} from 'react-native';
 
 import {hp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 
 type props = {
   children: any;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   onCardPress?: () => void;
 };
 

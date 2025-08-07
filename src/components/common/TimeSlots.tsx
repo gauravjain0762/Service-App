@@ -14,7 +14,11 @@ const timeSlots = [
   '07:00 PM',
 ];
 
-const TimeSlots = () => {
+type Props = {
+  isProvider?: boolean;
+}
+
+const TimeSlots = ({isProvider}: Props) => {
   const [selectedTime, setSelectedTime] = useState('');
 
   return (
@@ -34,6 +38,7 @@ const TimeSlots = () => {
                 styles.timeContainer,
                 isLastColumn && {marginRight: 0},
                 isSelected && styles.selectedContainer,
+                isProvider && isSelected && styles.selectedContainerProvider,
               ]}
               onPress={() => setSelectedTime(item)}>
               <CommonText
@@ -74,6 +79,10 @@ const styles = StyleSheet.create({
   selectedContainer: {
     backgroundColor: Colors.seeker_primary,
     borderColor: Colors.seeker_primary,
+  },
+  selectedContainerProvider: {
+    borderColor: Colors.provider_primary,
+    backgroundColor: Colors.provider_primary,
   },
   selectedTimeText: {
     color: Colors.white,

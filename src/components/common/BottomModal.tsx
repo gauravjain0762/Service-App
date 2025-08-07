@@ -34,7 +34,6 @@ const BottomModal = ({
   close,
   onPressCancel,
   backgroundColor = '#fff',
-  showCloseButton = true,
 }: BottomModalProps) => {
   return (
     <Modal

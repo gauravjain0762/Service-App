@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,20 +6,20 @@ import {
   Text,
   Image,
   Dimensions,
-} from 'react-native'
-import {Colors} from '@/constants/Colors'
-import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn'
-import CommonText from '@/components/common/CommonText'
-import {IMAGES} from '@/assets/images'
-import BottomModal from '@/components/common/BottomModal'
+} from 'react-native';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import CommonText from '@/components/common/CommonText';
+import {IMAGES} from '@/assets/images';
+import BottomModal from '@/components/common/BottomModal';
 
-Dimensions.get('window')
+Dimensions.get('window');
 
 type ReviewModalProps = {
-  visible: boolean
-  onClose: () => void
-  onSubmit: (rating: number, tags: string[]) => void
-}
+  visible: boolean;
+  onClose: () => void;
+  onSubmit: (rating: number, tags: string[]) => void;
+};
 
 const tags = [
   'Happy',
@@ -27,27 +27,28 @@ const tags = [
   'Satisfied',
   'Not Professional',
   'Good Service',
-]
+];
 
 const ReviewModal = ({visible, onClose}: ReviewModalProps) => {
-  const [] = useState(5)
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [] = useState(5);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
-    )
-  }
+    );
+  };
   return (
     <BottomModal
+      close
       visible={visible}
       onClose={onClose}
       onPressCancel={onClose}
       style={styles.modalContainer}>
-      <CommonText text='Review' style={styles.title} />
+      <CommonText text="Review" style={styles.title} />
 
       <View style={styles.rowText}>
-        <CommonText text='How was your rate?' style={styles.description} />
+        <CommonText text="How was your rate?" style={styles.description} />
       </View>
       <Image source={IMAGES.stars} style={styles.stars} />
 
@@ -77,10 +78,10 @@ const ReviewModal = ({visible, onClose}: ReviewModalProps) => {
         </TouchableOpacity>
       </View>
     </BottomModal>
-  )
-}
+  );
+};
 
-export default ReviewModal
+export default ReviewModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -154,4 +155,4 @@ const styles = StyleSheet.create({
   submitButtonText: {
     ...commonFontStyle(600, 2.1, Colors.white),
   },
-})
+});

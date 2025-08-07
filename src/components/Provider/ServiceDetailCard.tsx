@@ -8,6 +8,8 @@ import {Colors} from '@/constants/Colors';
 import AttachmentCard from '../common/AttachmentCard';
 import AdittionalNote from '../common/AdittionalNote';
 import CustomButton from '../common/CustomButton';
+import { navigateTo } from '../common/commonFunction';
+import { PROVIDER_SCREENS } from '@/navigation/screenNames';
 
 const ServiceDetailCard = () => {
   const serviceData = [
@@ -35,6 +37,7 @@ const ServiceDetailCard = () => {
 
       <CustomButton
         title={'Make an Offer'}
+        onPress={() => {navigateTo(PROVIDER_SCREENS.MakeOffer)}}
         btnStyle={{alignSelf: 'center', width: '70%'}}
       />
     </ShadowCard>

@@ -22,7 +22,7 @@ import ShadowCard from '@/components/common/ShadowCard';
 import {useTranslation} from 'react-i18next';
 import CustomButton from '@/components/common/CustomButton';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {SCREEN_NAMES, SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
+import {SCREEN_NAMES, SCREENS} from '@/navigation/screenNames';
 import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
@@ -188,7 +188,7 @@ const MyBookings = () => {
         </View>
 
         <View style={{marginTop: hp(30)}}>
-          <UploadBox />
+          <UploadBox title="Upload Video/Image" />
         </View>
 
         <View style={styles.sectionSpacing}>
@@ -228,6 +228,7 @@ const MyBookings = () => {
             setIsSubmitModalVisible(false);
             resetNavigation(SCREEN_NAMES.Offers);
           }}
+          color={Colors.seeker_primary}
         />
       </BottomModal>
     </SafeareaProvider>

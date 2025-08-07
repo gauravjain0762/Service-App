@@ -13,6 +13,7 @@ const Notifications = () => {
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
         text={'Notification'}
+        style={{paddingHorizontal: wp(24)}}
         rightIcon={
           <CommonText
             text={'Mark All As Read'}
@@ -34,7 +35,6 @@ export default Notifications;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(24),
     backgroundColor: Colors.white,
   },
 });

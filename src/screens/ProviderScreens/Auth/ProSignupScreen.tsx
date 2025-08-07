@@ -1,8 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import PhoneInput from '@/components/common/PhoneInput';
@@ -11,25 +10,23 @@ import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import {goBack, navigateTo} from '@/components/common/commonFunction';
-import {rowReverseRTL} from '@/utils/arabicStyles';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import UploadImage from '@/components/common/UploadImage';
 
 const ProSignupScreen = () => {
-  const [callingCode, setCallingCode] = React.useState('971');
-  const [userData, setUserData] = React.useState<any>({
+  const [callingCode, setCallingCode] = useState('971');
+  const [userData, setUserData] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
   });
-
   const [selectedOption, setSelectedOption] = useState('');
 
   return (
-    <SafeareaProvider style={{backgroundColor: Colors.white}}>
+    <SafeareaProvider style={styles.safeArea}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
@@ -43,40 +40,32 @@ const ProSignupScreen = () => {
           <CommonText text="Create New Account" style={styles.topLabel} />
         </View>
 
-        <View style={{gap: hp(20), marginTop: hp(45)}}>
+        <View style={styles.inputSection}>
           <CustomTextInput
             placeholder="Full name"
-            value={userData?.name}
-            onChangeText={e => {
-              setUserData({...userData, name: e});
-            }}
+            value={userData.name}
+            onChangeText={e => setUserData({...userData, name: e})}
           />
           <CustomTextInput
             placeholder="Email"
-            value={userData?.email}
-            onChangeText={e => {
-              setUserData({...userData, email: e});
-            }}
+            value={userData.email}
+            onChangeText={e => setUserData({...userData, email: e})}
             keyboardType="email-address"
           />
           <PhoneInput
             placeholder="00 000 0000"
-            value={userData?.phone}
-            onChangeText={e => {
-              setUserData({...userData, phone: e});
-            }}
+            value={userData.phone}
+            onChangeText={e => setUserData({...userData, phone: e})}
             callingCode={callingCode}
             setCallingCode={setCallingCode}
             maxLength={9}
-            containerStyle={{marginBottom: 0}}
+            containerStyle={styles.phoneInput}
           />
           <CustomTextInput
             placeholder="Password"
-            value={userData?.password}
-            onChangeText={e => {
-              setUserData({...userData, password: e});
-            }}
-            secureTextEntry={true}
+            value={userData.password}
+            onChangeText={e => setUserData({...userData, password: e})}
+            secureTextEntry
           />
           <CustomDropdown
             data={[
@@ -93,7 +82,7 @@ const ProSignupScreen = () => {
               {label: 'Option 2', value: '2'},
             ]}
             value={selectedOption}
-            placeholder=" Type of Category"
+            placeholder="Type of Category"
             onChange={item => console.log('Selected:', item)}
           />
           <CustomDropdown
@@ -107,28 +96,24 @@ const ProSignupScreen = () => {
           />
         </View>
 
-        <View style={{marginTop: hp(52), marginBottom: hp(35)}}>
+        <View style={styles.uploadSection}>
           <UploadImage />
         </View>
 
         <CustomTextInput
           multiline
-          containerStyle={{
-            height: hp(120),
-            borderRadius: hp(14),
-            paddingVertical: hp(12),
-          }}
+          containerStyle={styles.aboutInput}
           placeholder="About Your Self"
         />
 
-        <View style={{marginTop: hp(52), gap: hp(20)}}>
+        <View style={styles.buttonSection}>
           <CustomButton
             isPrimary="seeker"
             title={'Create Account'}
-            btnStyle={{backgroundColor: Colors.provider_primary}}
-            onPress={() => {
-              navigateTo(PROVIDER_SCREENS.ProviderTabNavigation);
-            }}
+            btnStyle={styles.createBtn}
+            onPress={() =>
+              navigateTo(PROVIDER_SCREENS.OtpVerifyScreen, {isProvider: true})
+            }
           />
         </View>
 
@@ -136,7 +121,6 @@ const ProSignupScreen = () => {
           onPress={() => goBack()}
           text="Already have an account?"
           style={styles.accountText}>
-          {' '}
           <CommonText text="Sign In" style={styles.signUpAccountText} />
         </CommonText>
       </KeyboardAwareScrollView>
@@ -147,6 +131,9 @@ const ProSignupScreen = () => {
 export default ProSignupScreen;
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: Colors.white,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -163,45 +150,34 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     ...commonFontStyle(600, 3.4, Colors.black),
   },
-
-  dividerContainer: {
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    marginHorizontal: wp(23),
-    paddingVertical: getFontSize(3),
+  inputSection: {
+    gap: hp(20),
+    marginTop: hp(45),
   },
-  label: {
-    ...commonFontStyle(400, 1.9, Colors._6B6969),
-    paddingHorizontal: getFontSize(1.4),
+  phoneInput: {
+    marginBottom: 0,
   },
-  divider: {
-    height: hp(1),
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    flex: 1,
+  uploadSection: {
+    marginTop: hp(52),
+    marginBottom: hp(35),
   },
-
-  socialContainer: {
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: getFontSize(3),
+  aboutInput: {
+    height: hp(120),
+    borderRadius: hp(14),
+    paddingVertical: hp(12),
   },
-
-  socialBtn: {
-    borderWidth: 1.5,
-    borderColor: Colors._F3F3F3,
-    borderRadius: getFontSize(2),
-    height: getFontSize(6),
-    width: getFontSize(9),
-    alignItems: 'center',
-    justifyContent: 'center',
+  buttonSection: {
+    marginTop: hp(52),
+    gap: hp(20),
+  },
+  createBtn: {
+    backgroundColor: Colors.provider_primary,
   },
   accountText: {
     textAlign: 'center',
     paddingTop: hp(35),
     ...commonFontStyle(400, 2, Colors._909090),
   },
-
   signUpAccountText: {
     ...commonFontStyle(600, 2, Colors.provider_primary),
   },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -6,29 +6,27 @@ import {
   Text,
   Image,
   Dimensions,
-} from 'react-native'
-import {Colors} from '@/constants/Colors'
-import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn'
-import CommonText from '@/components/common/CommonText'
-import {IMAGES} from '@/assets/images'
-import BottomModal from '@/components/common/BottomModal'
-import CustomImage from './CustomImage'
-import { navigateTo } from './commonFunction'
-import { SEEKER_SCREENS } from '@/navigation/screenNames'
+} from 'react-native';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import CommonText from '@/components/common/CommonText';
+import {IMAGES} from '@/assets/images';
+import BottomModal from '@/components/common/BottomModal';
+import CustomImage from './CustomImage';
+import {navigateTo, resetNavigation} from './commonFunction';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
-Dimensions.get('window')
+Dimensions.get('window');
 
 type PaymentSuccessModalProps = {
-  visible: boolean
-  onClose: () => void
-}
+  visible: boolean;
+  onClose: () => void;
+};
 
-const PaymentSuccessModal = ({
-  visible,
-  onClose,
-}: PaymentSuccessModalProps) => {
+const PaymentSuccessModal = ({visible, onClose}: PaymentSuccessModalProps) => {
   return (
     <BottomModal
+      close
       visible={visible}
       onClose={onClose}
       onPressCancel={onClose}
@@ -40,23 +38,28 @@ const PaymentSuccessModal = ({
           </View>
         </View>
       </View>
-        <CommonText text='Payment Successful!!' style={styles.title} />
+      <CommonText text="Payment Successful!!" style={styles.title} />
 
       <View style={styles.rowText}>
-        <CommonText text='Successfully Paid ' style={styles.description} />
+        <CommonText text="Successfully Paid " style={styles.description} />
         <Image source={IMAGES.dollar} style={styles.inlineIcon} />
-        <CommonText text=' 10,000' style={styles.description} />
+        <CommonText text=" 10,000" style={styles.description} />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={() => navigateTo(SEEKER_SCREENS.HomeScreen)}>
+        <TouchableOpacity
+          style={styles.cancelButton}
+          onPress={() => {
+            onClose();
+            resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+          }}>
           <Text style={styles.cancelButtonText}>Go to Dashboard</Text>
         </TouchableOpacity>
       </View>
     </BottomModal>
-  )
-}
+  );
+};
 
-export default PaymentSuccessModal
+export default PaymentSuccessModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -129,4 +132,4 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     ...commonFontStyle(600, 2.1, Colors.white),
   },
-})
+});

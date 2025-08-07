@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextProps, TextStyle} from 'react-native';
+import {StyleProp, StyleSheet, Text, TextProps, TextStyle} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle} from '@/utils/responsiveFn';
@@ -7,7 +7,7 @@ import {commonFontStyle} from '@/utils/responsiveFn';
 interface CommonTextProps extends TextProps {
   children?: React.ReactNode;
   text?: string | any;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
 const CommonText = ({text, children, style, ...rest}: CommonTextProps) => {

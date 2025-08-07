@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import CommonText from '../common/CommonText';
 import RequestCard from '../common/RequestCard';
 import {IMAGES} from '@/assets/images';
@@ -7,33 +7,56 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 
 type Props = {
+  color?: string;
+  title?: string;
+  header?: string;
+  bookingNumber?: number;
   handleCardPress: () => void;
+  requestCardStyle?: StyleProp<ViewStyle>;
 };
 
-const RequestSubmitModal = ({handleCardPress}: Props) => {
+const RequestSubmitModal = ({handleCardPress, header, title, color, bookingNumber, requestCardStyle}: Props) => {
   return (
     <View style={styles.submitModalContainer}>
-      <CommonText text={'Request Submitted'} style={styles.submitTitle} />
+      <CommonText
+        text={header || 'Request Submitted'}
+        style={styles.submitTitle}
+      />
 
-      <View style={styles.submitDashedCircle}>
-        <View style={styles.submitInnerCircle}>
+      <View style={[styles.submitDashedCircle, {borderColor: color}]}>
+        <View style={[styles.submitInnerCircle, {backgroundColor: color}]}>
           <Image source={IMAGES.right} style={styles.rightIcon} />
         </View>
       </View>
 
       <CommonText
         style={styles.submitText}
-        text={'Your request has been Submitted wait for the offers!'}
+        text={title || 'Your request has been Submitted wait for the offers!'}
       />
 
       <View style={styles.referenceRow}>
-        <CommonText text={'Reference Code:'} style={styles.referenceLabel} />
-        <CommonText text={'#D-698321'} style={styles.referenceValue} />
+        {bookingNumber ? (
+          <>
+            <CommonText
+              text={'Booking Number: '}
+              style={styles.referenceLabel}
+            />
+            <CommonText text={bookingNumber} style={styles.referenceValue} />
+          </>
+        ) : (
+          <>
+            <CommonText
+              text={'Reference Code:'}
+              style={styles.referenceLabel}
+            />
+            <CommonText text={'#D-698321'} style={styles.referenceValue} />
+          </>
+        )}
       </View>
 
       <RequestCard
         handleCardPress={handleCardPress}
-        style={styles.requestCardMargin}
+        style={[styles.requestCardMargin, requestCardStyle]}
       />
     </View>
   );

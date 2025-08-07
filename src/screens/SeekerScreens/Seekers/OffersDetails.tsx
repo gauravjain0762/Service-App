@@ -149,8 +149,8 @@ const OffersDetails = () => {
             onPaymentSelect={handlePaymentSelect}
           />
           <PaymentSuccessModal
-            visible={isPaymentSuccessModalVisible}
             onClose={closePaymentSuccessModal}
+            visible={isPaymentSuccessModalVisible}
           />
           <CustomButton
             title={'Accept Offer'}

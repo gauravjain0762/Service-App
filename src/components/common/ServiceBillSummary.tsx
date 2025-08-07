@@ -57,7 +57,7 @@ export default ServiceBillSummary;
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: hp(17),
+    // marginTop: hp(17),
     paddingVertical: hp(16),
     paddingHorizontal: wp(25),
   },

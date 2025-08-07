@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -10,11 +9,11 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {SCREENS} from '@/navigation/screenNames';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {resetNavigation} from '@/components/common/commonFunction';
 import OTPHeader from '@/components/auth/OTPHeader';
 import CustomImage from '@/components/common/CustomImage';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
@@ -25,7 +24,7 @@ const CELL_COUNT = 4;
 
 const OTPScreen = () => {
   const {params} = useRoute<any>();
-
+  const isProvider = params?.isProvider;
   const {t} = useTranslation();
 
   const [value, setValue] = useState('');
@@ -34,8 +33,6 @@ const OTPScreen = () => {
     value,
     setValue,
   });
-  //   const [otpVerify, {isLoading: otpLoading}] = useOtpVerifyMutation();
-  //   const [resendOtp, {isLoading: resendOtpLoading}] = useResendOtpMutation();
 
   const [timer, setTimer] = useState(60);
 
@@ -48,47 +45,31 @@ const OTPScreen = () => {
 
   const onLoginSubmit = async () => {
     resetNavigation(SCREENS.SeekerTabNavigation);
-    // let data = {
-    //   otp: value,
-    //   user_id: params?.userData?._id,
-    //   deviceToken: fcmToken,
-    //   deviceType: Platform.OS === 'ios' ? 'IOS' : 'ANDROID',
-    //   language: 'en',
-    // };
-    // const response = await otpVerify(data).unwrap();
-    // console.log('Login Response', response);
-    // if (response?.status) {
-    //   if (params?.isSignup) {
-    //     navigateTo(SCREEN_NAMES.FaceRecognition);
-    //   } else {
-    //     resetNavigation(SCREEN_NAMES.TabNavigation);
-    //   }
-    // } else {
-    //   errorToast(response?.message);
-    // }
   };
 
   const onResendOtp = async () => {
-    // let data = {
-    //   phone_code: params?.numInfo?.callingCode[0],
-    //   phone: params?.num,
-    //   language: language,
-    // };
-    // const response = await resendOtp(data).unwrap();
-    // if (response?.status) {
-    //   console.log(response, 'response--');
-    // }
+    // Resend OTP logic
   };
 
   return (
     <SafeareaProvider style={GeneralStyle.container}>
       <View style={styles.subContainer}>
         <OTPHeader />
-        <CustomImage
-          source={IMAGES.otpImage}
-          size={getFontSize(20)}
-          containerStyle={{alignSelf: 'center', marginTop: getFontSize(3.5)}}
-        />
+
+        <View style={styles.iconOuter}>
+          <View
+            style={[
+              styles.iconInner,
+              {
+                backgroundColor: isProvider
+                  ? Colors.provider_primary
+                  : Colors.seeker_primary,
+              },
+            ]}>
+            <CustomImage source={IMAGES.ic_otp} size={hp(60)} />
+          </View>
+        </View>
+
         <CommonText text={'Verification code'} style={styles.topLabel} />
 
         <CommonText
@@ -125,9 +106,17 @@ const OTPScreen = () => {
         <CustomButton
           isPrimary="seeker"
           title={t('Confirm')}
-          btnStyle={{marginTop: getFontSize(5)}}
+          btnStyle={[
+            styles.confirmButton,
+            {
+              backgroundColor: isProvider
+                ? Colors.provider_primary
+                : Colors.seeker_primary,
+            },
+          ]}
           onPress={onLoginSubmit}
         />
+
         {timer !== 0 ? (
           <CommonText text="Resend code in" style={styles.accountText}>
             {' '}
@@ -139,13 +128,21 @@ const OTPScreen = () => {
           </CommonText>
         ) : (
           <CommonText
-            onPress={() => {
-              onResendOtp();
-            }}
+            onPress={onResendOtp}
             text="Didn’t receive code?"
             style={styles.accountText}>
             {' '}
-            <CommonText text={'Resend'} style={styles.resendText} />
+            <CommonText
+              text={'Resend'}
+              style={[
+                styles.resendText,
+                {
+                  color: isProvider
+                    ? Colors.provider_primary
+                    : Colors.seeker_primary,
+                },
+              ]}
+            />
           </CommonText>
         )}
       </View>
@@ -161,6 +158,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: getFontSize(2.2),
     paddingVertical: getFontSize(1.8),
   },
+  iconOuter: {
+    width: wp(160),
+    height: hp(160),
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: hp(160),
+    justifyContent: 'center',
+    backgroundColor: Colors._F3F3F3,
+  },
+  iconInner: {
+    width: wp(132),
+    height: hp(132),
+    alignItems: 'center',
+    borderRadius: hp(132),
+    justifyContent: 'center',
+  },
   topLabel: {
     marginVertical: getFontSize(2),
     ...commonFontStyle(600, 2.5, Colors.black),
@@ -170,7 +183,9 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 2, Colors._5C5C5C),
     textAlign: 'center',
   },
-  codeFieldRoot: {marginTop: 20},
+  codeFieldRoot: {
+    marginTop: 20,
+  },
   cell: {
     width: getFontSize(8),
     height: getFontSize(8),
@@ -185,13 +200,16 @@ const styles = StyleSheet.create({
   focusCell: {
     borderColor: Colors.seeker_primary,
     borderWidth: 1.5,
-    backgroundColor: Colors?.seeker_primary,
+    backgroundColor: Colors.seeker_primary,
     lineHeight: 60,
     ...commonFontStyle(400, 2.7, Colors.white),
   },
   otpContainer: {
     marginVertical: getFontSize(1.5),
     paddingHorizontal: getFontSize(2.5),
+  },
+  confirmButton: {
+    marginTop: getFontSize(5),
   },
   accountText: {
     ...commonFontStyle(400, 2, Colors._909090),

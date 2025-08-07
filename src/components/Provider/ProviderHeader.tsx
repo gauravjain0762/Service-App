@@ -9,16 +9,22 @@ import CustomImage from '../common/CustomImage';
 
 type Props = {
   item?: any;
+  size?: number;
   isBell?: boolean;
   style?: ViewStyle;
   isStarVisible?: boolean;
+  titleStyle?: ViewStyle;
+  subtitleStyle?: ViewStyle;
   avatarContainerStyle?: ViewStyle;
 };
 
 const ProviderHeader = ({
+  size,
   item,
   style,
+  titleStyle,
   isBell = true,
+  subtitleStyle,
   avatarContainerStyle,
   isStarVisible = false,
 }: Props) => {
@@ -28,13 +34,13 @@ const ProviderHeader = ({
         <View style={[styles.avatarContainer, avatarContainerStyle]}>
           <CustomImage
             source={item?.image ? {uri: item?.image} : IMAGES.profile_avatar}
-            size={hp(35)}
+            size={size || hp(35)}
           />
         </View>
         <View style={styles.infoContainer}>
           <CommonText
             text={item?.name || 'Service Provider'}
-            style={styles.title}
+            style={[styles.title, titleStyle]}
           />
 
           {isStarVisible && (
@@ -53,7 +59,7 @@ const ProviderHeader = ({
 
           <CommonText
             numberOfLines={3}
-            style={styles.subtitle}
+            style={[styles.subtitle, subtitleStyle]}
             text={item?.review_desc || 'Welcome back!'}
           />
         </View>
@@ -108,8 +114,8 @@ const styles = StyleSheet.create({
     gap: wp(5),
   },
   bellContainer: {
-    width: wp(37),
-    height: hp(37),
+    width: wp(38),
+    height: hp(38),
     borderRadius: hp(10),
     alignItems: 'center',
     justifyContent: 'center',

@@ -25,6 +25,9 @@ export const SCREENS = {
   SearchScreen: 'SearchScreen',
   ProfileDetail: 'ProfileDetail',
   ProRequestDetail: 'ProRequestDetail',
+  MakeOffer: 'MakeOffer',
+  ProOfferDetails: 'ProOfferDetails',
+  TotalEarnings: "TotalEarnings"
 };
 
 export const SEEKER_SCREENS = {
@@ -69,6 +72,9 @@ export const PROVIDER_SCREENS = {
   NewRequestScreen: 'NewRequestScreen',
   ProfileDetail: 'ProfileDetail',
   ProRequestDetail: 'ProRequestDetail',
+  MakeOffer: 'MakeOffer',
+  ProOfferDetails: 'ProOfferDetails',
+  TotalEarnings: "TotalEarnings"
 };
 
 export interface ScreenNames {

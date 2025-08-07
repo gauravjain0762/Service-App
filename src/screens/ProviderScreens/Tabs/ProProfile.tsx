@@ -1,6 +1,6 @@
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
-import { navigateTo } from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 // import CommonSwitch from '@/components/common/CommonSwitch';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
@@ -8,7 +8,7 @@ import CustomImage from '@/components/common/CustomImage';
 import ProfileListItem from '@/components/Provider/ProfileListItem';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import { PROVIDER_SCREENS } from '@/navigation/screenNames';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import React from 'react';
 import {
@@ -39,6 +39,7 @@ const List = [
     id: 4,
     title: 'Logout',
     icon: IMAGES.pro_logout,
+    onPress: () => resetNavigation(PROVIDER_SCREENS.ProLoginScreen),
   },
 ];
 
@@ -102,7 +103,9 @@ const ProProfile = () => {
           data={List}
           showsVerticalScrollIndicator={false}
           scrollEnabled={false}
-          renderItem={({item}) => <ProfileListItem item={item} />}
+          renderItem={({item}) => (
+            <ProfileListItem item={item} onPress={item?.onPress} />
+          )}
           contentContainerStyle={styles.contentContainer}
         />
       </ScrollView>

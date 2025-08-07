@@ -33,9 +33,15 @@ type Props = {
   onDatePress?: (date: moment.Moment) => void;
   selectedDate?: any;
   setSelectedDate?: (date: any) => void;
+  isProvider?: boolean;
 };
 
-const CustomDates = ({onDatePress, selectedDate, setSelectedDate}: Props) => {
+const CustomDates = ({
+  onDatePress,
+  selectedDate,
+  setSelectedDate,
+  isProvider = true,
+}: Props) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
@@ -71,7 +77,11 @@ const CustomDates = ({onDatePress, selectedDate, setSelectedDate}: Props) => {
             const selected = isSelected(item);
             return (
               <TouchableOpacity
-                style={[styles.dateBox, selected && styles.selectedBox]}
+                style={[
+                  styles.dateBox,
+                  selected && styles.selectedBox,
+                  isProvider && selected && styles.providerBox,
+                ]}
                 onPress={() => {
                   setSelectedDate?.(item);
                   onDatePress?.(item.fullDate);
@@ -135,6 +145,10 @@ const styles = StyleSheet.create({
   selectedBox: {
     backgroundColor: Colors.seeker_primary,
     borderColor: Colors.seeker_primary,
+  },
+  providerBox: {
+    borderColor: Colors.provider_primary,
+    backgroundColor: Colors.provider_primary,
   },
   month: {
     ...commonFontStyle(500, 1.8, Colors._9A9A9A),

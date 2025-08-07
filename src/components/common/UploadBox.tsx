@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, ViewStyle, ImageStyle, StyleProp, View} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
@@ -7,16 +7,37 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import ImagePicker from 'react-native-image-crop-picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CustomButton from './CustomButton';
+import CustomImage from './CustomImage';
 
-const UploadBox = () => {
+type Props = {
+  desc?: string;
+  title?: string;
+  style?: ViewStyle;
+  imageSource?: any;
+  isButton?: boolean;
+  btnStyle?: ViewStyle;
+  onCameraCardPress?: () => void;
+  imgStyle?: any | StyleProp<ImageStyle>;
+};
+
+const UploadBox = ({
+  title,
+  style,
+  btnStyle,
+  desc,
+  imgStyle,
+  imageSource,
+  onCameraCardPress,
+  isButton = true,
+}: Props) => {
   const handleBrowseFiles = () => {
     ImagePicker.openPicker({
       multiple: false,
-      mediaType: 'any', // 'photo', 'video', or 'any'
+      mediaType: 'any',
     })
       .then(image => {
         console.log('Selected:', image);
-        // handle the selected file (image.path or image.mime etc.)
       })
       .catch(error => {
         if (error.code !== 'E_PICKER_CANCELLED') {
@@ -26,23 +47,38 @@ const UploadBox = () => {
   };
 
   return (
-    <ShadowCard>
-      <CommonText style={styles.title} text={'Upload Video/Image'} />
+    <ShadowCard onCardPress={handleBrowseFiles} style={[style]}>
+      {title && <CommonText style={styles.title} text={title} />}
 
-      <Image source={IMAGES.pdf} style={styles.icon} resizeMode="contain" />
+      {imageSource ? (
+        <View style={styles.imageContainer}>
+          <CustomImage
+            size={hp(24)}
+            resizeMode="contain"
+            source={imageSource}
+          />
+        </View>
+      ) : (
+        <CustomImage
+          resizeMode="contain"
+          source={imageSource || IMAGES.pdf}
+          imageStyle={[styles.icon, imgStyle]}
+        />
+      )}
 
       <CommonText
         style={styles.subText}
-        text={'Upload video files and images here.'}
+        text={desc || 'Upload video files and images here.'}
       />
 
-      <TouchableOpacity
-        onPress={() => {
-          handleBrowseFiles();
-        }}
-        style={styles.browseBtn}>
-        <CommonText style={styles.browseText} text={'Browse Files'} />
-      </TouchableOpacity>
+      {isButton && (
+        <CustomButton
+          onPress={handleBrowseFiles}
+          btnStyle={[styles.browseBtn, btnStyle]}
+          title="Browse Files"
+          textStyle={styles.browseText}
+        />
+      )}
     </ShadowCard>
   );
 };
@@ -53,18 +89,18 @@ const styles = StyleSheet.create({
   title: {
     ...commonFontStyle(600, 2.2, Colors.black),
   },
-  iconContainer: {
-    width: wp(60),
-    height: hp(60),
-    marginTop: hp(16),
-    borderRadius: hp(30),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   icon: {
     width: wp(48),
     height: hp(48),
     marginTop: hp(20),
+  },
+  imageContainer: {
+    width: wp(48),
+    height: hp(48),
+    borderRadius: hp(13),
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.provider_primary,
   },
   subText: {
     marginVertical: hp(20),
@@ -72,8 +108,8 @@ const styles = StyleSheet.create({
   },
   browseBtn: {
     borderRadius: hp(20),
-    paddingVertical: hp(10),
-    paddingHorizontal: wp(20),
+    paddingVertical: hp(14),
+    paddingHorizontal: wp(24),
     backgroundColor: Colors.seeker_primary,
   },
   browseText: {

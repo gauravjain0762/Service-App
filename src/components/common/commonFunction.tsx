@@ -66,6 +66,7 @@ export const resetNavigation = (name: string, params?: any | undefined) => {
     }),
   );
 };
+
 export const navigateTo = (name: string, params?: any | undefined) => {
   navigationRef.navigate(name, params);
 };

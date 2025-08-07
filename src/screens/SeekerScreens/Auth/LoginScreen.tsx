@@ -14,6 +14,7 @@ import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import TermsCheckBox from '@/components/common/TermsCheckBox';
 
 const LoginScreen = ({}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -32,26 +33,14 @@ const LoginScreen = ({}: any) => {
             style={styles.forgotPasswordText}
             onPress={() => navigateTo(SEEKER_SCREENS.ForgotPassword)}
           />
-          <View style={styles.midContainer}>
-            <CheckBox
-              onClick={() => {
-                setToggleCheckBox(!toggleCheckBox);
-              }}
-              isChecked={toggleCheckBox}
-              uncheckedCheckBoxColor="#878787"
-              checkedCheckBoxColor={Colors.seeker_primary}
-            />
-            <CommonText
-              text="I agree to follow the"
-              style={styles.checkBoxText}>
-              {' '}
-              <CommonText
-                onPress={() => navigateTo(SEEKER_SCREENS.TermsWebScreen)}
-                text="terms of use"
-                style={styles.checkBoxText2}
-              />
-            </CommonText>
-          </View>
+          <TermsCheckBox
+            isSeeker={true}
+            toggleCheckBox={toggleCheckBox}
+            setToggleCheckBox={setToggleCheckBox}
+            checkedCheckBoxColor={Colors.seeker_primary}
+            isChecked={toggleCheckBox}
+            onClick={() => setToggleCheckBox(!toggleCheckBox)}
+          />
         </View>
 
         <View style={{marginTop: hp(50), gap: hp(30)}}>

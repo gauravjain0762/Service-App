@@ -63,6 +63,8 @@ export const IMAGES = {
   card: require('./icons/card.png'),
   cash: require('./icons/cash.png'),
   empty_star: require('./icons/empty_star.png'),
+  ic_camera: require('./icons/Provider/ic_camera.png'),
+  ic_otp: require('./icons/ic_otp.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
@@ -89,6 +91,7 @@ export const IMAGES = {
   petService: require('./Images/petService.png'),
   user_profile: require('./Images/user_profile.png'),
   battery: require('./Images/battery.png'),
+  earning_bg: require('./Images/earning_bg.png'),
 };
 
 export const Animation = {};

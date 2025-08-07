@@ -8,6 +8,10 @@ import ProviderTabNavigation from './ProviderTabNavigation';
 import NewRequestScreen from '@/screens/ProviderScreens/Home/NewRequestScreen';
 import ProfileDetailScreen from '@/screens/ProviderScreens/Profile/ProfileDetailScreen';
 import ProRequestDetail from '@/screens/ProviderScreens/Others/ProRequestDetail';
+import MakeOffer from '@/screens/ProviderScreens/Others/MakeOffer';
+import ProOfferDetails from '@/screens/ProviderScreens/Others/ProOfferDetails';
+import TotalEarnings from '@/screens/ProviderScreens/Home/TotalEarnings';
+import OTPScreen from '@/screens/SeekerScreens/Auth/OTPScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -27,6 +31,10 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.NewRequestScreen, component: NewRequestScreen},
     {name: PROVIDER_SCREENS.ProfileDetail, component: ProfileDetailScreen},
     {name: PROVIDER_SCREENS.ProRequestDetail, component: ProRequestDetail},
+    {name: PROVIDER_SCREENS.MakeOffer, component: MakeOffer},
+    {name: PROVIDER_SCREENS.ProOfferDetails, component: ProOfferDetails},
+    {name: PROVIDER_SCREENS.TotalEarnings, component: TotalEarnings},
+    {name: PROVIDER_SCREENS.OtpVerifyScreen, component: OTPScreen},
   ];
   return (
     <Stack.Navigator

@@ -38,7 +38,6 @@ const ProviderTabNavigation = () => {
     const handlePress = () => {
       if (route.name === '') {
         // screen name
-        console.log('helle');
       } else {
         onPress();
       }

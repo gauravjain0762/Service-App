@@ -1,51 +1,50 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Image,
-} from 'react-native'
-import {Colors} from '@/constants/Colors'
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn'
-import CommonText from '@/components/common/CommonText'
-import {IMAGES} from '@/assets/images'
-import BottomModal from '@/components/common/BottomModal'
+} from 'react-native';
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CommonText from '@/components/common/CommonText';
+import {IMAGES} from '@/assets/images';
+import BottomModal from '@/components/common/BottomModal';
 
-Dimensions.get('window')
+Dimensions.get('window');
 
 type PaymentMethodModalProps = {
-  visible: boolean
-  onClose: () => void
-  onPaymentSelect: (method: string) => void
-}
+  visible: boolean;
+  onClose: () => void;
+  onPaymentSelect: (method: string) => void;
+};
 
 const PaymentMethodModal = ({
   visible,
   onClose,
   onPaymentSelect,
 }: PaymentMethodModalProps) => {
-  const [selectedPayment, setselectedPayment] = useState('')
+  const [selectedPayment, setselectedPayment] = useState('');
 
   const handlePaymentSelect = (method: string) => {
-    setselectedPayment(method)
-    onPaymentSelect(method)
-  }
+    setselectedPayment(method);
+    onPaymentSelect(method);
+  };
 
   return (
     <BottomModal
       visible={visible}
+      close
       onClose={onClose}
       onPressCancel={onClose}
-      style={styles.modalContainer}
-    >
+      style={styles.modalContainer}>
       <CommonText text="Choose Payment Method" style={styles.title} />
 
       <View style={styles.paymentContainer}>
         <TouchableOpacity
           style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('Pay by Card')}
-        >
+          onPress={() => handlePaymentSelect('Pay by Card')}>
           <View style={styles.paymentInfo}>
             <Image source={IMAGES.card} style={styles.iconCard} />
             <CommonText text="Pay by Card" style={styles.paymentText} />
@@ -54,8 +53,7 @@ const PaymentMethodModal = ({
             style={[
               styles.radioButton,
               selectedPayment === 'Pay by Card' && styles.radioButtonSelected,
-            ]}
-          >
+            ]}>
             {selectedPayment === 'Pay by Card' && (
               <View style={styles.radioButtonInner} />
             )}
@@ -64,8 +62,7 @@ const PaymentMethodModal = ({
 
         <TouchableOpacity
           style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('Apple Pay')}
-        >
+          onPress={() => handlePaymentSelect('Apple Pay')}>
           <View style={styles.paymentInfo}>
             <Image source={IMAGES.apple} style={styles.iconApple} />
             <CommonText text="Apple Pay" style={styles.paymentText} />
@@ -74,8 +71,7 @@ const PaymentMethodModal = ({
             style={[
               styles.radioButton,
               selectedPayment === 'Apple Pay' && styles.radioButtonSelected,
-            ]}
-          >
+            ]}>
             {selectedPayment === 'Apple Pay' && (
               <View style={styles.radioButtonInner} />
             )}
@@ -84,8 +80,7 @@ const PaymentMethodModal = ({
 
         <TouchableOpacity
           style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('Pay by Cash')}
-        >
+          onPress={() => handlePaymentSelect('Pay by Cash')}>
           <View style={styles.paymentInfo}>
             <Image source={IMAGES.cash} style={styles.iconCash} />
             <CommonText text="Pay by Cash" style={styles.paymentText} />
@@ -94,8 +89,7 @@ const PaymentMethodModal = ({
             style={[
               styles.radioButton,
               selectedPayment === 'Pay by Cash' && styles.radioButtonSelected,
-            ]}
-          >
+            ]}>
             {selectedPayment === 'Pay by Cash' && (
               <View style={styles.radioButtonInner} />
             )}
@@ -103,10 +97,10 @@ const PaymentMethodModal = ({
         </TouchableOpacity>
       </View>
     </BottomModal>
-  )
-}
+  );
+};
 
-export default PaymentMethodModal
+export default PaymentMethodModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -175,4 +169,4 @@ const styles = StyleSheet.create({
     borderRadius: wp(100),
     backgroundColor: Colors.black,
   },
-})
+});

@@ -73,7 +73,12 @@ export const Colors = {
   _F6FFFB: '#F6FFFB',
   _616161: '#616161',
   _919191: '#919191',
-  _55B4FD : '#55B4FD',
+  _55B4FD: '#55B4FD',
+  _818181: '#818181',
+  _686868: '#686868',
+  _F2ECEC: '#F2ECEC',
+  _7A7A7A: "#7A7A7A",
+  _323232: "#323232",
 
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(99, 45, 1, 0.9)',

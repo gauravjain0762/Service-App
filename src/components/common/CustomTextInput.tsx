@@ -22,8 +22,9 @@ interface CustomTextInputProps extends TextInputProps {
   placeholder?: string;
   leftIcon?: any;
   rightIcon?: any;
-  containerStyle?: ViewStyle,
-  inputStyle?: ViewStyle
+  containerStyle?: ViewStyle;
+  inputStyle?: ViewStyle;
+  mainStyle?: ViewStyle;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -35,13 +36,14 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   rightIcon,
   containerStyle,
   inputStyle,
+  mainStyle,
   ...rest
 }) => {
   const {t} = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, mainStyle]}>
       {label && (
         <CommonText text={label} style={styles.label}>
           {required && <Text style={styles.required}>*</Text>}

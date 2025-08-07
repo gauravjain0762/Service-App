@@ -7,13 +7,15 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
 type Props = {
+  color?: string;
   service?: string;
   providerName?: string;
+  isViewProfile?: boolean;
 };
 
-const ServiceProvider = ({providerName, service}: Props) => {
+const ServiceProvider = ({providerName, service, color, isViewProfile=true}: Props) => {
   return (
-    <View style={styles.providerCard}>
+    <View style={[styles.providerCard, {backgroundColor: color}]}>
       <View style={styles.providerAvatarWrapper}>
         <Image
           resizeMode="contain"
@@ -27,10 +29,10 @@ const ServiceProvider = ({providerName, service}: Props) => {
             text={providerName || 'Royal Santary Store'}
             style={styles.providerName}
           />
-          <View style={styles.ratingRow}>
+         {isViewProfile && <View style={styles.ratingRow}>
             <Image source={IMAGES.star} />
             <CommonText text={'4.9'} style={styles.ratingText} />
-          </View>
+          </View>}
         </View>
         <CommonText
           text={service || 'AC Regular Services'}
@@ -39,16 +41,16 @@ const ServiceProvider = ({providerName, service}: Props) => {
         <View style={styles.actionRow}>
           <View style={styles.actionIconGroup}>
             <View style={styles.iconContainer}>
-              <Image source={IMAGES.call} />
+              <Image source={IMAGES.call} tintColor={color} />
             </View>
             <View style={styles.iconContainer}>
-              <Image source={IMAGES.message} />
+              <Image source={IMAGES.message} tintColor={color} />
             </View>
           </View>
 
-          <View style={styles.viewProfileBtn}>
+        {isViewProfile &&  <View style={styles.viewProfileBtn}>
             <CommonText text={'View Profile'} style={styles.viewProfileText} />
-          </View>
+          </View>}
         </View>
       </View>
     </View>

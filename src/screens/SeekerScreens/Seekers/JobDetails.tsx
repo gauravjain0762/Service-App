@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -10,8 +10,6 @@ import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
-import {resetNavigation} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
 import ServiceProvider from '@/components/common/ServiceProvider';
 import ServiceDetails from '@/components/common/ServiceDetails';
 import ServiceBillSummary from '@/components/common/ServiceBillSummary';
@@ -62,7 +60,7 @@ const JobDetails = () => {
 
         <CommonText text={'Service Provider'} style={styles.sectionTitle} />
 
-        <ServiceProvider />
+        <ServiceProvider isViewProfile={true} color={Colors.seeker_primary} />
         <ServiceDetails />
         <ServiceBillSummary />
 
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
   },
   jobCard: {
     padding: wp(16),
-    marginVertical: hp(27),
+    marginTop: hp(27),
     alignItems: 'flex-start',
   },
   rowWithGap: {

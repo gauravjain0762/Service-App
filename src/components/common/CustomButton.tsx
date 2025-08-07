@@ -2,6 +2,8 @@
 import React, {FC, ReactNode, memo} from 'react';
 import {
   ActivityIndicator,
+  GestureResponderEvent,
+  StyleProp,
   StyleSheet,
   TextStyle,
   TouchableOpacity,
@@ -16,8 +18,8 @@ import CommonText from './CommonText';
 type Props = {
   disabled?: boolean;
   title: any;
-  onPress?: () => void;
-  btnStyle?: ViewStyle;
+  onPress?: (event: GestureResponderEvent) => void;
+  btnStyle?: StyleProp<ViewStyle>;
   leftImg?: ReactNode;
   textStyle?: TextStyle;
   type?: 'fill' | 'outline';

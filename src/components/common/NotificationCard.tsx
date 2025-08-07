@@ -79,9 +79,11 @@ export default NotificationList;
 const styles = StyleSheet.create({
   listContent: {
     paddingBottom: hp(40),
+    paddingHorizontal: wp(24),
   },
   card: {
     gap: hp(14),
+    width: '100%',
     marginBottom: hp(15),
     paddingVertical: hp(16),
     paddingHorizontal: wp(25),

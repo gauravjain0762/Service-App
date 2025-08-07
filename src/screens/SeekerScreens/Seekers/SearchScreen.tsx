@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,13 +7,16 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-} from 'react-native'
-import {hp, wp, commonFontStyle} from '@/utils/responsiveFn'
-import {Colors} from '@/constants/Colors'
-import {IMAGES} from '@/assets/images'
-import {SafeAreaProvider} from 'react-native-safe-area-context'
-import {HeaderBackButton} from '@react-navigation/elements'
-import { navigationRef } from '@/navigation/RootContainer'
+} from 'react-native';
+import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
+import {Colors} from '@/constants/Colors';
+import {IMAGES} from '@/assets/images';
+import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
+import {HeaderBackButton} from '@react-navigation/elements';
+import {navigationRef} from '@/navigation/RootContainer';
+import {goBack} from '@/components/common/commonFunction';
+import CustomImage from '@/components/common/CustomImage';
+import CustomTextInput from '@/components/common/CustomTextInput';
 
 const initialSearches = [
   'Spark plug replacement',
@@ -26,46 +29,49 @@ const initialSearches = [
   'Engine air filter',
   'Belts and hoses',
   'Brake pads',
-]
+];
 
 const SearchScreen = () => {
-  const [search, setSearch] = useState('')
-  const [recentSearches, setRecentSearches] = useState(initialSearches)
+  const [search, setSearch] = useState('');
+  const [recentSearches, setRecentSearches] = useState(initialSearches);
 
   const filteredSearches = search
     ? recentSearches.filter(item =>
         item.toLowerCase().includes(search.toLowerCase()),
       )
-    : recentSearches
+    : recentSearches;
 
-  const displayCount = filteredSearches.length > 2 ? 4 : 2
-  const displaySearches = filteredSearches.slice(0, displayCount)
+  const displayCount = filteredSearches.length > 2 ? 4 : 2;
+  const displaySearches = filteredSearches.slice(0, displayCount);
 
   const handleRemove = (item: string) => {
-    setRecentSearches(recentSearches.filter(i => i !== item))
-  }
+    setRecentSearches(recentSearches.filter(i => i !== item));
+  };
 
   const handleClearAll = () => {
-    setRecentSearches([])
-  }
+    setRecentSearches([]);
+  };
 
   return (
-    <SafeAreaProvider style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <HeaderBackButton onPress={() => navigationRef.current?.goBack()} style={{marginBottom: hp(25)}} />
-        <View style={styles.searchBar}>
-          <Image source={IMAGES.search} style={styles.searchIcon} />
-          <TextInput
-            style={styles.input}
-            placeholder='Car Battery Replacement'
-            value={search}
-            onChangeText={setSearch}
-            placeholderTextColor='#3A3A3A'
-          />
-          <TouchableOpacity>
-            <Image source={IMAGES.filter} style={styles.filterIcon} />
-          </TouchableOpacity>
-        </View>
+        <HeaderBackButton
+          onPress={() => goBack()}
+          backImage={() => (
+            <CustomImage source={IMAGES.backArrow2} size={hp(16)} />
+          )}
+        />
+
+        <CustomTextInput
+          value={search}
+          mainStyle={{flex: 1}}
+          onChangeText={setSearch}
+          placeholderTextColor="#3A3A3A"
+          placeholder="Car Battery Replacement"
+          containerStyle={{paddingHorizontal: wp(15), gap: wp(5)}}
+          leftIcon={<CustomImage source={IMAGES.search} size={hp(28)} />}
+          rightIcon={<CustomImage source={IMAGES.filter} size={hp(28)} />}
+        />
       </View>
 
       <View style={styles.headerRow}>
@@ -87,11 +93,11 @@ const SearchScreen = () => {
           </View>
         )}
         style={styles.flatList}
-        keyboardShouldPersistTaps='handled'
+        keyboardShouldPersistTaps="handled"
       />
-    </SafeAreaProvider>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -102,11 +108,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
   },
   searchBar: {
     flexDirection: 'row',
@@ -138,9 +140,11 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: hp(20),
+    marginTop: hp(38),
+
+    justifyContent: 'space-between',
   },
   headerText: {
     ...commonFontStyle(600, 2.5, Colors.black),
@@ -167,8 +171,8 @@ const styles = StyleSheet.create({
     color: Colors._888888,
     marginLeft: wp(10),
     fontWeight: 'bold',
-    tintColor: '#AAAAAA'
+    tintColor: '#AAAAAA',
   },
-})
+});
 
-export default SearchScreen
+export default SearchScreen;

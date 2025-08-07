@@ -17,6 +17,7 @@ const ProviderCards = ({item, index}: Props) => {
   const onPress = () => {
     if (index === 0) {
     } else if (index === 1) {
+      navigateTo(PROVIDER_SCREENS.TotalEarnings);
     } else if (index === 2) {
       navigateTo(PROVIDER_SCREENS.NewRequestScreen);
     } else if (index === 3) {

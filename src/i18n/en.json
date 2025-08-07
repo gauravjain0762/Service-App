@@ -84,6 +84,19 @@
     "Profile Detail": "Profile Detail",
     "Request Detail": "Request Detail",
     "Service Type": "Service Type",
-    "Service Detail": "Service Detail"
+    "Service Detail": "Service Detail",
+    "Attach Document": "Attach Document",
+    "Estimated time to complete": "Estimated time to complete",
+    "Your Offer Price": "Your Offer Price",
+    "Submit Offer": "Submit Offer",
+    "Offer Submitted": "Offer Submitted",
+    "Update Work Status": "Update Work Status",
+    "Mark as Start": "Mark as Start",
+    "Complete Booking?": "Complete Booking?",
+    "Go Back": "Go Back",
+    "Mark as Completed": "Mark as Completed",
+    "Upload video and images here.": "Upload video and images here.",
+    "Last Transaction": "Last Transaction",
+    "See all": "See all"
   }
 }

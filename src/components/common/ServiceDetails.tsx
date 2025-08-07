@@ -28,6 +28,7 @@ const ServiceDetails = () => {
       <FlatList
         scrollEnabled={false}
         keyExtractor={(_, index) => index.toString()}
+        contentContainerStyle={{paddingBottom: hp(25), marginTop: hp(10)}}
         data={ServiceDetail}
         renderItem={({item, index}) => (
           <ShadowCard key={index} style={styles.paymentCard}>
@@ -53,7 +54,7 @@ export default ServiceDetails;
 const styles = StyleSheet.create({
   paymentCard: {
     width: '95%',
-    marginTop: hp(25),
+    marginTop: hp(17),
     alignItems: 'flex-start',
     paddingHorizontal: wp(25),
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, Pressable, StyleSheet, View, ViewStyle} from 'react-native';
+import {Image, Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
@@ -9,10 +9,10 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 type props = {
   text1?: string;
   text2?: string;
-  style?: ViewStyle;
   imageSource?: any;
   titleStyle?: ViewStyle;
   subtitleStyle?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   handleCardPress?: () => void;
 };
 

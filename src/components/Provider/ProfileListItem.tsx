@@ -8,12 +8,14 @@ import {IMAGES} from '@/assets/images';
 
 type Props = {
   item: any;
+  onPress?: () => void;
 };
-const ProfileListItem = ({item}: Props) => {
+const ProfileListItem = ({item, onPress}: Props) => {
   return (
     <TouchableOpacity
       activeOpacity={0.5}
       key={item?.id}
+      onPress={onPress}
       style={styles.container}>
       <CustomImage
         source={item?.icon}
