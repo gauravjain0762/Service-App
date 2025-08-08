@@ -12,6 +12,10 @@ import MakeOffer from '@/screens/ProviderScreens/Others/MakeOffer';
 import ProOfferDetails from '@/screens/ProviderScreens/Others/ProOfferDetails';
 import TotalEarnings from '@/screens/ProviderScreens/Home/TotalEarnings';
 import OTPScreen from '@/screens/SeekerScreens/Auth/OTPScreen';
+import Notifications from '@/screens/SeekerScreens/Seekers/Notifications';
+import ForgotPassword from '@/screens/SeekerScreens/Auth/ForgotPassword';
+import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
+import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -35,6 +39,10 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.ProOfferDetails, component: ProOfferDetails},
     {name: PROVIDER_SCREENS.TotalEarnings, component: TotalEarnings},
     {name: PROVIDER_SCREENS.OtpVerifyScreen, component: OTPScreen},
+    {name: PROVIDER_SCREENS.Notifications, component: Notifications},
+    {name: PROVIDER_SCREENS.ForgotPassword, component: ForgotPassword},
+    {name: PROVIDER_SCREENS.EmailVerification, component: EmailVerification},
+    {name: PROVIDER_SCREENS.CreateNewPass, component: CreateNewPass},
   ];
   return (
     <Stack.Navigator

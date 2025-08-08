@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import CustomTextInput from '@/components/common/CustomTextInput';
-import CheckBox from 'react-native-check-box';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
-
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
-import {navigateTo} from '@/components/common/commonFunction';
-import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
@@ -29,7 +27,9 @@ const ProLoginScreen = ({}: any) => {
           <CommonText
             text="Forgot Password?"
             style={styles.forgotPasswordText}
-            onPress={() => navigateTo(SEEKER_SCREENS.ForgotPassword)}
+            onPress={() =>
+              navigateTo(PROVIDER_SCREENS.ForgotPassword, {isProvider: true})
+            }
           />
           <TermsCheckBox
             toggleCheckBox={toggleCheckBox}
@@ -45,7 +45,9 @@ const ProLoginScreen = ({}: any) => {
             isPrimary="seeker"
             title={'Login'}
             btnStyle={{backgroundColor: Colors.provider_primary}}
-            onPress={() => navigateTo(PROVIDER_SCREENS.ProviderTabNavigation)}
+            onPress={() =>
+              resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation)
+            }
           />
         </View>
 

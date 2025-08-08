@@ -32,7 +32,6 @@ const SeekerTabNavigation = () => {
     <SafeAreaView
       edges={['bottom']}
       style={{backgroundColor: Colors.white, flex: 1}}>
-      {/* <CustomShadow shadowStyle={{flex: 1}}> */}
       <Tab.Navigator
         initialRouteName={SEEKER_SCREENS.Home}
         screenOptions={({route}) => ({
@@ -91,16 +90,10 @@ const SeekerTabNavigation = () => {
         <Tab.Screen
           name={SEEKER_SCREENS.MyBookingsTab}
           component={MyBookingsTab}
-          listeners={{
-            tabPress: e => {
-              e.preventDefault();
-            },
-          }}
         />
         <Tab.Screen name={SEEKER_SCREENS.MyRequest} component={MyRequest} />
-        <Tab.Screen name="Profile" component={Profile} />
+        <Tab.Screen name={SEEKER_SCREENS.Profile} component={Profile} />
       </Tab.Navigator>
-      {/* </CustomShadow> */}
     </SafeAreaView>
   );
 };

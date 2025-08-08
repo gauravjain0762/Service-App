@@ -5,7 +5,9 @@ import BackHeader from '@/components/common/BackHeader';
 import BookingCard from '@/components/Provider/BookingCard';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import {getFontSize} from '@/utils/responsiveFn';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {navigateTo} from '@/components/common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 
 const DATA = [
   {
@@ -46,7 +48,19 @@ const NewRequestScreen = () => {
         <FlatList
           data={DATA}
           renderItem={({item, index}) => {
-            return <BookingCard item={item} index={index} isBooking={false} />;
+            return (
+              <BookingCard
+                item={item}
+                index={index}
+                isBooking={false}
+                onPress={() => {
+                  navigateTo(PROVIDER_SCREENS.MakeOffer);
+                }}
+                onPressButton={() => {
+                  navigateTo(PROVIDER_SCREENS.MakeOffer);
+                }}
+              />
+            );
           }}
           keyExtractor={item => item.id}
           showsVerticalScrollIndicator={false}

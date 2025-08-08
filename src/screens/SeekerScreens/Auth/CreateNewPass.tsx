@@ -9,20 +9,21 @@ import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {navigationRef} from '@/navigation/RootContainer';
 import {resetNavigation} from '@/components/common/commonFunction';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useRoute} from '@react-navigation/native';
 
 const CreateNewPass = () => {
-  const handleSubmit = () => {
-    // Handle forgot password submission
-    // You can add email validation and API call here
-  };
+  const {params} = useRoute<any>();
+  const isProvider = params?.isProvider;
+
+  const handleSubmit = () => {};
 
   return (
     <SafeareaProvider
       style={{
-        paddingHorizontal: wp(20),
         flex: 1,
+        paddingHorizontal: wp(30),
         backgroundColor: Colors.white,
       }}>
       <KeyboardAwareScrollView
@@ -57,10 +58,14 @@ const CreateNewPass = () => {
 
           <View style={styles.buttonContainer}>
             <CustomButton
-              isPrimary="seeker"
+              isPrimary={isProvider ? 'provider' : 'seeker'}
               title="Submit"
               onPress={() =>
-                resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)
+                resetNavigation(
+                  isProvider
+                    ? PROVIDER_SCREENS.ProviderTabNavigation
+                    : SEEKER_SCREENS.SeekerTabNavigation,
+                )
               }
             />
           </View>
@@ -95,7 +100,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   mainContent: {
-    paddingHorizontal: wp(20),
     paddingTop: hp(20),
   },
   headerText: {

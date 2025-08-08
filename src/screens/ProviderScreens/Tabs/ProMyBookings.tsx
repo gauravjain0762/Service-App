@@ -3,7 +3,6 @@ import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
 import {navigateTo} from '@/components/common/commonFunction';
 import CommonText from '@/components/common/CommonText';
-import CustomDropdown from '@/components/common/CustomDropdown';
 import CustomImage from '@/components/common/CustomImage';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import BookingCard from '@/components/Provider/BookingCard';
@@ -11,7 +10,8 @@ import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
-import React, {useState} from 'react';
+import {useFocusEffect, useRoute} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
@@ -46,14 +46,27 @@ export const DATA = [
 ];
 
 const ProMyBookings = () => {
+  const {params} = useRoute<any>();
+  const status = params?.status as {status: undefined | string}['status'];
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState('All');
   const [allOptions] = useState(['All', 'Accepted', 'Active', 'Completed']);
+  const [filteredData, setFilteredData] = useState(DATA);
 
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
     setIsModalVisible(false);
   };
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     if (status) {
+  //       setFilteredData(DATA.filter(item => item.status === status));
+  //     } else {
+  //       setFilteredData(DATA);
+  //     }
+  //   }, []),
+  // );
 
   return (
     <SafeAreaView style={GeneralStyle.container}>

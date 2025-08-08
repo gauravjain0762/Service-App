@@ -12,6 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import ProDashboard from '@/screens/ProviderScreens/Tabs/ProDashboard';
 import ProMyBookings from '@/screens/ProviderScreens/Tabs/ProMyBookings';
 import ProProfile from '@/screens/ProviderScreens/Tabs/ProProfile';
+import NewRequestScreen from '@/screens/ProviderScreens/Home/NewRequestScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,11 @@ const ProviderTabNavigation = () => {
       name: PROVIDER_SCREENS.ProDashboard,
       icon: IMAGES.home,
       component: ProDashboard,
+    },
+    {
+      name: PROVIDER_SCREENS.NewRequestScreen,
+      icon: IMAGES.feed,
+      component: NewRequestScreen,
     },
     {
       name: PROVIDER_SCREENS.ProMyBookings,

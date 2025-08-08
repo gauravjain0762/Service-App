@@ -7,19 +7,30 @@ import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import OfferCard from '@/components/common/OfferCard';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {SCREENS} from '@/navigation/screenNames';
+import {
+  goBack,
+  navigateTo,
+  resetNavigation,
+} from '@/components/common/commonFunction';
+import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
+import {useRoute} from '@react-navigation/native';
 
 const Offers = () => {
+  const {params} = useRoute<any>();
+  const isResetNav = params?.isResetNav;
+
   return (
     <SafeareaProvider style={styles.safeArea}>
       <View style={styles.topContainer}>
         <BackHeader
           text={'Request'}
-          onPressBack={() => resetNavigation(
-            SCREENS.SeekerTabNavigation,
-            SCREENS.Home,
-          )}
+          onPressBack={() => {
+            if (isResetNav) {
+              resetNavigation(SEEKER_SCREENS.SeekerTabNavigation, SEEKER_SCREENS.Home);
+            } else {
+              goBack();
+            }
+          }}
         />
 
         <RequestCard

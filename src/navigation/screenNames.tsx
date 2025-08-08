@@ -27,7 +27,10 @@ export const SCREENS = {
   ProRequestDetail: 'ProRequestDetail',
   MakeOffer: 'MakeOffer',
   ProOfferDetails: 'ProOfferDetails',
-  TotalEarnings: "TotalEarnings"
+  TotalEarnings: "TotalEarnings",
+  ForgotPassword: 'ForgotPassword',
+  EmailVerification: 'EmailVerification',
+  CreateNewPass: 'CreateNewPass',
 };
 
 export const SEEKER_SCREENS = {
@@ -74,7 +77,11 @@ export const PROVIDER_SCREENS = {
   ProRequestDetail: 'ProRequestDetail',
   MakeOffer: 'MakeOffer',
   ProOfferDetails: 'ProOfferDetails',
-  TotalEarnings: "TotalEarnings"
+  TotalEarnings: "TotalEarnings",
+  Notifications: 'Notifications',
+  ForgotPassword: 'ForgotPassword',
+  EmailVerification: 'EmailVerification',
+  CreateNewPass: 'CreateNewPass',
 };
 
 export interface ScreenNames {

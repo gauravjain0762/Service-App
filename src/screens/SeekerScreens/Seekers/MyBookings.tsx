@@ -22,7 +22,7 @@ import ShadowCard from '@/components/common/ShadowCard';
 import {useTranslation} from 'react-i18next';
 import CustomButton from '@/components/common/CustomButton';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {SCREEN_NAMES, SCREENS} from '@/navigation/screenNames';
+import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
@@ -226,7 +226,7 @@ const MyBookings = () => {
         <RequestSubmitModal
           handleCardPress={() => {
             setIsSubmitModalVisible(false);
-            resetNavigation(SCREEN_NAMES.Offers);
+            resetNavigation(SEEKER_SCREENS.Offers, "", {isResetNav: true});
           }}
           color={Colors.seeker_primary}
         />

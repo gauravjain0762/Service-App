@@ -7,8 +7,15 @@ import CommonText from '@/components/common/CommonText';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import NotificationCard from '@/components/common/NotificationCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useRoute} from '@react-navigation/native';
 
 const Notifications = () => {
+  const {params} = useRoute<any>();
+  const isProvider = params?.isProvider;
+  const readTextColor = isProvider
+    ? Colors.provider_primary
+    : Colors.seeker_primary;
+
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -18,7 +25,7 @@ const Notifications = () => {
           <CommonText
             text={'Mark All As Read'}
             style={{
-              ...commonFontStyle(400, 1.7, Colors.seeker_primary),
+              ...commonFontStyle(400, 1.7, readTextColor),
             }}
           />
         }

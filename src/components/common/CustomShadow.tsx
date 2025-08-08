@@ -13,11 +13,10 @@ import {hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
 import Profile from '@/screens/SeekerScreens/Tabs/Profile';
-import {navigateTo} from '@/components/common/commonFunction';
-import {SEEKER_SCREENS} from '../screenNames';
 import MyRequest from '@/screens/SeekerScreens/Tabs/MyRequest';
 import MyBookingsTab from '@/screens/SeekerScreens/Tabs/MyBookingsTab';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import { SEEKER_SCREENS } from '@/navigation/screenNames';
 
 const Tab = createBottomTabNavigator();
 

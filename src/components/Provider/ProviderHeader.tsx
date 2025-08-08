@@ -3,18 +3,21 @@ import {StyleSheet, View, ViewStyle} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
+import {navigateTo} from '../common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
 type Props = {
   item?: any;
   size?: number;
   isBell?: boolean;
   style?: ViewStyle;
-  isStarVisible?: boolean;
   titleStyle?: ViewStyle;
+  isStarVisible?: boolean;
   subtitleStyle?: ViewStyle;
+  onPressProfile?: () => void;
   avatarContainerStyle?: ViewStyle;
 };
 
@@ -25,6 +28,7 @@ const ProviderHeader = ({
   titleStyle,
   isBell = true,
   subtitleStyle,
+  onPressProfile,
   avatarContainerStyle,
   isStarVisible = false,
 }: Props) => {
@@ -33,8 +37,9 @@ const ProviderHeader = ({
       <View style={styles.leftSection}>
         <View style={[styles.avatarContainer, avatarContainerStyle]}>
           <CustomImage
-            source={item?.image ? {uri: item?.image} : IMAGES.profile_avatar}
             size={size || hp(35)}
+            onPress={onPressProfile}
+            source={item?.image ? {uri: item?.image} : IMAGES.profile_avatar}
           />
         </View>
         <View style={styles.infoContainer}>
@@ -67,7 +72,13 @@ const ProviderHeader = ({
 
       {isBell && (
         <View style={styles.bellContainer}>
-          <CustomImage source={IMAGES.bell} size={hp(20)} />
+          <CustomImage
+            size={hp(20)}
+            source={IMAGES.bell}
+            onPress={() =>
+              navigateTo(PROVIDER_SCREENS.Notifications, {isProvider: true})
+            }
+          />
         </View>
       )}
     </View>

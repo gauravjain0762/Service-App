@@ -10,6 +10,7 @@ import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TransactionReceipt from '@/components/Provider/TransactionReceipt';
+import { goBack } from '@/components/common/commonFunction';
 
 const TotalEarnings = () => {
   return (
@@ -18,6 +19,7 @@ const TotalEarnings = () => {
         <ProviderHeader
           size={hp(20)}
           titleStyle={styles.headerTitle}
+          onPressProfile={() => goBack()}
           subtitleStyle={styles.headerSubtitle}
           avatarContainerStyle={styles.avatarContainer}
         />
@@ -40,7 +42,7 @@ const TotalEarnings = () => {
               text="Last Transaction"
               style={styles.transactionTitle}
             />
-            <CommonText text="See all" style={styles.seeAllText} />
+            {/* <CommonText text="See all" style={styles.seeAllText} /> */}
           </View>
 
           <ScrollView

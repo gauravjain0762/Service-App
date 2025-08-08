@@ -16,10 +16,13 @@ import {navigationRef} from '@/navigation/RootContainer';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useRoute} from '@react-navigation/native';
 
 const CELL_COUNT = 4;
 
 const EmailVerification = () => {
+  const {params} = useRoute<any>();
+  const isProvider = params?.isProvider;
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [_props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -30,8 +33,8 @@ const EmailVerification = () => {
   return (
     <SafeareaProvider
       style={{
-        paddingHorizontal: wp(20),
         flex: 1,
+        paddingHorizontal: wp(20),
         backgroundColor: Colors.white,
       }}>
       <KeyboardAwareScrollView
@@ -69,7 +72,11 @@ const EmailVerification = () => {
               renderCell={({index, symbol, isFocused}) => (
                 <View
                   key={index}
-                  style={[styles.cell, isFocused && styles.focusCell]}
+                  style={[
+                    styles.cell,
+                    isFocused && !isProvider && styles.focusCell,
+                    isFocused && isProvider && styles.providerFocusCell,
+                  ]}
                   onLayout={getCellOnLayoutHandler(index)}>
                   <CommonText
                     text={symbol || ''}
@@ -84,10 +91,10 @@ const EmailVerification = () => {
 
           <View style={styles.buttonContainer}>
             <CustomButton
-              isPrimary="seeker"
+              isPrimary={isProvider ? 'provider' : 'seeker'}
               title="Send"
               btnStyle={styles.sendButton}
-              onPress={() => navigateTo(SEEKER_SCREENS.CreateNewPass)}
+              onPress={() => navigateTo(SEEKER_SCREENS.CreateNewPass, {isProvider: isProvider})}
             />
           </View>
         </View>
@@ -160,9 +167,14 @@ const styles = StyleSheet.create({
     marginHorizontal: wp(5),
   },
   focusCell: {
+    borderWidth: hp(2),
     borderColor: Colors.seeker_primary,
-    borderWidth: 2,
     backgroundColor: Colors.seeker_primary,
+  },
+  providerFocusCell: {
+    borderWidth: hp(2),
+    borderColor: Colors.provider_primary,
+    backgroundColor: Colors.provider_primary,
   },
   cellText: {
     ...commonFontStyle(400, 2.5, Colors.black),

@@ -10,7 +10,7 @@ import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import {navigateTo} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -47,13 +47,13 @@ const LoginScreen = ({}: any) => {
           <CustomButton
             isPrimary="seeker"
             title={'Login'}
-            onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
+            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
           />
           <CustomButton
             isPrimary="seeker"
             title={'Login as a Guest'}
             type="outline"
-            onPress={() => navigateTo(SEEKER_SCREENS.SeekerTabNavigation)}
+            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
           />
         </View>
 

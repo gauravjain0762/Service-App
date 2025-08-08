@@ -23,6 +23,7 @@ import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import ServicesModal from '@/components/modals/ServicesModal';
 import {useRoute} from '@react-navigation/native';
 import ReviewModal from '@/components/common/ReviewModel';
+import MiniCarousel from '@/components/common/MiniCarousel';
 
 const services = [
   {
@@ -81,15 +82,16 @@ const HomeScreen = () => {
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
-  const [isSubmitReviewModalVisible, setIsSubmitReviewModalVisible] = useState(false)
+  const [isSubmitReviewModalVisible, setIsSubmitReviewModalVisible] =
+    useState(false);
 
   const openModal = () => {
     setIsSubmitReviewModalVisible(true);
-  }
+  };
 
   const closeModal = () => {
     setIsSubmitReviewModalVisible(false);
-  }
+  };
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -110,27 +112,21 @@ const HomeScreen = () => {
 
       <View style={styles.searchContainer}>
         <CustomTextInput
-        onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
+          onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
           placeholder="Search by Services or Category"
           leftIcon={
             <Image source={IMAGES.search} style={styles.searchImages} />
           }
-          // rightIcon={
-          //   <Image
-          //     source={IMAGES.sort}
-          //     style={styles.searchImages}
-          //     tintColor={Colors.seeker_primary}
-          //   />
-          // }
         />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.bannerContainer}>
+        {/* <View style={styles.bannerContainer}>
           <View style={styles.bannerTextContainer}>
             <ReviewModal
-              visible={isSubmitReviewModalVisible}
+              onSubmit={() => {}}
               onClose={closeModal}
+              visible={isSubmitReviewModalVisible}
             />
             <CommonText
               text={'Cleaning & Sanitation'}
@@ -143,7 +139,8 @@ const HomeScreen = () => {
             />
           </View>
           <Image source={IMAGES.cleaning_basket} style={styles.bannerImage} />
-        </View>
+        </View> */}
+        <MiniCarousel />
 
         <FlatList
           numColumns={3}

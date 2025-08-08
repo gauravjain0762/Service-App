@@ -11,8 +11,12 @@ import {navigationRef} from '@/navigation/RootContainer';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useRoute} from '@react-navigation/native';
 
 const ForgotPassword = () => {
+  const {params} = useRoute<any>();
+  const isProvider = params?.isProvider;
+
   const handleSubmit = () => {
     // Handle forgot password submission
     // You can add email validation and API call here
@@ -22,8 +26,8 @@ const ForgotPassword = () => {
     <>
       <SafeareaProvider
         style={{
-          paddingHorizontal: wp(20),
           flex: 1,
+          paddingHorizontal: wp(20),
           backgroundColor: Colors.white,
         }}>
         <KeyboardAwareScrollView
@@ -55,9 +59,9 @@ const ForgotPassword = () => {
 
             <View style={styles.buttonContainer}>
               <CustomButton
-                isPrimary="seeker"
                 title="Send"
-                onPress={() => navigateTo(SEEKER_SCREENS.EmailVerification)}
+                isPrimary={isProvider ? 'provider' : 'seeker'}
+                onPress={() => navigateTo(SEEKER_SCREENS.EmailVerification, {isProvider: isProvider})}
               />
             </View>
           </View>

@@ -58,13 +58,35 @@ export const formatDay = (input: string) => {
   return input ? input.replace(/([a-zA-Z])(\d+)/, '$1 $2') : '';
 };
 
-export const resetNavigation = (name: string, params?: any | undefined) => {
-  navigationRef.dispatch(
-    CommonActions.reset({
-      index: 1,
-      routes: [{name: name, params: params}],
-    }),
-  );
+// export const resetNavigation = (name: string, params?: any | undefined) => {
+//   navigationRef.dispatch(
+//     CommonActions.reset({
+//       index: 1,
+//       routes: [{name: name, params: params}],
+//     }),
+//   );
+// };
+
+export const resetNavigation = (
+  parentRouteName: string | undefined | any,
+  childRouteName?: string | undefined | any,
+  params = {},
+) => {
+  navigationRef.current?.reset({
+    index: 0,
+    routes: [
+      {
+        name: parentRouteName,
+        state: childRouteName
+          ? {
+              index: 0,
+              routes: [{name: childRouteName, params}],
+            }
+          : undefined,
+        params: !childRouteName ? params : undefined,
+      },
+    ],
+  });
 };
 
 export const navigateTo = (name: string, params?: any | undefined) => {

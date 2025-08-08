@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   heading1: {
-    width: '60%',
+    width: '70%',
     lineHeight: 43,
     textAlign: 'left',
     marginBottom: hp(22),
