@@ -1,49 +1,99 @@
+import React, {useState} from 'react';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
+import LanguageModal from '@/components/common/LanguageModel';
 import ProfileListItem from '@/components/Provider/ProfileListItem';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SCREEN_NAMES} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
-import React from 'react';
-import {
-  FlatList,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-const List = [
-  {
-    id: 1,
-    title: 'Language',
-    icon: IMAGES.pro_language,
-  },
-  {
-    id: 2,
-    title: 'Change Password',
-    icon: IMAGES.lock,
-  },
-  {
-    id: 3,
-    title: 'Delete Account',
-    icon: IMAGES.delete_account,
-  },
-  {
-    id: 4,
-    title: 'Logout',
-    icon: IMAGES.pro_logout,
-    onPress: () => resetNavigation(PROVIDER_SCREENS.ProLoginScreen),
-  },
-];
+import {useRoute} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 
 const ProProfile = () => {
-  // const [isToggleOn, setIsToggleOn] = React.useState(false);
+  const route = useRoute<any>();
+  const {isProvider} = route.params ?? {};
+  const [isLanguageModalVisible, setIsLanguageModalVisible] =
+    useState<boolean>(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] =
+    useState<boolean>(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] =
+    useState<boolean>(false);
+  const [selectedModal, setSelectedModal] = useState<'LOGOUT' | 'DELETE'>(
+    'LOGOUT',
+  );
+
+  const List = [
+    {
+      id: 1,
+      title: 'Language',
+      icon: IMAGES.pro_language,
+      onPress: () => setIsLanguageModalVisible(true),
+    },
+    {
+      id: 2,
+      title: 'Change Password',
+      icon: IMAGES.lock,
+      onPress: () =>
+        navigateTo(PROVIDER_SCREENS.CreateNewPass, {isProvider: true}),
+    },
+    {
+      id: 3,
+      title: 'Delete Account',
+      icon: IMAGES.delete_account,
+      onPress: () => {
+        setSelectedModal('DELETE');
+        setIsDeleteModalVisible(true);
+      },
+    },
+    {
+      id: 4,
+      title: 'Logout',
+      icon: IMAGES.pro_logout,
+      onPress: () => {
+        setSelectedModal('LOGOUT');
+        setIsLogoutModalVisible(true);
+      },
+    },
+  ];
+
+  const handleLanguageSelect = () => {
+    setIsLanguageModalVisible(false);
+  };
+
+  const closeAllModals = () => {
+    if (selectedModal === 'LOGOUT') {
+      setIsLogoutModalVisible(false);
+    } else {
+      setIsDeleteModalVisible(false);
+    }
+  };
+
+  const handleConfirm = () => {
+    if (selectedModal === 'LOGOUT') {
+      setIsLogoutModalVisible(false);
+
+      setTimeout(() => {
+        setIsDeleteModalVisible(false);
+        resetNavigation(SCREEN_NAMES.OnBoarding);
+      }, 300);
+    } else {
+      setIsDeleteModalVisible(false);
+      setIsLogoutModalVisible(true);
+
+      setTimeout(() => {
+        setIsLogoutModalVisible(false);
+        resetNavigation(SCREEN_NAMES.OnBoarding);
+      }, 300);
+    }
+  };
 
   return (
     <SafeAreaView style={GeneralStyle.container}>
@@ -108,6 +158,35 @@ const ProProfile = () => {
           contentContainerStyle={styles.contentContainer}
         />
       </ScrollView>
+
+      <LanguageModal
+        isProvider={isProvider}
+        visible={isLanguageModalVisible}
+        onLanguageSelect={() => handleLanguageSelect()}
+        onClose={() => setIsLanguageModalVisible(false)}
+      />
+
+      <LogoutDeleteModal
+        isProvider={isProvider}
+        visible={isLogoutModalVisible}
+        image={IMAGES.newlogout}
+        buttonTitle="Logout"
+        headerText="Ready to Logout?"
+        descriptionText="Are you sure want to logout? Make sure all your work is saved."
+        onPressClose={closeAllModals}
+        onPressConfirm={handleConfirm}
+      />
+
+      <LogoutDeleteModal
+        isProvider={isProvider}
+        visible={isDeleteModalVisible}
+        image={IMAGES.delete}
+        buttonTitle="Delete Now"
+        headerText="Delete Account"
+        descriptionText="Are you sure want to delete your account?"
+        onPressClose={closeAllModals}
+        onPressConfirm={handleConfirm}
+      />
     </SafeAreaView>
   );
 };
@@ -202,7 +281,7 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    gap: getFontSize(3),
+    gap: getFontSize(4),
     paddingHorizontal: getFontSize(3),
     paddingTop: getFontSize(2),
   },

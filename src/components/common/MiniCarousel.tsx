@@ -8,9 +8,9 @@ import {hp, wp} from '@/utils/responsiveFn';
 const {width} = Dimensions.get('window');
 
 const data = [
-  {id: '1', image: IMAGES.dummy2},
-  {id: '2', image: IMAGES.dummy_map},
-  {id: '3', image: IMAGES.earning_bg},
+  {id: '1', image: IMAGES.dummy_carousel},
+  {id: '2', image: IMAGES.dummy_carousel},
+  {id: '3', image: IMAGES.dummy_carousel},
 ];
 
 const MiniCarousel = () => {

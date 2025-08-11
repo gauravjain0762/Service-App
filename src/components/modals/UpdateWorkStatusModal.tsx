@@ -29,7 +29,6 @@ const UpdateWorkStatusModal = ({
     <BottomModal
       close={false}
       onClose={() => {setIsUpdateWorkStatusModal(false)}}
-      showCloseButton={false}
       visible={isUpdateWorkStatusModal}>
       {!close && (
         <CustomImage

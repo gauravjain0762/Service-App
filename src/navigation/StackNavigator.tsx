@@ -5,6 +5,7 @@ import OnBoarding from '@/screens/OnBoarding';
 import ProviderNavigator from './Provider/navigation';
 import SplashScreen from '@/screens/SplashScreen';
 import SeekerNavigator from './Seeker/navigation';
+import Subscription from '@/screens/Subscription';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -18,6 +19,7 @@ const StackNavigator: FC = () => {
     {name: SCREENS.OnBoarding, component: OnBoarding},
     {name: SCREENS.ProviderNavigator, component: ProviderNavigator},
     {name: SCREENS.SeekerNavigator, component: SeekerNavigator},
+    {name: SCREENS.Subscription, component: Subscription},
   ];
   return (
     <Stack.Navigator

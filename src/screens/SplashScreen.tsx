@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {SCREEN_NAMES} from '../navigation/screenNames';
 import {getAsyncToken, getAsyncUserInfo} from '../Hooks/asyncStorage';
@@ -9,6 +9,9 @@ import {setAuthToken, setUserInfo} from '../features/authSlice';
 import {useAppDispatch} from '../Hooks/hooks';
 import {resetNavigation} from '../components/common/commonFunction';
 import {GeneralStyle} from '@/constants/GeneralStyle';
+import {IMAGES} from '@/assets/images';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {hp} from '@/utils/responsiveFn';
 
 const SplashScreen = () => {
   const {userInfo: userData, token: authToken} = useSelector(
@@ -18,7 +21,7 @@ const SplashScreen = () => {
   useEffect(() => {
     setTimeout(() => {
       getToken();
-    }, 200);
+    }, 800);
   }, []);
 
   const dispatch = useAppDispatch();
@@ -41,9 +44,13 @@ const SplashScreen = () => {
   };
 
   return (
-    <View style={GeneralStyle.flex}>
-      <Text>SplashScreen</Text>
-    </View>
+    <SafeAreaView edges={[]} style={GeneralStyle.flex}>
+      <Image
+        resizeMode="cover"
+        source={IMAGES.service_splash}
+        style={{height: hp(1100), width: '100%', bottom: '10%'}}
+      />
+    </SafeAreaView>
   );
 };
 

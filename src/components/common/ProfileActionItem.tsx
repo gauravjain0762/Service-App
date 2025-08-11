@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 2, Colors.black),
   },
   deleteRow: {
-    backgroundColor: Colors._F2EDED,
+    backgroundColor: Colors._FFEAEA,
   },
 });
 

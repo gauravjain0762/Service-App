@@ -27,7 +27,6 @@ const CompleteBookingModal = ({
     <BottomModal
       close={false}
       onClose={() => {setIsCompleteBookingModal(false)}}
-      showCloseButton={false}
       visible={isCompleteBookingModal}>
       {!close && (
         <CustomImage

@@ -107,12 +107,13 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.7, Colors._7D7D7D),
   },
   browseBtn: {
-    borderRadius: hp(20),
-    paddingVertical: hp(14),
+    width: '40%',
+    borderRadius: hp(28),
+    paddingVertical: hp(12),
     paddingHorizontal: wp(24),
     backgroundColor: Colors.seeker_primary,
   },
   browseText: {
-    ...commonFontStyle(600, 1.6, Colors.white),
+    ...commonFontStyle(600, 1.7, Colors.white),
   },
 });

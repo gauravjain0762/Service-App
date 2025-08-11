@@ -44,7 +44,7 @@ const SeekerTabNavigation = () => {
             paddingTop: hp(10),
             alignItems: 'center',
             position: 'absolute',
-            marginBottom: hp(10),
+            marginBottom: hp(-14),
             borderRadius: hp(100),
             paddingBottom: hp(10),
             justifyContent: 'center',
@@ -74,6 +74,7 @@ const SeekerTabNavigation = () => {
                   style={{
                     width: iconWidth,
                     height: iconHeight,
+                    opacity: !focused ? 0.85 : 1,
                   }}
                   resizeMode={FastImage.resizeMode.contain}
                   tintColor={focused ? Colors.white : Colors._68d2a1}

@@ -65,6 +65,7 @@ export const IMAGES = {
   empty_star: require('./icons/empty_star.png'),
   ic_camera: require('./icons/Provider/ic_camera.png'),
   ic_otp: require('./icons/ic_otp.png'),
+  true_mark: require('./icons/true_mark.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
@@ -92,6 +93,10 @@ export const IMAGES = {
   user_profile: require('./Images/user_profile.png'),
   battery: require('./Images/battery.png'),
   earning_bg: require('./Images/earning_bg.png'),
+  dummy_carousel: require('./Images/dummy_carousel.png'),
+  subs_bg: require('./Images/subs_bg.png'),
+  subs_bg2: require('./Images/subs_bg2.png'),
+  service_splash: require('./Images/service_splash.jpeg'),
 };
 
 export const Animation = {};

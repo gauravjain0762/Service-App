@@ -86,7 +86,7 @@ const MakeOffer = () => {
             />
             <AddSpecialNote
               //   placeholder=""
-              value={'5,000 AED'}
+              // value={'5,000 AED'}
               textInputStyle={[
                 styles.noteInput,
                 {

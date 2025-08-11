@@ -20,6 +20,7 @@ import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
 import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 import SearchScreen from '@/screens/SeekerScreens/Seekers/SearchScreen';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
+import Subscription from '@/screens/Subscription';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -47,6 +48,7 @@ const SeekerNavigator: FC = () => {
     {name: SEEKER_SCREENS.CreateNewPass, component: CreateNewPass},
     {name: SEEKER_SCREENS.SearchScreen, component: SearchScreen},
     {name: SEEKER_SCREENS.HomeScreen, component: HomeScreen},
+    {name: SEEKER_SCREENS.Subscription, component: Subscription},
   ];
   return (
     <Stack.Navigator

@@ -16,6 +16,7 @@ import Notifications from '@/screens/SeekerScreens/Seekers/Notifications';
 import ForgotPassword from '@/screens/SeekerScreens/Auth/ForgotPassword';
 import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
 import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
+import Subscription from '@/screens/Subscription';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -25,7 +26,7 @@ const Stack = createNativeStackNavigator<any>();
 
 const ProviderNavigator: FC = () => {
   let screens = [
-    {name: PROVIDER_SCREENS.ProLoginScreen, component: ProLoginScreen},
+    {name: PROVIDER_SCREENS.ProLoginScreen, component: ProLoginScreen, initialParams: {isProvider: true}},
     {name: PROVIDER_SCREENS.ProSignupScreen, component: ProSignupScreen},
     {name: PROVIDER_SCREENS.TermsWebScreen, component: TermsWebScreen},
     {
@@ -43,6 +44,7 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.ForgotPassword, component: ForgotPassword},
     {name: PROVIDER_SCREENS.EmailVerification, component: EmailVerification},
     {name: PROVIDER_SCREENS.CreateNewPass, component: CreateNewPass},
+    {name: PROVIDER_SCREENS.Subscription, component: Subscription},
   ];
   return (
     <Stack.Navigator
@@ -56,6 +58,7 @@ const ProviderNavigator: FC = () => {
             name={item.name}
             key={index.toString()}
             component={item.component}
+            initialParams={item.initialParams}
           />
         );
       })}

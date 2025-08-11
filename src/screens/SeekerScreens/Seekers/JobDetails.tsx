@@ -22,55 +22,66 @@ const JobDetails = () => {
 
   return (
     <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
-      <BackHeader text={'Job Detail'} />
+      <BackHeader
+        text={'Job Detail'}
+        style={{
+          paddingHorizontal: wp(24),
+        }}
+      />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ShadowCard style={styles.jobCard}>
-          <View style={styles.rowWithGap}>
-            <Image source={IMAGES.dummy} />
-            <View style={styles.jobInfoContainer}>
-              <CommonText
-                text={'Repair & Maintenance'}
-                style={styles.jobTitle}
-              />
-              <CommonText
-                text={'AC Regular Services'}
-                style={styles.jobSubTitle}
-              />
-              <CommonText
-                text={'Dubai Internet City UAE'}
-                style={styles.jobLocation}
-              />
+        <View style={{paddingHorizontal: wp(24)}}>
+          <ShadowCard style={styles.jobCard}>
+            <View style={styles.rowWithGap}>
+              <Image source={IMAGES.dummy} />
+              <View style={styles.jobInfoContainer}>
+                <CommonText
+                  text={'Repair & Maintenance'}
+                  style={styles.jobTitle}
+                />
+                <CommonText
+                  text={'AC Regular Services'}
+                  style={styles.jobSubTitle}
+                />
+                <CommonText
+                  text={'Dubai Internet City UAE'}
+                  style={styles.jobLocation}
+                />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.bookingContainer}>
-            <View style={styles.bookingRow}>
-              <CommonText text={'Booking Date'} style={styles.bookingLabel} />
-              <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+            <View style={styles.bookingContainer}>
+              <View style={styles.bookingRow}>
+                <CommonText text={'Booking Date'} style={styles.bookingLabel} />
+                <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+              </View>
+              <View style={styles.bookingRow}>
+                <CommonText text={'Booking Time'} style={styles.bookingLabel} />
+                <CommonText
+                  text={'09:00 - 12:00'}
+                  style={styles.bookingValue}
+                />
+              </View>
             </View>
-            <View style={styles.bookingRow}>
-              <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-              <CommonText text={'09:00 - 12:00'} style={styles.bookingValue} />
-            </View>
-          </View>
-        </ShadowCard>
+          </ShadowCard>
+        </View>
 
         <Divider />
 
-        <CommonText text={'Service Provider'} style={styles.sectionTitle} />
+        <View style={{paddingHorizontal: wp(24)}}>
+          <CommonText text={'Service Provider'} style={styles.sectionTitle} />
+          <ServiceProvider isViewProfile={true} color={Colors.seeker_primary} />
+        </View>
+        <ServiceDetails style={{width: '100%'}} />
 
-        <ServiceProvider isViewProfile={true} color={Colors.seeker_primary} />
-        <ServiceDetails />
-        <ServiceBillSummary />
+        <View style={{paddingHorizontal: wp(24)}}>
+          <ServiceBillSummary style={{width: '100%'}} />
+        </View>
 
         <CustomButton
           title={'Back To Home'}
           btnStyle={styles.backToHomeBtn}
           onPress={() =>
-            // resetNavigation(SCREENS.SeekerTabNavigation, SCREENS.Home, {
-            //   openReviewModal: true,
-            // })
             navigation.reset({
               index: 0,
               routes: [
@@ -100,10 +111,10 @@ export default JobDetails;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(24),
     backgroundColor: Colors.white,
   },
   jobCard: {
+    width: '100%',
     padding: wp(16),
     marginTop: hp(27),
     alignItems: 'flex-start',
@@ -148,6 +159,7 @@ const styles = StyleSheet.create({
 
   backToHomeBtn: {
     marginTop: hp(40),
+    marginHorizontal: wp(24),
     backgroundColor: Colors.seeker_primary,
   },
 });

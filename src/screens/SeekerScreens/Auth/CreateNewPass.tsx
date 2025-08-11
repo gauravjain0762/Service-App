@@ -16,6 +16,7 @@ import {useRoute} from '@react-navigation/native';
 const CreateNewPass = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
+  console.log("🔥🔥🔥 ~ CreateNewPass ~ isProvider:", isProvider)
 
   const handleSubmit = () => {};
 
@@ -58,8 +59,13 @@ const CreateNewPass = () => {
 
           <View style={styles.buttonContainer}>
             <CustomButton
-              isPrimary={isProvider ? 'provider' : 'seeker'}
               title="Submit"
+              isPrimary={isProvider ? 'provider' : 'seeker'}
+              btnStyle={{
+                backgroundColor: isProvider
+                  ? Colors.provider_primary
+                  : Colors.seeker_primary,
+              }}
               onPress={() =>
                 resetNavigation(
                   isProvider

@@ -31,6 +31,7 @@ export const SCREENS = {
   ForgotPassword: 'ForgotPassword',
   EmailVerification: 'EmailVerification',
   CreateNewPass: 'CreateNewPass',
+  Subscription: 'Subscription',
 };
 
 export const SEEKER_SCREENS = {
@@ -58,6 +59,7 @@ export const SEEKER_SCREENS = {
   CreateNewPass: 'CreateNewPass',
   HomeScreen: 'HomeScreen',
   SearchScreen: 'SearchScreen',
+  Subscription: 'Subscription',
 };
 
 export const PROVIDER_SCREENS = {
@@ -82,6 +84,7 @@ export const PROVIDER_SCREENS = {
   ForgotPassword: 'ForgotPassword',
   EmailVerification: 'EmailVerification',
   CreateNewPass: 'CreateNewPass',
+  Subscription: 'Subscription',
 };
 
 export interface ScreenNames {

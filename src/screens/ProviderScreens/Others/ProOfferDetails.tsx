@@ -38,50 +38,68 @@ const ProOfferDetails = () => {
         onPressBack={() =>
           resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation)
         }
+        style={{
+          paddingHorizontal: wp(24),
+        }}
       />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ShadowCard style={styles.jobCard}>
-          <View style={styles.rowWithGap}>
-            <CustomImage source={IMAGES.dummy} size={hp(70)} />
-            <View style={styles.jobInfoContainer}>
-              <CommonText
-                text={'Repair & Maintenance'}
-                style={styles.jobTitle}
-              />
-              <CommonText
-                text={'AC Regular Services'}
-                style={styles.jobSubTitle}
-              />
-              <CommonText
-                text={'Dubai Internet City UAE'}
-                style={styles.jobLocation}
-              />
+        <View
+          style={{
+            paddingHorizontal: wp(24),
+          }}>
+          <ShadowCard style={styles.jobCard}>
+            <View style={styles.rowWithGap}>
+              <CustomImage source={IMAGES.dummy} size={hp(70)} />
+              <View style={styles.jobInfoContainer}>
+                <CommonText
+                  text={'Repair & Maintenance'}
+                  style={styles.jobTitle}
+                />
+                <CommonText
+                  text={'AC Regular Services'}
+                  style={styles.jobSubTitle}
+                />
+                <CommonText
+                  text={'Dubai Internet City UAE'}
+                  style={styles.jobLocation}
+                />
+              </View>
             </View>
-          </View>
 
-          <View style={styles.bookingContainer}>
-            <View style={styles.bookingRow}>
-              <CommonText text={'Booking Date'} style={styles.bookingLabel} />
-              <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+            <View style={styles.bookingContainer}>
+              <View style={styles.bookingRow}>
+                <CommonText text={'Booking Date'} style={styles.bookingLabel} />
+                <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+              </View>
+              <View style={styles.bookingRow}>
+                <CommonText text={'Booking Time'} style={styles.bookingLabel} />
+                <CommonText
+                  text={'09:00 - 12:00'}
+                  style={styles.bookingValue}
+                />
+              </View>
             </View>
-            <View style={styles.bookingRow}>
-              <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-              <CommonText text={'09:00 - 12:00'} style={styles.bookingValue} />
-            </View>
-          </View>
-        </ShadowCard>
+          </ShadowCard>
+        </View>
 
         <Divider />
 
         <CommonText text={'Service Provider'} style={styles.sectionTitle} />
 
-        <ServiceProvider
-          color={Colors.provider_primary}
-          isViewProfile={false}
-        />
-        <ServiceDetails />
-        <ServiceBillSummary />
+        <View
+          style={{
+            paddingHorizontal: wp(24),
+          }}>
+          <ServiceProvider
+            color={Colors.provider_primary}
+            isViewProfile={false}
+          />
+        </View>
+        <ServiceDetails style={{width: '100%'}} />
+        <View style={{paddingHorizontal: wp(24)}}>
+          <ServiceBillSummary style={{width: '100%'}} />
+        </View>
 
         <CustomButton
           title={'Update Work Status'}
@@ -149,7 +167,9 @@ const ProOfferDetails = () => {
       <UpdateWorkStatusModal
         close={false}
         onPressGoBack={() => {}}
-        onPressCompleted={() => {setIsUpdateWorkStatusModal(false)}}
+        onPressCompleted={() => {
+          setIsUpdateWorkStatusModal(false);
+        }}
         isUpdateWorkStatusModal={isUpdateWorkStatusModal}
         setIsUpdateWorkStatusModal={setIsUpdateWorkStatusModal}
       />
@@ -162,10 +182,10 @@ export default ProOfferDetails;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(24),
     backgroundColor: Colors.white,
   },
   jobCard: {
+    width: '100%',
     padding: wp(16),
     marginVertical: hp(27),
     alignItems: 'flex-start',
@@ -205,11 +225,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     marginTop: hp(30),
+    paddingHorizontal: wp(24),
     ...commonFontStyle(600, 2.2, Colors.black),
   },
 
   backToHomeBtn: {
     marginTop: hp(40),
+    marginHorizontal: wp(24),
     backgroundColor: Colors.provider_primary,
   },
 });

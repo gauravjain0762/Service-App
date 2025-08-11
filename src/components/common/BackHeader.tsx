@@ -14,12 +14,13 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {goBack} from './commonFunction';
 
 type Props = {
-  text: string;
+  text?: string;
   style?: ViewStyle;
   onPressBack?: () => void;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   customBackArrow?: any;
+  tintColor?: string;
 };
 
 const BackHeader = ({
@@ -29,6 +30,7 @@ const BackHeader = ({
   style,
   onPressBack,
   customBackArrow,
+  tintColor = Colors.black,
 }: Props) => {
   return (
     <View style={[styles.headerContainer, style]}>
@@ -41,6 +43,7 @@ const BackHeader = ({
           <Image
             source={customBackArrow || IMAGES.backArrow2}
             style={styles.backArrow}
+            tintColor={tintColor}
           />
         )}
         <CommonText text={text} style={styles.headerTitle} />

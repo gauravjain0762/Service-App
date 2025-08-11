@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -19,6 +20,8 @@
     "axios": "^1.10.0",
     "i18next": "^25.3.2",
     "moment": "^2.30.1",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "react": "19.0.0",
     "react-i18next": "^15.6.0",
     "react-native": "0.79.3",
@@ -40,6 +43,7 @@
     "react-native-safe-area-context": "^5.4.1",
     "react-native-screens": "^4.11.1",
     "react-native-skeleton-placeholder": "^5.2.4",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-toast-message": "^2.3.3",
     "react-native-webview": "^13.15.0",

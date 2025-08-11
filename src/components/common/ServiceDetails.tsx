@@ -1,12 +1,16 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View, ViewStyle} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
-const ServiceDetails = () => {
+type Props = {
+  style?: ViewStyle;
+};
+
+const ServiceDetails = ({style}: Props) => {
   const ServiceDetail = [
     {'Payment Method': 'Apple Pay'},
     {'Service Type': 'Repair & Maintenance'},
@@ -28,10 +32,14 @@ const ServiceDetails = () => {
       <FlatList
         scrollEnabled={false}
         keyExtractor={(_, index) => index.toString()}
-        contentContainerStyle={{paddingBottom: hp(25), marginTop: hp(10)}}
+        contentContainerStyle={{
+          marginTop: hp(10),
+          paddingBottom: hp(25),
+          paddingHorizontal: wp(24),
+        }}
         data={ServiceDetail}
         renderItem={({item, index}) => (
-          <ShadowCard key={index} style={styles.paymentCard}>
+          <ShadowCard key={index} style={[styles.paymentCard, style]}>
             <View style={styles.paymentInfo}>
               <CommonText
                 text={Object.keys(item)}

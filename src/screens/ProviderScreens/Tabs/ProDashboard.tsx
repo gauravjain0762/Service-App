@@ -9,6 +9,8 @@ import CommonText from '@/components/common/CommonText';
 import ProviderHeader from '@/components/Provider/ProviderHeader';
 import ProviderCards from '@/components/Provider/ProviderCards';
 import BookingCard from '@/components/Provider/BookingCard';
+import {navigateTo} from '@/components/common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 
 const DashboarData = [
   {amount: '4254', desc: 'Total Booking', image: IMAGES.ic_booking},
@@ -51,7 +53,7 @@ const ProDashboard = () => {
         contentContainerStyle={{paddingBottom: hp(50)}}>
         <View style={styles.dashboardContainer}>
           {DashboarData.map((item, index: any) => {
-            return <ProviderCards item={item} index={index} key={index}/>;
+            return <ProviderCards item={item} index={index} key={index} />;
           })}
         </View>
 
@@ -62,7 +64,15 @@ const ProDashboard = () => {
           scrollEnabled={false}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({item, index}) => {
-            return <BookingCard item={item} index={index} />;
+            return (
+              <BookingCard
+                item={item}
+                index={index}
+                onPress={() => {
+                  navigateTo(PROVIDER_SCREENS.ProOfferDetails);
+                }}
+              />
+            );
           }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}

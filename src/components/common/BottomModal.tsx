@@ -23,7 +23,6 @@ type BottomModalProps = {
   backgroundColor?: string;
   children: React.ReactNode;
   onPressCancel?: () => void;
-  showCloseButton?: boolean;
 };
 
 const BottomModal = ({
@@ -37,16 +36,19 @@ const BottomModal = ({
 }: BottomModalProps) => {
   return (
     <Modal
+      avoidKeyboard
       style={styles.modal}
       onBackdropPress={onClose}
-      avoidKeyboard
+      useNativeDriverForBackdrop={true}
       isVisible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoiding}>
-        {close && <Pressable onPress={onPressCancel} style={styles.closeContainer}>
-          <Image source={IMAGES.close} />
-        </Pressable>}
+        {close && (
+          <Pressable onPress={onPressCancel} style={styles.closeContainer}>
+            <Image source={IMAGES.close} />
+          </Pressable>
+        )}
         <View style={[styles.container, {backgroundColor}, style]}>
           {children}
         </View>

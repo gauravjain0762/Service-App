@@ -1,26 +1,29 @@
-import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import CustomButton from '@/components/common/CustomButton';
+import {StyleSheet, View} from 'react-native';
+
 import {hp} from '@/utils/responsiveFn';
+import CustomButton from '@/components/common/CustomButton';
 import ConfirmJobModal from '@/components/common/ConfirmJobModal';
+import ReviewModal from '@/components/common/ReviewModel';
 
 const Feed2 = () => {
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+  const [isReviewModalVisible, setIsReviewModalVisible] =
+    useState<boolean>(false);
 
   const openModal = () => {
     setIsSubmitModalVisible(true);
   };
 
-  const closeModal = () => {
-    setIsSubmitModalVisible(false);
-  };
-
   const handleConfirm = () => {
-    closeModal();
+    setIsSubmitModalVisible(false);
+    // setTimeout(() => {
+    //   setIsReviewModalVisible(true);
+    // }, 500);
   };
 
   const handleCancel = () => {
-    closeModal();
+    setIsSubmitModalVisible(false);
   };
 
   return (
@@ -29,9 +32,9 @@ const Feed2 = () => {
 
       <ConfirmJobModal
         visible={isSubmitModalVisible}
-        onClose={closeModal}
-        onConfirm={handleConfirm}
+        onClose={handleCancel}
         onCancel={handleCancel}
+        onConfirm={handleConfirm}
       />
     </View>
   );

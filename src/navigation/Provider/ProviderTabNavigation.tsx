@@ -37,13 +37,13 @@ const ProviderTabNavigation = () => {
       name: PROVIDER_SCREENS.ProProfile,
       icon: IMAGES.profile,
       component: ProProfile,
+      initialParams: {isProvider: true},
     },
   ];
 
   const CustomTabBarButton = ({children, onPress, route, ...props}: any) => {
     const handlePress = () => {
       if (route.name === '') {
-        // screen name
       } else {
         onPress();
       }
@@ -71,7 +71,7 @@ const ProviderTabNavigation = () => {
             paddingTop: hp(10),
             alignItems: 'center',
             position: 'absolute',
-            marginBottom: hp(10),
+            marginBottom: hp(-14),
             borderRadius: hp(100),
             paddingBottom: hp(10),
             justifyContent: 'center',
@@ -106,6 +106,7 @@ const ProviderTabNavigation = () => {
             key={tab.name}
             name={tab.name}
             component={tab.component}
+            initialParams={tab?.initialParams}
           />
         ))}
       </Tab.Navigator>

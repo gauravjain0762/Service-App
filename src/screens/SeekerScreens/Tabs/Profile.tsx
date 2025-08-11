@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet, ScrollView, Pressable} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, ScrollView, Pressable, FlatList} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomImage from '@/components/common/CustomImage';
 import CommonText from '@/components/common/CommonText';
@@ -10,8 +10,124 @@ import ProfileActionItem from '@/components/common/ProfileActionItem';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SCREEN_NAMES} from '@/navigation/screenNames';
+import LanguageModal from '@/components/common/LanguageModel';
+import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 
 const Profile = () => {
+  const [isLanguageModalVisible, setIsLanguageModalVisible] =
+    useState<boolean>(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] =
+    useState<boolean>(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] =
+    useState<boolean>(false);
+  const [selectedModal, setSelectedModal] = useState<'LOGOUT' | 'DELETE'>(
+    'LOGOUT',
+  );
+
+  const handleLanguageSelect = () => {
+    setIsLanguageModalVisible(false);
+  };
+
+  const ACTIONS = [
+    {
+      key: 'language',
+      leftIcon: IMAGES.language,
+      title: 'Language',
+      languageSection: (
+        <View style={styles.languageSection}>
+          <CustomImage source={IMAGES.flag} size={hp(20)} />
+          <CustomImage source={IMAGES.downArrow} size={hp(20)} />
+        </View>
+      ),
+      onPress: () => setIsLanguageModalVisible(true),
+    },
+    {
+      key: 'contact_us',
+      leftIcon: IMAGES.phone,
+      title: 'Contact us',
+      rightIcon: IMAGES.rightArrow,
+      onPress: () => {},
+    },
+    {
+      key: 'about_us',
+      leftIcon: IMAGES.iBtn,
+      title: 'About us',
+      rightIcon: IMAGES.rightArrow,
+      onPress: () => {},
+    },
+    {
+      key: 'privacy_policy',
+      leftIcon: IMAGES.privacy,
+      title: 'Privacy Policy',
+      rightIcon: IMAGES.rightArrow,
+      onPress: () => {},
+    },
+    {
+      key: 'terms_conditions',
+      leftIcon: IMAGES.file,
+      title: 'Terms & Conditions',
+      rightIcon: IMAGES.rightArrow,
+      onPress: () => {},
+    },
+    {
+      key: 'delete_account',
+      leftIcon: IMAGES.delete,
+      title: 'Delete Account',
+      isDelete: true,
+      onPress: () => {
+        setSelectedModal('DELETE');
+        setIsDeleteModalVisible(true);
+      },
+    },
+    {
+      key: 'logout',
+      leftIcon: IMAGES.newlogout,
+      title: 'Logout',
+      onPress: () => {
+        setSelectedModal('LOGOUT');
+        setIsLogoutModalVisible(true);
+      },
+    },
+  ];
+
+  const closeAllModals = () => {
+    if (selectedModal === 'LOGOUT') {
+      setIsLogoutModalVisible(false);
+    } else {
+      setIsDeleteModalVisible(false);
+    }
+  };
+
+  const handleConfirm = () => {
+    if (selectedModal === 'LOGOUT') {
+      setIsLogoutModalVisible(false);
+
+      setTimeout(() => {
+        setIsDeleteModalVisible(false);
+        resetNavigation(SCREEN_NAMES.OnBoarding);
+      }, 300);
+    } else {
+      setIsDeleteModalVisible(false);
+      setIsLogoutModalVisible(true);
+
+      setTimeout(() => {
+        setIsLogoutModalVisible(false);
+        resetNavigation(SCREEN_NAMES.OnBoarding);
+      }, 300);
+    }
+  };
+
+  const renderItem = ({item}: any) => (
+    <ProfileActionItem
+      leftIcon={item.leftIcon}
+      title={item.title}
+      rightIcon={item.rightIcon}
+      languageSection={item.languageSection}
+      isDelete={item.isDelete}
+      onPress={item.onPress}
+    />
+  );
+
   return (
     <SafeareaProvider
       style={{
@@ -19,7 +135,7 @@ const Profile = () => {
         backgroundColor: Colors.white,
         paddingHorizontal: wp(20),
       }}>
-      <BackHeader text="Profile"  />
+      <BackHeader text="Profile" />
 
       <ScrollView
         style={styles.scrollView}
@@ -37,55 +153,38 @@ const Profile = () => {
           <CommonText text="Jason Wiliams" style={styles.name} />
         </Pressable>
 
-        <View style={styles.actionList}>
-          <ProfileActionItem
-            leftIcon={IMAGES.language}
-            title="Language"
-            languageSection={
-              <View style={styles.languageSection}>
-                <CustomImage source={IMAGES.flag} size={hp(20)} />
-                <CustomImage source={IMAGES.downArrow} size={hp(20)} />
-              </View>
-            }
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.phone}
-            title="Contact us"
-            rightIcon={IMAGES.rightArrow}
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.iBtn}
-            title="About us"
-            rightIcon={IMAGES.rightArrow}
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.privacy}
-            title="Privacy Policy"
-            rightIcon={IMAGES.rightArrow}
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.file}
-            title="Terms & Conditions"
-            rightIcon={IMAGES.rightArrow}
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.delete}
-            title="Delete Account"
-            isDelete={true}
-          />
-
-          <ProfileActionItem
-            leftIcon={IMAGES.newlogout}
-            title="Logout"
-            onPress={() => resetNavigation(SCREEN_NAMES.LoginScreen)}
-          />
-        </View>
+        <FlatList
+          data={ACTIONS}
+          keyExtractor={item => item.key}
+          renderItem={renderItem}
+          scrollEnabled={false}
+          contentContainerStyle={styles.actionList}
+        />
       </ScrollView>
+      <LanguageModal
+        visible={isLanguageModalVisible}
+        onLanguageSelect={() => handleLanguageSelect()}
+        onClose={() => setIsLanguageModalVisible(false)}
+      />
+      <LogoutDeleteModal
+        visible={isLogoutModalVisible}
+        image={IMAGES.newlogout}
+        buttonTitle="Logout"
+        headerText="Ready to Logout?"
+        descriptionText="Are you sure want to logout? Make sure all your work is saved."
+        onPressClose={closeAllModals}
+        onPressConfirm={handleConfirm}
+      />
+
+      <LogoutDeleteModal
+        visible={isDeleteModalVisible}
+        image={IMAGES.delete}
+        buttonTitle="Delete"
+        headerText="Delete Account"
+        descriptionText="Are you sure want to delete your account?"
+        onPressClose={closeAllModals}
+        onPressConfirm={handleConfirm}
+      />
     </SafeareaProvider>
   );
 };
@@ -110,7 +209,9 @@ const styles = StyleSheet.create({
   name: {
     ...commonFontStyle(700, 2.4, Colors.black),
   },
-  actionList: {},
+  actionList: {
+    marginTop: 0,
+  },
   languageSection: {
     flexDirection: 'row',
     alignItems: 'center',

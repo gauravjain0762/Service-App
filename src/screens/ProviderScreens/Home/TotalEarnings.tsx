@@ -10,18 +10,25 @@ import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TransactionReceipt from '@/components/Provider/TransactionReceipt';
-import { goBack } from '@/components/common/commonFunction';
+import {goBack} from '@/components/common/commonFunction';
+import BackHeader from '@/components/common/BackHeader';
 
 const TotalEarnings = () => {
   return (
     <SafeAreaView edges={[]} style={GeneralStyle.container}>
       <ImageBackground source={IMAGES.earning_bg} style={styles.imageBg}>
-        <ProviderHeader
+        {/* <ProviderHeader
           size={hp(20)}
-          titleStyle={styles.headerTitle}
+          isBell={false}
           onPressProfile={() => goBack()}
+          titleStyle={styles.headerTitle}
           subtitleStyle={styles.headerSubtitle}
           avatarContainerStyle={styles.avatarContainer}
+        /> */}
+
+        <BackHeader
+          tintColor={Colors.white}
+          style={{paddingHorizontal: wp(24)}}
         />
 
         <View style={styles.centerContent}>
@@ -66,7 +73,7 @@ export default TotalEarnings;
 const styles = StyleSheet.create({
   imageBg: {
     flex: 1,
-    paddingTop: '15%',
+    paddingTop: '10%',
   },
   headerTitle: {
     ...commonFontStyle(600, 2, Colors.white),
@@ -81,7 +88,8 @@ const styles = StyleSheet.create({
   },
   centerContent: {
     alignItems: 'center',
-    marginVertical: hp(60),
+    marginTop: hp(28),
+    marginBottom: hp(20),
     gap: hp(15),
   },
   totalEarningText: {
@@ -121,6 +129,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+    paddingBottom: '20%',
   },
   transactionItem: {
     paddingBottom: hp(34),

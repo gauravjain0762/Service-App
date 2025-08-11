@@ -7,12 +7,15 @@ import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
+import {useRoute} from '@react-navigation/native';
 
 const ProLoginScreen = ({}: any) => {
+  const {params} = useRoute<any>();
+  const isProvider = params?.isProvider;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   return (
@@ -28,7 +31,7 @@ const ProLoginScreen = ({}: any) => {
             text="Forgot Password?"
             style={styles.forgotPasswordText}
             onPress={() =>
-              navigateTo(PROVIDER_SCREENS.ForgotPassword, {isProvider: true})
+              navigateTo(PROVIDER_SCREENS.ForgotPassword, {isProvider: isProvider})
             }
           />
           <TermsCheckBox

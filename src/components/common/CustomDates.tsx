@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+
 import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -40,7 +41,7 @@ const CustomDates = ({
   onDatePress,
   selectedDate,
   setSelectedDate,
-  isProvider = true,
+  isProvider,
 }: Props) => {
   const flatListRef = useRef<FlatList>(null);
 
@@ -68,9 +69,9 @@ const CustomDates = ({
 
       <View style={styles.listWrapper}>
         <FlatList
-          ref={flatListRef}
-          data={dates}
           horizontal
+          data={dates}
+          ref={flatListRef}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.flatList}
           renderItem={({item}) => {
@@ -79,8 +80,8 @@ const CustomDates = ({
               <TouchableOpacity
                 style={[
                   styles.dateBox,
-                  selected && styles.selectedBox,
-                  isProvider && selected && styles.providerBox,
+                  selected && !isProvider && styles.selectedBox,
+                  selected && isProvider && styles.providerBox,
                 ]}
                 onPress={() => {
                   setSelectedDate?.(item);
@@ -105,12 +106,13 @@ const CustomDates = ({
         />
 
         <LinearGradient
-          colors={[Colors.white, 'rgba(255,255,255,0.6)']}
+          colors={[Colors.white, 'rgba(255,255,255,0)']}
           style={styles.leftFade}
           pointerEvents="none"
         />
+
         <LinearGradient
-          colors={['rgba(255,255,255,0.6)', Colors.white]}
+          colors={['rgba(255,255,255,0)', Colors.white]}
           style={styles.rightFade}
           pointerEvents="none"
         />
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   flatList: {
-    paddingHorizontal: wp(16),
+    // paddingHorizontal: wp(16),
   },
   dateBox: {
     width: wp(60),
@@ -168,15 +170,15 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: wp(50),
-    zIndex: 1,
+    width: wp(40),
+    zIndex: 2,
   },
   rightFade: {
     position: 'absolute',
     right: 0,
     top: 0,
     bottom: 0,
-    width: wp(50),
-    zIndex: 1,
+    width: wp(40),
+    zIndex: 2,
   },
 });

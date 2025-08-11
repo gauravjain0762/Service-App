@@ -83,7 +83,9 @@ const OnBoarding = () => {
               <CustomButton
                 title={'Service Provider'}
                 btnStyle={{backgroundColor: Colors.provider_primary}}
-                onPress={() => resetNavigation(SCREENS.ProviderNavigator)}
+                onPress={() =>
+                  resetNavigation(SCREENS.ProviderNavigator, {isProvider: true})
+                }
                 textStyle={styles.btnText}
               />
             </View>

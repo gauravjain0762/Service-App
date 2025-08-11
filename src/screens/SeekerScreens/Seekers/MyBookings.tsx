@@ -42,157 +42,177 @@ const MyBookings = () => {
       <BackHeader
         text={'Create Request'}
         rightIcon={<Image source={IMAGES.search} style={styles.searchIcon} />}
+        style={{
+          paddingHorizontal: wp(24),
+        }}
       />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}>
-        <RequestCard style={styles.requestCard} />
-
-        <CommonText
-          text={'Choose Location'}
+        <View
           style={{
-            ...commonFontStyle(700, 2.2, Colors.black),
-          }}
-        />
-        <View style={styles.locationTab}>
-          <CustomButton
-            title={'My Location'}
-            onPress={() => {
-              navigateTo(SCREENS.SetLocation);
-            }}
-            btnStyle={styles.myLocationBtn}
-            leftImg={<Image source={IMAGES.marker} />}
-          />
-          <CustomButton
-            title={'Store Location'}
-            btnStyle={styles.yourLocationBtn}
-            textStyle={{...commonFontStyle(500, 1.8, Colors._4F4F4F)}}
-            leftImg={<Image source={IMAGES.home_marker} />}
-          />
-        </View>
+            paddingHorizontal: wp(24),
+          }}>
+          <RequestCard style={styles.requestCard} />
 
-        <Pressable
-          onPress={() => navigateTo(SCREENS.SetLocation)}
-          style={styles.locationContainer}>
-          <Image source={IMAGES.dummy_map} />
-          <View style={styles.locationDetails}>
-            <CommonText text={'Add Location'} style={styles.locationTitle} />
-            <CommonText
-              text={'Dubai Internet City UAE'}
-              style={styles.locationSubtitle}
+          <CommonText
+            text={'Choose Location'}
+            style={{
+              ...commonFontStyle(700, 2.2, Colors.black),
+            }}
+          />
+          <View style={styles.locationTab}>
+            <CustomButton
+              title={'My Location'}
+              onPress={() => {
+                navigateTo(SCREENS.SetLocation);
+              }}
+              btnStyle={styles.myLocationBtn}
+              leftImg={<Image source={IMAGES.marker} />}
+            />
+            <CustomButton
+              title={'Store Location'}
+              btnStyle={styles.yourLocationBtn}
+              textStyle={{...commonFontStyle(500, 1.8, Colors._4F4F4F)}}
+              leftImg={<Image source={IMAGES.home_marker} />}
             />
           </View>
-          <View style={styles.changeBtn}>
-            <CommonText text={'Change'} style={styles.changeBtnText} />
+
+          <Pressable
+            onPress={() => navigateTo(SCREENS.SetLocation)}
+            style={styles.locationContainer}>
+            <Image source={IMAGES.dummy_map} />
+            <View style={styles.locationDetails}>
+              <CommonText text={'Add Location'} style={styles.locationTitle} />
+              <CommonText
+                text={'Dubai Internet City UAE'}
+                style={styles.locationSubtitle}
+              />
+            </View>
+            <View style={styles.changeBtn}>
+              <CommonText text={'Change'} style={styles.changeBtnText} />
+            </View>
+          </Pressable>
+
+          <View style={styles.sectionSpacing}>
+            <CustomDates
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+            />
           </View>
-        </Pressable>
 
-        <View style={styles.sectionSpacing}>
-          <CustomDates
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-          />
-        </View>
+          <View style={styles.sectionSpacing}>
+            <CommonText text={'Car Make & Model'} style={styles.sectionTitle} />
+            <TextInput
+              style={styles.carInput}
+              placeholder="SUV Toyota Corola"
+            />
+          </View>
 
-        <View style={styles.sectionSpacing}>
-          <CommonText text={'Car Make & Model'} style={styles.sectionTitle} />
-          <TextInput style={styles.carInput} placeholder="SUV Toyota Corola" />
-        </View>
+          <View style={styles.sectionSpacing}>
+            <CommonText text={'Mileage Oil'} style={styles.sectionTitle} />
+            <View style={styles.mileageRow}>
+              {['10,000', '15,000', '20,000'].map((item, index, array) => {
+                const isLastItem = index === array.length - 1;
+                const isSelected = selectedMileage === item;
 
-        <View style={styles.sectionSpacing}>
-          <CommonText text={'Mileage Oil'} style={styles.sectionTitle} />
-          <View style={styles.mileageRow}>
-            {['10,000', '15,000', '20,000'].map((item, index, array) => {
-              const isLastItem = index === array.length - 1;
-              const isSelected = selectedMileage === item;
-
-              return (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => setSelectedMileage(item)}
-                  style={[
-                    styles.mileageBox,
-                    !isLastItem && styles.mileageBoxSpacing,
-                    isSelected && styles.selectedMileageBox,
-                  ]}>
-                  <CommonText
-                    text={`${item} KM`}
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => setSelectedMileage(item)}
                     style={[
-                      styles.mileageText,
-                      isSelected && styles.selectedMileageText,
-                    ]}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+                      styles.mileageBox,
+                      !isLastItem && styles.mileageBoxSpacing,
+                      isSelected && styles.selectedMileageBox,
+                    ]}>
+                    <CommonText
+                      text={`${item} KM`}
+                      style={[
+                        styles.mileageText,
+                        isSelected && styles.selectedMileageText,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
-        </View>
 
-        <View style={styles.sectionSpacing}>
-          <TimeSlots />
-        </View>
+          <View style={styles.sectionSpacing}>
+            <TimeSlots />
+          </View>
 
-        <View style={[styles.sectionSpacing, {marginTop: hp(12)}]}>
-          <CommonText text={'How Many Hours?'} style={styles.subTitle} />
-          <View style={styles.circleRow}>
-            {Array.from({length: 6}).map((_, index) => {
-              const value = index + 1;
-              const isSelected = selectedHour === value;
-              return (
-                <TouchableOpacity
-                  key={value}
-                  onPress={() => setSelectedHour(value)}
-                  style={[
-                    styles.circleBox,
-                    isSelected && styles.selectedCircleBox,
-                  ]}>
-                  <CommonText
-                    text={value}
+          <View style={[styles.sectionSpacing, {marginTop: hp(12)}]}>
+            <CommonText text={'How Many Hours?'} style={styles.subTitle} />
+            <View style={styles.circleRow}>
+              {Array.from({length: 6}).map((_, index) => {
+                const value = index + 1;
+                const isSelected = selectedHour === value;
+                return (
+                  <TouchableOpacity
+                    key={value}
+                    onPress={() => setSelectedHour(value)}
                     style={[
-                      styles.circleText,
-                      isSelected && styles.selectedCircleText,
-                    ]}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+                      styles.circleBox,
+                      isSelected && styles.selectedCircleBox,
+                    ]}>
+                    <CommonText
+                      text={value}
+                      style={[
+                        styles.circleText,
+                        isSelected && styles.selectedCircleText,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
-        </View>
 
-        <View style={styles.sectionSpacing}>
-          <CommonText text={'How Many Professional?'} style={styles.subTitle} />
-          <View style={styles.circleRow}>
-            {Array.from({length: 6}).map((_, index) => {
-              const value = index + 1;
-              const isSelected = selectedProfessional === value;
-              return (
-                <TouchableOpacity
-                  key={value}
-                  onPress={() => setSelectedProfessional(value)}
-                  style={[
-                    styles.circleBox,
-                    isSelected && styles.selectedCircleBox,
-                  ]}>
-                  <CommonText
-                    text={value}
+          <View style={styles.sectionSpacing}>
+            <CommonText
+              text={'How Many Professional?'}
+              style={styles.subTitle}
+            />
+            <View style={styles.circleRow}>
+              {Array.from({length: 6}).map((_, index) => {
+                const value = index + 1;
+                const isSelected = selectedProfessional === value;
+                return (
+                  <TouchableOpacity
+                    key={value}
+                    onPress={() => setSelectedProfessional(value)}
                     style={[
-                      styles.circleText,
-                      isSelected && styles.selectedCircleText,
-                    ]}
-                  />
-                </TouchableOpacity>
-              );
-            })}
+                      styles.circleBox,
+                      isSelected && styles.selectedCircleBox,
+                    ]}>
+                    <CommonText
+                      text={value}
+                      style={[
+                        styles.circleText,
+                        isSelected && styles.selectedCircleText,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
           </View>
         </View>
 
-        <View style={{marginTop: hp(30)}}>
-          <UploadBox title="Upload Video/Image" />
+        <View style={{marginTop: hp(30), paddingHorizontal: wp(24)}}>
+          <UploadBox title="Upload Video/Image" style={{width: '100%'}} />
         </View>
 
-        <View style={styles.sectionSpacing}>
-          <ShadowCard style={styles.shadowCard}>
+        <View
+          style={[
+            styles.sectionSpacing,
+            {
+              paddingHorizontal: wp(24),
+            },
+          ]}>
+          <ShadowCard style={[styles.shadowCard, {width: '100%'}]}>
             <CommonText
               text={'Add Special Note'}
               style={styles.specialNoteTitle}
@@ -226,7 +246,7 @@ const MyBookings = () => {
         <RequestSubmitModal
           handleCardPress={() => {
             setIsSubmitModalVisible(false);
-            resetNavigation(SEEKER_SCREENS.Offers, "", {isResetNav: true});
+            resetNavigation(SEEKER_SCREENS.Offers, '', {isResetNav: true});
           }}
           color={Colors.seeker_primary}
         />
@@ -240,7 +260,6 @@ export default MyBookings;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    paddingHorizontal: wp(24),
     backgroundColor: Colors.white,
   },
   headerContainer: {
@@ -384,6 +403,7 @@ const styles = StyleSheet.create({
   },
   sendRequestBtn: {
     marginTop: hp(50),
+    marginHorizontal: wp(24),
     backgroundColor: Colors.seeker_primary,
   },
   selectedMileageBox: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View, ViewStyle} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
@@ -8,14 +8,18 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import Divider from './Divider';
 
-const ServiceBillSummary = () => {
+type Props = {
+  style?: ViewStyle;
+};
+
+const ServiceBillSummary = ({style}: Props) => {
   const summaryDetails = [
     {label: 'Service Charges', amount: '25,00'},
     {label: 'Sub Total', amount: '100,00'},
   ];
 
   return (
-    <ShadowCard style={styles.card}>
+    <ShadowCard style={[styles.card, style]}>
       {summaryDetails.map((item, index) => (
         <View
           key={index}

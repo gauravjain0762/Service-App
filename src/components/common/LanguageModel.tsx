@@ -1,94 +1,89 @@
-import React, {useState} from 'react'
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-} from 'react-native'
-import {Colors} from '@/constants/Colors'
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn'
-import CommonText from '@/components/common/CommonText'
-import {IMAGES} from '@/assets/images'
-import BottomModal from '@/components/common/BottomModal'
-import CustomImage from './CustomImage'
+import React, {useState} from 'react';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-Dimensions.get('window')
+import {Colors} from '@/constants/Colors';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CommonText from '@/components/common/CommonText';
+import {IMAGES} from '@/assets/images';
+import BottomModal from '@/components/common/BottomModal';
+import CustomImage from './CustomImage';
 
 type LanguageModalProps = {
-  visible: boolean
-  onClose: () => void
-  onLanguageSelect: (language: string) => void
-}
+  visible: boolean;
+  isProvider?: boolean;
+  onClose: () => void;
+  onLanguageSelect: (language: string) => void;
+};
 
 const LanguageModal = ({
   visible,
   onClose,
+  isProvider,
   onLanguageSelect,
 }: LanguageModalProps) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('English')
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
 
   const handleLanguageSelect = (language: string) => {
-    setSelectedLanguage(language)
-    onLanguageSelect(language)
-  }
+    setSelectedLanguage(language);
+    onLanguageSelect(language);
+  };
 
   return (
     <BottomModal
       visible={visible}
       onClose={onClose}
-      showCloseButton={false}
       style={styles.modalContainer}>
-      <View style={styles.selectLanTitle}>
-        <CommonText text='Select Language' style={styles.title} />
+      <View style={styles.header}>
+        <CommonText text="Select Language" style={styles.title} />
         <CustomImage
           source={IMAGES.close2}
           onPress={onClose}
-          imageStyle={{width: wp(20), height: hp(20)}}
+          imageStyle={styles.closeIcon}
         />
       </View>
-      <View style={styles.languageContainer}>
-        <TouchableOpacity
-          style={styles.languageOption}
-          onPress={() => handleLanguageSelect('English')}>
-          <View style={styles.languageInfo}>
-            <Image source={IMAGES.flag} style={styles.flagIcon} />
-            <CommonText text='English' style={styles.languageText} />
-          </View>
-          <View
-            style={[
-              styles.radioButton,
-              selectedLanguage === 'English' && styles.radioButtonSelected,
-            ]}>
-            {selectedLanguage === 'English' && (
-              <View style={styles.radioButtonInner} />
-            )}
-          </View>
-        </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.languageOption}
-          onPress={() => handleLanguageSelect('Arabic')}>
-          <View style={styles.languageInfo}>
-            <Image source={IMAGES.flag2} style={styles.flagIcon} />
-            <CommonText text='Arabic' style={styles.languageText} />
-          </View>
-          <View
-            style={[
-              styles.radioButton,
-              selectedLanguage === 'Arabic' && styles.radioButtonSelected,
-            ]}>
-            {selectedLanguage === 'Arabic' && (
-              <View style={styles.radioButtonInner} />
-            )}
-          </View>
-        </TouchableOpacity>
+      <View>
+        {[
+          {label: 'English', flag: IMAGES.flag},
+          {label: 'Arabic', flag: IMAGES.flag2},
+        ].map(({label, flag}) => (
+          <TouchableOpacity
+            key={label}
+            style={styles.languageOption}
+            onPress={() => handleLanguageSelect(label)}>
+            <View style={styles.languageInfo}>
+              <Image source={flag} style={styles.flagIcon} />
+              <CommonText text={label} style={styles.languageText} />
+            </View>
+
+            <View
+              style={[
+                styles.radioButton,
+                {
+                  borderColor: isProvider
+                    ? Colors.provider_primary
+                    : Colors.seeker_primary,
+                },
+              ]}>
+              {selectedLanguage === label && (
+                <View
+                  style={[
+                    styles.radioButtonInner,
+                    {
+                      backgroundColor: isProvider
+                        ? Colors.provider_primary
+                        : Colors.seeker_primary,
+                    },
+                  ]}
+                />
+              )}
+            </View>
+          </TouchableOpacity>
+        ))}
       </View>
     </BottomModal>
-  )
-}
-
-export default LanguageModal
+  );
+};
 
 const styles = StyleSheet.create({
   modalContainer: {
@@ -96,17 +91,18 @@ const styles = StyleSheet.create({
     paddingBottom: hp(40),
     paddingHorizontal: wp(20),
   },
-  selectLanTitle: {
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: wp(15),
+    marginBottom: hp(15),
   },
   title: {
     ...commonFontStyle(600, 2.4, Colors.black),
-    textAlign: 'center',
-    marginBottom: hp(15),
   },
-  languageContainer: {
+  closeIcon: {
+    width: wp(20),
+    height: hp(20),
   },
   languageOption: {
     flexDirection: 'row',
@@ -133,17 +129,14 @@ const styles = StyleSheet.create({
     height: hp(25),
     borderRadius: wp(100),
     borderWidth: 2,
-    borderColor: Colors.seeker_primary,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  radioButtonSelected: {
-    borderColor: '#03B463',
   },
   radioButtonInner: {
     width: wp(10),
     height: hp(10),
     borderRadius: wp(5),
-    backgroundColor: '#03B463',
   },
-})
+});
+
+export default LanguageModal;

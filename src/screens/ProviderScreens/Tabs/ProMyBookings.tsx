@@ -105,7 +105,7 @@ const ProMyBookings = () => {
                 item={item}
                 index={index}
                 isBooking={true}
-                onPress={() => navigateTo(PROVIDER_SCREENS.ProRequestDetail)}
+                onPress={() => navigateTo(PROVIDER_SCREENS.ProOfferDetails)}
               />
             );
           }}

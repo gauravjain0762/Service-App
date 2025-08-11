@@ -65,32 +65,26 @@ const services = [
 ];
 
 const HomeScreen = () => {
-  const {params} = useRoute();
-  // const {openReviewModal} = params as {
-  //   openReviewModal: boolean;
-  // };
+  const {params} = useRoute<any>();
+  const openReviewModal = params?.openReviewModal;
+  const [isReviewModalVisible, setIsReviewModalVisible] =
+    useState<boolean>(false);
 
-  // const [isReviewModalVisible, setIsReviewModalVisible] =
-  //   useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (openReviewModal) {
-  //     setIsReviewModalVisible(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (openReviewModal) {
+      setIsReviewModalVisible(true);
+    }
+  }, []);
 
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
-  const [isSubmitReviewModalVisible, setIsSubmitReviewModalVisible] =
-    useState(false);
 
   const openModal = () => {
-    setIsSubmitReviewModalVisible(true);
+    setIsReviewModalVisible(true);
   };
 
   const closeModal = () => {
-    setIsSubmitReviewModalVisible(false);
+    setIsReviewModalVisible(false);
   };
 
   return (
@@ -147,7 +141,7 @@ const HomeScreen = () => {
           data={services}
           scrollEnabled={false}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{marginTop: hp(30), paddingBottom: '20%'}}
+          contentContainerStyle={{marginTop: hp(10), paddingBottom: '20%'}}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({item}) => {
             return (
@@ -158,7 +152,7 @@ const HomeScreen = () => {
                   setIsModalVisible(true);
                   setServiceName(item?.name);
                 }}
-                containerStyle={{marginRight: wp(10), marginBottom: hp(30)}}
+                containerStyle={{marginRight: wp(10), marginBottom: hp(20)}}
               />
             );
           }}
@@ -166,7 +160,7 @@ const HomeScreen = () => {
       </ScrollView>
       <BottomModal
         close
-        style={{paddingTop: hp(40)}}
+        style={{paddingTop: hp(30)}}
         visible={isModalVisible}
         onPressCancel={() => {
           setIsModalVisible(false);
@@ -179,6 +173,11 @@ const HomeScreen = () => {
           setIsModalVisible={setIsModalVisible}
         />
       </BottomModal>
+      <ReviewModal
+        visible={isReviewModalVisible}
+        onClose={closeModal}
+        onSubmit={closeModal}
+      />
     </SafeareaProvider>
   );
 };
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
     width: wp(20),
   },
   searchContainer: {
-    marginVertical: hp(23),
+    marginVertical: hp(24),
   },
   searchImages: {
     width: wp(30),

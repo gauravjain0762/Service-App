@@ -45,7 +45,7 @@ const OTPScreen = () => {
 
   const onLoginSubmit = async () => {
     if (isProvider) {
-      resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+      resetNavigation(PROVIDER_SCREENS.Subscription, {isProvider: true});
     } else {
       resetNavigation(SCREENS.SeekerTabNavigation);
     }
