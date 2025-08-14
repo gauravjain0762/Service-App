@@ -15,11 +15,13 @@ import LanguageModal from '@/components/common/LanguageModel';
 import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 import {useLogoutMutation} from '@/api/Seeker/authApi';
 import {resetStore} from '@/store';
-import {useAppDispatch} from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {clearToken} from '@/features/authSlice';
 
 const Profile = () => {
+  const {userInfo} = useAppSelector(state => state.auth);
   const [logout, {isLoading}] = useLogoutMutation();
+
   const dispatch = useAppDispatch();
   const [isLanguageModalVisible, setIsLanguageModalVisible] =
     useState<boolean>(false);
@@ -165,7 +167,7 @@ const Profile = () => {
             disabled={true}
             containerStyle={styles.avatar}
           />
-          <CommonText text="Jason Wiliams" style={styles.name} />
+          <CommonText text={userInfo?.name} style={styles.name} />
         </Pressable>
 
         <FlatList
