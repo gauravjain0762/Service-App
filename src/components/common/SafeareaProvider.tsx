@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, ViewStyle} from 'react-native';
 
 import {SafeAreaView, SafeAreaViewProps} from 'react-native-safe-area-context';
+import Loader from './Loader';
 
 type Props = {
   children: any;
@@ -9,6 +10,7 @@ type Props = {
   style?: ViewStyle[] | {};
   containerStyle?: ViewStyle[] | {};
   SafeAreaProps?: SafeAreaViewProps;
+  loading?: boolean;
 } & SafeAreaViewProps;
 
 const SafeareaProvider = ({
@@ -16,14 +18,17 @@ const SafeareaProvider = ({
   children,
   style,
   containerStyle,
+  loading,
 }: Props) => {
   return (
     <SafeAreaView
       {...SafeAreaProps}
       style={[styles.main, style]}
       // edges={['top']}
-      >
+    >
       <View style={[styles.containerStyle, containerStyle]}>{children}</View>
+
+      {loading && <Loader />}
     </SafeAreaView>
   );
 };

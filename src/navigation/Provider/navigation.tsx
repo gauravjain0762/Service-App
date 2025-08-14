@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import React, {FC} from 'react';
 import {PROVIDER_SCREENS} from '../screenNames';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TermsWebScreen from '@/screens/SeekerScreens/Auth/TermsWebScreen';
@@ -26,7 +26,11 @@ const Stack = createNativeStackNavigator<any>();
 
 const ProviderNavigator: FC = () => {
   let screens = [
-    {name: PROVIDER_SCREENS.ProLoginScreen, component: ProLoginScreen, initialParams: {isProvider: true}},
+    {
+      name: PROVIDER_SCREENS.ProLoginScreen,
+      component: ProLoginScreen,
+      initialParams: {isProvider: true},
+    },
     {name: PROVIDER_SCREENS.ProSignupScreen, component: ProSignupScreen},
     {name: PROVIDER_SCREENS.TermsWebScreen, component: TermsWebScreen},
     {

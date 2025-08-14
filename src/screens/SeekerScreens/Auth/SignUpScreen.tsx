@@ -10,22 +10,64 @@ import CustomButton from '@/components/common/CustomButton';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import {
+  emailCheck,
+  errorToast,
   goBack,
   navigateTo,
   resetNavigation,
+  successToast,
 } from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useSignUpMutation} from '@/api/Seeker/authApi';
 
 const SignUpScreen = () => {
+  const [signUp, {isLoading}] = useSignUpMutation();
+
   const [callingCode, setCallingCode] = React.useState('971');
+
   const [userData, setUserData] = React.useState<any>({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
+    name: __DEV__ ? 'Test' : '',
+    email: __DEV__ ? 'test@gmail.com' : '',
+    phone: __DEV__ ? '324420121' : '',
+    password: __DEV__ ? 'Test@123' : '',
   });
+
+  const onSignUp = async () => {
+    try {
+      if (!emailCheck(userData.email)) {
+        errorToast('Please enter valid email');
+        return;
+      }
+
+      let obj = {
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+        phone_code: callingCode,
+        phone: userData.phone,
+      };
+
+      const response = await signUp(obj).unwrap();
+
+      if (response?.status) {
+        navigateTo(SEEKER_SCREENS.OtpScreen, {
+          userId: response?.data?.user?._id,
+          phone: callingCode + userData.phone,
+          isProvider: false,
+        });
+        successToast(response?.message);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
+  };
 
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
@@ -74,10 +116,9 @@ const SignUpScreen = () => {
         <View style={{marginTop: hp(52), gap: hp(20)}}>
           <CustomButton
             isPrimary="seeker"
+            loading={isLoading}
             title={'Sign Up'}
-            onPress={() => {
-              navigateTo(SEEKER_SCREENS.OtpScreen);
-            }}
+            onPress={onSignUp}
           />
           <CustomButton
             isPrimary="seeker"

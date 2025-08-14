@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -8,17 +9,52 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {navigationRef} from '@/navigation/RootContainer';
-import {resetNavigation} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  resetNavigation,
+  successToast,
+} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
+import {useResetPasswordMutation} from '@/api/Seeker/authApi';
 
 const CreateNewPass = () => {
   const {params} = useRoute<any>();
-  const isProvider = params?.isProvider;
-  console.log("🔥🔥🔥 ~ CreateNewPass ~ isProvider:", isProvider)
+  const {isProvider, userId, otp} = params || {};
+  const [resetPassword, {isLoading}] = useResetPasswordMutation();
 
-  const handleSubmit = () => {};
+  const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
+
+  const onSubmit = async () => {
+    try {
+      let obj = {
+        user_id: userId,
+        otp: otp,
+        password: password,
+        confirm_password: confirmPassword,
+      };
+
+      const response = await resetPassword(obj).unwrap();
+
+      if (response?.status) {
+        resetNavigation(
+          isProvider
+            ? PROVIDER_SCREENS.ProLoginScreen
+            : SEEKER_SCREENS.LoginScreen,
+        );
+        successToast(response?.message);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
+  };
 
   return (
     <SafeareaProvider
@@ -51,14 +87,26 @@ const CreateNewPass = () => {
             style={styles.description}
           />
           <View style={styles.textInput}>
-            <CustomTextInput placeholder="New Password" />
+            <CustomTextInput
+              placeholder="New Password"
+              secureTextEntry
+              value={password}
+              onChangeText={setPassword}
+            />
           </View>
           <View style={styles.textInput2}>
-            <CustomTextInput placeholder="Confirm Password" />
+            <CustomTextInput
+              placeholder="Confirm Password"
+              secureTextEntry
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
           </View>
 
           <View style={styles.buttonContainer}>
             <CustomButton
+              loading={isLoading}
+              disabled={password !== confirmPassword || !password}
               title="Submit"
               isPrimary={isProvider ? 'provider' : 'seeker'}
               btnStyle={{
@@ -66,13 +114,7 @@ const CreateNewPass = () => {
                   ? Colors.provider_primary
                   : Colors.seeker_primary,
               }}
-              onPress={() =>
-                resetNavigation(
-                  isProvider
-                    ? PROVIDER_SCREENS.ProviderTabNavigation
-                    : SEEKER_SCREENS.SeekerTabNavigation,
-                )
-              }
+              onPress={onSubmit}
             />
           </View>
         </View>

@@ -1,4 +1,4 @@
-import {setToken} from '../../features/authSlice';
+import {setFcmToken} from '@/features/authSlice';
 import {AppDispatch} from '../../store';
 import {axiosInstance} from './client';
 
@@ -39,13 +39,10 @@ class TokenRefreshManager {
           throw new Error('Invalid token response format');
         }
 
-        const tokenData = {
-          access: responseData.access,
-          refresh: responseData.refresh,
-        };
+        const tokenData = responseData.access?.token;
 
         if (this.dispatch) {
-          this.dispatch(setToken(tokenData));
+          this.dispatch(setFcmToken(tokenData));
         }
 
         resolve(tokenData);

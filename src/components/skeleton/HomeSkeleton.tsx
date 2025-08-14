@@ -1,37 +1,31 @@
+/* eslint-disable react-native/no-inline-styles */
+import {hp} from '@/utils/responsiveFn';
 import React from 'react';
-import {View, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-const HomeSkeleton = () => {
+const HomeSkeleton = ({
+  isBanner = false,
+  list,
+}: {
+  isBanner?: boolean;
+  list?: any;
+}) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{padding: 16}}>
+      contentContainerStyle={{
+        alignSelf: 'center',
+      }}>
       <SkeletonPlaceholder borderRadius={10}>
         <SkeletonPlaceholder.Item alignItems="center">
-          {/* Top 3 Promo Offers */}
-          <SkeletonPlaceholder.Item
-            flexDirection="row"
-            justifyContent="space-between"
-            width="100%">
-            {[...Array(3)].map((_, i) => (
-              <SkeletonPlaceholder.Item
-                key={i}
-                width={100}
-                height={80}
-                borderRadius={12}
-              />
-            ))}
-          </SkeletonPlaceholder.Item>
-
-          {/* Super Deal Banner */}
-          <SkeletonPlaceholder.Item
-            width="100%"
-            height={100}
-            marginTop={20}
-            borderRadius={12}
-          />
-
+          {isBanner && (
+            <SkeletonPlaceholder.Item
+              width="100%"
+              height={150}
+              borderRadius={12}
+            />
+          )}
           {/* Category Grid */}
           <SkeletonPlaceholder.Item
             flexDirection="row"
@@ -39,23 +33,16 @@ const HomeSkeleton = () => {
             justifyContent="space-between"
             marginTop={20}
             width="100%">
-            {[...Array(6)].map((_, i) => (
+            {[...Array(list || 12)].map((_, i) => (
               <SkeletonPlaceholder.Item
                 key={i}
-                width="30%"
-                height={110}
+                width={hp(110)}
+                height={hp(90)}
                 marginBottom={20}
                 borderRadius={16}
               />
             ))}
           </SkeletonPlaceholder.Item>
-
-          <SkeletonPlaceholder.Item
-            width="100%"
-            height={100}
-            marginTop={20}
-            borderRadius={12}
-          />
         </SkeletonPlaceholder.Item>
       </SkeletonPlaceholder>
     </ScrollView>

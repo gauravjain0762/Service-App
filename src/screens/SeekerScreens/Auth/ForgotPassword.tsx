@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -8,18 +9,54 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {navigationRef} from '@/navigation/RootContainer';
-import {navigateTo} from '@/components/common/commonFunction';
+import {
+  emailCheck,
+  errorToast,
+  navigateTo,
+  successToast,
+} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
+import {useForgotPasswordMutation} from '@/api/Seeker/authApi';
 
 const ForgotPassword = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
 
-  const handleSubmit = () => {
-    // Handle forgot password submission
-    // You can add email validation and API call here
+  const [forgotPassword, {isLoading}] = useForgotPasswordMutation();
+
+  const [email, setEmail] = React.useState('');
+
+  const onSend = async () => {
+    try {
+      if (!emailCheck(email)) {
+        errorToast('Please enter valid email');
+        return;
+      }
+
+      let obj = {
+        email: email,
+      };
+
+      const response = await forgotPassword(obj).unwrap();
+
+      if (response?.status) {
+        navigateTo(SEEKER_SCREENS.EmailVerification, {
+          userId: response?.data?.user?._id,
+          email: email,
+          isProvider: false,
+        });
+        successToast(response?.message);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
   };
 
   return (
@@ -50,18 +87,24 @@ const ForgotPassword = () => {
           <View style={styles.mainContent}>
             <CommonText text="Forgot Password" style={styles.headerText} />
             <CommonText
-              text="We sent the OTP code to your email, please check it and enter below"
+              text="Please enter your email below and we will send you the OTP code"
               style={styles.description}
             />
             <View style={styles.textInput}>
-              <CustomTextInput placeholder="Email" />
+              <CustomTextInput
+                placeholder="Email"
+                onChangeText={setEmail}
+                value={email}
+              />
             </View>
 
             <View style={styles.buttonContainer}>
               <CustomButton
                 title="Send"
+                loading={isLoading}
+                disabled={isLoading}
                 isPrimary={isProvider ? 'provider' : 'seeker'}
-                onPress={() => navigateTo(SEEKER_SCREENS.EmailVerification, {isProvider: isProvider})}
+                onPress={onSend}
               />
             </View>
           </View>

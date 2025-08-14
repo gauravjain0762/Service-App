@@ -17,10 +17,12 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
 import {IMAGES} from '@/assets/images';
 import LanguageModal from '@/components/common/LanguageModel';
+import {useAppDispatch} from '@/Hooks/hooks';
+import {setSelectedService} from '@/features/authSlice';
 
 const OnBoarding = () => {
   const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
-
+  const dispatch = useAppDispatch();
   const openLanguageModal = () => {
     setIsLanguageModalVisible(true);
   };
@@ -77,15 +79,21 @@ const OnBoarding = () => {
               <CustomButton
                 isPrimary="seeker"
                 title={'Job Seeker'}
-                onPress={() => resetNavigation(SCREENS.SeekerNavigator)}
+                onPress={() => {
+                  dispatch(setSelectedService('seeker'));
+                  resetNavigation(SCREENS.SeekerNavigator);
+                }}
                 textStyle={styles.btnText}
               />
               <CustomButton
                 title={'Service Provider'}
                 btnStyle={{backgroundColor: Colors.provider_primary}}
-                onPress={() =>
-                  resetNavigation(SCREENS.ProviderNavigator, {isProvider: true})
-                }
+                onPress={() => {
+                  dispatch(setSelectedService('provider'));
+                  resetNavigation(SCREENS.ProviderNavigator, {
+                    isProvider: true,
+                  });
+                }}
                 textStyle={styles.btnText}
               />
             </View>

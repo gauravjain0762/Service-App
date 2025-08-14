@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity, Image} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -22,13 +23,22 @@ const CELL_COUNT = 4;
 
 const EmailVerification = () => {
   const {params} = useRoute<any>();
-  const isProvider = params?.isProvider;
+  const {isProvider, userId} = params || {};
+
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [_props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
+
+  const onSend = async () => {
+    navigateTo(SEEKER_SCREENS.CreateNewPass, {
+      isProvider: isProvider,
+      otp: value,
+      userId: userId,
+    });
+  };
 
   return (
     <SafeareaProvider
@@ -56,7 +66,7 @@ const EmailVerification = () => {
         <View style={styles.mainContent}>
           <CommonText text="Email Verification" style={styles.headerText} />
           <CommonText
-            text="Please enter your email below and we will send you the OTP code"
+            text="We sent the OTP code to your email, please check it and enter below"
             style={styles.description}
           />
 
@@ -93,8 +103,9 @@ const EmailVerification = () => {
             <CustomButton
               isPrimary={isProvider ? 'provider' : 'seeker'}
               title="Send"
+              disabled={value.length < 4}
               btnStyle={styles.sendButton}
-              onPress={() => navigateTo(SEEKER_SCREENS.CreateNewPass, {isProvider: isProvider})}
+              onPress={onSend}
             />
           </View>
         </View>

@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useRoute} from '@react-navigation/native';
@@ -9,7 +9,11 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
-import {resetNavigation} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  resetNavigation,
+  successToast,
+} from '@/components/common/commonFunction';
 import OTPHeader from '@/components/auth/OTPHeader';
 import CustomImage from '@/components/common/CustomImage';
 import {GeneralStyle} from '@/constants/GeneralStyle';
@@ -19,6 +23,8 @@ import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import {useResendOTPMutation, useVerifyOTPMutation} from '@/api/Seeker/authApi';
+import Loader from '@/components/common/Loader';
 
 const CELL_COUNT = 4;
 
@@ -26,6 +32,8 @@ const OTPScreen = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const {t} = useTranslation();
+  const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
+  const [resendOTP, {isLoading: isResendLoading}] = useResendOTPMutation();
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -44,15 +52,44 @@ const OTPScreen = () => {
   }, []);
 
   const onLoginSubmit = async () => {
-    if (isProvider) {
-      resetNavigation(PROVIDER_SCREENS.Subscription, {isProvider: true});
-    } else {
-      resetNavigation(SCREENS.SeekerTabNavigation);
+    try {
+      const obj = {
+        otp: value,
+        user_id: params?.userId,
+        device_type: Platform.OS,
+        device_token: '',
+      };
+      const response = await verifyOTP(obj).unwrap();
+      if (response?.status) {
+        successToast(response?.message);
+        if (isProvider) {
+          resetNavigation(PROVIDER_SCREENS.Subscription, {isProvider: true});
+        } else {
+          resetNavigation(SCREENS.SeekerTabNavigation);
+        }
+      }
+    } catch (error: any) {
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
     }
   };
 
   const onResendOtp = async () => {
-    // Resend OTP logic
+    try {
+      const obj = {
+        user_id: params?.userId,
+      };
+      const response = await resendOTP(obj).unwrap();
+      if (response?.status) {
+        successToast(response?.message);
+        setTimer(60);
+      }
+    } catch (error: any) {
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
   };
 
   return (
@@ -81,7 +118,7 @@ const OTPScreen = () => {
           style={styles.topSubLabel}>
           {' '}
           <CommonText
-            text={params?.email || 'muhammad.zuhri.com'}
+            text={params?.email || '+' + params?.phone || 'muhammad.zuhri.com'}
             style={styles.topSubLabel}
           />
         </CommonText>
@@ -110,6 +147,8 @@ const OTPScreen = () => {
         <CustomButton
           isPrimary="seeker"
           title={t('Confirm')}
+          disabled={value.length < 4}
+          loading={isLoading}
           btnStyle={[
             styles.confirmButton,
             {
@@ -149,6 +188,7 @@ const OTPScreen = () => {
             />
           </CommonText>
         )}
+        {isResendLoading && <Loader />}
       </View>
     </SafeareaProvider>
   );

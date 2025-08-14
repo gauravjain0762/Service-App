@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -5,8 +6,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 
@@ -24,49 +23,28 @@ import ServicesModal from '@/components/modals/ServicesModal';
 import {useRoute} from '@react-navigation/native';
 import ReviewModal from '@/components/common/ReviewModel';
 import MiniCarousel from '@/components/common/MiniCarousel';
-
-const services = [
-  {
-    name: 'Home Service',
-    image: IMAGES.home_service,
-  },
-  {
-    name: 'Cleaning Sanitation',
-    image: IMAGES.cleaning_sanitation,
-  },
-  {
-    name: 'Repair Maintenance',
-    image: IMAGES.repair_maintenance,
-  },
-  {
-    name: 'Construction Renovation',
-    image: IMAGES.construction_renovation,
-  },
-  {
-    name: 'Car Services',
-    image: IMAGES.car_services,
-  },
-  {
-    name: 'Business Services',
-    image: IMAGES.business_services,
-  },
-  {
-    name: 'Pet Services',
-    image: IMAGES.pet_services,
-  },
-  {
-    name: 'Lifestyle Events',
-    image: IMAGES.lifestyle_events,
-  },
-  {
-    name: 'Buildings Services',
-    image: IMAGES.buildings_services,
-  },
-];
+import {useAppSelector} from '@/Hooks/hooks';
+import {useGetProfileQuery} from '@/api/Seeker/profileApi';
+import {
+  useGetDashboardQuery,
+  useGetSubCategoriesQuery,
+} from '@/api/Seeker/homeApi';
+import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 
 const HomeScreen = () => {
   const {params} = useRoute<any>();
+  const {userInfo, dashboard} = useAppSelector(state => state.auth);
+
+  const [selectedSubCatId, setSelectedSubCatId] = useState<string>('');
+  const {} = useGetProfileQuery({}); // profile api
+
+  const {isLoading} = useGetDashboardQuery({}); // dashboard api
+  const {data, isLoading: isSubCatLoading} = useGetSubCategoriesQuery({
+    category_id: selectedSubCatId,
+  }); // sub categories api
+
   const openReviewModal = params?.openReviewModal;
+
   const [isReviewModalVisible, setIsReviewModalVisible] =
     useState<boolean>(false);
 
@@ -74,14 +52,10 @@ const HomeScreen = () => {
     if (openReviewModal) {
       setIsReviewModalVisible(true);
     }
-  }, []);
+  }, [openReviewModal]);
 
   const [serviceName, setServiceName] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const openModal = () => {
-    setIsReviewModalVisible(true);
-  };
 
   const closeModal = () => {
     setIsReviewModalVisible(false);
@@ -91,7 +65,7 @@ const HomeScreen = () => {
     <SafeareaProvider style={styles.safeArea}>
       <View style={styles.topSection}>
         <View style={styles.greetingContainer}>
-          <CommonText text={'Hey, Thomas'} style={styles.topLabel} />
+          <CommonText text={'Hey, ' + userInfo?.name} style={styles.topLabel} />
           <CommonText
             style={styles.topLabel1}
             text={'Whats service do you need?'}
@@ -113,51 +87,42 @@ const HomeScreen = () => {
           }
         />
       </View>
+      {isLoading ? (
+        <HomeSkeleton isBanner />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <MiniCarousel data={dashboard?.banners ?? []} />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* <View style={styles.bannerContainer}>
-          <View style={styles.bannerTextContainer}>
-            <ReviewModal
-              onSubmit={() => {}}
-              onClose={closeModal}
-              visible={isSubmitReviewModalVisible}
-            />
-            <CommonText
-              text={'Cleaning & Sanitation'}
-              style={styles.bannerTitle}
-              onPress={openModal}
-            />
-            <CommonText
-              text={'Basic Home Cleaning Kitchen/Bathroom Cleaning'}
-              style={styles.bannerSubtitle}
-            />
-          </View>
-          <Image source={IMAGES.cleaning_basket} style={styles.bannerImage} />
-        </View> */}
-        <MiniCarousel />
-
-        <FlatList
-          numColumns={3}
-          data={services}
-          scrollEnabled={false}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{marginTop: hp(10), paddingBottom: '20%'}}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({item}) => {
-            return (
-              <ServiceCard
-                text={item.name}
-                source={item.image}
-                handleCardPress={() => {
-                  setIsModalVisible(true);
-                  setServiceName(item?.name);
-                }}
-                containerStyle={{marginRight: wp(10), marginBottom: hp(20)}}
-              />
-            );
-          }}
-        />
-      </ScrollView>
+          <FlatList
+            numColumns={3}
+            data={dashboard.categories}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              marginTop: hp(25),
+              paddingBottom: '20%',
+              gap: hp(15),
+            }}
+            columnWrapperStyle={{
+              gap: hp(10),
+            }}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({item}) => {
+              return (
+                <ServiceCard
+                  text={item?.title ?? ''}
+                  source={item?.image ?? ''}
+                  handleCardPress={() => {
+                    setIsModalVisible(true);
+                    setServiceName(item?.title);
+                    setSelectedSubCatId(item?._id);
+                  }}
+                />
+              );
+            }}
+          />
+        </ScrollView>
+      )}
       <BottomModal
         close
         style={{paddingTop: hp(30)}}
@@ -170,7 +135,9 @@ const HomeScreen = () => {
         }}>
         <ServicesModal
           serviceName={serviceName}
+          subCategories={data?.data?.sub_categories ?? []}
           setIsModalVisible={setIsModalVisible}
+          isSubCatLoading={isSubCatLoading}
         />
       </BottomModal>
       <ReviewModal
@@ -186,7 +153,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   safeArea: {
-    paddingHorizontal: wp(24),
+    paddingHorizontal: wp(15),
     backgroundColor: Colors.white,
   },
   topSection: {

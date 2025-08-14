@@ -32,14 +32,14 @@ export const axiosBaseQuery: BaseQueryFn<
     dispatch(incrementPendingRequests());
   }
 
-  const token = (getState() as any).auth.authToken
-    ? (getState() as any).auth.authToken
+  const token = (getState() as any).auth.token
+    ? (getState() as any).auth.token
     : null;
   const authHeaders = token ? {Authorization: `Bearer ${token}`} : {};
 
-  console.log('getState()', getState());
-  console.log('authHeaders', authHeaders);
+  console.log('token()', token);
   console.log('params', params);
+  console.log('url', url);
 
   try {
     const result = await axiosInstance.request({
@@ -53,12 +53,11 @@ export const axiosBaseQuery: BaseQueryFn<
         'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     } as AxiosRequestConfig);
-    console.log(url, 'url');
 
     return {data: result.data};
   } catch (rawError) {
     const error = rawError as AxiosError;
-    console.log(error, 'errorerror', rawError);
+    console.log('errorerror', rawError);
     if (error.response?.status === 401) {
       console.log('401 Unauthorized error detected. Redirecting to login...');
 

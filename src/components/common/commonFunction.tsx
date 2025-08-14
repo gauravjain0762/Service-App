@@ -1,10 +1,8 @@
-// import { navigationRef } from "@/navigation/RootContainer";
-import {CommonActions} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {asyncKeys} from '../../Hooks/asyncStorage';
-import {navigationRef} from '../../navigation/RootContainer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import i18n from '../../i18n/i18n';
+import {navigationRef} from '@/navigation/RootContainer';
+import i18n from '@/i18n/i18n';
+import {asyncKeys} from '@/Hooks/asyncStorage';
 
 export const successToast = (message: string) => {
   Toast.show({type: 'success', text1: message});

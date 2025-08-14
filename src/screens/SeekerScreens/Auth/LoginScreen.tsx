@@ -1,7 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import CustomTextInput from '@/components/common/CustomTextInput';
-import CheckBox from 'react-native-check-box';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
@@ -10,14 +9,54 @@ import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {
+  emailCheck,
+  errorToast,
+  navigateTo,
+  resetNavigation,
+  successToast,
+} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
+import {useLoginMutation} from '@/api/Seeker/authApi';
 
 const LoginScreen = ({}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [details, setDetails] = useState({
+    email: __DEV__ ? 'test@gmail.com' : '',
+    password: __DEV__ ? 'Test@123' : '',
+  });
+  const [login, {isLoading}] = useLoginMutation();
+
+  const onLogin = async () => {
+    try {
+      if (!emailCheck(details.email)) {
+        errorToast('Please enter valid email');
+        return;
+      }
+
+      let obj = {
+        email: details.email,
+        password: details.password,
+      };
+      const response = await login(obj).unwrap();
+      console.log('response', response);
+
+      if (response?.status) {
+        successToast(response?.message);
+        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
+  };
 
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
@@ -26,8 +65,17 @@ const LoginScreen = ({}: any) => {
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />
         <View style={{gap: hp(20)}}>
-          <CustomTextInput placeholder="Email" />
-          <CustomTextInput placeholder="Password" secureTextEntry={true} />
+          <CustomTextInput
+            placeholder="Email"
+            value={details.email}
+            onChangeText={e => setDetails({...details, email: e})}
+          />
+          <CustomTextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            value={details.password}
+            onChangeText={e => setDetails({...details, password: e})}
+          />
           <CommonText
             text="Forgot Password?"
             style={styles.forgotPasswordText}
@@ -45,9 +93,11 @@ const LoginScreen = ({}: any) => {
 
         <View style={{marginTop: hp(50), gap: hp(30)}}>
           <CustomButton
+            loading={isLoading}
+            disabled={details.email && details.password ? false : true}
             isPrimary="seeker"
             title={'Login'}
-            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
+            onPress={onLogin}
           />
           <CustomButton
             isPrimary="seeker"

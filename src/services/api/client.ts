@@ -1,9 +1,8 @@
 import axios, {AxiosInstance, AxiosError} from 'axios';
-import { API_TIMEOUT } from '../../utils/constants/api';
-import { API } from '../../utils/apiConstant';
+import {API_TIMEOUT, SERVICE_BASE_URL} from '../../utils/constants/api';
 
-export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: API.BASE_URL,
+export const axiosInstance: AxiosInstance | any = axios.create({
+  baseURL: SERVICE_BASE_URL,
   timeout: API_TIMEOUT.DEFAULT,
   headers: {
     Accept: 'application/json',

@@ -21,10 +21,31 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
 } as const;
 
-export const API_ENDPOINTS = {
+export const SERVICE_BASE_URL = 'https://sky.devicebee.com/ServiceBooking/api';
+
+export const SERVICE_API = {
   AUTH: {
-    // Public authentication routes
-    // LOGIN: '/auth/login',
+    LOGIN: '/login',
+    REGISTER: '/register',
+    GUEST_LOGIN: '/guestLogin',
+    VERIFY_OTP: '/verifyOTP',
+    SEND_OTP: '/sendOTP',
+    RESEND_OTP: '/resendOTP',
+    FORGOT_PASSWORD: '/forgotPassword',
+    RESET_PASSWORD: '/resetPassword',
+    GOOGLE_SIGNIN: '/googleSignin',
+    APPLE_SIGNIN: '/appleSignin',
+    LOGOUT: '/logout',
+    DELETE_ACCOUNT: '/deleteAccount',
+  },
+  PROFILE: {
+    PROFILE: '/getProfile',
+    UPDATE_PROFILE: '/updateProfile',
+    CHANGE_PASSWORD: '/changePassword',
+  },
+  DASHBOARD: {
+    DASHBOARD: '/getDashboard',
+    SUB_CATEGORIES: '/getSubCategories',
   },
 } as const;
 
@@ -60,8 +81,10 @@ export const API_RATE_LIMIT = {
 } as const;
 
 export const ITEMS_PER_PAGE = 10;
-export const GOOGLE_MAP_API_KEY =  'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'//'AIzaSyDI54CSbb2x46H2986nVnG15-E0iqgONwc'
-export const WEB_CLIENT_ID = '208244015872-j5mi0q8lotdjceab1ih8lgub6e6b9703.apps.googleusercontent.com'
+export const GOOGLE_MAP_API_KEY = 'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'; //'AIzaSyDI54CSbb2x46H2986nVnG15-E0iqgONwc'
+export const WEB_CLIENT_ID =
+  '208244015872-j5mi0q8lotdjceab1ih8lgub6e6b9703.apps.googleusercontent.com';
+
 export type HttpMethod = keyof typeof HTTP_METHOD;
 export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
 export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];

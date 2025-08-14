@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, Pressable, FlatList} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
@@ -12,8 +13,14 @@ import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SCREEN_NAMES} from '@/navigation/screenNames';
 import LanguageModal from '@/components/common/LanguageModel';
 import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
+import {useLogoutMutation} from '@/api/Seeker/authApi';
+import {resetStore} from '@/store';
+import {useAppDispatch} from '@/Hooks/hooks';
+import {clearToken} from '@/features/authSlice';
 
 const Profile = () => {
+  const [logout, {isLoading}] = useLogoutMutation();
+  const dispatch = useAppDispatch();
   const [isLanguageModalVisible, setIsLanguageModalVisible] =
     useState<boolean>(false);
   const [isLogoutModalVisible, setIsLogoutModalVisible] =
@@ -98,14 +105,21 @@ const Profile = () => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedModal === 'LOGOUT') {
       setIsLogoutModalVisible(false);
 
-      setTimeout(() => {
+      // setTimeout(() => {
+      //   setIsDeleteModalVisible(false);
+      //   resetNavigation(SCREEN_NAMES.OnBoarding);
+      // }, 300);
+      const response = await logout({}).unwrap();
+      if (response?.status) {
         setIsDeleteModalVisible(false);
         resetNavigation(SCREEN_NAMES.OnBoarding);
-      }, 300);
+        resetStore();
+        dispatch(clearToken());
+      }
     } else {
       setIsDeleteModalVisible(false);
       setIsLogoutModalVisible(true);
@@ -130,6 +144,7 @@ const Profile = () => {
 
   return (
     <SafeareaProvider
+      loading={isLoading}
       style={{
         flex: 1,
         backgroundColor: Colors.white,

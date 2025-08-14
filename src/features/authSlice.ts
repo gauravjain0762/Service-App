@@ -7,20 +7,30 @@ import {RootState} from '../store';
 export interface AuthState {
   token: string | null;
   isLoading: boolean;
-  user: any;
   fcmToken: string | null;
   userInfo?: any;
   language: string | null;
+  selectedService: any;
+
+  dashboard: {
+    banners: any[];
+    categories: any[];
+  };
 }
 
 // Initial state
 const initialState: AuthState = {
   token: null,
   isLoading: false,
-  user: null,
   fcmToken: null,
   userInfo: null,
   language: 'en',
+  selectedService: null,
+
+  dashboard: {
+    banners: [],
+    categories: [],
+  },
 };
 
 // Create the auth slice
@@ -46,14 +56,13 @@ const authSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<any>) => {
       state.userInfo = action.payload;
     },
-
-    clearToken: state => {
-      console.log('clearing token', new Error().stack);
-
-      state.fcmToken = null;
-      state.token = null;
-      state.user = null;
+    setSelectedService: (state, action: PayloadAction<any>) => {
+      state.selectedService = action.payload;
     },
+    setDashboard: (state, action: PayloadAction<any>) => {
+      state.dashboard = action.payload;
+    },
+    clearToken: () => ({...initialState}),
   },
 });
 
@@ -61,7 +70,7 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   // Only persist these fields
-  whitelist: ['authToken', 'user', 'language'],
+  whitelist: ['token', 'userInfo', 'language', 'selectedService'],
 };
 
 // Create the persisted reducer
@@ -76,14 +85,15 @@ export const {
   setLoading,
   setUserInfo,
   setLanguage,
-
+  setSelectedService,
+  setDashboard,
   clearToken,
 } = authSlice.actions;
 
 // Selectors
 export const selectToken = (state: RootState) => state.auth.token;
 
-export const selectUser = (state: RootState) => state.auth.user;
+export const selectUser = (state: RootState) => state.auth.userInfo;
 
 // Helper selector to check if token is expired
 

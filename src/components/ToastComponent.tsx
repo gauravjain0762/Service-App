@@ -1,12 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Animated, StyleSheet, View, Text, SafeAreaView} from 'react-native';
+import {Animated, StyleSheet, View, SafeAreaView} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, SCREEN_WIDTH} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import {GeneralStyle} from '@/constants/GeneralStyle';
+import CommonText from './common/CommonText';
 
 interface ToastProps {
   type: 'error' | 'success';
@@ -31,7 +32,7 @@ const ToastComponent = ({type, text1, lineAnim}: ToastProps) => {
                 resizeMode="contain"
                 tintColor={Colors.green}
               />
-              <Text style={styles.textStyleToast}>{text1}</Text>
+              <CommonText style={styles.textStyleToast} text={text1} />
             </View>
 
             <Animated.View
@@ -60,7 +61,7 @@ const ToastComponent = ({type, text1, lineAnim}: ToastProps) => {
                 resizeMode="contain"
                 tintColor={Colors.red}
               />
-              <Text style={styles.textStyleToast}>{text1}</Text>
+              <CommonText style={styles.textStyleToast} text={text1} />
             </View>
 
             <Animated.View
@@ -84,6 +85,7 @@ export default ToastComponent;
 const styles = StyleSheet.create({
   toastStyle: {
     backgroundColor: Colors._25201a,
+
     width: SCREEN_WIDTH - 50,
     borderRadius: 10,
     overflow: 'hidden',
