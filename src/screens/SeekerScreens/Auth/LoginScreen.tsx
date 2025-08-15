@@ -21,7 +21,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {useLoginMutation} from '@/api/Seeker/authApi';
-
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {getAuth, signInWithCredential, GoogleAuthProvider} from 'firebase/auth';
 const LoginScreen = ({}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
@@ -57,6 +58,29 @@ const LoginScreen = ({}: any) => {
       );
     }
   };
+
+  async function signInWithGoogle() {
+    try {
+      // Start Google Sign-In
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      // // Get ID token
+      // const {data} = userInfo;
+      console.log('userInfo', userInfo);
+
+      // // Create Firebase credential
+      // const googleCredential = GoogleAuthProvider.credential(idToken);
+
+      // // Sign in with Firebase
+      // const auth = getAuth();
+      // const result = await signInWithCredential(auth, googleCredential);
+
+      console.log('User signed in:', result.user);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
@@ -118,6 +142,7 @@ const LoginScreen = ({}: any) => {
             source={IMAGES.google}
             size={getFontSize(2.5)}
             containerStyle={styles.socialBtn}
+            onPress={signInWithGoogle}
           />
 
           <CustomImage

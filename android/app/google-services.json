@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "594792561785",
+    "project_id": "services-booking-app-e839f",
+    "storage_bucket": "services-booking-app-e839f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594792561785:android:4d66d46434647b0f5aa8a8",
+        "android_client_info": {
+          "package_name": "com.services.marketplace.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594792561785-r08svhfrsp4puqqjpc094b7uijq89goc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.services.marketplace.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1ndBBlbgCUDkY5wKa4vUXYm-Q71QESz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "594792561785-3q19f9uppi39ej6jmp1t38ht5p02fgij.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.services.marketplace.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

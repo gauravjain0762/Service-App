@@ -1,4 +1,4 @@
-package com.snumberapp
+package com.services.marketplace.app
 
 import android.app.Application
 import com.facebook.react.PackageList

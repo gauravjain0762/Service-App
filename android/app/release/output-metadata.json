@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.snumberapp",
+  "applicationId": "com.services.marketplace.app",
   "variantName": "release",
   "elements": [
     {
