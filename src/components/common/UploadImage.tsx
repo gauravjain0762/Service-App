@@ -1,42 +1,118 @@
-import React from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
+import {
+  ImageBackground,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, hp, SCREEN_WIDTH, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
+import Modal from 'react-native-modal';
+import ActionSheet from './ActionSheet';
+import ImageCropPicker from 'react-native-image-crop-picker';
 import CustomImage from './CustomImage';
 
-const UploadImage = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.uploadBox}>
-        <ImageBackground source={IMAGES.dashed_rec} style={styles.plusIconBox}>
-          <Text style={styles.plusIconText}>+</Text>
-        </ImageBackground>
-        <CommonText
-          text="Upload Your Picture"
-          style={styles.uploadPictureText}
-        />
-      </View>
+const UploadImage = ({
+  onSelect = () => {},
+  style,
+  value,
+}: {
+  onSelect?: (image: any) => void;
+  style?: ViewStyle;
+  value?: any;
+}) => {
+  const [actionSheet, setActionSheet] = useState(false);
+  const closeActionSheet = () => setActionSheet(false);
 
-      <View style={styles.uploadRow}>
-        <View style={styles.certificateBox}>
-          <ImageBackground source={IMAGES.dashed_rec} style={styles.iconBox}>
-            <CustomImage source={IMAGES.upload} size={hp(31)} />
+  const actionItems = [
+    {
+      id: 1,
+      label: 'Open Camera',
+      onPress: () => {
+        openPicker();
+      },
+    },
+    {
+      id: 2,
+      label: 'Open Gallery',
+      onPress: () => {
+        openGallery();
+      },
+    },
+  ];
+
+  const openPicker = () => {
+    ImageCropPicker.openCamera({
+      mediaType: 'photo',
+    }).then(image => {
+      closeActionSheet();
+
+      const temp = {
+        uri: image.sourceURL || image.path,
+        name: image?.filename || image.path.split('/').pop(),
+        type: 'image/jpeg',
+      };
+      onSelect(temp);
+    });
+  };
+  const openGallery = () => {
+    ImageCropPicker.openPicker({
+      mediaType: 'photo',
+    }).then(image => {
+      closeActionSheet();
+
+      const temp = {
+        uri: image.sourceURL || image.path,
+        name: image?.filename || image.path.split('/').pop(),
+        type: 'image/jpeg',
+      };
+
+      onSelect(temp);
+    });
+  };
+
+  return (
+    <View style={[styles.container, style]}>
+      {value ? (
+        <TouchableOpacity
+          onPress={() => setActionSheet(true)}
+          style={styles.imageBox}>
+          <CustomImage uri={value?.uri || ''} imageStyle={styles.imageStyle} />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => setActionSheet(true)}
+          style={styles.uploadBox}>
+          <ImageBackground
+            source={IMAGES.dashed_rec}
+            style={styles.plusIconBox}>
+            <Text style={styles.plusIconText}>+</Text>
           </ImageBackground>
           <CommonText
-            text="Upload Certificate"
-            style={styles.uploadCertificateText}
+            text={'Upload Your Picture'}
+            style={styles.uploadPictureText}
           />
-        </View>
-        <View style={styles.certificateBox}>
-          <ImageBackground source={IMAGES.dashed_rec} style={styles.iconBox}>
-            <CustomImage source={IMAGES.upload} size={hp(31)} />
-          </ImageBackground>
-          <CommonText text="License" style={styles.uploadCertificateText} />
-        </View>
-      </View>
+        </TouchableOpacity>
+      )}
+
+      <Modal
+        animationOutTiming={1000}
+        useNativeDriver={Platform.OS === 'ios' ? false : true}
+        onBackdropPress={() => closeActionSheet()}
+        isVisible={actionSheet}
+        style={{
+          margin: 0,
+          justifyContent: 'flex-end',
+        }}>
+        <ActionSheet actionItems={actionItems} onCancel={closeActionSheet} />
+      </Modal>
     </View>
   );
 };
@@ -46,6 +122,12 @@ export default UploadImage;
 const styles = StyleSheet.create({
   container: {
     gap: hp(35),
+  },
+  imageBox: {
+    height: hp(90),
+    width: hp(90),
+    backgroundColor: Colors._F9F9F9,
+    borderRadius: hp(15),
   },
   uploadBox: {
     gap: wp(21),
@@ -92,5 +174,9 @@ const styles = StyleSheet.create({
   },
   uploadCertificateText: {
     ...commonFontStyle(500, 1.8, Colors._525252),
+  },
+  imageStyle: {
+    height: hp(90),
+    width: hp(90),
   },
 });

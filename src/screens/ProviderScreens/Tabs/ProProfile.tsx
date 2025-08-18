@@ -14,12 +14,19 @@ import {GeneralStyle} from '@/constants/GeneralStyle';
 import {PROVIDER_SCREENS, SCREEN_NAMES} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import {useRoute} from '@react-navigation/native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
+import {useLogoutMutation} from '@/api/Provider/authApi';
+import {resetStore} from '@/store';
+import {clearToken} from '@/features/authSlice';
+import {useAppDispatch} from '@/Hooks/hooks';
+import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const ProProfile = () => {
   const route = useRoute<any>();
   const {isProvider} = route.params ?? {};
+  const dispatch = useAppDispatch();
+  const [logout, {isLoading}] = useLogoutMutation();
+
   const [isLanguageModalVisible, setIsLanguageModalVisible] =
     useState<boolean>(false);
   const [isLogoutModalVisible, setIsLogoutModalVisible] =
@@ -76,14 +83,17 @@ const ProProfile = () => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedModal === 'LOGOUT') {
       setIsLogoutModalVisible(false);
 
-      setTimeout(() => {
+      const response = await logout({}).unwrap();
+      if (response?.status) {
         setIsDeleteModalVisible(false);
         resetNavigation(SCREEN_NAMES.OnBoarding);
-      }, 300);
+        resetStore();
+        dispatch(clearToken());
+      }
     } else {
       setIsDeleteModalVisible(false);
       setIsLogoutModalVisible(true);
@@ -96,7 +106,7 @@ const ProProfile = () => {
   };
 
   return (
-    <SafeAreaView style={GeneralStyle.container}>
+    <SafeareaProvider loading={isLoading} style={GeneralStyle.container}>
       <BackHeader
         text="Profile"
         style={GeneralStyle.back}
@@ -187,7 +197,7 @@ const ProProfile = () => {
         onPressClose={closeAllModals}
         onPressConfirm={handleConfirm}
       />
-    </SafeAreaView>
+    </SafeareaProvider>
   );
 };
 

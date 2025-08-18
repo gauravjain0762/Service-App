@@ -27,7 +27,7 @@ import {useAppSelector} from '@/Hooks/hooks';
 import {useGetProfileQuery} from '@/api/Seeker/profileApi';
 import {
   useGetDashboardQuery,
-  useGetSubCategoriesQuery,
+  useLazyGetSubCategoriesQuery,
 } from '@/api/Seeker/homeApi';
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 
@@ -39,14 +39,24 @@ const HomeScreen = () => {
   const {} = useGetProfileQuery({}); // profile api
 
   const {isLoading} = useGetDashboardQuery({}); // dashboard api
-  const {data, isLoading: isSubCatLoading} = useGetSubCategoriesQuery({
-    category_id: selectedSubCatId,
-  }); // sub categories api
-
+  // const {data, isLoading: isSubCatLoading} = useGetSubCategoriesQuery({
+  //   category_id: selectedSubCatId,
+  // }); // sub categories api
+  const [subCatTrigger, {data: subCategories, isLoading: isSubCatLoading}] =
+    useLazyGetSubCategoriesQuery();
   const openReviewModal = params?.openReviewModal;
 
   const [isReviewModalVisible, setIsReviewModalVisible] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    if (selectedSubCatId !== '') {
+      subCatTrigger({
+        category_id: selectedSubCatId,
+      });
+      setSelectedSubCatId('');
+    }
+  }, [selectedSubCatId, subCatTrigger]);
 
   useEffect(() => {
     if (openReviewModal) {
@@ -135,7 +145,7 @@ const HomeScreen = () => {
         }}>
         <ServicesModal
           serviceName={serviceName}
-          subCategories={data?.data?.sub_categories ?? []}
+          subCategories={subCategories?.data?.sub_categories ?? []}
           setIsModalVisible={setIsModalVisible}
           isSubCatLoading={isSubCatLoading}
         />

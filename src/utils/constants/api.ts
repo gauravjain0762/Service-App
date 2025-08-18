@@ -1,29 +1,6 @@
-export const HTTP_METHOD = {
-  GET: 'GET',
-  POST: 'POST',
-  PUT: 'PUT',
-  PATCH: 'PATCH',
-  DELETE: 'DELETE',
-} as const;
-
-export const HTTP_STATUS = {
-  OK: 200,
-  CREATED: 201,
-  NO_CONTENT: 204,
-  BAD_REQUEST: 400,
-  UNAUTHORIZED: 401,
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  CONFLICT: 409,
-  UNPROCESSABLE_ENTITY: 422,
-  TOO_MANY_REQUESTS: 429,
-  INTERNAL_SERVER_ERROR: 500,
-  SERVICE_UNAVAILABLE: 503,
-} as const;
-
 export const SERVICE_BASE_URL = 'https://sky.devicebee.com/ServiceBooking/api';
 
-export const SERVICE_API = {
+export const SEEKER_API = {
   AUTH: {
     LOGIN: '/login',
     REGISTER: '/register',
@@ -47,6 +24,59 @@ export const SERVICE_API = {
     DASHBOARD: '/getDashboard',
     SUB_CATEGORIES: '/getSubCategories',
   },
+} as const;
+
+export const PROVIDER_API = {
+  AUTH: {
+    LOGIN: '/company/login',
+    REGISTER: '/company/register',
+    GUEST_LOGIN: '/company/guestLogin',
+    VERIFY_OTP: '/company/verifyOTP',
+    SEND_OTP: '/company/sendOTP',
+    RESEND_OTP: '/company/resendOTP',
+    FORGOT_PASSWORD: '/company/forgotPassword',
+    RESET_PASSWORD: '/company/resetPassword',
+    GOOGLE_SIGNIN: '/company/googleSignin',
+    APPLE_SIGNIN: '/company/appleSignin',
+    LOGOUT: '/company/logout',
+    DELETE_ACCOUNT: '/company/deleteAccount',
+  },
+  DROPDOWN: {
+    CATEGORIES: '/company/getCategories',
+    SUB_CATEGORIES: '/company/getSubCategories',
+  },
+  PROFILE: {
+    PROFILE: '/company/getProfile',
+    UPDATE_PROFILE: '/company/updateProfile',
+    CHANGE_PASSWORD: '/company/changePassword',
+  },
+  DASHBOARD: {
+    DASHBOARD: '/company/getDashboard',
+    SUB_CATEGORIES: '/company/getSubCategories',
+  },
+} as const;
+
+export const HTTP_METHOD = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE',
+} as const;
+
+export const HTTP_STATUS = {
+  OK: 200,
+  CREATED: 201,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
+  CONFLICT: 409,
+  UNPROCESSABLE_ENTITY: 422,
+  TOO_MANY_REQUESTS: 429,
+  INTERNAL_SERVER_ERROR: 500,
+  SERVICE_UNAVAILABLE: 503,
 } as const;
 
 export const API_ERROR_CODE = {
@@ -83,7 +113,7 @@ export const API_RATE_LIMIT = {
 export const ITEMS_PER_PAGE = 10;
 export const GOOGLE_MAP_API_KEY = 'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'; //'AIzaSyDI54CSbb2x46H2986nVnG15-E0iqgONwc'
 export const WEB_CLIENT_ID =
-  '208244015872-j5mi0q8lotdjceab1ih8lgub6e6b9703.apps.googleusercontent.com';
+  '594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com';
 
 export type HttpMethod = keyof typeof HTTP_METHOD;
 export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];

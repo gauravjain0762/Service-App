@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     flex: 1,
     alignItems: 'center',
-    alignSelf: 'flex-start',
   },
   imageContainer: {
     height: hp(90),

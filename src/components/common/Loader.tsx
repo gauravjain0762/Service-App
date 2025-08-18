@@ -2,12 +2,12 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+// import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Loader = () => {
-  const insets = useSafeAreaInsets();
+  // const insets = useSafeAreaInsets();
   return (
-    <View style={{...styles.modalContainer, top: -insets.top}}>
+    <View style={{...styles.modalContainer}}>
       <ActivityIndicator size={'large'} color={Colors.white} />
     </View>
   );

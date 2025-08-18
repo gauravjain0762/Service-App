@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
@@ -20,9 +20,18 @@ import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
-import {useLoginMutation} from '@/api/Seeker/authApi';
+import {
+  useAppleSignInMutation,
+  useGoogleSignInMutation,
+  useLoginMutation,
+} from '@/api/Seeker/authApi';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {getAuth, signInWithCredential, GoogleAuthProvider} from 'firebase/auth';
+
+import {jwtDecode} from 'jwt-decode';
+
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import {WEB_CLIENT_ID} from '@/utils/constants/api';
+
 const LoginScreen = ({}: any) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
@@ -30,6 +39,9 @@ const LoginScreen = ({}: any) => {
     password: __DEV__ ? 'Test@123' : '',
   });
   const [login, {isLoading}] = useLoginMutation();
+  const [appleLogin] = useAppleSignInMutation();
+  const [googleLogin] = useGoogleSignInMutation();
+  const [loading, setLoading] = useState(false);
 
   const onLogin = async () => {
     try {
@@ -59,31 +71,83 @@ const LoginScreen = ({}: any) => {
     }
   };
 
-  async function signInWithGoogle() {
+  const onGoogleButtonPress = async () => {
+    setLoading(true);
+    GoogleSignin.configure({webClientId: WEB_CLIENT_ID});
     try {
-      // Start Google Sign-In
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
 
-      // // Get ID token
-      // const {data} = userInfo;
-      console.log('userInfo', userInfo);
+      const {data: userInfo} = await GoogleSignin.signIn();
 
-      // // Create Firebase credential
-      // const googleCredential = GoogleAuthProvider.credential(idToken);
+      let data = {
+        name: userInfo?.user?.name,
+        email: userInfo?.user.email,
+        googleId: userInfo?.user?.id,
+        // deviceToken: fcmToken,
+        deviceType: Platform.OS.toUpperCase(),
+      };
+      console.log('data', data);
 
-      // // Sign in with Firebase
-      // const auth = getAuth();
-      // const result = await signInWithCredential(auth, googleCredential);
+      const response = await googleLogin(data).unwrap();
 
-      console.log('User signed in:', result.user);
-    } catch (error) {
-      console.error(error);
+      if (response?.status) {
+        setLoading(false);
+        successToast(response?.message);
+        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.log('onGoogleButtonPress => error => ', error);
+      errorToast(error?.message || 'Google sign-in failed');
     }
-  }
+  };
+  const onAppleButtonPress = async () => {
+    try {
+      // Start the sign-in request
+      setLoading(true);
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        throw new Error('Apple Sign-In failed - no identify token returned');
+      }
+      // Create a Firebase credential from the response
+      const {identityToken, fullName, email} = appleAuthRequestResponse;
+
+      if (identityToken) {
+        const decoded: any = jwtDecode(identityToken);
+
+        var str = decoded?.email || '';
+        str = str.split('@');
+        let data = {
+          name: fullName?.givenName || str[0],
+          email: email || decoded?.email,
+          appleId: appleAuthRequestResponse.user,
+          // deviceToken: fcmToken,
+        };
+
+        const response = await appleLogin(data).unwrap();
+        if (response?.status) {
+          setLoading(false);
+
+          successToast(response?.message);
+          resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        }
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.log('onAppleButtonPress => error => ', error);
+      errorToast(
+        error?.message || error?.data?.message || 'Apple Sign-In failed',
+      );
+    }
+  };
 
   return (
-    <SafeareaProvider style={{backgroundColor: Colors.white}}>
+    <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
@@ -142,13 +206,14 @@ const LoginScreen = ({}: any) => {
             source={IMAGES.google}
             size={getFontSize(2.5)}
             containerStyle={styles.socialBtn}
-            onPress={signInWithGoogle}
+            onPress={onGoogleButtonPress}
           />
 
           <CustomImage
             source={IMAGES.apple}
             size={getFontSize(2.5)}
             containerStyle={styles.socialBtn}
+            onPress={onAppleButtonPress}
           />
         </View>
 

@@ -43,7 +43,7 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.MakeOffer, component: MakeOffer},
     {name: PROVIDER_SCREENS.ProOfferDetails, component: ProOfferDetails},
     {name: PROVIDER_SCREENS.TotalEarnings, component: TotalEarnings},
-    {name: PROVIDER_SCREENS.OtpVerifyScreen, component: OTPScreen},
+    {name: PROVIDER_SCREENS.OtpScreen, component: OTPScreen},
     {name: PROVIDER_SCREENS.Notifications, component: Notifications},
     {name: PROVIDER_SCREENS.ForgotPassword, component: ForgotPassword},
     {name: PROVIDER_SCREENS.EmailVerification, component: EmailVerification},

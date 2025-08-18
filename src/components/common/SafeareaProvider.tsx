@@ -3,6 +3,7 @@ import {StyleSheet, View, ViewStyle} from 'react-native';
 
 import {SafeAreaView, SafeAreaViewProps} from 'react-native-safe-area-context';
 import Loader from './Loader';
+import {Colors} from '@/constants/Colors';
 
 type Props = {
   children: any;
@@ -38,6 +39,7 @@ export default SafeareaProvider;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    backgroundColor: Colors.white,
   },
   containerStyle: {
     flex: 1,

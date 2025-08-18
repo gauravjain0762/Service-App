@@ -1,6 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../services/api/baseQuery';
-import {SERVICE_API, HTTP_METHOD} from '@/utils/constants/api';
+import {SEEKER_API, HTTP_METHOD} from '@/utils/constants/api';
 import {setUserInfo} from '@/features/authSlice';
 
 export const profileApi = createApi({
@@ -13,7 +13,7 @@ export const profileApi = createApi({
   endpoints: builder => ({
     getProfile: builder.query<any, any>({
       query: () => ({
-        url: SERVICE_API.PROFILE.PROFILE,
+        url: SEEKER_API.PROFILE.PROFILE,
         method: HTTP_METHOD.GET,
       }),
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
@@ -27,7 +27,7 @@ export const profileApi = createApi({
 
     updateProfile: builder.mutation<any, any>({
       query: credentials => ({
-        url: SERVICE_API.PROFILE.UPDATE_PROFILE,
+        url: SEEKER_API.PROFILE.UPDATE_PROFILE,
         method: HTTP_METHOD.POST,
         data: credentials,
       }),

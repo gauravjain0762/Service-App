@@ -19,7 +19,7 @@ type BottomModalProps = {
   close?: boolean;
   visible: boolean;
   style?: ViewStyle;
-  onClose: () => void;
+  onClose?: () => void;
   backgroundColor?: string;
   children: React.ReactNode;
   onPressCancel?: () => void;

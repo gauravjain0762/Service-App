@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {Image, Keyboard, StyleSheet, Text, View, ViewStyle} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -5,6 +6,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CommonText from './CommonText';
 
 export type DropdownItem = {
   label: string;
@@ -49,12 +51,11 @@ const CustomDropdown = ({
 
   return (
     <View style={[styles.container, containerStyle]}>
-      {label ? (
-        <Text style={styles.label}>
-          {label}
+      {label && (
+        <CommonText text={label} style={styles.label}>
           {required && <Text style={styles.required}>*</Text>}
-        </Text>
-      ) : null}
+        </CommonText>
+      )}
 
       <Dropdown
         data={data}
@@ -82,9 +83,14 @@ const CustomDropdown = ({
         )}
         renderItem={(item: DropdownItem) => (
           <View style={styles.itemContainer}>
-            <Text style={styles.itemText}>{item.label}</Text>
+            <CommonText style={styles.itemText} text={item?.label || ''} />
           </View>
         )}
+        flatListProps={{
+          ListEmptyComponent: () => (
+            <CommonText style={styles.noData} text="No data found" />
+          ),
+        }}
       />
     </View>
   );
@@ -93,8 +99,7 @@ const CustomDropdown = ({
 export default CustomDropdown;
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   label: {
     ...commonFontStyle(500, 1.8, Colors.black),
   },
@@ -128,5 +133,10 @@ const styles = StyleSheet.create({
   },
   itemText: {
     ...commonFontStyle(400, 1.9, Colors.black),
+  },
+  noData: {
+    ...commonFontStyle(400, 1.9, Colors._CDCDCD),
+    textAlign: 'center',
+    paddingVertical: hp(10),
   },
 });

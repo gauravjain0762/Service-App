@@ -1,6 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../services/api/baseQuery';
-import {SERVICE_API, HTTP_METHOD} from '@/utils/constants/api';
+import {SEEKER_API, HTTP_METHOD} from '@/utils/constants/api';
 import {setDashboard} from '@/features/authSlice';
 
 export const homeApi = createApi({
@@ -13,7 +13,7 @@ export const homeApi = createApi({
   endpoints: builder => ({
     getDashboard: builder.query<any, any>({
       query: () => ({
-        url: SERVICE_API.DASHBOARD.DASHBOARD,
+        url: SEEKER_API.DASHBOARD.DASHBOARD,
         method: HTTP_METHOD.GET,
       }),
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
@@ -27,7 +27,7 @@ export const homeApi = createApi({
     }),
     getSubCategories: builder.query<any, any>({
       query: query => ({
-        url: SERVICE_API.DASHBOARD.SUB_CATEGORIES,
+        url: SEEKER_API.DASHBOARD.SUB_CATEGORIES,
         method: HTTP_METHOD.GET,
         params: query,
       }),
@@ -35,4 +35,8 @@ export const homeApi = createApi({
   }),
 });
 
-export const {useGetDashboardQuery, useGetSubCategoriesQuery} = homeApi;
+export const {
+  useGetDashboardQuery,
+  useGetSubCategoriesQuery,
+  useLazyGetSubCategoriesQuery,
+} = homeApi;

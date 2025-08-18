@@ -9,17 +9,16 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
-import {navigateTo} from '@/components/common/commonFunction';
-import {SEEKER_SCREENS, PROVIDER_SCREENS} from '@/navigation/screenNames';
-import {useRoute} from '@react-navigation/native';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 
 const Subscription = () => {
-  const {params} = useRoute<any>();
-  const isProvider = params?.isProvider;
-
   return (
     <SafeareaProvider style={styles.safeArea}>
-      <BackHeader text={'Subscription Plans'} />
+      <BackHeader
+        text={'Subscription Plans'}
+        onPressBack={() => resetNavigation(SCREENS.ProviderTabNavigation)}
+      />
 
       <View style={styles.container}>
         <ImageBackground

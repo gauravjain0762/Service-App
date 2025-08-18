@@ -49,7 +49,7 @@ const LoginFlow = ({setActiveTab}: any) => {
       <CustomButton
         title={t('Login as a Guest')}
         type="outline"
-        onPress={() => navigateTo(SCREENS.OtpVerifyScreen)}
+        onPress={() => navigateTo(SCREENS.OtpScreen)}
       />
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />

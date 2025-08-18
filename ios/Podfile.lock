@@ -1419,9 +1419,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-drop-shadow (1.0.3):
-    - React
-  - react-native-maps/Generated (1.25.0):
+  - react-native-document-picker (9.3.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1445,7 +1443,33 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps/Google (1.25.0):
+  - react-native-drop-shadow (1.0.3):
+    - React
+  - react-native-maps/Generated (1.25.3):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - react-native-maps/Google (1.25.3):
     - DoubleConversion
     - glog
     - Google-Maps-iOS-Utils (= 6.1.0)
@@ -1473,7 +1497,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps/Maps (1.25.0):
+  - react-native-maps/Maps (1.25.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1498,7 +1522,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context (5.5.2):
+  - react-native-safe-area-context (5.6.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1513,8 +1537,8 @@ PODS:
     - React-hermes
     - React-ImageManager
     - React-jsi
-    - react-native-safe-area-context/common (= 5.5.2)
-    - react-native-safe-area-context/fabric (= 5.5.2)
+    - react-native-safe-area-context/common (= 5.6.0)
+    - react-native-safe-area-context/fabric (= 5.6.0)
     - React-NativeModulesApple
     - React-RCTFabric
     - React-renderercss
@@ -1524,7 +1548,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/common (5.5.2):
+  - react-native-safe-area-context/common (5.6.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1548,7 +1572,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-safe-area-context/fabric (5.5.2):
+  - react-native-safe-area-context/fabric (5.6.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1922,6 +1946,8 @@ PODS:
     - React-perflogger (= 0.79.3)
     - React-utils (= 0.79.3)
   - RecaptchaInterop (101.0.0)
+  - RNAppleAuthentication (2.4.1):
+    - React-Core
   - RNCAsyncStorage (2.2.0):
     - DoubleConversion
     - glog
@@ -2085,7 +2111,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.13.1):
+  - RNScreens (4.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2109,9 +2135,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.13.1)
+    - RNScreens/common (= 4.14.1)
     - Yoga
-  - RNScreens/common (4.13.1):
+  - RNScreens/common (4.14.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2188,6 +2214,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-drop-shadow (from `../node_modules/react-native-drop-shadow`)
   - react-native-maps/Google (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -2224,6 +2251,7 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
@@ -2341,6 +2369,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-drop-shadow:
     :path: "../node_modules/react-native-drop-shadow"
   react-native-maps:
@@ -2413,6 +2443,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCMaskedView:
@@ -2493,9 +2525,10 @@ SPEC CHECKSUMS:
   React-logger: 44e070aefe084568c02b544b9d7d436703be1a47
   React-Mapbuffer: ed1f528261013e46790379cc6727b8005e169a67
   React-microtasksnativemodule: da563fd4cb7ecc23f67b5f15b92dfe94a9791e2d
+  react-native-document-picker: f3c62667a9eea6bf101a45f24a70dfe5f04b6fe5
   react-native-drop-shadow: a30a971eed0b9ef1a3656492b82f12ebe93de120
-  react-native-maps: e0a24eacb77933695e451efebd57ad7e8e3a6c2e
-  react-native-safe-area-context: 106c19bea39450152d5f77832adde6c1981c481a
+  react-native-maps: 7664056141a808338dba91881a3c84ae2d7127fc
+  react-native-safe-area-context: 0d45fc7175831b3a19f365248b83f8365db22c1b
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-webview: 73e15e8ad1d4be940192bb81953fc0e2c756a174
   React-NativeModulesApple: c761e39d8bb17a074530cb637ec6fe4460fac3af
@@ -2530,6 +2563,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 5a3b071aec923e67260550b3f65329f844d691fa
   ReactCommon: 1dce2374d9dc2cdf634244f1584513b606512750
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
+  RNAppleAuthentication: b2d8b5ccba86b5b1e55a1a2e858f7ac6d8a21816
   RNCAsyncStorage: faf86846c58994b6b8aab074a4914eb1796c2a9f
   RNCMaskedView: 16e6917a83e0696d3b5edd69f940c2e1fb377a66
   RNDeviceInfo: feea80a690d2bde1fe51461cf548039258bd03f2
@@ -2539,7 +2573,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: be1fbe1c9e0d438e87ae3d79329cc3f1407ba98c
   RNImageCropPicker: 491fbbb8a979ed8ea575a1861f85592f27cec626
   RNPermissions: 2689b1dcc5becbc122646219304330da34f14671
-  RNScreens: 50d1d7399c3e38ca18bd019c97e4180ccf081c91
+  RNScreens: fe2364ad5cd1322efb17b3ebc437705064a44931
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748

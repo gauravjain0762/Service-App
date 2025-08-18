@@ -6,17 +6,58 @@ import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
+import {
+  emailCheck,
+  errorToast,
+  navigateTo,
+  resetNavigation,
+  successToast,
+} from '@/components/common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {useRoute} from '@react-navigation/native';
+import {useLoginMutation} from '@/api/Provider/authApi';
 
 const ProLoginScreen = ({}: any) => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [details, setDetails] = useState({
+    email: __DEV__ ? 'user001@gmail.com' : '',
+    password: __DEV__ ? 'user@123' : '',
+  });
+
+  const [login, {isLoading}] = useLoginMutation();
+
+  const onLogin = async () => {
+    try {
+      if (!emailCheck(details.email)) {
+        errorToast('Please enter valid email');
+        return;
+      }
+
+      let obj = {
+        email: details.email,
+        password: details.password,
+      };
+      const response = await login(obj).unwrap();
+      console.log('response', response);
+
+      if (response?.status) {
+        successToast(response?.message);
+        resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
+  };
 
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
@@ -25,13 +66,24 @@ const ProLoginScreen = ({}: any) => {
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />
         <View style={{gap: hp(20), marginTop: hp(60)}}>
-          <CustomTextInput placeholder="Email" />
-          <CustomTextInput placeholder="Password" secureTextEntry={true} />
+          <CustomTextInput
+            placeholder="Email"
+            value={details.email}
+            onChangeText={e => setDetails({...details, email: e})}
+          />
+          <CustomTextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            value={details.password}
+            onChangeText={e => setDetails({...details, password: e})}
+          />
           <CommonText
             text="Forgot Password?"
             style={styles.forgotPasswordText}
             onPress={() =>
-              navigateTo(PROVIDER_SCREENS.ForgotPassword, {isProvider: isProvider})
+              navigateTo(PROVIDER_SCREENS.ForgotPassword, {
+                isProvider: isProvider,
+              })
             }
           />
           <TermsCheckBox
@@ -45,12 +97,11 @@ const ProLoginScreen = ({}: any) => {
 
         <View style={{marginTop: hp(50), gap: hp(30)}}>
           <CustomButton
+            loading={isLoading}
             isPrimary="seeker"
             title={'Login'}
             btnStyle={{backgroundColor: Colors.provider_primary}}
-            onPress={() =>
-              resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation)
-            }
+            onPress={onLogin}
           />
         </View>
 

@@ -20,6 +20,17 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.594792561785-3q19f9uppi39ej6jmp1t38ht5p02fgij</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -31,14 +42,14 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We need camera access to take pictures</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your location is required for benefits for you</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Need to show user current location on map</string>
-	<key>NSCameraUsageDescription</key>
-    <string>We need camera access to take pictures</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>We need access to your photo library</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Black.ttf</string>

@@ -66,6 +66,8 @@ export const IMAGES = {
   ic_camera: require('./icons/Provider/ic_camera.png'),
   ic_otp: require('./icons/ic_otp.png'),
   true_mark: require('./icons/true_mark.png'),
+  photoUpload: require('./icons/photoUpload.png'),
+  pdfIcon: require('./icons/pdfIcon.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

@@ -25,6 +25,10 @@ import CommonText from '@/components/common/CommonText';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useResendOTPMutation, useVerifyOTPMutation} from '@/api/Seeker/authApi';
 import Loader from '@/components/common/Loader';
+import {
+  useProResendOTPMutation,
+  useProVerifyOTPMutation,
+} from '@/api/Provider/authApi';
 
 const CELL_COUNT = 4;
 
@@ -33,7 +37,11 @@ const OTPScreen = () => {
   const isProvider = params?.isProvider;
   const {t} = useTranslation();
   const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
+  const [proVerifyOTP, {isLoading: isProLoading}] = useProVerifyOTPMutation();
+
   const [resendOTP, {isLoading: isResendLoading}] = useResendOTPMutation();
+  const [proResendOTP, {isLoading: isProResendLoading}] =
+    useProResendOTPMutation();
 
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
@@ -53,18 +61,27 @@ const OTPScreen = () => {
 
   const onLoginSubmit = async () => {
     try {
-      const obj = {
+      let obj: any = {
         otp: value,
-        user_id: params?.userId,
         device_type: Platform.OS,
         device_token: '',
       };
-      const response = await verifyOTP(obj).unwrap();
-      if (response?.status) {
-        successToast(response?.message);
-        if (isProvider) {
+      if (isProvider) {
+        obj.company_id = params?.userId;
+      } else {
+        obj.user_id = params?.userId;
+      }
+
+      if (isProvider) {
+        const response = await proVerifyOTP(obj).unwrap();
+        if (response?.status) {
+          successToast(response?.message);
           resetNavigation(PROVIDER_SCREENS.Subscription, {isProvider: true});
-        } else {
+        }
+      } else {
+        const response = await verifyOTP(obj).unwrap();
+        if (response?.status) {
+          successToast(response?.message);
           resetNavigation(SCREENS.SeekerTabNavigation);
         }
       }
@@ -77,13 +94,24 @@ const OTPScreen = () => {
 
   const onResendOtp = async () => {
     try {
-      const obj = {
-        user_id: params?.userId,
-      };
-      const response = await resendOTP(obj).unwrap();
-      if (response?.status) {
-        successToast(response?.message);
-        setTimer(60);
+      let obj: any = {};
+      if (isProvider) {
+        obj.company_id = params?.userId;
+      } else {
+        obj.user_id = params?.userId;
+      }
+      if (isProvider) {
+        const response = await proResendOTP(obj).unwrap();
+        if (response?.status) {
+          successToast(response?.message);
+          setTimer(60);
+        }
+      } else {
+        const response = await resendOTP(obj).unwrap();
+        if (response?.status) {
+          successToast(response?.message);
+          setTimer(60);
+        }
       }
     } catch (error: any) {
       errorToast(
@@ -136,7 +164,18 @@ const OTPScreen = () => {
             renderCell={({index, symbol, isFocused}) => (
               <Text
                 key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
+                style={[
+                  styles.cell,
+                  isFocused && {
+                    ...styles.focusCell,
+                    borderColor: isProvider
+                      ? Colors.provider_primary
+                      : Colors.seeker_primary,
+                    backgroundColor: isProvider
+                      ? Colors.provider_primary
+                      : Colors.seeker_primary,
+                  },
+                ]}
                 onLayout={getCellOnLayoutHandler(index)}>
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
@@ -148,7 +187,7 @@ const OTPScreen = () => {
           isPrimary="seeker"
           title={t('Confirm')}
           disabled={value.length < 4}
-          loading={isLoading}
+          loading={isLoading || isProLoading}
           btnStyle={[
             styles.confirmButton,
             {
@@ -188,7 +227,7 @@ const OTPScreen = () => {
             />
           </CommonText>
         )}
-        {isResendLoading && <Loader />}
+        {(isResendLoading || isProResendLoading) && <Loader />}
       </View>
     </SafeareaProvider>
   );
@@ -243,8 +282,8 @@ const styles = StyleSheet.create({
   },
   focusCell: {
     borderColor: Colors.seeker_primary,
-    borderWidth: 1.5,
     backgroundColor: Colors.seeker_primary,
+    borderWidth: 1.5,
     lineHeight: 60,
     ...commonFontStyle(400, 2.7, Colors.white),
   },
