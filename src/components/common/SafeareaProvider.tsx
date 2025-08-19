@@ -24,10 +24,10 @@ const SafeareaProvider = ({
   return (
     <SafeAreaView
       {...SafeAreaProps}
-      style={[styles.main, style]}
+      style={[styles.main]}
       // edges={['top']}
     >
-      <View style={[styles.containerStyle, containerStyle]}>{children}</View>
+      <View style={[styles.containerStyle, style]}>{children}</View>
 
       {loading && <Loader />}
     </SafeAreaView>

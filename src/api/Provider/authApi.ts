@@ -67,7 +67,7 @@ export const providerAuthApi = createApi({
       invalidatesTags: ['Auth'],
     }),
 
-    resetPassword: builder.mutation<any, any>({
+   proResetPassword: builder.mutation<any, any>({
       query: credentials => ({
         url: PROVIDER_API.AUTH.RESET_PASSWORD,
         method: HTTP_METHOD.POST,
@@ -76,7 +76,7 @@ export const providerAuthApi = createApi({
       invalidatesTags: ['Auth'],
     }),
 
-    forgotPassword: builder.mutation<any, any>({
+    proForgotPassword: builder.mutation<any, any>({
       query: credentials => ({
         url: PROVIDER_API.AUTH.FORGOT_PASSWORD,
         method: HTTP_METHOD.POST,
@@ -153,8 +153,8 @@ export const {
   useSignUpMutation,
   useProVerifyOTPMutation,
   useProResendOTPMutation,
-  useResetPasswordMutation,
-  useForgotPasswordMutation,
+  useProResetPasswordMutation,
+  useProForgotPasswordMutation,
   useLogoutMutation,
   useCategoryQuery,
   useLazySubCategoryQuery,

@@ -19,12 +19,15 @@ import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
 import {useForgotPasswordMutation} from '@/api/Seeker/authApi';
+import {useProForgotPasswordMutation} from '@/api/Provider/authApi';
 
 const ForgotPassword = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
 
   const [forgotPassword, {isLoading}] = useForgotPasswordMutation();
+  const [proForgotPassword, {isLoading: isProLoading}] =
+    useProForgotPasswordMutation();
 
   const [email, setEmail] = React.useState('');
 
@@ -39,17 +42,18 @@ const ForgotPassword = () => {
         email: email,
       };
 
-      const response = await forgotPassword(obj).unwrap();
+      const response = await (isProvider
+        ? proForgotPassword(obj) // Provider API
+        : forgotPassword(obj)
+      ).unwrap();
 
       if (response?.status) {
         navigateTo(SEEKER_SCREENS.EmailVerification, {
           userId: response?.data?.user?._id,
           email: email,
-          isProvider: false,
+          isProvider: isProvider,
         });
         successToast(response?.message);
-      } else {
-        errorToast(response?.message);
       }
     } catch (error: any) {
       console.log(error);
@@ -101,8 +105,8 @@ const ForgotPassword = () => {
             <View style={styles.buttonContainer}>
               <CustomButton
                 title="Send"
-                loading={isLoading}
-                disabled={isLoading}
+                loading={isLoading || isProLoading}
+                disabled={isLoading || isProLoading}
                 isPrimary={isProvider ? 'provider' : 'seeker'}
                 onPress={onSend}
               />

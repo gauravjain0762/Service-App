@@ -18,25 +18,36 @@ import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
 import {useResetPasswordMutation} from '@/api/Seeker/authApi';
+import {useProResetPasswordMutation} from '@/api/Provider/authApi';
 
 const CreateNewPass = () => {
   const {params} = useRoute<any>();
   const {isProvider, userId, otp} = params || {};
   const [resetPassword, {isLoading}] = useResetPasswordMutation();
+  const [proResetPassword, {isLoading: isProLoading}] =
+    useProResetPasswordMutation();
 
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
 
   const onSubmit = async () => {
     try {
-      let obj = {
-        user_id: userId,
+      let obj: any = {
         otp: otp,
         password: password,
         confirm_password: confirmPassword,
       };
+      if (isProvider) {
+        obj.company_id = userId;
+      } else {
+        obj.user_id = userId;
+      }
+      console.log('obj', obj);
 
-      const response = await resetPassword(obj).unwrap();
+      const response = await (isProvider
+        ? proResetPassword(obj) // Provider API
+        : resetPassword(obj)
+      ).unwrap();
 
       if (response?.status) {
         resetNavigation(
@@ -105,8 +116,13 @@ const CreateNewPass = () => {
 
           <View style={styles.buttonContainer}>
             <CustomButton
-              loading={isLoading}
-              disabled={password !== confirmPassword || !password}
+              loading={isLoading || isProLoading}
+              disabled={
+                password !== confirmPassword ||
+                !password ||
+                isLoading ||
+                isProLoading
+              }
               title="Submit"
               isPrimary={isProvider ? 'provider' : 'seeker'}
               btnStyle={{

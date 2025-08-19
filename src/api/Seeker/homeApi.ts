@@ -32,6 +32,61 @@ export const homeApi = createApi({
         params: query,
       }),
     }),
+
+    // Notifications API
+
+    getNotifications: builder.query<any, any>({
+      query: () => ({
+        url: SEEKER_API.DASHBOARD.NOTIFICATIONS,
+        method: HTTP_METHOD.GET,
+      }),
+    }),
+
+    clearNotifications: builder.mutation<any, any>({
+      query: () => ({
+        url: SEEKER_API.DASHBOARD.CLEAR_ALL_NOTIFICATIONS,
+        method: HTTP_METHOD.POST,
+      }),
+      invalidatesTags: ['homeApi'],
+    }),
+
+    // Requests API
+    getRequests: builder.query<any, any>({
+      query: () => ({
+        url: SEEKER_API.DASHBOARD.REQUESTS,
+        method: HTTP_METHOD.GET,
+      }),
+    }),
+
+    getRequestsDetails: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.REQUEST_DETAILS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
+
+    createRequest: builder.mutation<any, any>({
+      query: credentials => ({
+        url: SEEKER_API.DASHBOARD.CREATE_REQUEST,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }),
+      invalidatesTags: ['homeApi'],
+    }),
+
+    // Accept Offer
+    acceptOffer: builder.mutation<any, any>({
+      query: credentials => ({
+        url: SEEKER_API.DASHBOARD.ACCEPT_OFFER,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+      }),
+      invalidatesTags: ['homeApi'],
+    }),
   }),
 });
 
@@ -39,4 +94,8 @@ export const {
   useGetDashboardQuery,
   useGetSubCategoriesQuery,
   useLazyGetSubCategoriesQuery,
+  useGetRequestsQuery,
+  useGetRequestsDetailsQuery,
+  useCreateRequestMutation,
+  useAcceptOfferMutation,
 } = homeApi;

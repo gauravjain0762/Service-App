@@ -21,8 +21,14 @@ export const SEEKER_API = {
     CHANGE_PASSWORD: '/changePassword',
   },
   DASHBOARD: {
+    NOTIFICATIONS: 'getNotifications',
+    CLEAR_ALL_NOTIFICATIONS: 'clearAllNotifications',
     DASHBOARD: '/getDashboard',
     SUB_CATEGORIES: '/getSubCategories',
+    REQUESTS: '/getRequests',
+    REQUEST_DETAILS: '/getRequestDetails',
+    CREATE_REQUEST: '/createRequest',
+    ACCEPT_OFFER: '/acceptOffer',
   },
 } as const;
 

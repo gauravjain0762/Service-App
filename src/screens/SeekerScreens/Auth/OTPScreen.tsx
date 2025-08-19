@@ -71,19 +71,20 @@ const OTPScreen = () => {
       } else {
         obj.user_id = params?.userId;
       }
-
-      if (isProvider) {
-        const response = await proVerifyOTP(obj).unwrap();
-        if (response?.status) {
-          successToast(response?.message);
-          resetNavigation(PROVIDER_SCREENS.Subscription, {isProvider: true});
-        }
-      } else {
-        const response = await verifyOTP(obj).unwrap();
-        if (response?.status) {
-          successToast(response?.message);
-          resetNavigation(SCREENS.SeekerTabNavigation);
-        }
+      const response = await (isProvider
+        ? proVerifyOTP(obj) // Provider API
+        : verifyOTP(obj)
+      ).unwrap();
+      if (response?.status) {
+        successToast(response?.message);
+        resetNavigation(
+          isProvider
+            ? PROVIDER_SCREENS.Subscription
+            : SCREENS.SeekerTabNavigation,
+          {
+            isProvider: isProvider,
+          },
+        );
       }
     } catch (error: any) {
       errorToast(
@@ -100,18 +101,15 @@ const OTPScreen = () => {
       } else {
         obj.user_id = params?.userId;
       }
-      if (isProvider) {
-        const response = await proResendOTP(obj).unwrap();
-        if (response?.status) {
-          successToast(response?.message);
-          setTimer(60);
-        }
-      } else {
-        const response = await resendOTP(obj).unwrap();
-        if (response?.status) {
-          successToast(response?.message);
-          setTimer(60);
-        }
+
+      const response = await (isProvider
+        ? proResendOTP(obj) // Provider API
+        : resendOTP(obj)
+      ).unwrap();
+
+      if (response?.status) {
+        successToast(response?.message);
+        setTimer(60);
       }
     } catch (error: any) {
       errorToast(

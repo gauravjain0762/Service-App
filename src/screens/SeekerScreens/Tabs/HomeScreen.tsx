@@ -1,13 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import {Colors} from '@/constants/Colors';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -15,8 +7,6 @@ import CommonText from '@/components/common/CommonText';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import CustomTextInput from '@/components/common/CustomTextInput';
-import ServiceCard from '@/components/common/ServiceCard';
-import BottomModal from '@/components/common/BottomModal';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import ServicesModal from '@/components/modals/ServicesModal';
@@ -30,6 +20,8 @@ import {
   useLazyGetSubCategoriesQuery,
 } from '@/api/Seeker/homeApi';
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
+import CategoryList from '@/components/Seeker/CategoryList';
+import CustomImage from '@/components/common/CustomImage';
 
 const HomeScreen = () => {
   const {params} = useRoute<any>();
@@ -39,11 +31,10 @@ const HomeScreen = () => {
   const {} = useGetProfileQuery({}); // profile api
 
   const {isLoading} = useGetDashboardQuery({}); // dashboard api
-  // const {data, isLoading: isSubCatLoading} = useGetSubCategoriesQuery({
-  //   category_id: selectedSubCatId,
-  // }); // sub categories api
+
   const [subCatTrigger, {data: subCategories, isLoading: isSubCatLoading}] =
     useLazyGetSubCategoriesQuery();
+
   const openReviewModal = params?.openReviewModal;
 
   const [isReviewModalVisible, setIsReviewModalVisible] =
@@ -81,11 +72,13 @@ const HomeScreen = () => {
             text={'Whats service do you need?'}
           />
         </View>
-        <Pressable
+
+        <CustomImage
+          source={IMAGES.bell}
+          size={hp(20)}
+          containerStyle={styles.bellContainer}
           onPress={() => navigateTo(SCREENS.Notifications)}
-          style={styles.bellContainer}>
-          <Image source={IMAGES.bell} style={styles.bellIcon} />
-        </Pressable>
+        />
       </View>
 
       <View style={styles.searchContainer}>
@@ -102,54 +95,25 @@ const HomeScreen = () => {
       ) : (
         <ScrollView showsVerticalScrollIndicator={false}>
           <MiniCarousel data={dashboard?.banners ?? []} />
-
-          <FlatList
-            numColumns={3}
-            data={dashboard.categories}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              marginTop: hp(25),
-              paddingBottom: '20%',
-              gap: hp(15),
-            }}
-            columnWrapperStyle={{
-              gap: hp(10),
-            }}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({item}) => {
-              return (
-                <ServiceCard
-                  text={item?.title ?? ''}
-                  source={item?.image ?? ''}
-                  handleCardPress={() => {
-                    setIsModalVisible(true);
-                    setServiceName(item?.title);
-                    setSelectedSubCatId(item?._id);
-                  }}
-                />
-              );
+          <CategoryList
+            data={dashboard?.categories ?? []}
+            onPress={item => {
+              setIsModalVisible(true);
+              setServiceName(item?.title);
+              setSelectedSubCatId(item?._id);
             }}
           />
         </ScrollView>
       )}
-      <BottomModal
-        close
-        style={{paddingTop: hp(30)}}
+
+      <ServicesModal
         visible={isModalVisible}
-        onPressCancel={() => {
-          setIsModalVisible(false);
-        }}
-        onClose={() => {
-          setIsModalVisible(false);
-        }}>
-        <ServicesModal
-          serviceName={serviceName}
-          subCategories={subCategories?.data?.sub_categories ?? []}
-          setIsModalVisible={setIsModalVisible}
-          isSubCatLoading={isSubCatLoading}
-        />
-      </BottomModal>
+        onClose={() => setIsModalVisible(false)}
+        serviceName={serviceName}
+        subCategories={subCategories?.data?.sub_categories ?? []}
+        isSubCatLoading={isSubCatLoading}
+      />
+
       <ReviewModal
         visible={isReviewModalVisible}
         onClose={closeModal}
@@ -189,10 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors._F6F6F6,
   },
-  bellIcon: {
-    height: hp(20),
-    width: wp(20),
-  },
+
   searchContainer: {
     marginVertical: hp(24),
   },

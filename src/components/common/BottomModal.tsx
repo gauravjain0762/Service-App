@@ -39,7 +39,7 @@ const BottomModal = ({
       avoidKeyboard
       style={styles.modal}
       onBackdropPress={onClose}
-      useNativeDriverForBackdrop={true}
+      // useNativeDriverForBackdrop={true}
       isVisible={visible}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
