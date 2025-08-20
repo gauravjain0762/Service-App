@@ -31,22 +31,27 @@ const generateDates = () => {
 const dates = generateDates();
 
 type Props = {
-  onDatePress?: (date: moment.Moment) => void;
   selectedDate?: any;
   setSelectedDate?: (date: any) => void;
   isProvider?: boolean;
 };
 
-const CustomDates = ({
-  onDatePress,
-  selectedDate,
-  setSelectedDate,
-  isProvider,
-}: Props) => {
+const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    if (!selectedDate) return;
+    if (!selectedDate) {
+      const currentDate = moment().format('DDMM');
+      console.log('currentDate', currentDate);
+
+      setSelectedDate?.(dates.find(d => d.key === currentDate));
+    }
+  }, [selectedDate, setSelectedDate]);
+
+  useEffect(() => {
+    if (!selectedDate) {
+      return;
+    }
 
     const index = dates.findIndex(d => d.key === selectedDate.key);
     if (index !== -1 && flatListRef.current) {
@@ -85,7 +90,7 @@ const CustomDates = ({
                 ]}
                 onPress={() => {
                   setSelectedDate?.(item);
-                  onDatePress?.(item.isoDate);
+                  console.log('item', item);
                 }}>
                 <CommonText
                   style={[styles.month, selected && styles.selectedText]}

@@ -50,7 +50,7 @@ const MyBookings = () => {
     number | null
   >(null);
   const [note, setNote] = useState<string>('');
-  const [selectedMedia, setSelectedMedia] = useState<any>(null);
+  const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
 
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const onSend = async () => {

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useMemo} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 
@@ -11,21 +12,26 @@ type Props = {
 };
 
 // Function to generate time slots from current time till 12:00 AM
-const generateTimeSlots = (date: any) => {
-  console.log('date', date);
-
+const generateTimeSlots = (dateString: string) => {
   const slots: string[] = [];
-  const now = date ? new Date(date) : new Date();
+  const selectedDate = new Date(dateString);
 
-  let hours = now.getHours();
-  let minutes = now.getMinutes();
+  const now = new Date();
 
-  // if minutes > 0, move to next full hour
-  if (minutes > 0) {
-    hours += 1;
+  let hours = 0;
+
+  if (
+    selectedDate.getFullYear() === now.getFullYear() &&
+    selectedDate.getMonth() === now.getMonth() &&
+    selectedDate.getDate() === now.getDate()
+  ) {
+    hours = now.getHours();
+    if (now.getMinutes() > 0) {
+      hours += 1; // move to next hour if minutes already passed
+    }
   }
 
-  // keep adding slots until midnight
+  // Otherwise (future date) → start from 0 (12:00 AM)
   while (hours < 24) {
     let displayHours = hours % 12 || 12; // convert to 12hr
     let ampm = hours < 12 ? 'AM' : 'PM';
@@ -36,12 +42,10 @@ const generateTimeSlots = (date: any) => {
 
   return slots;
 };
-const TimeSlots = ({isProvider, date}: Props) => {
-  // console.log('date', date);
 
+const TimeSlots = ({isProvider, date}: Props) => {
   const [selectedTime, setSelectedTime] = useState('');
 
-  // Generate slots only once
   const timeSlots = useMemo(() => generateTimeSlots(date), [date]);
 
   return (
