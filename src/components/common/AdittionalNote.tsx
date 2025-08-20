@@ -6,7 +6,7 @@ import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp} from '@/utils/responsiveFn';
 
-const AdittionalNote = () => {
+const AdittionalNote = ({additionalNotes}:any) => {
   return (
     <ShadowCard
       style={{
@@ -22,7 +22,7 @@ const AdittionalNote = () => {
         }}
       />
       <CommonText
-        text={'A new battery has to be bought before the battery replacement. '}
+        text={additionalNotes}
         style={{
           ...commonFontStyle(400, 1.8, Colors._676767),
         }}

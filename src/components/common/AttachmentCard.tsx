@@ -9,7 +9,7 @@ import ShadowCard from './ShadowCard';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
-const AttachmentCard = () => {
+const AttachmentCard = ({requestImages=[]}:any) => {
   return (
     <ShadowCard style={{width: '100%', alignItems: 'center'}}>
       <CommonText
@@ -23,18 +23,18 @@ const AttachmentCard = () => {
         }}
       />
       <View style={styles.imageRow}>
-        <Image source={images[0]} style={styles.imageBox} />
+        <Image source={{uri:requestImages &&requestImages[0]}} style={styles.imageBox} />
 
         <View style={styles.secondImageWrapper}>
           <Image
-            source={images[1]}
+            source={{uri:requestImages && requestImages[1]}}
             style={[styles.imageBox, styles.blurredImage]}
-            blurRadius={images.length > 2 ? 5 : 0}
+            blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
           />
-          {images.length > 2 && (
+          {requestImages &&requestImages.length > 2 && (
             <View style={styles.overlay}>
               <CommonText
-                text={`+${images.length - 2}`}
+                text={requestImages && `+${requestImages.length - 2}`}
                 style={styles.overlayText}
               />
             </View>

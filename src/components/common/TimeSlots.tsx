@@ -9,6 +9,8 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 type Props = {
   isProvider?: boolean;
   date?: any;
+  selectedTime?: any;
+  setSelectedTime?: any;
 };
 
 // Function to generate time slots from current time till 12:00 AM
@@ -43,8 +45,13 @@ const generateTimeSlots = (dateString: string) => {
   return slots;
 };
 
-const TimeSlots = ({isProvider, date}: Props) => {
-  const [selectedTime, setSelectedTime] = useState('');
+const TimeSlots = ({
+  isProvider,
+  date,
+  selectedTime,
+  setSelectedTime,
+}: Props) => {
+  // const [selectedTime, setSelectedTime] = useState('');
 
   const timeSlots = useMemo(() => generateTimeSlots(date), [date]);
 

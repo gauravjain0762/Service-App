@@ -44,6 +44,7 @@ const BackHeader = ({
             source={customBackArrow || IMAGES.backArrow2}
             style={styles.backArrow}
             tintColor={tintColor}
+            resizeMode='contain'
           />
         )}
         <CommonText text={text} style={styles.headerTitle} />

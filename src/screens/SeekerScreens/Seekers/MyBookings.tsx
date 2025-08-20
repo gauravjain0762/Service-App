@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {IMAGES} from '@/assets/images';
@@ -33,16 +33,21 @@ import BottomModal from '@/components/common/BottomModal';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
 import {useRoute} from '@react-navigation/native';
+import {useAppSelector} from '@/Hooks/hooks';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const MyBookings = () => {
   const {t} = useTranslation();
+  const {userInfo} = useAppSelector(state => state.auth);
+
   const {
     params: {category_id, category_name, category_image, title, _id},
   } = useRoute<any>();
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
-
+  const [isLocationType, setIsLocationType] = useState('');
   const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [selectedTime, setSelectedTime] = useState('');
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
 
   const [selectedMileage, setSelectedMileage] = useState<string | null>(null);
@@ -50,6 +55,7 @@ const MyBookings = () => {
     number | null
   >(null);
   const [note, setNote] = useState<string>('');
+  const [carModal, setCarModal] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
 
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
@@ -60,10 +66,10 @@ const MyBookings = () => {
       formData.append('sub_category_id', _id);
       formData.append('date', selectedDate);
       formData.append('notes', note);
-      formData.append('time', '');
-      formData.append('location', '');
-      formData.append('media_files', '');
-      formData.append('meta_data[car_make]', '');
+      formData.append('time', selectedTime);
+      formData.append('location', isLocationType);
+      formData.append('media_files', selectedMedia);
+      formData.append('meta_data[car_make]', carModal);
       formData.append('meta_data[mileage]', selectedMileage || '');
       formData.append('meta_data[no_hours]', selectedHour);
       formData.append('meta_data[no_professionals]', selectedProfessional);
@@ -113,29 +119,69 @@ const MyBookings = () => {
             <CustomButton
               title={'My Location'}
               onPress={() => {
-                navigateTo(SCREENS.SetLocation);
+                userInfo?.address?.type
+                  ? setIsLocationType('My Location')
+                  : navigateTo(SCREENS.SetLocation);
               }}
-              btnStyle={styles.myLocationBtn}
-              leftImg={<Image source={IMAGES.marker} />}
+              textStyle={
+                isLocationType == 'My Location'
+                  ? {fontSize:getFontSize(1.8)}
+                  : {...commonFontStyle(500, 1.8, Colors._4F4F4F)}
+              }
+              btnStyle={[
+                styles.yourLocationBtn,
+                isLocationType == 'My Location' && styles.myLocationBtn,
+              ]}
+              leftImg={
+                <Image
+                  source={IMAGES.marker}
+                  tintColor={
+                    isLocationType == 'My Location'
+                      ? Colors.white
+                      : Colors.black
+                  }
+                />
+              }
             />
             <CustomButton
               title={'Store Location'}
-              btnStyle={styles.yourLocationBtn}
-              textStyle={{...commonFontStyle(500, 1.8, Colors._4F4F4F)}}
-              leftImg={<Image source={IMAGES.home_marker} />}
+              onPress={() => {
+                setIsLocationType('Your Location');
+              }}
+              btnStyle={[
+                styles.yourLocationBtn,
+                isLocationType == 'Your Location' && styles.myLocationBtn,
+              ]}
+              textStyle={
+                isLocationType == 'Your Location'
+                  ? {fontSize:getFontSize(1.8)}
+                  : {...commonFontStyle(500, 1.8, Colors._4F4F4F)}
+              }
+              leftImg={
+                <Image
+                  source={IMAGES.home_marker}
+                  tintColor={
+                    isLocationType == 'Your Location'
+                      ? Colors.white
+                      : Colors.black
+                  }
+                />
+              }
             />
           </View>
 
           <Pressable
             onPress={() => navigateTo(SCREENS.SetLocation)}
             style={styles.locationContainer}>
+              <View style={styles.locationSubContainer}>
             <Image source={IMAGES.dummy_map} />
             <View style={styles.locationDetails}>
-              <CommonText text={'Add Location'} style={styles.locationTitle} />
+              <CommonText text={userInfo?.address?.type ?? 'Add Location'} style={styles.locationTitle} />
               <CommonText
-                text={'Dubai Internet City UAE'}
+                text={`${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`}
                 style={styles.locationSubtitle}
               />
+            </View>
             </View>
             <View style={styles.changeBtn}>
               <CommonText text={'Change'} style={styles.changeBtnText} />
@@ -154,6 +200,10 @@ const MyBookings = () => {
             <TextInput
               style={styles.carInput}
               placeholder="SUV Toyota Corola"
+              onChangeText={e => {
+                setCarModal(e);
+              }}
+              value={carModal}
             />
           </View>
 
@@ -187,7 +237,11 @@ const MyBookings = () => {
           </View>
 
           <View style={styles.sectionSpacing}>
-            <TimeSlots date={selectedDate?.isoDate} />
+            <TimeSlots
+              date={selectedDate?.isoDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
           </View>
 
           <View style={[styles.sectionSpacing, {marginTop: hp(12)}]}>
@@ -249,7 +303,11 @@ const MyBookings = () => {
         </View>
 
         <View style={{marginTop: hp(30), paddingHorizontal: wp(24)}}>
-          <UploadBox title="Upload Video/Image" style={{width: '100%'}} />
+          <UploadBox
+            title="Upload Video/Image"
+            style={{width: '100%'}}
+            setSelectedMedia={setSelectedMedia}
+          />
         </View>
 
         <View
@@ -348,6 +406,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.white,
+    justifyContent:'space-between'
+  },
+  locationSubContainer:{
+    gap: wp(15),
+    ...rowReverseRTL(),
+    alignItems:'center'
   },
   locationDetails: {
     gap: hp(10),
@@ -472,6 +536,8 @@ const styles = StyleSheet.create({
   },
   myLocationBtn: {
     flex: 1,
+    borderWidth: hp(1),
+    borderColor: Colors.seeker_primary,
     backgroundColor: Colors.seeker_primary,
   },
   yourLocationBtn: {

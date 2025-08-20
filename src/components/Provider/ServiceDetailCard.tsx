@@ -8,18 +8,44 @@ import {Colors} from '@/constants/Colors';
 import AttachmentCard from '../common/AttachmentCard';
 import AdittionalNote from '../common/AdittionalNote';
 import CustomButton from '../common/CustomButton';
-import { navigateTo } from '../common/commonFunction';
-import { PROVIDER_SCREENS } from '@/navigation/screenNames';
+import {getLocalizedText, navigateTo} from '../common/commonFunction';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import moment from 'moment';
 
-const ServiceDetailCard = () => {
+const ServiceDetailCard = ({requestDetails, language}: any) => {
+  const start = moment(
+    `${moment(requestDetails?.date).format('YYYY-MM-DD')} ${
+      requestDetails?.time
+    }`,
+    'YYYY-MM-DD hh:mm A',
+  );
+  const end = moment(start).add(
+    Number(requestDetails?.meta_data?.no_hours),
+    'hours',
+  );
+
   const serviceData = [
-    {'Service Type': 'Repair & Maintenance'},
-    {'Service Category': 'AC Regular Services'},
-    {'Booking Date': 'Web, 18 Apr'},
-    {'Booking Time': '09:00 - 12:00'},
-    {Location: 'Dubai Internet City UAE'},
-    {'No. of Hour': '2 Hours'},
-    {'No. of Professional': '3 Person'},
+    {
+      'Service Type': `${getLocalizedText(
+        requestDetails?.category_id?.title,
+        requestDetails?.category_id?.title_ar,
+        language,
+      )}`,
+    },
+    {
+      'Service Category': `${getLocalizedText(
+        requestDetails?.sub_category_id?.title,
+        requestDetails?.sub_category_id?.title_ar,
+        language,
+      )}`,
+    },
+    {'Booking Date': `${start.format('ddd, DD MMM')}`},
+    {'Booking Time': `${start.format('hh:mm')} - ${end.format('hh:mm')}`},
+    {Location: requestDetails?.address},
+    {'No. of Hour': `${requestDetails?.meta_data?.no_hours} Hours`},
+    {
+      'No. of Professional': `${requestDetails?.meta_data?.no_professionals} Person`,
+    },
   ];
 
   return (
@@ -30,14 +56,16 @@ const ServiceDetailCard = () => {
           <CommonText text={Object.values(item)[0]} style={styles.valueText} />
         </View>
       ))}
-      <AttachmentCard />
+      <AttachmentCard requestImages={requestDetails?.media_files}/>
       <View style={{marginVertical: hp(29)}}>
-        <AdittionalNote />
+        <AdittionalNote additionalNotes={requestDetails?.notes}/>
       </View>
 
       <CustomButton
         title={'Make an Offer'}
-        onPress={() => {navigateTo(PROVIDER_SCREENS.MakeOffer)}}
+        onPress={() => {
+          navigateTo(PROVIDER_SCREENS.MakeOffer,{request_id:requestDetails?._id});
+        }}
         btnStyle={{alignSelf: 'center', width: '70%'}}
       />
     </ShadowCard>

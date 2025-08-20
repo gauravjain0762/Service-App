@@ -5,6 +5,9 @@ import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
 import CustomImage from '../common/CustomImage';
 import CommonText from '../common/CommonText';
 import CustomButton from '../common/CustomButton';
+import {getLocalizedText} from '../common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
 
 type Props = {
   item: any;
@@ -21,6 +24,19 @@ const BookingCard = ({
   onPressButton,
   onPress,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+
+  const formatBookingTime = (date: any, time: any, no_hours: any) => {
+    const start = moment(
+      `${moment(date).format('YYYY-MM-DD')} ${time}`,
+      'YYYY-MM-DD hh:mm A',
+    );
+    const end = moment(start).add(Number(no_hours), 'hours');
+    return `${start.format('ddd, DD MMM')} - ${start.format(
+      'hh:mm',
+    )} - ${end.format('hh:mm')}`;
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -30,7 +46,7 @@ const BookingCard = ({
       <View style={styles.row}>
         <CustomImage
           uri={
-            item?.image ||
+            item?.sub_category_id?.image ||
             'https://cdn-icons-png.flaticon.com/512/2965/2965567.png'
           }
           size={getFontSize(5)}
@@ -38,13 +54,29 @@ const BookingCard = ({
         />
         <View style={styles.textContainer}>
           <View style={styles.titleRow}>
-            <CommonText style={styles.title} text={item.title} />
-            {isBooking && <CommonText style={styles.id} text={item.id} />}
+            <CommonText
+              style={styles.title}
+              text={getLocalizedText(
+                item?.category_id?.title,
+                item?.category_id?.title_ar,
+                language,
+              )}
+            />
+            {isBooking && (
+              <CommonText style={styles.id} text={item?.job_code} />
+            )}
           </View>
 
-          <CommonText style={styles.subtitle} text={item.subtitle} />
+          <CommonText
+            style={styles.subtitle}
+            text={getLocalizedText(
+              item?.sub_category_id?.title,
+              item?.sub_category_id?.title_ar,
+              language,
+            )}
+          />
 
-          {!isBooking && <CommonText style={styles.id} text={item.id} />}
+          {!isBooking && <CommonText style={styles.id} text={item?.job_code} />}
 
           {isBooking && (
             <CustomButton
@@ -70,7 +102,14 @@ const BookingCard = ({
       </View>
       <View style={styles.detailView}>
         <CommonText style={styles.label} text={'Date & Time'} />
-        <CommonText style={styles.value} text={item.dateTime} />
+        <CommonText
+          style={styles.value}
+          text={formatBookingTime(
+            item?.date,
+            item?.time,
+            item?.meta_data?.no_hours,
+          )}
+        />
       </View>
       {isBooking && (
         <View style={styles.detailView}>
@@ -163,7 +202,7 @@ const styles = StyleSheet.create({
     width: '30%',
   },
   value: {
-    ...commonFontStyle(500, 2.2, Colors._333333),
+    ...commonFontStyle(500, 2, Colors._333333),
     textAlign: 'left',
     flex: 1,
   },

@@ -114,3 +114,10 @@ export const getLanguageKey = () => {
     }
   });
 };
+export const getLocalizedText = (
+  enText: string,
+  arText: string,
+  language: string | any,
+) => {
+  return language === 'ar' ? arText : enText;
+};

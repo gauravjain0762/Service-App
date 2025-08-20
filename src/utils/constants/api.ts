@@ -57,8 +57,13 @@ export const PROVIDER_API = {
     CHANGE_PASSWORD: '/company/changePassword',
   },
   DASHBOARD: {
+    NOTIFICATIONS: 'getNotifications',
+    CLEAR_ALL_NOTIFICATIONS: 'clearAllNotifications',
     DASHBOARD: '/company/getDashboard',
     SUB_CATEGORIES: '/company/getSubCategories',
+    REQUESTS: '/company/getRequests',
+    REQUEST_DETAILS: '/company/getRequestDetails',
+    SEND_OFFER:'/company/sendOffer'
   },
 } as const;
 

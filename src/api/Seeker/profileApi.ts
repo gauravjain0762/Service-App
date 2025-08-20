@@ -6,7 +6,7 @@ import {setUserInfo} from '@/features/authSlice';
 export const profileApi = createApi({
   reducerPath: 'profileApi',
   baseQuery: axiosBaseQuery,
-  tagTypes: ['profileApi'],
+  tagTypes: ['profileApi','getProfile'],
   keepUnusedDataFor: 300, // 5 minutes
   refetchOnFocus: true,
   refetchOnReconnect: true,
@@ -16,6 +16,7 @@ export const profileApi = createApi({
         url: SEEKER_API.PROFILE.PROFILE,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['getProfile'],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;
@@ -30,8 +31,11 @@ export const profileApi = createApi({
         url: SEEKER_API.PROFILE.UPDATE_PROFILE,
         method: HTTP_METHOD.POST,
         data: credentials,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }),
-      invalidatesTags: ['profileApi'],
+      invalidatesTags: ['profileApi','getProfile'],
     }),
   }),
 });

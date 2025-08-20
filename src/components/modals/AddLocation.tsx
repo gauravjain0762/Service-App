@@ -8,6 +8,8 @@ import CustomButton from '../common/CustomButton';
 import {navigationRef} from '@/navigation/RootContainer';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
+import {useUpdateProfileMutation} from '@/api/Seeker/profileApi';
+import {errorToast, successToast} from '../common/commonFunction';
 
 type Props = {
   selectedType: string;
@@ -20,6 +22,39 @@ const AddLocation = ({
   selectedType,
   setSelectedType,
 }: Props) => {
+  const [details, setDetails] = React.useState({
+    type: selectedType,
+    building_name: '',
+    apt_villa_no: '',
+    directions: '',
+  });
+  const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+
+  const onUpdateProfile = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('address[type]', details?.type);
+      formData.append('address[building_name]', details?.building_name);
+      formData.append('address[apt_villa_no]', details?.apt_villa_no);
+      formData.append('address[directions]', details?.directions);
+      const response = await updateProfile(formData).unwrap();
+      console.log('response-----', response);
+
+      if (response?.status) {
+        successToast(response?.message);
+        setIsAddressModalVisible(false);
+        navigationRef?.current?.goBack();
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
+  };
+
   return (
     <>
       <CommonText text={'Address Details'} style={styles.addressTitle} />
@@ -53,24 +88,33 @@ const AddLocation = ({
         placeholder={'Flat No. / House No.'}
         containerStyle={styles.inputUnderline}
         inputStyle={styles.inputText}
+        onChangeText={e => {
+          setDetails({...details, apt_villa_no: e});
+        }}
+        value={details?.apt_villa_no}
       />
       <CustomTextInput
         placeholder={'Street / Area / Locality'}
         containerStyle={styles.inputUnderline}
         inputStyle={styles.inputText}
+          onChangeText={e => {
+          setDetails({...details, building_name: e});
+        }}
+        value={details?.building_name}
       />
       <CustomTextInput
         placeholder={'City / District'}
         containerStyle={styles.inputUnderline}
         inputStyle={styles.inputText}
+          onChangeText={e => {
+          setDetails({...details, directions: e});
+        }}
+        value={details?.directions}
       />
 
       <CustomButton
         title={'Save Address'}
-        onPress={() => {
-          setIsAddressModalVisible(false);
-          navigationRef?.current?.goBack();
-        }}
+        onPress={onUpdateProfile}
         btnStyle={styles.continueButton}
       />
     </>

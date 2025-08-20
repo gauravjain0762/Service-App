@@ -14,16 +14,49 @@ import TimeSlots from '@/components/common/TimeSlots';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import CustomButton from '@/components/common/CustomButton';
 import BottomModal from '@/components/common/BottomModal';
-import {resetNavigation} from '@/components/common/commonFunction';
+import {errorToast, resetNavigation} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useRoute} from '@react-navigation/native';
+import {useSendOfferMutation} from '@/api/Provider/homeApi';
 
 const MakeOffer = () => {
+  const {
+    params: {request_id},
+  } = useRoute<any>();
+  const [sendOffer, {isLoading}] = useSendOfferMutation();
+  const [selectedTime, setSelectedTime] = useState('');
+  const [note, setNote] = useState<string>('');
+  const [timeToComplete, setTimeToComplete] = useState<string>('');
+  const [offerPrice, setOfferPrice] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+  const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
 
+  const onSubmitOffer = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('request_id', request_id);
+      formData.append('notes', note);
+      formData.append('media_files', selectedMedia);
+      formData.append('offer_price', offerPrice);
+      formData.append('date', selectedDate);
+      formData.append('time', selectedTime);
+      formData.append('estimated_time', timeToComplete);
+
+      const response = await sendOffer(formData).unwrap();
+      if (response?.status) {
+         setIsSubmitModalVisible(true)
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
+  };
   return (
     <SafeAreaView style={[GeneralStyle.container]}>
       <BackHeader
@@ -41,7 +74,11 @@ const MakeOffer = () => {
         showsVerticalScrollIndicator={false}>
         <View style={styles.attachmentSection}>
           <CommonText text="Attach Document" style={styles.attachTitle} />
-          <UploadBox style={styles.uploadBox} btnStyle={styles.uploadBtn} />
+          <UploadBox
+            style={styles.uploadBox}
+            btnStyle={styles.uploadBtn}
+            setSelectedMedia={setSelectedMedia}
+          />
         </View>
 
         <View style={{gap: hp(22), marginTop: hp(20)}}>
@@ -53,6 +90,8 @@ const MakeOffer = () => {
             <AddSpecialNote
               style={styles.noteContainer}
               textInputStyle={styles.noteInput}
+              value={note}
+              onChangeText={setNote}
             />
           </View>
           <View style={{gap: hp(20)}}>
@@ -64,6 +103,8 @@ const MakeOffer = () => {
               placeholder="3 Hours"
               textInputStyle={[styles.noteInput]}
               style={[styles.noteContainer, {height: hp(60)}]}
+              value={timeToComplete}
+              onChangeText={setTimeToComplete}
             />
           </View>
 
@@ -76,7 +117,12 @@ const MakeOffer = () => {
           </View>
 
           <View style={styles.safeArea}>
-            <TimeSlots isProvider />
+            <TimeSlots
+              isProvider
+              date={selectedDate?.isoDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
           </View>
 
           <View style={{gap: hp(20)}}>
@@ -87,6 +133,8 @@ const MakeOffer = () => {
             <AddSpecialNote
               //   placeholder=""
               // value={'5,000 AED'}
+              value={offerPrice}
+              onChangeText={setOfferPrice}
               textInputStyle={[
                 styles.noteInput,
                 {
@@ -109,7 +157,7 @@ const MakeOffer = () => {
             <CustomButton
               title={'Submit Offer'}
               btnStyle={{marginVertical: hp(27)}}
-              onPress={() => setIsSubmitModalVisible(true)}
+              onPress={onSubmitOffer}
             />
           </View>
         </View>
@@ -131,7 +179,7 @@ const MakeOffer = () => {
         }}>
         <RequestSubmitModal
           header="Offer Submitted"
-          title={"Your Offer has been Submitted Good Luck!"}
+          title={'Your Offer has been Submitted Good Luck!'}
           color={Colors.provider_primary}
           handleCardPress={() => {
             setIsSubmitModalVisible(false);

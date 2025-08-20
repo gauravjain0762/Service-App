@@ -16,9 +16,17 @@ type Props = {
   style?: ViewStyle;
   isButton?: boolean;
   btnStyle?: ViewStyle;
+  setSelectedMedia?: any;
 };
 
-const UploadBox = ({title, style, btnStyle, desc, isButton = true}: Props) => {
+const UploadBox = ({
+  title,
+  style,
+  btnStyle,
+  desc,
+  isButton = true,
+  setSelectedMedia,
+}: Props) => {
   const [files, setFiles] = useState<any[]>([]);
 
   const handleBrowseFiles = () => {
@@ -28,8 +36,15 @@ const UploadBox = ({title, style, btnStyle, desc, isButton = true}: Props) => {
     })
       .then(images => {
         // If single file, wrap in array
-        const newFiles = Array.isArray(images) ? images : [images];
+        const newFiles:any = Array.isArray(images) ? images : [images];
         setFiles(prev => [...prev, ...newFiles]); // ✅ append instead of overwrite
+        
+        const data:any = {
+          uri: newFiles[0]?.sourceURL,
+          type: newFiles[0]?.mime,
+          name: newFiles[0]?.sourceURL.split('/').pop(),
+        }
+        setSelectedMedia((prev: any) => [...prev, data]); // ✅ append instead of overwrite
       })
       .catch(error => {
         if (error.code !== 'E_PICKER_CANCELLED') {
@@ -42,6 +57,7 @@ const UploadBox = ({title, style, btnStyle, desc, isButton = true}: Props) => {
     const updatedFiles = [...files];
     updatedFiles.splice(index, 1);
     setFiles(updatedFiles);
+    setSelectedMedia(updatedFiles);
   };
 
   const renderFile = ({item, index}: {item: any; index?: number}) => {

@@ -9,8 +9,30 @@ import ShadowCard from '@/components/common/ShadowCard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import ServiceDetailCard from '@/components/Provider/ServiceDetailCard';
+import {useGetRequestsDetailsQuery} from '@/api/Provider/homeApi';
+import {useRoute} from '@react-navigation/native';
+import {getLocalizedText} from '@/components/common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const ProRequestDetail = () => {
+  const {params} = useRoute<any>();
+  const {language} = useAppSelector(state => state.auth);
+
+  const {
+    data: requestData,
+    isLoading: requestLoading,
+    refetch: refetchRequestList,
+  } = useGetRequestsDetailsQuery<any>(
+    {
+      request_id: params?.request_id,
+    },
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+  const requestDetails = requestData?.data?.job;
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <BackHeader text="Request Detail" style={GeneralStyle.back} />
@@ -28,14 +50,25 @@ const ProRequestDetail = () => {
           <ShadowCard style={styles.card}>
             <View style={styles.cardHeader}>
               <CommonText
-                text="Repair & Maintenance"
+                text={getLocalizedText(
+                  requestDetails?.category_id?.title,
+                  requestDetails?.category_id?.title_ar,
+                  language,
+                )}
                 style={styles.serviceTitle}
               />
-              <CommonText text="98321" style={styles.requestId} />
+              <CommonText
+                text={requestDetails?.job_code}
+                style={styles.requestId}
+              />
             </View>
 
             <CommonText
-              text="AC Regular Services"
+              text={getLocalizedText(
+                requestDetails?.sub_category_id?.title,
+                requestDetails?.sub_category_id?.title_ar,
+                language,
+              )}
               style={styles.serviceSubtitle}
             />
           </ShadowCard>
@@ -49,7 +82,7 @@ const ProRequestDetail = () => {
               ...commonFontStyle(700, 2.2, Colors.black),
             }}
           />
-          <ServiceDetailCard />
+          <ServiceDetailCard  requestDetails={requestDetails} language={language}/>
         </View>
       </ScrollView>
     </SafeAreaView>
