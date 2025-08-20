@@ -11,9 +11,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {hp} from '@/utils/responsiveFn';
 
 const SplashScreen = () => {
-  const {token: authToken, selectedService} = useAppSelector(
-    state => state.auth,
-  );
+  const {token: authToken, isProvider} = useAppSelector(state => state.auth);
 
   useEffect(() => {
     setTimeout(() => {
@@ -25,9 +23,9 @@ const SplashScreen = () => {
     try {
       if (authToken) {
         resetNavigation(
-          selectedService === 'seeker'
-            ? SCREENS.SeekerTabNavigation
-            : SCREENS.ProviderTabNavigation,
+          isProvider === false
+            ? SCREENS.SeekerNavigator
+            : SCREENS.ProviderNavigator,
         );
       } else {
         resetNavigation(SCREENS.OnBoarding);

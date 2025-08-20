@@ -27,7 +27,10 @@ const HomeScreen = () => {
   const {params} = useRoute<any>();
   const {userInfo, dashboard} = useAppSelector(state => state.auth);
 
-  const [selectedSubCatId, setSelectedSubCatId] = useState<string>('');
+  const [selectedCatId, setSelectedCatId] = useState<string>('');
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const {} = useGetProfileQuery({}); // profile api
 
   const {isLoading} = useGetDashboardQuery({}); // dashboard api
@@ -41,22 +44,19 @@ const HomeScreen = () => {
     useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedSubCatId !== '') {
+    if (selectedCatId !== '') {
       subCatTrigger({
-        category_id: selectedSubCatId,
+        category_id: selectedCatId,
       });
-      setSelectedSubCatId('');
+      setSelectedCatId('');
     }
-  }, [selectedSubCatId, subCatTrigger]);
+  }, [selectedCatId, subCatTrigger]);
 
   useEffect(() => {
     if (openReviewModal) {
       setIsReviewModalVisible(true);
     }
   }, [openReviewModal]);
-
-  const [serviceName, setServiceName] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const closeModal = () => {
     setIsReviewModalVisible(false);
@@ -99,8 +99,9 @@ const HomeScreen = () => {
             data={dashboard?.categories ?? []}
             onPress={item => {
               setIsModalVisible(true);
-              setServiceName(item?.title);
-              setSelectedSubCatId(item?._id);
+              // setServiceName(item?.title);
+              setSelectedCatId(item?._id);
+              setSelectedCategory(item);
             }}
           />
         </ScrollView>
@@ -109,7 +110,7 @@ const HomeScreen = () => {
       <ServicesModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        serviceName={serviceName}
+        selectedCategory={selectedCategory}
         subCategories={subCategories?.data?.sub_categories ?? []}
         isSubCatLoading={isSubCatLoading}
       />

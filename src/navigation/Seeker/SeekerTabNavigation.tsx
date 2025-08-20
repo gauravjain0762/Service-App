@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -16,7 +18,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const Tab = createBottomTabNavigator();
 
 const SeekerTabNavigation = () => {
-  const CustomTabBarButton = ({children, onPress, route, ...props}: any) => {
+  const CustomTabBarButton = ({children, route, ...props}: any) => {
     const handlePress = () => {
       navigateTo(route.name);
     };
@@ -52,7 +54,7 @@ const SeekerTabNavigation = () => {
             backgroundColor: Colors.seeker_primary,
           },
           tabBarShowLabel: false,
-          tabBarIcon: ({focused, color}) => {
+          tabBarIcon: ({focused}) => {
             let iconName;
             let iconWidth = wp(30);
             let iconHeight = hp(25);

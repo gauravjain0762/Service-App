@@ -17,6 +17,7 @@ import ForgotPassword from '@/screens/SeekerScreens/Auth/ForgotPassword';
 import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
 import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 import Subscription from '@/screens/Subscription';
+import {useAppSelector} from '@/Hooks/hooks';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -25,6 +26,8 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<any>();
 
 const ProviderNavigator: FC = () => {
+  const {token} = useAppSelector(state => state.auth);
+
   let screens = [
     {
       name: PROVIDER_SCREENS.ProLoginScreen,
@@ -55,7 +58,11 @@ const ProviderNavigator: FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={PROVIDER_SCREENS.ProLoginScreen}>
+      initialRouteName={
+        token
+          ? PROVIDER_SCREENS.ProviderTabNavigation
+          : PROVIDER_SCREENS.ProLoginScreen
+      }>
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen

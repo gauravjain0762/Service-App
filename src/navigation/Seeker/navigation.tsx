@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import React, {FC} from 'react';
 
 import {SEEKER_SCREENS} from '../screenNames';
 import SeekerTabNavigation from './SeekerTabNavigation';
@@ -21,14 +21,16 @@ import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 import SearchScreen from '@/screens/SeekerScreens/Seekers/SearchScreen';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
 import Subscription from '@/screens/Subscription';
+import {useAppSelector} from '@/Hooks/hooks';
 
 export type RootStackParamList = {
   Dashboard: undefined;
 };
 
 const Stack = createNativeStackNavigator<any>();
+const SeekerNavigator: FC = ({}) => {
+  const {token} = useAppSelector(state => state.auth);
 
-const SeekerNavigator: FC = () => {
   let screens = [
     {name: SEEKER_SCREENS.LoginScreen, component: LoginScreen},
     {name: SEEKER_SCREENS.SignUpScreen, component: SignUpScreen},
@@ -55,7 +57,9 @@ const SeekerNavigator: FC = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={SEEKER_SCREENS.LoginScreen}>
+      initialRouteName={
+        token ? SEEKER_SCREENS.SeekerTabNavigation : SEEKER_SCREENS.LoginScreen
+      }>
       {screens.map((item: any, index: any) => {
         return (
           <Stack.Screen

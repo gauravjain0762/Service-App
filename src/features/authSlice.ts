@@ -10,7 +10,7 @@ export interface AuthState {
   fcmToken: string | null;
   userInfo?: any;
   language: string | null;
-  selectedService: any;
+  isProvider: any;
 
   dashboard: {
     banners: any[];
@@ -27,7 +27,7 @@ const initialState: AuthState = {
   fcmToken: null,
   userInfo: null,
   language: 'en',
-  selectedService: null,
+  isProvider: null,
 
   dashboard: {
     banners: [],
@@ -61,8 +61,8 @@ const authSlice = createSlice({
     setUserInfo: (state, action: PayloadAction<any>) => {
       state.userInfo = action.payload;
     },
-    setSelectedService: (state, action: PayloadAction<any>) => {
-      state.selectedService = action.payload;
+    setIsProvider: (state, action: PayloadAction<any>) => {
+      state.isProvider = action.payload;
     },
     setDashboard: (state, action: PayloadAction<any>) => {
       state.dashboard = action.payload;
@@ -84,7 +84,7 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   // Only persist these fields
-  whitelist: ['token', 'userInfo', 'language', 'selectedService'],
+  whitelist: ['token', 'userInfo', 'language', 'isProvider'],
 };
 
 // Create the persisted reducer
@@ -99,7 +99,7 @@ export const {
   setLoading,
   setUserInfo,
   setLanguage,
-  setSelectedService,
+  setIsProvider,
   setDashboard,
   clearToken,
   setDropDownCategories,

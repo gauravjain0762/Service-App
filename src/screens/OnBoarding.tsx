@@ -18,7 +18,7 @@ import CustomCarousel from '@/components/common/CustomCarousel';
 import {IMAGES} from '@/assets/images';
 import LanguageModal from '@/components/common/LanguageModel';
 import {useAppDispatch} from '@/Hooks/hooks';
-import {setSelectedService} from '@/features/authSlice';
+import {setIsProvider} from '@/features/authSlice';
 
 const OnBoarding = () => {
   const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
@@ -80,7 +80,7 @@ const OnBoarding = () => {
                 isPrimary="seeker"
                 title={'Job Seeker'}
                 onPress={() => {
-                  dispatch(setSelectedService('seeker'));
+                  dispatch(setIsProvider(false));
                   resetNavigation(SCREENS.SeekerNavigator);
                 }}
                 textStyle={styles.btnText}
@@ -89,7 +89,7 @@ const OnBoarding = () => {
                 title={'Service Provider'}
                 btnStyle={{backgroundColor: Colors.provider_primary}}
                 onPress={() => {
-                  dispatch(setSelectedService('provider'));
+                  dispatch(setIsProvider(true));
                   resetNavigation(SCREENS.ProviderNavigator, {
                     isProvider: true,
                   });

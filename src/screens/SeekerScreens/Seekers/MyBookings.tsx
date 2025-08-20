@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   Image,
@@ -21,22 +22,63 @@ import UploadBox from '@/components/common/UploadBox';
 import ShadowCard from '@/components/common/ShadowCard';
 import {useTranslation} from 'react-i18next';
 import CustomButton from '@/components/common/CustomButton';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  navigateTo,
+  resetNavigation,
+} from '@/components/common/commonFunction';
 import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
+import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
+import {useRoute} from '@react-navigation/native';
 
 const MyBookings = () => {
   const {t} = useTranslation();
+  const {
+    params: {category_id, category_name, category_image, title, _id},
+  } = useRoute<any>();
+
+  const [createRequest, {isLoading}] = useCreateRequestMutation();
+
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
-  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+
   const [selectedMileage, setSelectedMileage] = useState<string | null>(null);
   const [selectedProfessional, setSelectedProfessional] = useState<
     number | null
   >(null);
+  const [note, setNote] = useState<string>('');
+  const [selectedMedia, setSelectedMedia] = useState<any>(null);
 
+  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+  const onSend = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('category_id', category_id);
+      formData.append('sub_category_id', _id);
+      formData.append('date', selectedDate);
+      formData.append('notes', note);
+      formData.append('time', '');
+      formData.append('location', '');
+      formData.append('media_files', '');
+      formData.append('meta_data[car_make]', '');
+      formData.append('meta_data[mileage]', selectedMileage || '');
+      formData.append('meta_data[no_hours]', selectedHour);
+      formData.append('meta_data[no_professionals]', selectedProfessional);
+
+      const response = await createRequest(formData).unwrap();
+      if (response?.status) {
+        setIsSubmitModalVisible(true);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
+  };
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -54,7 +96,12 @@ const MyBookings = () => {
           style={{
             paddingHorizontal: wp(24),
           }}>
-          <RequestCard style={styles.requestCard} />
+          <RequestCard
+            text1={category_name}
+            text2={title}
+            imageSource={category_image}
+            style={styles.requestCard}
+          />
 
           <CommonText
             text={'Choose Location'}
@@ -140,7 +187,7 @@ const MyBookings = () => {
           </View>
 
           <View style={styles.sectionSpacing}>
-            <TimeSlots />
+            <TimeSlots date={selectedDate?.isoDate} />
           </View>
 
           <View style={[styles.sectionSpacing, {marginTop: hp(12)}]}>
@@ -221,14 +268,17 @@ const MyBookings = () => {
               multiline
               placeholder={t('Describe here...')}
               style={styles.textInput}
+              value={note}
+              onChangeText={setNote}
             />
           </ShadowCard>
         </View>
 
         <CustomButton
           title={'Send Request'}
+          loading={isLoading}
           btnStyle={styles.sendRequestBtn}
-          onPress={() => setIsSubmitModalVisible(true)}
+          onPress={() => onSend()}
         />
       </ScrollView>
 

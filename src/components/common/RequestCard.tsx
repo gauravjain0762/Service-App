@@ -1,5 +1,12 @@
 import React from 'react';
-import {Image, Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
@@ -28,7 +35,7 @@ const RequestCard = ({
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
       <View style={styles.imageContainer}>
-        <Image source={imageSource ? imageSource : IMAGES.dummy} />
+        <Image source={imageSource ? {uri: imageSource} : IMAGES.dummy} />
       </View>
 
       <View style={styles.textContainer}>
@@ -71,6 +78,6 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 2.1, Colors.white),
   },
   subtitle: {
-    ...commonFontStyle(600, 1.9, Colors.white),
+    ...commonFontStyle(400, 1.8, Colors.white),
   },
 });

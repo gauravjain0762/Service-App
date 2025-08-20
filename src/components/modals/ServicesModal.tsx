@@ -13,17 +13,17 @@ import BottomModal from '../common/BottomModal';
 type Props = {
   visible: boolean;
   onClose?: () => void;
-  serviceName: string;
   subCategories: any[];
   isSubCatLoading: boolean;
+  selectedCategory?: any;
 };
 
 const ServicesModal = ({
-  serviceName,
   onClose = () => {},
   visible,
   subCategories,
   isSubCatLoading,
+  selectedCategory,
 }: Props) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
@@ -43,7 +43,7 @@ const ServicesModal = ({
       visible={isModalVisible}
       onPressCancel={handleClose}
       onClose={handleClose}>
-      <CommonText text={serviceName} />
+      <CommonText text={selectedCategory?.title || ''} />
       {isSubCatLoading ? (
         <HomeSkeleton list={6} />
       ) : (
@@ -62,7 +62,12 @@ const ServicesModal = ({
               handleCardPress={() => {
                 handleClose();
                 setTimeout(() => {
-                  navigateTo(SCREENS.MyBookings);
+                  navigateTo(SCREENS.MyBookings, {
+                    ...item,
+                    category_name: selectedCategory?.title || '',
+                    category_id: selectedCategory?._id || '',
+                    category_image: selectedCategory?.image || '',
+                  });
                 }, 100);
               }}
               text={item?.title || 'Handyman Services'}

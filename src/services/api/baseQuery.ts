@@ -37,8 +37,7 @@ export const axiosBaseQuery: BaseQueryFn<
     : null;
   const authHeaders = token ? {Authorization: `Bearer ${token}`} : {};
 
-  console.log('token()', token);
-  console.log('params', params);
+  console.log('query params', params);
   console.log('url', url);
 
   try {

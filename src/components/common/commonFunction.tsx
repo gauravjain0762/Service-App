@@ -88,7 +88,11 @@ export const resetNavigation = (
 };
 
 export const navigateTo = (name: string, params?: any | undefined) => {
-  navigationRef.navigate(name, params);
+  try {
+    navigationRef.navigate(name, params);
+  } catch (error) {
+    console.log('error', error);
+  }
 };
 
 export const goBack = () => {

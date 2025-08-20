@@ -5,10 +5,10 @@ import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
-import ImagePicker from 'react-native-image-crop-picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
+import DocumentPicker from 'react-native-document-picker';
 
 type Props = {
   desc?: string;
@@ -31,19 +31,16 @@ const UploadBox = ({
   onCameraCardPress,
   isButton = true,
 }: Props) => {
-  const handleBrowseFiles = () => {
-    ImagePicker.openPicker({
-      multiple: false,
-      mediaType: 'any',
-    })
-      .then(image => {
-        console.log('Selected:', image);
-      })
-      .catch(error => {
-        if (error.code !== 'E_PICKER_CANCELLED') {
-          console.log('Error picking file:', error);
-        }
+  const handleBrowseFiles = async () => {
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        presentationStyle: 'fullScreen',
+        type: [DocumentPicker.types.images, DocumentPicker.types.video],
       });
+      console.log('pickerResult', pickerResult);
+    } catch (error: any) {
+      console.log('error', error);
+    }
   };
 
   return (

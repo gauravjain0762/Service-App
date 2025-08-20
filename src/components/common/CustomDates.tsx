@@ -20,7 +20,7 @@ const generateDates = () => {
       month: current.format('MMM'),
       day: current.format('DD'),
       weekday: current.format('ddd'),
-      fullDate: current.clone(),
+      isoDate: current.format('YYYY-MM-DD'), // <- add this
     });
     current.add(1, 'day');
   }
@@ -85,7 +85,7 @@ const CustomDates = ({
                 ]}
                 onPress={() => {
                   setSelectedDate?.(item);
-                  onDatePress?.(item.fullDate);
+                  onDatePress?.(item.isoDate);
                 }}>
                 <CommonText
                   style={[styles.month, selected && styles.selectedText]}
