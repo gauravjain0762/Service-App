@@ -48,7 +48,7 @@ const MakeOffer = () => {
 
       const response = await sendOffer(formData).unwrap();
       if (response?.status) {
-         setIsSubmitModalVisible(true)
+        setIsSubmitModalVisible(true);
       }
     } catch (error: any) {
       console.log(error);
@@ -131,7 +131,7 @@ const MakeOffer = () => {
               style={styles.specialNoteTitle}
             />
             <AddSpecialNote
-              //   placeholder=""
+              placeholder="Your Offer Price"
               // value={'5,000 AED'}
               value={offerPrice}
               onChangeText={setOfferPrice}
@@ -158,6 +158,7 @@ const MakeOffer = () => {
               title={'Submit Offer'}
               btnStyle={{marginVertical: hp(27)}}
               onPress={onSubmitOffer}
+              loading={isLoading}
             />
           </View>
         </View>

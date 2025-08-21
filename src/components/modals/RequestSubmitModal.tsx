@@ -13,9 +13,24 @@ type Props = {
   bookingNumber?: number;
   handleCardPress: () => void;
   requestCardStyle?: StyleProp<ViewStyle>;
+  text1?: string;
+  text2?: string;
+  imageSource?: any;
+  jobCode?: string;
 };
 
-const RequestSubmitModal = ({handleCardPress, header, title, color, bookingNumber, requestCardStyle}: Props) => {
+const RequestSubmitModal = ({
+  handleCardPress,
+  header,
+  title,
+  color,
+  bookingNumber,
+  requestCardStyle,
+  text1,
+  text2,
+  imageSource,
+  jobCode,
+}: Props) => {
   return (
     <View style={styles.submitModalContainer}>
       <CommonText
@@ -49,7 +64,7 @@ const RequestSubmitModal = ({handleCardPress, header, title, color, bookingNumbe
               text={'Reference Code:'}
               style={styles.referenceLabel}
             />
-            <CommonText text={'#D-698321'} style={styles.referenceValue} />
+            <CommonText text={'#D-' + jobCode} style={styles.referenceValue} />
           </>
         )}
       </View>
@@ -57,6 +72,9 @@ const RequestSubmitModal = ({handleCardPress, header, title, color, bookingNumbe
       <RequestCard
         handleCardPress={handleCardPress}
         style={[styles.requestCardMargin, requestCardStyle]}
+        text1={text1}
+        text2={text2}
+        imageSource={imageSource}
       />
     </View>
   );

@@ -106,7 +106,7 @@ export const {
   useLazyGetSubCategoriesQuery,
   useGetRequestsQuery,
   useGetRequestsDetailsQuery,
-  useSendOfferMutation
+  useSendOfferMutation,
   // useCreateRequestMutation,
   // useAcceptOfferMutation,
 } = providerHomeApi;

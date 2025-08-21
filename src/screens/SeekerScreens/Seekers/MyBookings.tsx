@@ -34,7 +34,7 @@ import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
 import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@/Hooks/hooks';
-import { rowReverseRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const MyBookings = () => {
   const {t} = useTranslation();
@@ -45,7 +45,7 @@ const MyBookings = () => {
   } = useRoute<any>();
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
-  const [isLocationType, setIsLocationType] = useState('');
+  const [isLocationType, setIsLocationType] = useState('Your Location');
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
@@ -57,7 +57,7 @@ const MyBookings = () => {
   const [note, setNote] = useState<string>('');
   const [carModal, setCarModal] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
-
+  const [jobCode, setJobCode] = useState<string>('');
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const onSend = async () => {
     try {
@@ -75,8 +75,11 @@ const MyBookings = () => {
       formData.append('meta_data[no_professionals]', selectedProfessional);
 
       const response = await createRequest(formData).unwrap();
+      console.log('response', response);
+
       if (response?.status) {
         setIsSubmitModalVisible(true);
+        setJobCode(response?.data?.job_code);
       }
     } catch (error: any) {
       console.log(error);
@@ -125,7 +128,7 @@ const MyBookings = () => {
               }}
               textStyle={
                 isLocationType == 'My Location'
-                  ? {fontSize:getFontSize(1.8)}
+                  ? {fontSize: getFontSize(1.8)}
                   : {...commonFontStyle(500, 1.8, Colors._4F4F4F)}
               }
               btnStyle={[
@@ -154,7 +157,7 @@ const MyBookings = () => {
               ]}
               textStyle={
                 isLocationType == 'Your Location'
-                  ? {fontSize:getFontSize(1.8)}
+                  ? {fontSize: getFontSize(1.8)}
                   : {...commonFontStyle(500, 1.8, Colors._4F4F4F)}
               }
               leftImg={
@@ -170,24 +173,28 @@ const MyBookings = () => {
             />
           </View>
 
-          <Pressable
-            onPress={() => navigateTo(SCREENS.SetLocation)}
-            style={styles.locationContainer}>
+          {isLocationType == 'My Location' && (
+            <Pressable
+              onPress={() => navigateTo(SCREENS.SetLocation)}
+              style={styles.locationContainer}>
               <View style={styles.locationSubContainer}>
-            <Image source={IMAGES.dummy_map} />
-            <View style={styles.locationDetails}>
-              <CommonText text={userInfo?.address?.type ?? 'Add Location'} style={styles.locationTitle} />
-              <CommonText
-                text={`${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`}
-                style={styles.locationSubtitle}
-              />
-            </View>
-            </View>
-            <View style={styles.changeBtn}>
-              <CommonText text={'Change'} style={styles.changeBtnText} />
-            </View>
-          </Pressable>
-
+                <Image source={IMAGES.dummy_map} />
+                <View style={styles.locationDetails}>
+                  <CommonText
+                    text={userInfo?.address?.type ?? 'Add Location'}
+                    style={styles.locationTitle}
+                  />
+                  <CommonText
+                    text={`${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`}
+                    style={styles.locationSubtitle}
+                  />
+                </View>
+              </View>
+              <View style={styles.changeBtn}>
+                <CommonText text={'Change'} style={styles.changeBtnText} />
+              </View>
+            </Pressable>
+          )}
           <View style={styles.sectionSpacing}>
             <CustomDates
               selectedDate={selectedDate}
@@ -350,6 +357,7 @@ const MyBookings = () => {
         }}
         onClose={() => {
           setIsSubmitModalVisible(false);
+          resetNavigation(SCREENS.SeekerTabNavigation, SCREENS.Home);
         }}>
         <RequestSubmitModal
           handleCardPress={() => {
@@ -357,6 +365,10 @@ const MyBookings = () => {
             resetNavigation(SEEKER_SCREENS.Offers, '', {isResetNav: true});
           }}
           color={Colors.seeker_primary}
+          text1={category_name}
+          text2={title}
+          imageSource={category_image}
+          jobCode={jobCode}
         />
       </BottomModal>
     </SafeareaProvider>
@@ -406,12 +418,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.white,
-    justifyContent:'space-between'
+    justifyContent: 'space-between',
   },
-  locationSubContainer:{
+  locationSubContainer: {
     gap: wp(15),
     ...rowReverseRTL(),
-    alignItems:'center'
+    alignItems: 'center',
   },
   locationDetails: {
     gap: hp(10),
