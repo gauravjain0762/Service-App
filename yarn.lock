@@ -1806,6 +1806,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@notifee/react-native@^9.1.8":
+  version "9.1.8"
+  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-9.1.8.tgz#3d55cb3fbcc21f9e35931e366afdf64b294da891"
+  integrity sha512-Az/dueoPerJsbbjRxu8a558wKY+gONUrfoy3Hs++5OqbeMsR0dYe6P+4oN6twrLFyzAhEA1tEoZRvQTFDRmvQg==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -2031,6 +2036,11 @@
   integrity sha512-4GlCYZQFf+J5Ssmdewub96xSH8Bq5HYAFpbQahyh+gJhTZfnRycdCbtZle9+CnNUI4buz4Lruxgq5r1iY86qag==
   dependencies:
     plist "^3.1.0"
+
+"@react-native-firebase/messaging@^23.1.0":
+  version "23.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-23.1.0.tgz#72842e64a4e0fa533db662257e4773156584d02e"
+  integrity sha512-MfTC9gIzRNub11GojezdCH5KsCMbfY+uKdmGyim9/8Ng+nP8lGOdVNlSycycCss/zyyV6TTfsAUWoeLo9jkZyA==
 
 "@react-native-google-signin/google-signin@^15.0.0":
   version "15.0.0"

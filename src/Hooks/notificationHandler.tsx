@@ -1,12 +1,15 @@
 import messaging from '@react-native-firebase/messaging';
-import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-import { setAsyncFCMToken } from './asyncStorage';
-import { setFcmToken } from '../features/authSlice';
-import { errorToast } from './common/commonFunction';
-import { PermissionsAndroid, Platform } from 'react-native';
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
+import {setAsyncFCMToken} from './asyncStorage';
+import {setFcmToken} from '../features/authSlice';
+import {PermissionsAndroid, Platform} from 'react-native';
+import {errorToast} from '@/components/common/commonFunction';
 
 async function onDisplayNotification(message: any) {
   await notifee.requestPermission();
+
+  await updateBadgeCount();
+
   const channelId = await notifee.createChannel({
     id: 'default',
     name: 'Default Channel',
@@ -66,7 +69,7 @@ export async function requestNotificationUserPermission(dispatch: any) {
 const getFirebaseToken = async (dispatch: any) => {
   await messaging()
     .getToken()
-    .then(fcmToken => {
+    .then((fcmToken: any) => {
       if (fcmToken) {
         console.log('---fcmToken---', fcmToken);
         setAsyncFCMToken(fcmToken);
@@ -75,7 +78,7 @@ const getFirebaseToken = async (dispatch: any) => {
         errorToast('[FCMService] User does not have a device token');
       }
     })
-    .catch(error => {
+    .catch((error: any) => {
       let err = `FCm token get error${error}`;
       errorToast(error);
       console.log(err);
@@ -83,7 +86,7 @@ const getFirebaseToken = async (dispatch: any) => {
 };
 
 export const onMessage = () => {
-  const unsubscribe = messaging().onMessage(async remoteMessage => {
+  const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
     console.log('A new FCM message arrived! ACTIVE APP', remoteMessage);
     onDisplayNotification(remoteMessage);
   });
@@ -92,13 +95,14 @@ export const onMessage = () => {
 
 // When app is background and click to notifiaction  redirect to screen
 export const onBackgroundNotificationPress = () => {
-  messaging().onNotificationOpenedApp(remoteMessage => {
+  messaging().onNotificationOpenedApp((remoteMessage: any) => {
     console.log(
       'Notification caused app to open from BACKGROUND state:',
       remoteMessage,
     );
     if (remoteMessage) {
       navigateToOrderDetails(remoteMessage);
+      resetBadgeCount();
     }
   });
 };
@@ -107,30 +111,60 @@ export const onBackgroundNotificationPress = () => {
 export const onNotificationPress = () => {
   messaging()
     .getInitialNotification()
-    .then(remoteMessage => {
+    .then((remoteMessage: any) => {
       if (remoteMessage) {
         console.log('remote Message KILL state', remoteMessage);
         navigateToOrderDetails(remoteMessage);
+        resetBadgeCount();
       }
     });
 };
 
 // When app is open click to notification redirect to screen
 export const openAppNotificationEvent = async () => {
-  return notifee.onForegroundEvent(async ({ type, detail }) => {
-    switch (type) {
-      case EventType.DISMISSED:
-        console.log('User dismissed notification', detail.notification);
-        break;
-      case EventType.PRESS:
-        console.log('User pressed notification', detail.notification);
-        break;
-    }
-  });
+  return notifee.onForegroundEvent(
+    async ({type, detail}: {type: any; detail: any}) => {
+      switch (type) {
+        case EventType.DISMISSED:
+          console.log('User dismissed notification', detail.notification);
+          break;
+        case EventType.PRESS:
+          console.log('User pressed notification', detail.notification);
+          break;
+      }
+    },
+  );
 };
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in background!', remoteMessage);
+  updateBadgeCount(); // Ensure badge count updates in background
+});
 
 // navigation to scrren by notifiaction press
 export const navigateToOrderDetails = (remoteMessage: any) => {
   if (remoteMessage?.data) {
   }
 };
+
+const resetBadgeCount = async () => {
+  await notifee.setBadgeCount(0);
+};
+
+// ✅ Function to update badge count (works for iOS & Android)
+async function updateBadgeCount() {
+  let badgeCount = await notifee.getBadgeCount();
+  console.log('badgeCount--->', badgeCount);
+  if (Platform.OS === 'android') {
+    await notifee.setBadgeCount(badgeCount + 1);
+  } else {
+    await notifee.setBadgeCount(badgeCount + 1);
+    notifee.displayNotification({
+      title: 'New Notification',
+      body: 'You have a new notification',
+      ios: {
+        badgeCount: badgeCount + 1, // For iOS
+      },
+    });
+  }
+}
