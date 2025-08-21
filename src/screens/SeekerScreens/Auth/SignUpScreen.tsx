@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
@@ -20,10 +20,23 @@ import {
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
-import {useSignUpMutation} from '@/api/Seeker/authApi';
+import {
+  useAppleSignInMutation,
+  useGoogleSignInMutation,
+  useSignUpMutation,
+} from '@/api/Seeker/authApi';
+import {useAppSelector} from '@/Hooks/hooks';
+import {jwtDecode} from 'jwt-decode';
+import appleAuth from '@invertase/react-native-apple-authentication';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {WEB_CLIENT_ID} from '@/utils/constants/api';
 
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
+  const {fcmToken} = useAppSelector(state => state.auth);
+  const [appleLogin] = useAppleSignInMutation();
+  const [googleLogin] = useGoogleSignInMutation();
+  const [loading, setLoading] = React.useState(false);
 
   const [callingCode, setCallingCode] = React.useState('971');
 
@@ -47,6 +60,7 @@ const SignUpScreen = () => {
         password: userData.password,
         phone_code: callingCode,
         phone: userData.phone,
+        deviceToken: fcmToken,
       };
 
       const response = await signUp(obj).unwrap();
@@ -69,8 +83,83 @@ const SignUpScreen = () => {
     }
   };
 
+  const onGoogleButtonPress = async () => {
+    setLoading(true);
+    GoogleSignin.configure({webClientId: WEB_CLIENT_ID});
+    try {
+      await GoogleSignin.hasPlayServices();
+
+      const {data: userInfo} = await GoogleSignin.signIn();
+
+      let data = {
+        name: userInfo?.user?.name,
+        email: userInfo?.user.email,
+        googleId: userInfo?.user?.id,
+        deviceToken: fcmToken,
+        deviceType: Platform.OS.toUpperCase(),
+      };
+      console.log('data', data);
+
+      const response = await googleLogin(data).unwrap();
+
+      if (response?.status) {
+        setLoading(false);
+        successToast(response?.message);
+        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.log('onGoogleButtonPress => error => ', error);
+      errorToast(error?.message || 'Google sign-in failed');
+    }
+  };
+  const onAppleButtonPress = async () => {
+    try {
+      // Start the sign-in request
+      setLoading(true);
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // Ensure Apple returned a user identityToken
+      if (!appleAuthRequestResponse.identityToken) {
+        throw new Error('Apple Sign-In failed - no identify token returned');
+      }
+      // Create a Firebase credential from the response
+      const {identityToken, fullName, email} = appleAuthRequestResponse;
+
+      if (identityToken) {
+        const decoded: any = jwtDecode(identityToken);
+
+        var str = decoded?.email || '';
+        str = str.split('@');
+        let data = {
+          name: fullName?.givenName || str[0],
+          email: email || decoded?.email,
+          appleId: appleAuthRequestResponse.user,
+          deviceToken: fcmToken,
+        };
+
+        const response = await appleLogin(data).unwrap();
+        if (response?.status) {
+          setLoading(false);
+
+          successToast(response?.message);
+          resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        }
+      }
+    } catch (error: any) {
+      setLoading(false);
+      console.log('onAppleButtonPress => error => ', error);
+      errorToast(
+        error?.message || error?.data?.message || 'Apple Sign-In failed',
+      );
+    }
+  };
+
   return (
-    <SafeareaProvider style={{backgroundColor: Colors.white}}>
+    <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
@@ -139,12 +228,14 @@ const SignUpScreen = () => {
             source={IMAGES.google}
             size={getFontSize(2.5)}
             containerStyle={styles.socialBtn}
+            onPress={onGoogleButtonPress}
           />
 
           <CustomImage
             source={IMAGES.apple}
             size={getFontSize(2.5)}
             containerStyle={styles.socialBtn}
+            onPress={onAppleButtonPress}
           />
         </View>
 

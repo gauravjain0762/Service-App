@@ -31,8 +31,11 @@ import {jwtDecode} from 'jwt-decode';
 
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {WEB_CLIENT_ID} from '@/utils/constants/api';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const LoginScreen = ({}: any) => {
+  const {fcmToken} = useAppSelector(state => state.auth);
+
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
     email: __DEV__ ? 'test@gmail.com' : '',
@@ -53,6 +56,7 @@ const LoginScreen = ({}: any) => {
       let obj = {
         email: details.email,
         password: details.password,
+        deviceToken: fcmToken,
       };
       const response = await login(obj).unwrap();
       console.log('response', response);
@@ -83,7 +87,7 @@ const LoginScreen = ({}: any) => {
         name: userInfo?.user?.name,
         email: userInfo?.user.email,
         googleId: userInfo?.user?.id,
-        // deviceToken: fcmToken,
+        deviceToken: fcmToken,
         deviceType: Platform.OS.toUpperCase(),
       };
       console.log('data', data);
@@ -126,7 +130,7 @@ const LoginScreen = ({}: any) => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          // deviceToken: fcmToken,
+          deviceToken: fcmToken,
         };
 
         const response = await appleLogin(data).unwrap();

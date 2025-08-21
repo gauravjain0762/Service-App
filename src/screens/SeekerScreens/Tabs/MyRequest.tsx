@@ -1,93 +1,57 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, FlatList} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomImage from '@/components/common/CustomImage';
 import CommonText from '@/components/common/CommonText';
 import ShadowCard from '@/components/common/ShadowCard';
-import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
-import {navigateTo} from '@/components/common/commonFunction';
+import {getLocalizedText, navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {useGetRequestsQuery} from '@/api/Seeker/homeApi';
+import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
+import MyRequestSkeleton from '@/components/skeleton/MyRequestSkeleton';
 
 const MyRequest = () => {
-  const serviceRequests = [
-    {
-      id: 1,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 2,
-      title: 'Leak Repairs',
-      description: 'Kitchen Sink Pipe leak',
-      date: 'Jan 15',
-      image: IMAGES.taprepair,
-    },
-    {
-      id: 3,
-      title: 'Car Services',
-      description: 'Change car tyre',
-      date: 'Jan 15',
-      image: IMAGES.carrepair,
-    },
-    {
-      id: 4,
-      title: 'Pet Services',
-      description: 'Dog Talking Bath',
-      date: 'Jan 15',
-      image: IMAGES.petService,
-    },
-    {
-      id: 5,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 6,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 6,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 6,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 6,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-    {
-      id: 6,
-      title: 'Repair & Maintenance',
-      description: 'AC Regular Services',
-      date: 'Jan 15',
-      image: IMAGES.acrepair,
-    },
-  ];
+  const {language} = useAppSelector(state => state.auth);
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [allRequestData, setAllRequestData] = React.useState([]);
+  const {
+    data: requestData,
+    isLoading: requestLoading,
+    refetch: refetchRequestList,
+  } = useGetRequestsQuery<any>({
+    refetchOnReconnect: true,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+  });
+
+  React.useEffect(() => {
+    if (requestData) {
+      const newData = requestData.data.requests;
+      setAllRequestData(prev =>
+        currentPage === 1 ? newData : [...prev, ...newData],
+      );
+    }
+  }, [requestData, currentPage]);
+
+  const handleLoadMore = () => {
+    // Check if there are more pages to load
+    if (
+      requestData &&
+      requestData.data?.pagination?.current_page <
+        requestData.data?.pagination?.total_pages &&
+      !requestLoading
+    ) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+    }
+  };
 
   const handleCardPress = (item: any) => {
-    console.log('Card pressed:', item.title);
-    navigateTo(SEEKER_SCREENS.OffersDetail);
+    navigateTo(SEEKER_SCREENS.Offers, {request_id: item?._id});
   };
 
   return (
@@ -102,47 +66,64 @@ const MyRequest = () => {
           paddingHorizontal: wp(20),
         }}
       />
-
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
-        bounces={true}
-        alwaysBounceVertical={false}
-        decelerationRate="normal"
-        scrollEventThrottle={16}
-        nestedScrollEnabled={true}>
+      {requestLoading ? (
+        <MyRequestSkeleton />
+      ) : (
         <View style={styles.cardsContainer}>
-          {serviceRequests.map((item, index) => (
-            <ShadowCard
-              key={index}
-              onCardPress={() => handleCardPress(item)}
-              style={{width: '100%', marginBottom: hp(24)}}>
-              <View style={styles.cardContent}>
-                <View style={styles.imageContainer}>
-                  <CustomImage
-                    source={item.image}
-                    size={hp(50)}
-                    containerStyle={styles.serviceImage}
-                  />
-                </View>
+          <FlatList
+            data={allRequestData}
+            renderItem={({item, index}: any) => {
+              return (
+                <ShadowCard
+                  key={index}
+                  onCardPress={() => handleCardPress(item)}
+                  style={{width: '100%', marginBottom: hp(24)}}>
+                  <View style={styles.cardContent}>
+                    <View style={styles.imageContainer}>
+                      <CustomImage
+                        source={item?.category_id?.image}
+                        size={hp(50)}
+                        containerStyle={styles.serviceImage}
+                      />
+                    </View>
 
-                <View style={styles.textContainer}>
-                  <CommonText text={item.title} style={styles.serviceTitle} />
-                  <CommonText
-                    text={item.description}
-                    style={styles.serviceDescription}
-                  />
-                </View>
+                    <View style={styles.textContainer}>
+                      <CommonText
+                        text={getLocalizedText(
+                          item?.category_id?.title,
+                          item?.category_id?.title_ar,
+                          language,
+                        )}
+                        style={styles.serviceTitle}
+                      />
+                      <CommonText
+                        text={getLocalizedText(
+                          item?.sub_category_id?.title,
+                          item?.sub_category_id?.title_ar,
+                          language,
+                        )}
+                        style={styles.serviceDescription}
+                      />
+                    </View>
 
-                <View style={styles.dateContainer}>
-                  <CommonText text={item.date} style={styles.dateText} />
-                </View>
-              </View>
-            </ShadowCard>
-          ))}
+                    <View style={styles.dateContainer}>
+                      <CommonText
+                        text={moment(item.createdAt).format('MMM DD')}
+                        style={styles.dateText}
+                      />
+                    </View>
+                  </View>
+                </ShadowCard>
+              );
+            }}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            keyExtractor={(item: any) => item?._id?.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+          />
         </View>
-      </ScrollView>
+      )}
     </SafeareaProvider>
   );
 };
@@ -174,6 +155,7 @@ const styles = StyleSheet.create({
   },
   serviceImage: {
     borderRadius: hp(8),
+    backgroundColor: '#F6FAFD',
   },
   textContainer: {
     flex: 1,

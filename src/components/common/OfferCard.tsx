@@ -9,20 +9,31 @@ import CustomButton from './CustomButton';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 
 type Props = {
+  item?: any;
+  index?: any;
   onPressOffer: () => void;
   onCardPress?: () => void;
   onPressAcceptOffer?: () => void;
 };
 
-const OfferCard = ({onPressOffer, onCardPress, onPressAcceptOffer}: Props) => {
+const OfferCard = ({
+  item,
+  index,
+  onPressOffer,
+  onCardPress,
+  onPressAcceptOffer,
+}: Props) => {
   return (
     <ShadowCard onCardPress={onCardPress} style={styles.card}>
       <View style={styles.offerBadge}>
-        <CommonText text={'Offer 1'} style={styles.offerText} />
+        <CommonText text={`Offer ${index + 1}`} style={styles.offerText} />
       </View>
 
       <View style={styles.titleRow}>
-        <CommonText text={'Car Battery Replacement'} style={styles.titleText} />
+        <CommonText
+          text={item?.company_id?.category_id?.title}
+          style={styles.titleText}
+        />
         <View style={styles.ratingRow}>
           <Image source={IMAGES.star} />
           <CommonText text={'4.9'} style={styles.ratingText} />
@@ -30,26 +41,16 @@ const OfferCard = ({onPressOffer, onCardPress, onPressAcceptOffer}: Props) => {
       </View>
 
       <View style={styles.featuresRow}>
-        {['Expert Mechanic', 'Free Oil Change', 'Fair Price'].map(
-          (item, index) => (
-            <View
-              key={index}
-              style={[
-                styles.featureBadge,
-                index !== 2 && styles.featureSpacing,
-              ]}>
-              <CommonText text={item} style={styles.featureText} />
-            </View>
-          ),
-        )}
+        {item?.company_id?.sub_categories.map((item: any, index: any) => (
+          <View
+            key={index}
+            style={[styles.featureBadge, index !== 2 && styles.featureSpacing]}>
+            <CommonText text={item?.title} style={styles.featureText} />
+          </View>
+        ))}
       </View>
 
-      <CommonText
-        text={
-          'A new battery has to be bought before the battery replacement. Here, the recommendations.'
-        }
-        style={styles.description}
-      />
+      <CommonText text={item?.notes} style={styles.description} />
 
       <View style={styles.bottomRow}>
         <CustomButton
@@ -60,7 +61,7 @@ const OfferCard = ({onPressOffer, onCardPress, onPressAcceptOffer}: Props) => {
         />
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
-          <CommonText text={'50.00'} style={styles.priceText} />
+          <CommonText text={item?.offer_price} style={styles.priceText} />
         </View>
       </View>
     </ShadowCard>

@@ -14,17 +14,45 @@ import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
+import {getLocalizedText} from '@/components/common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import {useRoute} from '@react-navigation/native';
+import moment from 'moment';
+import {useAcceptOfferMutation} from '@/api/Seeker/homeApi';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const OffersDetails = () => {
+  const {
+    params: {requestDetails, offerDetail, offerIndex},
+  } = useRoute<any>();
+  const {language} = useAppSelector(state => state.auth);
+  const [acceptOffer, {isLoading}] = useAcceptOfferMutation();
   const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
     useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     useState(false);
 
-  const openPaymentMethodModal = () => {
+  const openPaymentMethodModal = async () => {
     setIsPaymentMethodModalVisible(true);
+
+    // try {
+    //   const data = {
+    //     offer_id: offerDetail?._id,
+    //     payment_method: '',
+    //     transaction_id: '',
+    //   };
+
+    //   const response = await acceptOffer(data).unwrap();
+    //   if (response?.status) {
+    //     // setIsSubmitModalVisible(true);
+    //   }
+    // } catch (error: any) {
+    //   console.log(error);
+    //   errorToast(
+    //     error?.data?.message || error?.message || 'Something went wrong',
+    //   );
+    // }
   };
 
   const closePaymentMethodModal = () => {
@@ -43,12 +71,25 @@ const OffersDetails = () => {
   };
 
   const {bottom} = useSafeAreaInsets();
+  console.log(
+    offerDetail,
+    'offerDetail',
+    offerIndex,
+    'requestDetails',
+    requestDetails,
+  );
+
+  const start = moment(
+    `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
+    'YYYY-MM-DD hh:mm A',
+  );
+  const end = moment(start).add(Number(offerDetail?.estimated_time), 'hours');
 
   return (
     <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
       <View style={styles.topContainer}>
         <BackHeader
-          text={'Create Request'}
+          text={'Offers Detail'}
           rightIcon={
             <View style={styles.rightIcon}>
               <CommonText text={'Offer 1'} style={styles.offerLabel} />
@@ -62,16 +103,28 @@ const OffersDetails = () => {
         contentContainerStyle={styles.scrollContainer}>
         <RequestCard
           style={styles.requestCard}
-          text1={'Repair & Maintenance'}
+          text1={getLocalizedText(
+            requestDetails?.category_id?.title,
+            requestDetails?.category_id?.title_ar,
+            language,
+          )}
+          imageSource={{uri: requestDetails?.category_id?.image}}
           titleStyle={styles.titleStyle}
-          text2={'AC Regular Services'}
+          text2={getLocalizedText(
+            requestDetails?.sub_category_id?.title,
+            requestDetails?.sub_category_id?.title_ar,
+            language,
+          )}
           subtitleStyle={styles.subtitleStyle}
         />
 
         <Divider />
 
         <View style={styles.titleRow}>
-          <CommonText text={'Repair & Maintenance'} style={styles.titleText} />
+          <CommonText
+            text={offerDetail?.company_id?.category_id?.title}
+            style={styles.titleText}
+          />
           <View style={styles.ratingRow}>
             <Image source={IMAGES.star} />
             <CommonText text={'4.9'} style={styles.ratingText} />
@@ -80,41 +133,42 @@ const OffersDetails = () => {
 
         <View style={styles.referenceRow}>
           <CommonText text={'Reference Code: '} style={styles.refLabel} />
-          <CommonText text={'#D-698321'} style={styles.refValue} />
+          <CommonText text={requestDetails?.job_code} style={styles.refValue} />
         </View>
 
         <View style={styles.featuresRow}>
-          {['Expert Mechanic', 'Free Oil Change', 'Fair Price'].map(
-            (item, index) => (
+          {offerDetail?.company_id?.sub_categories.map(
+            (item: any, index: any) => (
               <View
                 key={index}
                 style={[
                   styles.featureBadge,
                   index !== 2 && styles.featureSpacing,
                 ]}>
-                <CommonText text={item} style={styles.featureText} />
+                <CommonText text={item?.title} style={styles.featureText} />
               </View>
             ),
           )}
         </View>
 
-        <CommonText
-          text={
-            'A new battery has to be bought before the battery replacement. Here, the recommendations.'
-          }
-          style={styles.description}
-        />
+        <CommonText text={offerDetail?.notes} style={styles.description} />
 
         <Divider />
 
         <View style={styles.bookingContainer}>
           <View style={styles.bookingRow}>
             <CommonText text={'Booking Date'} style={styles.bookingLabel} />
-            <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+            <CommonText
+              text={`${start.format('ddd, DD MMM')}`}
+              style={styles.bookingValue}
+            />
           </View>
           <View style={styles.bookingRow}>
             <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-            <CommonText text={'09:00 - 12:00'} style={styles.bookingValue} />
+            <CommonText
+              text={`${start.format('hh:mm')} - ${end.format('hh:mm')}`}
+              style={styles.bookingValue}
+            />
           </View>
         </View>
 
@@ -122,22 +176,34 @@ const OffersDetails = () => {
           <CommonText text={'Watch My Work'} style={styles.watchTitle} />
 
           <View style={styles.imageRow}>
-            <Image source={images[0]} style={styles.imageBox} />
+            <Image
+              source={offerDetail?.media_files && offerDetail?.media_files[0]}
+              style={styles.imageBox}
+            />
 
             <View style={styles.secondImageWrapper}>
               <Image
-                source={images[1]}
+                source={offerDetail?.media_files && offerDetail?.media_files[1]}
                 style={[styles.imageBox, styles.blurredImage]}
-                blurRadius={images.length > 2 ? 5 : 0}
+                blurRadius={
+                  offerDetail?.media_files &&
+                  offerDetail?.media_files.length > 2
+                    ? 5
+                    : 0
+                }
               />
-              {images.length > 2 && (
-                <View style={styles.overlay}>
-                  <CommonText
-                    text={`+${images.length - 2}`}
-                    style={styles.overlayText}
-                  />
-                </View>
-              )}
+              {offerDetail?.media_files &&
+                offerDetail?.media_files.length > 2 && (
+                  <View style={styles.overlay}>
+                    <CommonText
+                      text={`+${
+                        offerDetail?.media_files &&
+                        offerDetail?.media_files.length - 2
+                      }`}
+                      style={styles.overlayText}
+                    />
+                  </View>
+                )}
             </View>
           </View>
         </ShadowCard>
@@ -160,7 +226,10 @@ const OffersDetails = () => {
           />
           <View style={styles.priceRow}>
             <Image source={IMAGES.currency} style={styles.currencyIcon} />
-            <CommonText text={'50.00'} style={styles.priceText} />
+            <CommonText
+              text={offerDetail?.offer_price}
+              style={styles.priceText}
+            />
           </View>
         </View>
       </ScrollView>

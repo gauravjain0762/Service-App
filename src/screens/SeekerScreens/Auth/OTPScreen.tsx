@@ -29,10 +29,12 @@ import {
   useProResendOTPMutation,
   useProVerifyOTPMutation,
 } from '@/api/Provider/authApi';
+import { useAppSelector } from '@/Hooks/hooks';
 
 const CELL_COUNT = 4;
 
 const OTPScreen = () => {
+  const {fcmToken} = useAppSelector(state => state.auth);
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const {t} = useTranslation();
@@ -64,7 +66,7 @@ const OTPScreen = () => {
       let obj: any = {
         otp: value,
         device_type: Platform.OS,
-        device_token: '',
+        deviceToken: fcmToken,
       };
       if (isProvider) {
         obj.company_id = params?.userId;

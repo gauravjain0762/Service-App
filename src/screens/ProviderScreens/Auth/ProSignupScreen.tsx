@@ -46,7 +46,7 @@ type UserProps = {
 };
 
 const ProSignupScreen = () => {
-  const {dropDownCategories, dropDownSubCategories} = useAppSelector(
+  const {dropDownCategories, dropDownSubCategories, fcmToken} = useAppSelector(
     state => state.auth,
   );
   const [signUp, {isLoading}] = useSignUpMutation();
@@ -89,6 +89,7 @@ const ProSignupScreen = () => {
         category_id: userData.category,
         sub_categories: userData.subCategory,
         service_type: userData.service,
+        deviceToken: fcmToken,
       };
 
       const response = await signUp(obj).unwrap();

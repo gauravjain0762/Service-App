@@ -19,8 +19,10 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {useRoute} from '@react-navigation/native';
 import {useLoginMutation} from '@/api/Provider/authApi';
+import { useAppSelector } from '@/Hooks/hooks';
 
 const ProLoginScreen = ({}: any) => {
+  const {fcmToken} = useAppSelector(state => state.auth);
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -41,6 +43,7 @@ const ProLoginScreen = ({}: any) => {
       let obj = {
         email: details.email,
         password: details.password,
+        deviceToken:fcmToken
       };
       const response = await login(obj).unwrap();
       console.log('response', response);
