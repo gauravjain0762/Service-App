@@ -1,31 +1,31 @@
-import { Alert, Linking, PermissionsAndroid, Platform } from "react-native";
-import { promptForEnableLocationIfNeeded } from "react-native-android-location-enabler";
-import Geolocation from "@react-native-community/geolocation";
-import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { getAsyncToken } from "./asyncStorage";
-import { errorToast } from "./common/commonFunction";
-import { GOOGLE_MAP_API_KEY, HTTP_METHOD } from "../utils/constants/api";
-import { makeAPIRequest } from "../utils/apiGlobal";
+import {Alert, Linking, PermissionsAndroid, Platform} from 'react-native';
+import {promptForEnableLocationIfNeeded} from 'react-native-android-location-enabler';
+import Geolocation from '@react-native-community/geolocation';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {getAsyncToken} from './asyncStorage';
+import {GOOGLE_MAP_API_KEY, HTTP_METHOD} from '../utils/constants/api';
+import {makeAPIRequest} from '../utils/apiGlobal';
+import {errorToast} from '@/components/common/commonFunction';
 
 export const requestLocationPermission = async (
   GetForcefully = true,
   onSuccess: (location: any) => void,
-  onFail: any // Use React Navigation or appropriate navigation prop
+  onFail: any, // Use React Navigation or appropriate navigation prop
 ) => {
-  if (Platform.OS === "ios") {
+  if (Platform.OS === 'ios') {
     requestIOSPermission(GetForcefully, onSuccess, onFail);
-  } else if (Platform.OS === "android") {
+  } else if (Platform.OS === 'android') {
     await requestAndroidPermission(GetForcefully, onSuccess, onFail);
   } else {
     Alert.alert(
-      "Unsupported Platform",
-      "Location is not supported on this platform.",
+      'Unsupported Platform',
+      'Location is not supported on this platform.',
       [
         {
-          text: "Back",
+          text: 'Back',
           onPress: () => onFail(),
         },
-      ]
+      ],
     );
   }
 };
@@ -33,7 +33,7 @@ export const requestLocationPermission = async (
 const requestIOSPermission = async (
   GetForcefully: boolean,
   onSuccess: (location: any) => void,
-  onFail: any
+  onFail: any,
 ) => {
   try {
     const permissionWhenInUse = PERMISSIONS.IOS.LOCATION_WHEN_IN_USE;
@@ -59,24 +59,24 @@ const requestIOSPermission = async (
       ) {
         showPermissionDeniedAlert(onFail);
       } else {
-        onFail("Permission status unknown");
+        onFail('Permission status unknown');
       }
     } else {
-      onSuccess("Permission denied");
+      onSuccess('Permission denied');
     }
   } catch (error) {
-    console.log("requestIOSPermission => error => ", error);
+    console.log('requestIOSPermission => error => ', error);
   }
 };
 
 const requestAndroidPermission = async (
   GetForcefully: boolean,
   onSuccess: (location: any) => void,
-  onFail: any
+  onFail: any,
 ) => {
   try {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
 
     if (GetForcefully) {
@@ -93,15 +93,15 @@ const requestAndroidPermission = async (
       });
     }
   } catch (error) {
-    console.log("requestAndroidPermission => error => ", error);
+    console.log('requestAndroidPermission => error => ', error);
     showPermissionDeniedAlert(onFail);
   }
 };
 
 const getCurrentLocation = (onSuccess: (location: any) => void) => {
   Geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
+    position => {
+      const {latitude, longitude} = position.coords;
       const location = {
         latitude,
         longitude,
@@ -110,9 +110,9 @@ const getCurrentLocation = (onSuccess: (location: any) => void) => {
       };
       onSuccess(location);
     },
-    (error) => {
-      console.log("getCurrentPosition => error => ", error);
-    }
+    error => {
+      console.log('getCurrentPosition => error => ', error);
+    },
     // {
     //   enableHighAccuracy: true, // Request high accuracy
     // },
@@ -121,44 +121,44 @@ const getCurrentLocation = (onSuccess: (location: any) => void) => {
 
 const showPermissionDeniedAlert = (onFail: any) => {
   Alert.alert(
-    "Location Permission Required",
-    "Please enable location permissions in your app settings to proceed.",
+    'Location Permission Required',
+    'Please enable location permissions in your app settings to proceed.',
     [
-      { text: "cancel", onPress: () => onFail() },
+      {text: 'cancel', onPress: () => onFail()},
       {
-        text: "Settings",
+        text: 'Settings',
         onPress: () => (onFail(), Linking.openSettings()),
       },
-    ]
+    ],
   );
 };
 
 const showEnableLocationAlert = (onFail: any) => {
   Alert.alert(
-    "Enable Location Services",
-    "Location services are turned off. Please enable them to proceed.",
+    'Enable Location Services',
+    'Location services are turned off. Please enable them to proceed.',
     [
-      { text: "cancel", onPress: () => onFail() },
+      {text: 'cancel', onPress: () => onFail()},
       {
-        text: "Enable",
+        text: 'Enable',
         onPress: () => promptForEnableLocationIfNeeded(),
       },
-    ]
+    ],
   );
 };
 
 export const locationEnabler = async (
   onSuccess?: (res: any) => void,
-  onFail?: (err: any) => void
+  onFail?: (err: any) => void,
 ) => {
-  if (Platform.OS === "android") {
+  if (Platform.OS === 'android') {
     await promptForEnableLocationIfNeeded()
       .then((_res: any) => {
         if (onSuccess) {
           onSuccess(true);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         if (onFail) {
           onFail(err);
         }
@@ -168,24 +168,24 @@ export const locationEnabler = async (
 
 export const _openAppSetting = () => {
   Alert.alert(
-    "Location Permission",
-    "Please allow app to access your location",
+    'Location Permission',
+    'Please allow app to access your location',
     [
       {
-        text: "Setting",
+        text: 'Setting',
         onPress: () => Linking.openSettings(),
       },
       {
-        text: "cancel",
+        text: 'cancel',
         onPress: () => {},
-        style: "cancel",
+        style: 'cancel',
       },
-    ]
+    ],
   );
 };
 
 export const getAddressFromLatLng = async (request: any) => {
-  const { region, onSuccess, onFailure } = request;
+  const {region, onSuccess, onFailure} = request;
   console.log(region, 'region');
 
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${region?.latitude},${region?.longitude}&key=${GOOGLE_MAP_API_KEY}`;
@@ -198,20 +198,19 @@ export const getAddressFromLatLng = async (request: any) => {
 
     const responseJson = await response.json();
 
-    if (responseJson.status === "OK") {
+    if (responseJson.status === 'OK') {
       onSuccess?.(responseJson); // call only if it's defined
     } else {
-      errorToast("Location not found. Please select another location");
+      errorToast('Location not found. Please select another location');
       onFailure?.(responseJson);
     }
   } catch (error) {
-    console.log("getAddress => error => ", error);
+    console.log('getAddress => error => ', error);
     onFailure?.(error);
   }
 };
 
-
-export const getGoogleAutoAddress = (request: any) => async (dispatch:any) => {
+export const getGoogleAutoAddress = (request: any) => async (dispatch: any) => {
   let headers = {
     Authorization: await getAsyncToken(),
   };
@@ -223,7 +222,7 @@ export const getGoogleAutoAddress = (request: any) => async (dispatch:any) => {
       key: GOOGLE_MAP_API_KEY,
       // components: 'country:in',
     },
-    url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+    url: 'https://maps.googleapis.com/maps/api/place/autocomplete/json',
   })
     .then(async (response: any) => {
       if (response.status === 200) {
@@ -235,14 +234,14 @@ export const getGoogleAutoAddress = (request: any) => async (dispatch:any) => {
     });
 };
 
-export const getLatLngFromPlaceId =  (request: any) => async (dispatch: any) => {
+export const getLatLngFromPlaceId = (request: any) => async (dispatch: any) => {
   return makeAPIRequest({
     method: HTTP_METHOD.GET,
     params: {
       place_id: request?.data?.placeId,
       key: GOOGLE_MAP_API_KEY,
     },
-    url: "https://maps.googleapis.com/maps/api/place/details/json",
+    url: 'https://maps.googleapis.com/maps/api/place/details/json',
   })
     .then(async (response: any) => {
       if (response.status === 200) {

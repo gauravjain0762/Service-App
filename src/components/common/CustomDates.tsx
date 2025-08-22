@@ -42,7 +42,6 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
   useEffect(() => {
     if (!selectedDate) {
       const currentDate = moment().format('DDMM');
-      console.log('currentDate', currentDate);
 
       setSelectedDate?.(dates.find(d => d.key === currentDate));
     }
@@ -110,17 +109,17 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
           keyExtractor={item => item.key}
         />
 
-        <LinearGradient
+        {/* <LinearGradient
           colors={[Colors.white, 'rgba(255,255,255,0)']}
           style={styles.leftFade}
           pointerEvents="none"
-        />
+        /> */}
 
-        <LinearGradient
+        {/* <LinearGradient
           colors={['rgba(255,255,255,0)', Colors.white]}
           style={styles.rightFade}
           pointerEvents="none"
-        />
+        /> */}
       </View>
     </View>
   );

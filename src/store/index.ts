@@ -21,7 +21,8 @@ import loaderReducer from '../features/loaderSlice';
 import {profileApi} from '@/api/Seeker/profileApi';
 import {homeApi} from '@/api/Seeker/homeApi';
 import {providerAuthApi} from '@/api/Provider/authApi';
-import { providerHomeApi } from '@/api/Provider/homeApi';
+import {providerHomeApi} from '@/api/Provider/homeApi';
+import {addressApi} from '@/api/Seeker/addressApi';
 
 // Persisted reducer from your slice
 
@@ -34,6 +35,7 @@ const appReducer = combineReducers({
   [authApi.reducerPath]: authApi.reducer,
   [profileApi.reducerPath]: profileApi.reducer,
   [homeApi.reducerPath]: homeApi.reducer,
+  [addressApi.reducerPath]: addressApi.reducer,
 
   // Provider API
   [providerAuthApi.reducerPath]: providerAuthApi.reducer,
@@ -88,6 +90,7 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(profileApi.middleware)
       .concat(homeApi.middleware)
+      .concat(addressApi.middleware)
 
       // Provider API
       .concat(providerAuthApi.middleware)

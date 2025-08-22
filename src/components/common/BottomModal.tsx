@@ -9,11 +9,15 @@ import {
   Image,
   ViewStyle,
   Pressable,
+  Animated,
+  Easing,
 } from 'react-native';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp} from '@/utils/responsiveFn';
 import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
+import ToastComponent from '../ToastComponent';
 
 type BottomModalProps = {
   close?: boolean;
@@ -34,6 +38,25 @@ const BottomModal = ({
   onPressCancel,
   backgroundColor = '#fff',
 }: BottomModalProps) => {
+  const lineAnim = React.useRef(new Animated.Value(1)).current;
+  const toastConfig = {
+    success: ({text1, ...rest}: any) => (
+      <ToastComponent type="success" text1={text1} lineAnim={lineAnim} />
+    ),
+    error: ({text1, ...rest}: any) => (
+      <ToastComponent type="error" text1={text1} lineAnim={lineAnim} />
+    ),
+  };
+  const startLineAnimation = () => {
+    lineAnim.setValue(1);
+
+    Animated.timing(lineAnim, {
+      toValue: 0,
+      duration: 3000,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  };
   return (
     <Modal
       avoidKeyboard
@@ -52,6 +75,15 @@ const BottomModal = ({
         <View style={[styles.container, {backgroundColor}, style]}>
           {children}
         </View>
+        <Toast
+          config={toastConfig}
+          position="bottom"
+          topOffset={0}
+          visibilityTime={3000}
+          onShow={() => {
+            startLineAnimation(); // Reset and trigger the animation
+          }}
+        />
       </KeyboardAvoidingView>
     </Modal>
   );

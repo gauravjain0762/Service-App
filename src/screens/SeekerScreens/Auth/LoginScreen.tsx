@@ -195,7 +195,7 @@ const LoginScreen = ({}: any) => {
             isPrimary="seeker"
             title={'Login as a Guest'}
             type="outline"
-            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
+            // onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
           />
         </View>
 

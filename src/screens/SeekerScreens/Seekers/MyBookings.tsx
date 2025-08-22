@@ -35,6 +35,7 @@ import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
 import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@/Hooks/hooks';
 import {rowReverseRTL} from '@/utils/arabicStyles';
+import CustomImage from '@/components/common/CustomImage';
 
 const MyBookings = () => {
   const {t} = useTranslation();
@@ -178,7 +179,7 @@ const MyBookings = () => {
               onPress={() => navigateTo(SCREENS.SetLocation)}
               style={styles.locationContainer}>
               <View style={styles.locationSubContainer}>
-                <Image source={IMAGES.dummy_map} />
+                <CustomImage source={IMAGES.dummy_map} size={getFontSize(8)} />
                 <View style={styles.locationDetails}>
                   <CommonText
                     text={userInfo?.address?.type ?? 'Add Location'}
@@ -187,6 +188,7 @@ const MyBookings = () => {
                   <CommonText
                     text={`${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`}
                     style={styles.locationSubtitle}
+                    numberOfLines={2}
                   />
                 </View>
               </View>
@@ -424,9 +426,10 @@ const styles = StyleSheet.create({
     gap: wp(15),
     ...rowReverseRTL(),
     alignItems: 'center',
+    flex: 1,
   },
   locationDetails: {
-    gap: hp(10),
+    gap: hp(2),
   },
   locationTitle: {
     ...commonFontStyle(600, 2.2, Colors.black),
@@ -435,6 +438,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.7, Colors._7D7D7D),
   },
   changeBtn: {
+    flexShrink: 1,
     borderRadius: hp(50),
     paddingVertical: hp(6),
     paddingHorizontal: wp(12),
