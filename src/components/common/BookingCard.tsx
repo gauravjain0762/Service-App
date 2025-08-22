@@ -7,14 +7,20 @@ import {Colors} from '@/constants/Colors';
 import CommonText from './CommonText';
 import CustomButton from './CustomButton';
 import Divider from './Divider';
-import {navigateTo} from './commonFunction';
+import {getLocalizedText, navigateTo} from './commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import CustomImage from './CustomImage';
+import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
 
 type Props = {
+  item?: any;
   onPress?: () => void;
 };
 
-const BookingCard = ({onPress}: Props) => {
+const BookingCard = ({item, onPress}: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+
   return (
     <>
       <Pressable
@@ -22,29 +28,35 @@ const BookingCard = ({onPress}: Props) => {
           onPress
             ? onPress
             : () => {
-                navigateTo(SEEKER_SCREENS.JobDetails);
+                navigateTo(SEEKER_SCREENS.JobDetails, {job_id: item?._id});
               }
         }
         style={styles.container}>
         <View style={styles.contentContainer}>
-          <View style={styles.imageContainer}>
-            <Image source={IMAGES.battery} />
-          </View>
+          <CustomImage
+            uri={item?.category_id?.image}
+            containerStyle={styles.imageContainer}
+            imageStyle={{width: '100%', height: '100%'}}
+          />
           <View style={styles.detailsContainer}>
             <CommonText
-              text={'Car Batter Change'}
+              text={getLocalizedText(
+                item?.category_id?.title,
+                item?.category_id?.title_ar,
+                language,
+              )}
               style={styles.titleText}
             />
             <CommonText
-              text={'Booking no: #6982'}
+              text={`Booking no: ${item?.job_code}`}
               style={styles.bookingText}
             />
             <CommonText
-              text={'Jul 3 - 01:45 PM'}
+              text={`${moment(item?.date).format('MMM DD')} - ${item?.time}`}
               style={styles.dateText}
             />
             <CustomButton
-              title={'Confirmed'}
+              title={item?.status}
               btnStyle={styles.statusButton}
               textStyle={styles.statusButtonText}
             />

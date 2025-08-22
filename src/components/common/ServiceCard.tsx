@@ -10,6 +10,7 @@ import {
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp} from '@/utils/responsiveFn';
+import CustomImage from './CustomImage';
 
 type Props = {
   source: string;
@@ -29,13 +30,12 @@ const ServiceCard = ({
       activeOpacity={0.7}
       onPress={handleCardPress}
       style={[styles.cardContainer, containerStyle]}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={{uri: source}}
-          resizeMode="contain"
-          style={styles.image}
-        />
-      </View>
+      <CustomImage
+        uri={source}
+        resizeMode="contain"
+        imageStyle={styles.image}
+        containerStyle={styles.imageContainer}
+      />
       <CommonText text={text} style={styles.commonText} />
     </TouchableOpacity>
   );

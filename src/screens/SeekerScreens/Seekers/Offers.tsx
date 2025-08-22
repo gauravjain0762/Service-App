@@ -1,13 +1,14 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import OfferCard from '@/components/common/OfferCard';
 import {
+  errorToast,
   getLocalizedText,
   goBack,
   navigateTo,
@@ -21,6 +22,7 @@ import {
   useGetRequestsDetailsQuery,
 } from '@/api/Seeker/homeApi';
 import CommonText from '@/components/common/CommonText';
+import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 
 const Offers = () => {
   const {params} = useRoute<any>();
@@ -47,95 +49,107 @@ const Offers = () => {
   const requestDetails = requestData?.data?.job;
   const requestDetailsOffers = requestData?.data?.offers;
 
-  const openPaymentMethodModal = async () => {
-    navigateTo(SCREENS.JobDetails);
-    // try {
-    //   const data = {
-    //     offer_id: offerDetail?._id,
-    //     payment_method: '',
-    //     transaction_id: '',
-    //   };
+  const openPaymentMethodModal = async (item: any) => {
+    // navigateTo(SCREENS.JobDetails);
+    try {
+      const data = {
+        offer_id: item?._id,
+        payment_method: 'Card',
+        // transaction_id: '',
+      };
 
-    //   const response = await acceptOffer(data).unwrap();
-    //   if (response?.status) {
-    //     // setIsSubmitModalVisible(true);
-    //   }
-    // } catch (error: any) {
-    //   console.log(error);
-    //   errorToast(
-    //     error?.data?.message || error?.message || 'Something went wrong',
-    //   );
-    // }
+      const response = await acceptOffer(data).unwrap();
+      if (response?.status) {
+        // setIsSubmitModalVisible(true);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
   };
   return (
     <SafeareaProvider style={styles.safeArea}>
-      <View style={styles.topContainer}>
-        <BackHeader
-          text={'Request'}
-          onPressBack={() => {
-            if (isResetNav) {
-              resetNavigation(
-                SEEKER_SCREENS.SeekerTabNavigation,
-                SEEKER_SCREENS.Home,
-              );
-            } else {
-              goBack();
-            }
-          }}
-        />
+      {requestLoading ? (
+        <JobDetailsSkeleton />
+      ) : (
+        <>
+          <View style={styles.topContainer}>
+            <BackHeader
+              text={'Request'}
+              onPressBack={() => {
+                if (isResetNav) {
+                  resetNavigation(
+                    SEEKER_SCREENS.SeekerTabNavigation,
+                    SEEKER_SCREENS.Home,
+                  );
+                } else {
+                  goBack();
+                }
+              }}
+            />
 
-        <RequestCard
-          style={styles.requestCard}
-          text1={getLocalizedText(
-            requestDetails?.category_id?.title,
-            requestDetails?.category_id?.title_ar,
-            language,
-          )}
-          imageSource={{uri: requestDetails?.category_id?.image}}
-          titleStyle={styles.titleStyle}
-          text2={getLocalizedText(
-            requestDetails?.sub_category_id?.title,
-            requestDetails?.sub_category_id?.title_ar,
-            language,
-          )}
-          subtitleStyle={styles.subtitleStyle}
-        />
-      </View>
+            <RequestCard
+              style={styles.requestCard}
+              text1={getLocalizedText(
+                requestDetails?.category_id?.title,
+                requestDetails?.category_id?.title_ar,
+                language,
+              )}
+              imageSource={requestDetails?.category_id?.image}
+              titleStyle={styles.titleStyle}
+              text2={getLocalizedText(
+                requestDetails?.sub_category_id?.title,
+                requestDetails?.sub_category_id?.title_ar,
+                language,
+              )}
+              subtitleStyle={styles.subtitleStyle}
+            />
+          </View>
 
-      <View style={styles.offersContainer}>
-        <FlatList
-          data={requestDetailsOffers}
-          renderItem={({item, index}: any) => {
-            return (
-              <OfferCard
-                item={item}
-                index={index}
-                onPressOffer={() => {}}
-                onCardPress={() => {
-                  navigateTo(SEEKER_SCREENS.OffersDetail, {
-                    requestDetails: requestDetails,
-                    offerDetail: item,
-                    offerIndex: index + 1,
-                  });
-                }}
-                onPressAcceptOffer={openPaymentMethodModal}
-              />
-            );
-          }}
-          keyExtractor={(item: any) => item?._id?.toString()}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{flexGrow: 1}}
-          ListEmptyComponent={
-            <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <CommonText
-                text={'There are no Offers yet'}
-                style={[styles.titleStyle, {textAlign: 'center'}]}
-              />
-            </View>
-          }
-        />
-      </View>
+          <View style={styles.offersContainer}>
+            <FlatList
+              data={requestDetailsOffers}
+              renderItem={({item, index}: any) => {
+                return (
+                  <OfferCard
+                    item={item}
+                    index={index}
+                    onPressOffer={() => {}}
+                    onCardPress={() => {
+                      navigateTo(SEEKER_SCREENS.OffersDetail, {
+                        requestDetails: requestDetails,
+                        offerDetail: item,
+                        offerIndex: index + 1,
+                      });
+                    }}
+                    onPressAcceptOffer={() => {
+                      openPaymentMethodModal(item);
+                    }}
+                  />
+                );
+              }}
+              keyExtractor={(item: any) => item?._id?.toString()}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{flexGrow: 1, gap: getFontSize(1.3)}}
+              ListEmptyComponent={
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <CommonText
+                    text={'There are no Offers yet'}
+                    style={[styles.titleStyle, {textAlign: 'center'}]}
+                  />
+                </View>
+              }
+            />
+          </View>
+        </>
+      )}
     </SafeareaProvider>
   );
 };

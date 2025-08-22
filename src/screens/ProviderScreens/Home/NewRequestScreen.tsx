@@ -92,7 +92,7 @@ const NewRequestScreen = () => {
                   navigateTo(PROVIDER_SCREENS.ProRequestDetail,{request_id:item?._id});
                 }}
                 onPressButton={() => {
-                  navigateTo(PROVIDER_SCREENS.MakeOffer,{request_id:item?._id});
+                  navigateTo(PROVIDER_SCREENS.MakeOffer,{requestDetails:item});
                 }}
               />
             );

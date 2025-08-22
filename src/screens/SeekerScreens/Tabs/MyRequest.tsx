@@ -53,7 +53,6 @@ const MyRequest = () => {
   const handleCardPress = (item: any) => {
     navigateTo(SEEKER_SCREENS.Offers, {request_id: item?._id});
   };
-
   return (
     <SafeareaProvider
       style={{
@@ -81,7 +80,7 @@ const MyRequest = () => {
                   <View style={styles.cardContent}>
                     <View style={styles.imageContainer}>
                       <CustomImage
-                        source={item?.category_id?.image}
+                        uri={item?.category_id?.image}
                         size={hp(50)}
                         containerStyle={styles.serviceImage}
                       />
@@ -121,6 +120,16 @@ const MyRequest = () => {
             keyExtractor={(item: any) => item?._id?.toString()}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
+            ListEmptyComponent={() => (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CommonText text={'No Request Yet'} style={styles.noData} />
+              </View>
+            )}
           />
         </View>
       )}
@@ -133,10 +142,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     paddingBottom: '20%',
     paddingHorizontal: wp(20),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardsContainer: {
+    flexGrow: 1,
     marginTop: hp(20),
   },
   cardContent: {
@@ -174,6 +187,9 @@ const styles = StyleSheet.create({
   },
   dateText: {
     ...commonFontStyle(500, 1.4, Colors._898989),
+  },
+  noData: {
+    ...commonFontStyle(500, 2.5, Colors.black),
   },
 });
 

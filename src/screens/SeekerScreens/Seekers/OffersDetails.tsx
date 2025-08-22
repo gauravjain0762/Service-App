@@ -14,7 +14,7 @@ import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
-import {getLocalizedText} from '@/components/common/commonFunction';
+import {errorToast, getLocalizedText} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
@@ -35,25 +35,28 @@ const OffersDetails = () => {
 
   const openPaymentMethodModal = async () => {
     setIsPaymentMethodModalVisible(true);
-
-    // try {
-    //   const data = {
-    //     offer_id: offerDetail?._id,
-    //     payment_method: '',
-    //     transaction_id: '',
-    //   };
-
-    //   const response = await acceptOffer(data).unwrap();
-    //   if (response?.status) {
-    //     // setIsSubmitModalVisible(true);
-    //   }
-    // } catch (error: any) {
-    //   console.log(error);
-    //   errorToast(
-    //     error?.data?.message || error?.message || 'Something went wrong',
-    //   );
-    // }
   };
+  const acceptOffers = async()=>{
+    try {
+      const data = {
+        offer_id: offerDetail?._id,
+        payment_method: 'Card',
+        transaction_id: '',
+      };
+
+      const response = await acceptOffer(data).unwrap();
+      if (response?.status) {
+        setTimeout(() => {
+          setIsPaymentSuccessModalVisible(true);
+        }, 500);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
+  }
 
   const closePaymentMethodModal = () => {
     setIsPaymentMethodModalVisible(false);
@@ -61,9 +64,7 @@ const OffersDetails = () => {
 
   const handlePaymentSelect = () => {
     closePaymentMethodModal();
-    setTimeout(() => {
-      setIsPaymentSuccessModalVisible(true);
-    }, 500);
+    acceptOffers()
   };
 
   const closePaymentSuccessModal = () => {
@@ -71,14 +72,6 @@ const OffersDetails = () => {
   };
 
   const {bottom} = useSafeAreaInsets();
-  console.log(
-    offerDetail,
-    'offerDetail',
-    offerIndex,
-    'requestDetails',
-    requestDetails,
-  );
-
   const start = moment(
     `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
     'YYYY-MM-DD hh:mm A',
@@ -108,7 +101,7 @@ const OffersDetails = () => {
             requestDetails?.category_id?.title_ar,
             language,
           )}
-          imageSource={{uri: requestDetails?.category_id?.image}}
+          imageSource={requestDetails?.category_id?.image}
           titleStyle={styles.titleStyle}
           text2={getLocalizedText(
             requestDetails?.sub_category_id?.title,
@@ -165,10 +158,7 @@ const OffersDetails = () => {
           </View>
           <View style={styles.bookingRow}>
             <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-            <CommonText
-              text={`${start.format('hh:mm')} - ${end.format('hh:mm')}`}
-              style={styles.bookingValue}
-            />
+            <CommonText text={offerDetail?.time} style={styles.bookingValue} />
           </View>
         </View>
 
@@ -223,6 +213,8 @@ const OffersDetails = () => {
             btnStyle={styles.acceptBtn}
             textStyle={styles.acceptText}
             onPress={openPaymentMethodModal}
+            disabled={isLoading}
+            loading={isLoading}
           />
           <View style={styles.priceRow}>
             <Image source={IMAGES.currency} style={styles.currencyIcon} />
@@ -373,6 +365,7 @@ const styles = StyleSheet.create({
     height: hp(50),
     paddingHorizontal: wp(27),
     backgroundColor: Colors.seeker_primary,
+    minWidth:'30%'
   },
   acceptText: {
     ...commonFontStyle(600, 1.7, Colors.white),

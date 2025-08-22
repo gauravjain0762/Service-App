@@ -36,14 +36,14 @@ const UploadBox = ({
     })
       .then(images => {
         // If single file, wrap in array
-        const newFiles:any = Array.isArray(images) ? images : [images];
+        const newFiles: any = Array.isArray(images) ? images : [images];
         setFiles(prev => [...prev, ...newFiles]); // ✅ append instead of overwrite
-        
-        const data:any = {
+
+        const data: any = {
           uri: newFiles[0]?.sourceURL,
           type: newFiles[0]?.mime,
           name: newFiles[0]?.sourceURL.split('/').pop(),
-        }
+        };
         setSelectedMedia((prev: any) => [...prev, data]); // ✅ append instead of overwrite
       })
       .catch(error => {
@@ -120,6 +120,7 @@ const UploadBox = ({
           resizeMode="contain"
           source={IMAGES.photoUpload}
           imageStyle={[styles.icon]}
+          onPress={handleBrowseFiles}
         />
       )}
 
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
     width: wp(48),
     height: hp(48),
     marginTop: hp(20),
+    marginBottom: hp(10),
   },
   fileContainer: {
     // marginRight: wp(8),

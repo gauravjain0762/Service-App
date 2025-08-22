@@ -39,41 +39,169 @@ import CustomImage from '@/components/common/CustomImage';
 
 const MyBookings = () => {
   const {t} = useTranslation();
-  const {userInfo} = useAppSelector(state => state.auth);
+  const {userInfo, dashboard} = useAppSelector(state => state.auth);
 
   const {
     params: {category_id, category_name, category_image, title, _id},
   } = useRoute<any>();
+  const categoryData = dashboard?.categories?.find(
+    val => val?._id === category_id,
+  );
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
   const [isLocationType, setIsLocationType] = useState('Your Location');
   const [selectedDate, setSelectedDate] = useState<any>(null);
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedHour, setSelectedHour] = useState<number | null>(null);
 
-  const [selectedMileage, setSelectedMileage] = useState<string | null>(null);
-  const [selectedProfessional, setSelectedProfessional] = useState<
-    number | null
-  >(null);
+  const [dynamicFieldValues, setDynamicFieldValues] = useState<{
+    [key: string]: any;
+  }>({});
+
   const [note, setNote] = useState<string>('');
-  const [carModal, setCarModal] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
   const [jobCode, setJobCode] = useState<string>('');
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
+
+  const handleDynamicFieldChange = (fieldName: string, value: any) => {
+    setDynamicFieldValues(prev => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  };
+
+  const renderDynamicField = (field: any) => {
+    const {title, name, type, options} = field;
+
+    switch (type) {
+      case 'options':
+        return (
+          <View key={name} style={styles.sectionSpacing}>
+            <CommonText text={title} style={styles.sectionTitle} />
+            <View style={styles.circleRow}>
+              {options.map((option: string, index: number) => {
+                const isSelected = dynamicFieldValues[name] === option;
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleDynamicFieldChange(name, option)}
+                    style={[
+                      styles.circleBox,
+                      isSelected && styles.selectedCircleBox,
+                      option?.length > 2 && {
+                        paddingHorizontal: getFontSize(2),
+                        paddingVertical: getFontSize(1),
+                        width: 'auto',
+                        height: 'auto',
+                      },
+                    ]}>
+                    <CommonText
+                      text={option}
+                      style={[
+                        styles.circleText,
+                        isSelected && styles.selectedCircleText,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        );
+
+      case 'input':
+        return (
+          <View key={name} style={styles.sectionSpacing}>
+            <CommonText text={title} style={styles.sectionTitle} />
+            <TextInput
+              style={styles.carInput}
+              placeholder={`Enter ${title.toLowerCase()}`}
+              onChangeText={value => handleDynamicFieldChange(name, value)}
+              value={dynamicFieldValues[name] || ''}
+            />
+          </View>
+        );
+
+      case 'select':
+        return (
+          <View key={name} style={styles.sectionSpacing}>
+            <CommonText text={title} style={styles.sectionTitle} />
+            <View style={styles.mileageRow}>
+              {options.map((option: string, index: number, array: string[]) => {
+                const isLastItem = index === array.length - 1;
+                const isSelected = dynamicFieldValues[name] === option;
+
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleDynamicFieldChange(name, option)}
+                    style={[
+                      styles.mileageBox,
+                      !isLastItem && styles.mileageBoxSpacing,
+                      isSelected && styles.selectedMileageBox,
+                    ]}>
+                    <CommonText
+                      text={option}
+                      style={[
+                        styles.mileageText,
+                        isSelected && styles.selectedMileageText,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+          </View>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   const onSend = async () => {
     try {
+      if (!selectedDate) {
+        errorToast('Please select a date');
+        return;
+      }
+
+      if (!selectedTime) {
+        errorToast('Please select a time slot');
+        return;
+      }
+
+      if (!isLocationType) {
+        errorToast('Please choose a location type');
+        return;
+      }
+      if (!note) {
+        errorToast('Please enter a note');
+        return;
+      }
       const formData = new FormData();
       formData.append('category_id', category_id);
       formData.append('sub_category_id', _id);
-      formData.append('date', selectedDate);
+      formData.append('date', selectedDate?.isoDate);
       formData.append('notes', note);
       formData.append('time', selectedTime);
       formData.append('location', isLocationType);
       formData.append('media_files', selectedMedia);
-      formData.append('meta_data[car_make]', carModal);
-      formData.append('meta_data[mileage]', selectedMileage || '');
-      formData.append('meta_data[no_hours]', selectedHour);
-      formData.append('meta_data[no_professionals]', selectedProfessional);
+      // if (isLocationType === 'My Location') {
+      //   formData.append(
+      //     'address',
+      //     `${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`,
+      //   );
+      // }
+
+      // Add dynamic field values to meta_data
+      Object.keys(dynamicFieldValues).forEach(fieldName => {
+        if (dynamicFieldValues[fieldName]) {
+          formData.append(
+            `meta_data[${fieldName}]`,
+            dynamicFieldValues[fieldName],
+          );
+        }
+      });
 
       const response = await createRequest(formData).unwrap();
       console.log('response', response);
@@ -89,6 +217,7 @@ const MyBookings = () => {
       );
     }
   };
+
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -197,54 +326,13 @@ const MyBookings = () => {
               </View>
             </Pressable>
           )}
+
           <View style={styles.sectionSpacing}>
             <CustomDates
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
             />
           </View>
-
-          <View style={styles.sectionSpacing}>
-            <CommonText text={'Car Make & Model'} style={styles.sectionTitle} />
-            <TextInput
-              style={styles.carInput}
-              placeholder="SUV Toyota Corola"
-              onChangeText={e => {
-                setCarModal(e);
-              }}
-              value={carModal}
-            />
-          </View>
-
-          <View style={styles.sectionSpacing}>
-            <CommonText text={'Mileage Oil'} style={styles.sectionTitle} />
-            <View style={styles.mileageRow}>
-              {['10,000', '15,000', '20,000'].map((item, index, array) => {
-                const isLastItem = index === array.length - 1;
-                const isSelected = selectedMileage === item;
-
-                return (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => setSelectedMileage(item)}
-                    style={[
-                      styles.mileageBox,
-                      !isLastItem && styles.mileageBoxSpacing,
-                      isSelected && styles.selectedMileageBox,
-                    ]}>
-                    <CommonText
-                      text={`${item} KM`}
-                      style={[
-                        styles.mileageText,
-                        isSelected && styles.selectedMileageText,
-                      ]}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </View>
-
           <View style={styles.sectionSpacing}>
             <TimeSlots
               date={selectedDate?.isoDate}
@@ -253,62 +341,8 @@ const MyBookings = () => {
             />
           </View>
 
-          <View style={[styles.sectionSpacing, {marginTop: hp(12)}]}>
-            <CommonText text={'How Many Hours?'} style={styles.subTitle} />
-            <View style={styles.circleRow}>
-              {Array.from({length: 6}).map((_, index) => {
-                const value = index + 1;
-                const isSelected = selectedHour === value;
-                return (
-                  <TouchableOpacity
-                    key={value}
-                    onPress={() => setSelectedHour(value)}
-                    style={[
-                      styles.circleBox,
-                      isSelected && styles.selectedCircleBox,
-                    ]}>
-                    <CommonText
-                      text={value}
-                      style={[
-                        styles.circleText,
-                        isSelected && styles.selectedCircleText,
-                      ]}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </View>
-
-          <View style={styles.sectionSpacing}>
-            <CommonText
-              text={'How Many Professional?'}
-              style={styles.subTitle}
-            />
-            <View style={styles.circleRow}>
-              {Array.from({length: 6}).map((_, index) => {
-                const value = index + 1;
-                const isSelected = selectedProfessional === value;
-                return (
-                  <TouchableOpacity
-                    key={value}
-                    onPress={() => setSelectedProfessional(value)}
-                    style={[
-                      styles.circleBox,
-                      isSelected && styles.selectedCircleBox,
-                    ]}>
-                    <CommonText
-                      text={value}
-                      style={[
-                        styles.circleText,
-                        isSelected && styles.selectedCircleText,
-                      ]}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </View>
+          {/* Render dynamic fields */}
+          {categoryData?.fields?.map((field: any) => renderDynamicField(field))}
         </View>
 
         <View style={{marginTop: hp(30), paddingHorizontal: wp(24)}}>
@@ -492,12 +526,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: hp(17),
+    gap: getFontSize(2),
+    flexWrap: 'wrap',
   },
   circleBox: {
     width: wp(40),
     height: hp(40),
     borderWidth: hp(1),
-    marginRight: wp(17),
     borderRadius: hp(40),
     alignItems: 'center',
     justifyContent: 'center',

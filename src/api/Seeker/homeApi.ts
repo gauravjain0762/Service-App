@@ -87,6 +87,22 @@ export const homeApi = createApi({
       }),
       invalidatesTags: ['homeApi'],
     }),
+
+    getJobs: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.JOBS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
+
+    getJobDetails: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.JOBS_DETAILS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
   }),
 });
 
@@ -98,4 +114,6 @@ export const {
   useGetRequestsDetailsQuery,
   useCreateRequestMutation,
   useAcceptOfferMutation,
+  useGetJobDetailsQuery,
+  useGetJobsQuery
 } = homeApi;

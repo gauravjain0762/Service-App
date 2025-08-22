@@ -32,8 +32,6 @@ const RequestCard = ({
   subtitleStyle,
   handleCardPress,
 }: props) => {
-  console.log('imageSource', imageSource);
-
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
       <View style={styles.imageContainer}>

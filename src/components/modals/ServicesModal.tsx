@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import ServiceCard from '../common/ServiceCard';
@@ -36,6 +35,23 @@ const ServicesModal = ({
     setIsModalVisible(false);
   };
 
+  const getProcessedData = () => {
+    if (!subCategories || subCategories.length === 0) return [];
+
+    const itemsPerRow = 3;
+    const totalRows = Math.ceil(subCategories.length / itemsPerRow);
+    const totalSlotsNeeded = totalRows * itemsPerRow;
+    const emptySlots = totalSlotsNeeded - subCategories.length;
+
+    const processedData = [...subCategories];
+
+    for (let i = 0; i < emptySlots; i++) {
+      processedData.push({isEmpty: true});
+    }
+
+    return processedData;
+  };
+
   return (
     <BottomModal
       close
@@ -50,30 +66,33 @@ const ServicesModal = ({
         <FlatList
           numColumns={3}
           contentContainerStyle={{marginTop: hp(35)}}
-          columnWrapperStyle={{
-            columnGap: wp(13),
-            justifyContent: 'space-between',
-          }}
-          data={subCategories || []}
+          columnWrapperStyle={styles.columnWrapper}
+          data={getProcessedData()}
           keyExtractor={(_, index) => index.toString()}
-          renderItem={({item}) => (
-            <ServiceCard
-              source={item?.image ?? ''}
-              handleCardPress={() => {
-                handleClose();
-                setTimeout(() => {
-                  navigateTo(SCREENS.MyBookings, {
-                    ...item,
-                    category_name: selectedCategory?.title || '',
-                    category_id: selectedCategory?._id || '',
-                    category_image: selectedCategory?.image || '',
-                  });
-                }, 100);
-              }}
-              text={item?.title || 'Handyman Services'}
-              containerStyle={styles.containerStyle}
-            />
-          )}
+          renderItem={({item}) => {
+            if (item.isEmpty) {
+              return <View style={styles.emptySlot} />;
+            }
+
+            return (
+              <ServiceCard
+                source={item?.image ?? ''}
+                handleCardPress={() => {
+                  handleClose();
+                  setTimeout(() => {
+                    navigateTo(SCREENS.MyBookings, {
+                      ...item,
+                      category_name: selectedCategory?.title || '',
+                      category_id: selectedCategory?._id || '',
+                      category_image: selectedCategory?.image || '',
+                    });
+                  }, 100);
+                }}
+                text={item?.title || 'Handyman Services'}
+                containerStyle={styles.containerStyle}
+              />
+            );
+          }}
           ListEmptyComponent={
             <CommonText text={'No Service Found'} style={styles.emptyText} />
           }
@@ -94,5 +113,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: hp(20),
     ...commonFontStyle(700, 2.5, Colors.black),
+  },
+  columnWrapper: {
+    columnGap: wp(13),
+    justifyContent: 'flex-start',
+    paddingHorizontal: 0,
+  },
+  emptySlot: {
+    flex: 1,
+    marginBottom: hp(13),
   },
 });

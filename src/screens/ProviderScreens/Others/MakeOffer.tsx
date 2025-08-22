@@ -14,17 +14,23 @@ import TimeSlots from '@/components/common/TimeSlots';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import CustomButton from '@/components/common/CustomButton';
 import BottomModal from '@/components/common/BottomModal';
-import {errorToast, resetNavigation} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  getLocalizedText,
+  resetNavigation,
+} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useRoute} from '@react-navigation/native';
 import {useSendOfferMutation} from '@/api/Provider/homeApi';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const MakeOffer = () => {
   const {
-    params: {request_id},
+    params: {requestDetails},
   } = useRoute<any>();
+  const {language} = useAppSelector(state => state.auth);
   const [sendOffer, {isLoading}] = useSendOfferMutation();
   const [selectedTime, setSelectedTime] = useState('');
   const [note, setNote] = useState<string>('');
@@ -37,12 +43,35 @@ const MakeOffer = () => {
 
   const onSubmitOffer = async () => {
     try {
+      if (!note) {
+        errorToast('Please enter a note');
+        return;
+      }
+
+      if (!selectedTime) {
+        errorToast('Please select a time slot');
+        return;
+      }
+
+      if (!offerPrice) {
+        errorToast('Please enter offer price');
+        return;
+      }
+      if (!timeToComplete) {
+        errorToast('Please enter estimated time');
+        return;
+      }
+      if (!selectedDate) {
+        errorToast('Please select a date');
+        return;
+      }
+
       const formData = new FormData();
-      formData.append('request_id', request_id);
+      formData.append('request_id', requestDetails?._id);
       formData.append('notes', note);
       formData.append('media_files', selectedMedia);
       formData.append('offer_price', offerPrice);
-      formData.append('date', selectedDate);
+      formData.append('date', selectedDate?.isoDate);
       formData.append('time', selectedTime);
       formData.append('estimated_time', timeToComplete);
 
@@ -177,6 +206,10 @@ const MakeOffer = () => {
         }}
         onClose={() => {
           setIsSubmitModalVisible(false);
+          resetNavigation(
+            PROVIDER_SCREENS.ProviderTabNavigation,
+            SCREENS.Dashboard,
+          );
         }}>
         <RequestSubmitModal
           header="Offer Submitted"
@@ -188,6 +221,17 @@ const MakeOffer = () => {
           }}
           bookingNumber={8321}
           requestCardStyle={{backgroundColor: Colors.provider_primary}}
+          text1={getLocalizedText(
+            requestDetails?.category_id?.title,
+            requestDetails?.category_id?.title_ar,
+            language,
+          )}
+          text2={getLocalizedText(
+            requestDetails?.sub_category_id?.title,
+            requestDetails?.sub_category_id?.title_ar,
+            language,
+          )}
+          imageSource={requestDetails?.sub_category_id?.image}
         />
       </BottomModal>
     </SafeAreaView>

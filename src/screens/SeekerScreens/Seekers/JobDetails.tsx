@@ -4,7 +4,7 @@ import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import ShadowCard from '@/components/common/ShadowCard';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
@@ -13,12 +13,36 @@ import CustomButton from '@/components/common/CustomButton';
 import ServiceProvider from '@/components/common/ServiceProvider';
 import ServiceDetails from '@/components/common/ServiceDetails';
 import ServiceBillSummary from '@/components/common/ServiceBillSummary';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useGetJobDetailsQuery} from '@/api/Seeker/homeApi';
+import {getLocalizedText} from '@/components/common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import CustomImage from '@/components/common/CustomImage';
+import moment from 'moment';
+import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 
 const JobDetails = () => {
+  const {language} = useAppSelector(state => state.auth);
+  const {params} = useRoute<any>();
+  const job_id = params?.job_id;
   const navigation = useNavigation();
   const {bottom} = useSafeAreaInsets();
+  const {
+    data: jobData = {},
+    isLoading: jobLoading,
+    refetch: refetchJobList,
+  } = useGetJobDetailsQuery<any>(
+    {
+      job_id: job_id,
+    },
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+  const jobDetails = jobData?.data?.job;
 
   return (
     <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
@@ -26,82 +50,121 @@ const JobDetails = () => {
         text={'Job Detail'}
         style={{
           paddingHorizontal: wp(24),
+          
         }}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{paddingHorizontal: wp(24)}}>
-          <ShadowCard style={styles.jobCard}>
-            <View style={styles.rowWithGap}>
-              <Image source={IMAGES.dummy} />
-              <View style={styles.jobInfoContainer}>
-                <CommonText
-                  text={'Repair & Maintenance'}
-                  style={styles.jobTitle}
+      {jobLoading ? (
+        <JobDetailsSkeleton />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{paddingHorizontal: wp(24)}}>
+            <ShadowCard style={styles.jobCard}>
+              <View style={styles.rowWithGap}>
+                <CustomImage
+                  uri={jobDetails?.category_id?.image}
+                  resizeMode="stretch"
+                  imageStyle={{
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  containerStyle={{
+                    width: wp(72),
+                    height: hp(72),
+                    borderRadius: hp(12),
+                    backgroundColor: Colors.white,
+                    overflow: 'hidden',
+                  }}
                 />
-                <CommonText
-                  text={'AC Regular Services'}
-                  style={styles.jobSubTitle}
-                />
-                <CommonText
-                  text={'Dubai Internet City UAE'}
-                  style={styles.jobLocation}
-                />
+                <View style={styles.jobInfoContainer}>
+                  <CommonText
+                    text={getLocalizedText(
+                      jobDetails?.category_id?.title,
+                      jobDetails?.category_id?.title_ar,
+                      language,
+                    )}
+                    style={styles.jobTitle}
+                  />
+                  <CommonText
+                    text={getLocalizedText(
+                      jobDetails?.sub_category_id?.title,
+                      jobDetails?.sub_category_id?.title_ar,
+                      language,
+                    )}
+                    style={styles.jobSubTitle}
+                  />
+                  <CommonText
+                    text={jobDetails?.address}
+                    style={styles.jobLocation}
+                  />
+                </View>
               </View>
-            </View>
 
-            <View style={styles.bookingContainer}>
-              <View style={styles.bookingRow}>
-                <CommonText text={'Booking Date'} style={styles.bookingLabel} />
-                <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+              <View style={styles.bookingContainer}>
+                <View style={styles.bookingRow}>
+                  <CommonText
+                    text={'Booking Date'}
+                    style={styles.bookingLabel}
+                  />
+                  <CommonText
+                    text={moment(jobDetails?.date).format('ddd, DD MMM')}
+                    style={styles.bookingValue}
+                  />
+                </View>
+                <View style={styles.bookingRow}>
+                  <CommonText
+                    text={'Booking Time'}
+                    style={styles.bookingLabel}
+                  />
+                  <CommonText
+                    text={jobDetails?.time}
+                    style={styles.bookingValue}
+                  />
+                </View>
               </View>
-              <View style={styles.bookingRow}>
-                <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-                <CommonText
-                  text={'09:00 - 12:00'}
-                  style={styles.bookingValue}
-                />
-              </View>
-            </View>
-          </ShadowCard>
-        </View>
+            </ShadowCard>
+          </View>
 
-        <Divider />
+          <Divider />
 
-        <View style={{paddingHorizontal: wp(24)}}>
-          <CommonText text={'Service Provider'} style={styles.sectionTitle} />
-          <ServiceProvider isViewProfile={true} color={Colors.seeker_primary} />
-        </View>
-        <ServiceDetails style={{width: '100%'}} />
+          <View style={{paddingHorizontal: wp(24)}}>
+            <CommonText text={'Service Provider'} style={styles.sectionTitle} />
+            <ServiceProvider
+              isViewProfile={true}
+              color={Colors.seeker_primary}
+            />
+          </View>
+          <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />
 
-        <View style={{paddingHorizontal: wp(24)}}>
-          <ServiceBillSummary style={{width: '100%'}} />
-        </View>
+          <View style={{paddingHorizontal: wp(24)}}>
+            <ServiceBillSummary style={{width: '100%'}} />
+          </View>
 
-        <CustomButton
-          title={'Back To Home'}
-          btnStyle={styles.backToHomeBtn}
-          onPress={() =>
-            navigation.reset({
-              index: 0,
-              routes: [
-                {
-                  name: 'SeekerTabNavigation' as never,
-                  state: {
-                    index: 0,
-                    routes: [
-                      {
-                        name: 'Home',
-                        params: {openReviewModal: true},
-                      },
-                    ],
+          <CustomButton
+            title={'Back To Home'}
+            btnStyle={styles.backToHomeBtn}
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'SeekerTabNavigation' as never,
+                    state: {
+                      index: 0,
+                      routes: [
+                        {
+                          name: 'Home',
+                          params: {openReviewModal: true},
+                        },
+                      ],
+                    },
                   },
-                },
-              ],
-            })
-          }
-        />
-      </ScrollView>
+                ],
+              })
+            }
+          />
+        </ScrollView>
+      )}
     </SafeareaProvider>
   );
 };

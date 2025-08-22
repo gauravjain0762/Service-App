@@ -19,10 +19,13 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {useRoute} from '@react-navigation/native';
 import {useLoginMutation} from '@/api/Provider/authApi';
-import { useAppSelector } from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
+import {getAsyncFCMToken, setAsyncFCMToken} from '@/Hooks/asyncStorage';
+import {setFcmToken} from '@/features/authSlice';
 
 const ProLoginScreen = ({}: any) => {
   const {fcmToken} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
@@ -33,6 +36,15 @@ const ProLoginScreen = ({}: any) => {
 
   const [login, {isLoading}] = useLoginMutation();
 
+  React.useEffect(() => {
+    getFcmToken();
+  }, []);
+
+  const getFcmToken = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
+    setAsyncFCMToken(oldFcmToken);
+    dispatch(setFcmToken(oldFcmToken));
+  };
   const onLogin = async () => {
     try {
       if (!emailCheck(details.email)) {
@@ -43,7 +55,7 @@ const ProLoginScreen = ({}: any) => {
       let obj = {
         email: details.email,
         password: details.password,
-        deviceToken:fcmToken
+        deviceToken: fcmToken,
       };
       const response = await login(obj).unwrap();
       console.log('response', response);

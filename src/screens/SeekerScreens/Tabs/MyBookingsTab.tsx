@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet} from 'react-native';
+import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
@@ -11,9 +11,52 @@ import TabSwitch from '@/components/common/TabSwitch';
 import CustomImage from '@/components/common/CustomImage';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {useGetJobsQuery} from '@/api/Seeker/homeApi';
+import MyRequestSkeleton from '@/components/skeleton/MyRequestSkeleton';
+import CommonText from '@/components/common/CommonText';
 
 const MyBookingsTab = () => {
-  const [activeTab, setActiveTab] = useState<'active' | 'complete'>('active');
+  const [activeTab, setActiveTab] = useState<'Active' | 'Complete'>('Active');
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [allJobData, setAllJobData] = React.useState([]);
+  const {
+    data: jobData,
+    isLoading: jobLoading,
+    refetch: refetchJobList,
+  } = useGetJobsQuery<any>(
+    {status: activeTab == 'Active' ? 'Active' : 'Completed'},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+
+  React.useEffect(() => {
+    if (jobData) {
+      const newData = jobData.data.jobs;
+      setAllJobData(prev =>
+        currentPage === 1 ? newData : [...prev, ...newData],
+      );
+    }
+  }, [jobData, currentPage]);
+
+  const handleLoadMore = () => {
+    // Check if there are more pages to load
+    if (
+      jobData &&
+      jobData.data?.pagination?.current_page <
+        jobData.data?.pagination?.total_pages &&
+      !jobLoading
+    ) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+    }
+  };
+  React.useEffect(() => {
+    refetchJobList();
+  }, [activeTab]);
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -29,28 +72,36 @@ const MyBookingsTab = () => {
       />
 
       <TabSwitch
-        tabs={['active', 'complete']}
+        tabs={['Active', 'Complete']}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-
-      {/* <View style={styles.contentContainer}>
-        {activeTab === 'active' ? (
-          <Text style={styles.dummyText}>No active bookings</Text>
-        ) : (
-          <Text style={styles.dummyText}>No completed bookings</Text>
-        )}
-      </View> */}
-      <ScrollView
-        contentContainerStyle={{paddingBottom: hp(20)}}
-        showsVerticalScrollIndicator={false}
-        style={{marginVertical: hp(34)}}>
-        <BookingCard />
-        <BookingCard />
-        <BookingCard />
-        <BookingCard />
-        <BookingCard />
-      </ScrollView>
+      {jobLoading ? (
+        <MyRequestSkeleton />
+      ) : (
+        <View style={styles.cardsContainer}>
+          <FlatList
+            data={allJobData}
+            renderItem={({item, index}: any) => {
+              return <BookingCard item={item} />;
+            }}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            keyExtractor={(item: any) => item?._id?.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}
+            ListEmptyComponent={
+              <CommonText
+                text={
+                  activeTab === 'Active'
+                    ? 'No active bookings'
+                    : 'No completed bookings'
+                }
+              />
+            }
+          />
+        </View>
+      )}
     </SafeareaProvider>
   );
 };
@@ -74,5 +125,11 @@ const styles = StyleSheet.create({
   },
   dummyText: {
     ...commonFontStyle(400, 2.2, Colors._909090),
+  },
+  cardsContainer: {
+    marginTop: hp(20),
+  },
+  scrollContent: {
+    paddingBottom: '20%',
   },
 });

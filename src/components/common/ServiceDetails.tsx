@@ -5,26 +5,44 @@ import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {getLocalizedText} from './commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
 
 type Props = {
   style?: ViewStyle;
+  jobDetails?: any;
 };
 
-const ServiceDetails = ({style}: Props) => {
+const ServiceDetails = ({style, jobDetails}: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+
   const ServiceDetail = [
     {'Payment Method': 'Apple Pay'},
-    {'Service Type': 'Repair & Maintenance'},
     {
-      'Service Subcategory': 'AC Repair Services ',
+      'Service Type': getLocalizedText(
+        jobDetails?.category_id?.title,
+        jobDetails?.category_id?.title_ar,
+        language,
+      ),
     },
     {
-      'Services Address': 'Dubai Internet City',
+      'Service Subcategory': getLocalizedText(
+        jobDetails?.sub_category_id?.title,
+        jobDetails?.sub_category_id?.title_ar,
+        language,
+      ),
     },
     {
-      'Service Date & Time': '22-01-2025 - 12:00 am',
+      'Services Address': jobDetails?.address ?? '',
     },
     {
-      'Service Status': 'Confirmed',
+      'Service Date & Time': jobDetails?.date ?`${moment(jobDetails?.date)?.format(
+        'DD-MM-YYYY',
+      )} - ${jobDetails?.time}` : '',
+    },
+    {
+      'Service Status': jobDetails?.status ?? '',
     },
   ];
   return (

@@ -14,7 +14,7 @@ const CommonText = ({text, children, style, ...rest}: CommonTextProps) => {
   const {t} = useTranslation();
 
   return (
-    <Text style={[styles.commonText, style]} {...rest}>
+    <Text suppressHighlighting={true} style={[styles.commonText, style]} {...rest}>
       {text ? t(text) : null}
       {children}
     </Text>

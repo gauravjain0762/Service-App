@@ -31,10 +31,13 @@ import {jwtDecode} from 'jwt-decode';
 
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 import {WEB_CLIENT_ID} from '@/utils/constants/api';
-import {useAppSelector} from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
+import {getAsyncFCMToken, setAsyncFCMToken} from '@/Hooks/asyncStorage';
+import {setFcmToken} from '@/features/authSlice';
 
 const LoginScreen = ({}: any) => {
   const {fcmToken} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
@@ -46,10 +49,27 @@ const LoginScreen = ({}: any) => {
   const [googleLogin] = useGoogleSignInMutation();
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    getFcmToken();
+  }, []);
+
+  const getFcmToken = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
+    setAsyncFCMToken(oldFcmToken);
+    dispatch(setFcmToken(oldFcmToken));
+  };
   const onLogin = async () => {
     try {
       if (!emailCheck(details.email)) {
         errorToast('Please enter valid email');
+        return;
+      }
+      if (!details.password.trim()) {
+        errorToast('Enter a password');
+        return;
+      }
+      if (details.password.length < 6) {
+        errorToast('Password must be at least 6 characters');
         return;
       }
 

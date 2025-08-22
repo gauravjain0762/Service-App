@@ -56,15 +56,17 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
           <CommonText text={Object.values(item)[0]} style={styles.valueText} />
         </View>
       ))}
-      <AttachmentCard requestImages={requestDetails?.media_files}/>
-      <View style={{marginVertical: hp(29)}}>
-        <AdittionalNote additionalNotes={requestDetails?.notes}/>
+      <AttachmentCard requestImages={requestDetails?.media_files} />
+      <View style={{marginVertical: hp(29), width: '100%'}}>
+        <AdittionalNote additionalNotes={requestDetails?.notes} />
       </View>
 
       <CustomButton
         title={'Make an Offer'}
         onPress={() => {
-          navigateTo(PROVIDER_SCREENS.MakeOffer,{request_id:requestDetails?._id});
+          navigateTo(PROVIDER_SCREENS.MakeOffer, {
+            requestDetails: requestDetails,
+          });
         }}
         btnStyle={{alignSelf: 'center', width: '70%'}}
       />

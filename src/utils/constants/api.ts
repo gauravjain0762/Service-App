@@ -29,6 +29,8 @@ export const SEEKER_API = {
     REQUEST_DETAILS: '/getRequestDetails',
     CREATE_REQUEST: '/createRequest',
     ACCEPT_OFFER: '/acceptOffer',
+    JOBS: '/getJobs',
+    JOBS_DETAILS: '/getJobDetails',
   },
 } as const;
 

@@ -22,8 +22,8 @@ const TermsCheckBox = ({
 }: Props) => {
   return (
     <View style={styles.midContainer}>
-      <CheckBox uncheckedCheckBoxColor="#878787" {...rest} />
-      <CommonText text="I agree to follow the" style={styles.checkBoxText}>
+      <CheckBox uncheckedCheckBoxColor="#878787" {...rest}  checkedCheckBoxColor={isSeeker ? Colors.seeker_primary : Colors.provider_primary}/>
+      <CommonText onPress={()=>setToggleCheckBox(!toggleCheckBox)} text="I agree to follow the" style={styles.checkBoxText}>
         {' '}
         <CommonText
           onPress={() => navigateTo(SCREENS.TermsWebScreen)}
