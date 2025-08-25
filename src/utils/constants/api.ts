@@ -65,7 +65,9 @@ export const PROVIDER_API = {
     SUB_CATEGORIES: '/company/getSubCategories',
     REQUESTS: '/company/getRequests',
     REQUEST_DETAILS: '/company/getRequestDetails',
-    SEND_OFFER:'/company/sendOffer'
+    SEND_OFFER:'/company/sendOffer',
+    JOBS: '/company/getJobs',
+    JOBS_DETAILS: '/company/getJobDetails',
   },
 } as const;
 

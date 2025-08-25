@@ -1,3 +1,4 @@
+import {useGetJobsQuery} from '@/api/Provider/homeApi';
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
@@ -53,20 +54,50 @@ const ProMyBookings = () => {
   const [allOptions] = useState(['All', 'Accepted', 'Active', 'Completed']);
   const [filteredData, setFilteredData] = useState(DATA);
 
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [allJobData, setAllJobData] = React.useState([]);
+  const {
+    data: jobData,
+    isLoading: jobLoading,
+    refetch: refetchJobList,
+  } = useGetJobsQuery<any>(
+    {status: selectedOption == 'Active' ? 'Active' : 'Completed'},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+
+  React.useEffect(() => {
+    if (jobData) {
+      const newData = jobData.data.jobs;
+      setAllJobData(prev =>
+        currentPage === 1 ? newData : [...prev, ...newData],
+      );
+    }
+  }, [jobData, currentPage]);
+
+  const handleLoadMore = () => {
+    // Check if there are more pages to load
+    if (
+      jobData &&
+      jobData.data?.pagination?.current_page <
+        jobData.data?.pagination?.total_pages &&
+      !jobLoading
+    ) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+    }
+  };
+  React.useEffect(() => {
+    refetchJobList();
+  }, [selectedOption]);
+
   const handleOptionSelect = (option: string) => {
     setSelectedOption(option);
     setIsModalVisible(false);
   };
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     if (status) {
-  //       setFilteredData(DATA.filter(item => item.status === status));
-  //     } else {
-  //       setFilteredData(DATA);
-  //     }
-  //   }, []),
-  // );
 
   return (
     <SafeAreaView style={GeneralStyle.container}>
@@ -98,18 +129,22 @@ const ProMyBookings = () => {
         />
 
         <FlatList
-          data={DATA}
-          renderItem={({item, index}) => {
+          data={allJobData}
+          renderItem={({item, index}: any) => {
             return (
               <BookingCard
                 item={item}
                 index={index}
                 isBooking={true}
-                onPress={() => navigateTo(PROVIDER_SCREENS.ProOfferDetails)}
+                onPress={() => {
+                  navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
+                    job_id: item?._id,
+                  });
+                }}
               />
             );
           }}
-          keyExtractor={item => item.id}
+          keyExtractor={(item: any) => item._id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
         />

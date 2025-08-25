@@ -32,9 +32,7 @@ const BookingCard = ({
       'YYYY-MM-DD hh:mm A',
     );
     const end = moment(start).add(Number(no_hours), 'hours');
-    return `${start.format('ddd, DD MMM')} - ${start.format(
-      'hh:mm',
-    )} - ${end.format('hh:mm')}`;
+    return `${start.format('ddd, DD MMM')} - ${time}`;
   };
 
   return (
@@ -81,7 +79,6 @@ const BookingCard = ({
           {isBooking && (
             <CustomButton
               title={item?.status}
-              disabled
               type="fill"
               btnStyle={{
                 ...styles.status,
@@ -98,7 +95,10 @@ const BookingCard = ({
 
       <View style={styles.detailView}>
         <CommonText style={styles.label} text={'Address'} />
-        <CommonText style={styles.value} text={item.address} />
+        <CommonText
+          style={styles.value}
+          text={`${item.address?.apt_villa_no} ${item.address?.building_name}  ${item.address?.directions}`}
+        />
       </View>
       <View style={styles.detailView}>
         <CommonText style={styles.label} text={'Date & Time'} />
@@ -114,7 +114,7 @@ const BookingCard = ({
       {isBooking && (
         <View style={styles.detailView}>
           <CommonText style={styles.label} text={'Customer'} />
-          <CommonText style={styles.value} text={item.customer} />
+          <CommonText style={styles.value} text={item.user_id?.name} />
         </View>
       )}
       {!isBooking && (

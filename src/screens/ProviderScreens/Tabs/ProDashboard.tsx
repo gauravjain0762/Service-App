@@ -11,13 +11,9 @@ import ProviderCards from '@/components/Provider/ProviderCards';
 import BookingCard from '@/components/Provider/BookingCard';
 import {navigateTo} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
-
-const DashboarData = [
-  {amount: '4254', desc: 'Total Booking', image: IMAGES.ic_booking},
-  {amount: '2678.00', desc: 'Total Earning', image: IMAGES.ic_earning},
-  {amount: '1500', desc: 'Total Request', image: IMAGES.ic_request},
-  {amount: '900', desc: 'Completed Job', image: IMAGES.ic_completed},
-];
+import {useGetDashboardQuery} from '@/api/Provider/homeApi';
+import {useAppSelector} from '@/Hooks/hooks';
+import {useCategoryQuery} from '@/api/Provider/authApi';
 
 const BookingData = [
   {
@@ -41,6 +37,35 @@ const BookingData = [
 ];
 
 const ProDashboard = () => {
+  const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
+  const {} = useCategoryQuery({});
+
+  const {isLoading} = useGetDashboardQuery({});
+
+  const DashboarData = [
+    {
+      amount: dashboard?.stats ? String(dashboard?.stats?.total_bookings) : '0',
+      desc: 'Total Booking',
+      image: IMAGES.ic_booking,
+    },
+    {
+      amount: dashboard?.stats ? String(dashboard?.stats?.total_earnings) : '0',
+      desc: 'Total Earning',
+      image: IMAGES.ic_earning,
+    },
+    {
+      amount: dashboard?.stats ? dashboard?.stats?.total_jobs.toString() : '0',
+      desc: 'Total Request',
+      image: IMAGES.ic_request,
+    },
+    {
+      amount: dashboard?.stats
+        ? dashboard?.stats?.total_requests.toString()
+        : '0',
+      desc: 'Completed Job',
+      image: IMAGES.ic_completed,
+    },
+  ];
   return (
     <SafeareaProvider style={styles.safearea}>
       <ProviderHeader />
@@ -60,7 +85,7 @@ const ProDashboard = () => {
         <CommonText text={'Recently Booking'} style={styles.headingText} />
 
         <FlatList
-          data={BookingData}
+          data={dashboard?.recent_bookings || []}
           scrollEnabled={false}
           keyExtractor={(_, index) => index.toString()}
           renderItem={({item, index}) => {
@@ -69,7 +94,9 @@ const ProDashboard = () => {
                 item={item}
                 index={index}
                 onPress={() => {
-                  navigateTo(PROVIDER_SCREENS.ProOfferDetails);
+                  navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
+                    job_id: item?._id,
+                  });
                 }}
               />
             );

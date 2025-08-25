@@ -11,7 +11,7 @@ import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
-import {resetNavigation} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
@@ -19,8 +19,10 @@ import {IMAGES} from '@/assets/images';
 import LanguageModal from '@/components/common/LanguageModel';
 import {useAppDispatch} from '@/Hooks/hooks';
 import {setIsProvider} from '@/features/authSlice';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const OnBoarding = () => {
+  const insets = useSafeAreaInsets();
   const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
   const dispatch = useAppDispatch();
   const openLanguageModal = () => {
@@ -40,11 +42,11 @@ const OnBoarding = () => {
       <StatusBar
         translucent
         barStyle="dark-content"
-        backgroundColor="transparent"
+        backgroundColor={Colors.seeker_primary}
       />
       <SafeareaProvider
-        SafeAreaProps={{edges: ['top']}}
-        style={{backgroundColor: Colors.seeker_primary}}>
+        SafeAreaProps={{edges: []}}
+        style={{paddingTop: insets?.top,backgroundColor: Colors.seeker_primary}}>
         <View style={styles.wrapper}>
           <TouchableOpacity
             onPress={openLanguageModal}
@@ -81,7 +83,7 @@ const OnBoarding = () => {
                 title={'Job Seeker'}
                 onPress={() => {
                   dispatch(setIsProvider(false));
-                  resetNavigation(SCREENS.SeekerNavigator);
+                  navigateTo(SCREENS.SeekerNavigator);
                 }}
                 textStyle={styles.btnText}
               />
@@ -90,7 +92,7 @@ const OnBoarding = () => {
                 btnStyle={{backgroundColor: Colors.provider_primary}}
                 onPress={() => {
                   dispatch(setIsProvider(true));
-                  resetNavigation(SCREENS.ProviderNavigator, {
+                  navigateTo(SCREENS.ProviderNavigator, {
                     isProvider: true,
                   });
                 }}

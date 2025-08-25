@@ -163,6 +163,7 @@ const Profile = () => {
           style={styles.avatarSection}>
           <CustomImage
             source={IMAGES.user_profile}
+            uri={userInfo?.picture}
             size={hp(80)}
             disabled={true}
             containerStyle={styles.avatar}
@@ -222,6 +223,7 @@ const styles = StyleSheet.create({
     borderRadius: hp(40),
     backgroundColor: Colors._EBFCF4,
     marginBottom: hp(12),
+    overflow:'hidden'
   },
   name: {
     ...commonFontStyle(700, 2.4, Colors.black),

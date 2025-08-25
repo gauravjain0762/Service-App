@@ -72,6 +72,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.POST,
         data: credentials,
         headers: {
+         'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Content-Type': 'multipart/form-data',
         },
       }),

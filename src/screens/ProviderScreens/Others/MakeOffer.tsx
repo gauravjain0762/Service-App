@@ -69,7 +69,15 @@ const MakeOffer = () => {
       const formData = new FormData();
       formData.append('request_id', requestDetails?._id);
       formData.append('notes', note);
-      formData.append('media_files', selectedMedia);
+      // formData.append('media_files', selectedMedia);
+      selectedMedia.forEach((media, index) => {
+        const fileObject = {
+          uri: media.uri,
+          type: media.type,
+          name: media.name || `media_${index}.${media.type.split('/')[1]}`,
+        };
+        formData.append('media_files', fileObject); // <-- use same key for all
+      });
       formData.append('offer_price', offerPrice);
       formData.append('date', selectedDate?.isoDate);
       formData.append('time', selectedTime);

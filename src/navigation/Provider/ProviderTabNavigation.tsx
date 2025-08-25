@@ -21,21 +21,25 @@ const ProviderTabNavigation = () => {
     {
       name: PROVIDER_SCREENS.ProDashboard,
       icon: IMAGES.home,
+      iconUnSelected: IMAGES.homeUnSelected,
       component: ProDashboard,
     },
     {
       name: PROVIDER_SCREENS.NewRequestScreen,
       icon: IMAGES.feed,
+      iconUnSelected: IMAGES.feedUnselected,
       component: NewRequestScreen,
     },
     {
       name: PROVIDER_SCREENS.ProMyBookings,
       icon: IMAGES.calendar,
+      iconUnSelected: IMAGES.calendarUnselected,
       component: ProMyBookings,
     },
     {
       name: PROVIDER_SCREENS.ProProfile,
       icon: IMAGES.profile,
+      iconUnSelected: IMAGES.profileUnselected,
       component: ProProfile,
       initialParams: {isProvider: true},
     },
@@ -80,18 +84,18 @@ const ProviderTabNavigation = () => {
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {
-            const {icon} = tabs.find(tab => tab.name === route.name) || {};
+            const {icon,iconUnSelected} = tabs.find(tab => tab.name === route.name) || {};
+            const tabIcon = focused ? icon : iconUnSelected
             return (
               <View style={[styles.iconContainer]}>
                 <FastImage
-                  source={icon}
-                  defaultSource={icon}
+                  source={tabIcon}
+                  defaultSource={tabIcon}
                   style={{
                     width: wp(30),
                     height: hp(25),
                   }}
                   resizeMode={FastImage.resizeMode.contain}
-                  tintColor={focused ? Colors.white : Colors.provider_tab}
                 />
               </View>
             );

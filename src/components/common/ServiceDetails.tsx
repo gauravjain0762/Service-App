@@ -18,7 +18,7 @@ const ServiceDetails = ({style, jobDetails}: Props) => {
   const {language} = useAppSelector(state => state.auth);
 
   const ServiceDetail = [
-    {'Payment Method': 'Apple Pay'},
+    {'Payment Method': jobDetails?.pay_method},
     {
       'Service Type': getLocalizedText(
         jobDetails?.category_id?.title,
@@ -34,12 +34,16 @@ const ServiceDetails = ({style, jobDetails}: Props) => {
       ),
     },
     {
-      'Services Address': jobDetails?.address ?? '',
+      'Services Address': jobDetails?.address
+        ? `${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`
+        : '',
     },
     {
-      'Service Date & Time': jobDetails?.date ?`${moment(jobDetails?.date)?.format(
-        'DD-MM-YYYY',
-      )} - ${jobDetails?.time}` : '',
+      'Service Date & Time': jobDetails?.date
+        ? `${moment(jobDetails?.date)?.format('DD-MM-YYYY')} - ${
+            jobDetails?.time
+          }`
+        : '',
     },
     {
       'Service Status': jobDetails?.status ?? '',

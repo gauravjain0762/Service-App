@@ -94,7 +94,7 @@ const JobDetails = () => {
                     style={styles.jobSubTitle}
                   />
                   <CommonText
-                    text={jobDetails?.address}
+                    text={`${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`}
                     style={styles.jobLocation}
                   />
                 </View>

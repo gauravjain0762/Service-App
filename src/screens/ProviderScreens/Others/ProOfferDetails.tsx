@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -17,11 +17,38 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import CustomImage from '@/components/common/CustomImage';
 import ChooseOptions from '@/components/common/ChooseOptions';
 import CompleteBookingModal from '@/components/modals/CompleteBookingModal';
-import {resetNavigation} from '@/components/common/commonFunction';
+import {
+  getLocalizedText,
+  resetNavigation,
+} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import UpdateWorkStatusModal from '@/components/modals/UpdateWorkStatusModal';
+import {useRoute} from '@react-navigation/native';
+import {useGetJobDetailsQuery} from '@/api/Provider/homeApi';
+import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
+import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
 
 const ProOfferDetails = () => {
+  const {language} = useAppSelector(state => state.auth);
+  const {params} = useRoute<any>();
+  const job_id = params?.job_id;
+  const {
+    data: jobData = {},
+    isLoading: jobLoading,
+    refetch: refetchJobList,
+  } = useGetJobDetailsQuery<any>(
+    {
+      job_id: job_id,
+    },
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+  const jobDetails = jobData?.data?.job;
+
   const {bottom} = useSafeAreaInsets();
   const [selectedOption, setSelectedOption] = useState('Complete Job');
   const [isChooseOptionsModal, setIsChooseOptionsModal] =
@@ -32,7 +59,7 @@ const ProOfferDetails = () => {
     useState<boolean>(false);
 
   return (
-    <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
+    <SafeareaProvider edges={['top', 'bottom']} style={[styles.safeArea, {}]}>
       <BackHeader
         text={'Job Detail'}
         onPressBack={() =>
@@ -43,71 +70,97 @@ const ProOfferDetails = () => {
         }}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={{
-            paddingHorizontal: wp(24),
-          }}>
-          <ShadowCard style={styles.jobCard}>
-            <View style={styles.rowWithGap}>
-              <CustomImage source={IMAGES.dummy} size={hp(70)} />
-              <View style={styles.jobInfoContainer}>
-                <CommonText
-                  text={'Repair & Maintenance'}
-                  style={styles.jobTitle}
-                />
-                <CommonText
-                  text={'AC Regular Services'}
-                  style={styles.jobSubTitle}
-                />
-                <CommonText
-                  text={'Dubai Internet City UAE'}
-                  style={styles.jobLocation}
-                />
+      {jobLoading ? (
+        <JobDetailsSkeleton />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              paddingHorizontal: wp(24),
+            }}>
+            <ShadowCard style={styles.jobCard}>
+              <View style={styles.rowWithGap}>
+                <CustomImage source={IMAGES.dummy} size={hp(70)} />
+                <View style={styles.jobInfoContainer}>
+                  <CommonText
+                    text={getLocalizedText(
+                      jobDetails?.category_id?.title,
+                      jobDetails?.category_id?.title_ar,
+                      language,
+                    )}
+                    style={styles.jobTitle}
+                  />
+                  <CommonText
+                    text={getLocalizedText(
+                      jobDetails?.sub_category_id?.title,
+                      jobDetails?.sub_category_id?.title_ar,
+                      language,
+                    )}
+                    style={styles.jobSubTitle}
+                  />
+                  <CommonText
+                    text={`${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`}
+                    style={styles.jobLocation}
+                  />
+                </View>
               </View>
-            </View>
 
-            <View style={styles.bookingContainer}>
-              <View style={styles.bookingRow}>
-                <CommonText text={'Booking Date'} style={styles.bookingLabel} />
-                <CommonText text={'Web, 18 Apr'} style={styles.bookingValue} />
+              <View style={styles.bookingContainer}>
+                <View style={styles.bookingRow}>
+                  <CommonText
+                    text={'Booking Date'}
+                    style={styles.bookingLabel}
+                  />
+                  <CommonText
+                    text={moment(jobDetails?.date).format('ddd, DD MMM')}
+                    style={styles.bookingValue}
+                  />
+                </View>
+                <View style={styles.bookingRow}>
+                  <CommonText
+                    text={'Booking Time'}
+                    style={styles.bookingLabel}
+                  />
+                  <CommonText
+                    text={jobDetails?.time}
+                    style={styles.bookingValue}
+                  />
+                </View>
               </View>
-              <View style={styles.bookingRow}>
-                <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-                <CommonText
-                  text={'09:00 - 12:00'}
-                  style={styles.bookingValue}
-                />
-              </View>
-            </View>
-          </ShadowCard>
-        </View>
+            </ShadowCard>
+          </View>
 
-        <Divider />
+          <Divider />
 
-        <CommonText text={'Service Provider'} style={styles.sectionTitle} />
+          <CommonText text={'Customer Detail'} style={styles.sectionTitle} />
 
-        <View
-          style={{
-            paddingHorizontal: wp(24),
-          }}>
-          <ServiceProvider
-            color={Colors.provider_primary}
-            isViewProfile={false}
+          <View
+            style={{
+              paddingHorizontal: wp(24),
+            }}>
+            <ServiceProvider
+              color={Colors.provider_primary}
+              isViewProfile={false}
+              providerName={jobDetails?.user_id?.name}
+              source={jobDetails?.user_id?.picture}
+              onCallPress={() => {
+                const url = `tel:${jobDetails?.user_id?.phone_code}${jobDetails?.user_id?.phone}`;
+                Linking.openURL(url);
+              }}
+            />
+          </View>
+          <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />
+          <View style={{paddingHorizontal: wp(24)}}>
+            <ServiceBillSummary style={{width: '100%'}} />
+          </View>
+
+          <CustomButton
+            title={'Update Work Status'}
+            btnStyle={styles.backToHomeBtn}
+            onPress={() => setIsChooseOptionsModal(true)}
           />
-        </View>
-        <ServiceDetails style={{width: '100%'}} />
-        <View style={{paddingHorizontal: wp(24)}}>
-          <ServiceBillSummary style={{width: '100%'}} />
-        </View>
-
-        <CustomButton
-          title={'Update Work Status'}
-          btnStyle={styles.backToHomeBtn}
-          onPress={() => setIsChooseOptionsModal(true)}
-        />
-      </ScrollView>
-
+        </ScrollView>
+      )}
       <ChooseOptions
         allOptions={[
           'Complete Job',

@@ -34,9 +34,9 @@ export const alignSelfRTL = (): any => {
   };
 };
 
-export const alignItemsFlexRTL = (): any => {
+export const alignSelfLTR = (): any => {
   return {
-    alignItems: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
+    alignSelf: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
   };
 };
 
@@ -88,7 +88,7 @@ const Theme = {
   marginRTLLeft,
   paddingRTLLeft,
   alignItemsRTL,
-  alignItemsFlexRTL,
+  alignSelfLTR,
   paddingRTLRight,
   marginRTLRight,
 };

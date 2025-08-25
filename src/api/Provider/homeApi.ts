@@ -76,6 +76,22 @@ export const providerHomeApi = createApi({
       }),
       invalidatesTags: ['providerHomeApi'],
     }),
+
+     getJobs: builder.query<any, any>({
+          query: query => ({
+            url: PROVIDER_API.DASHBOARD.JOBS,
+            method: HTTP_METHOD.GET,
+            params: query,
+          }),
+        }),
+    
+        getJobDetails: builder.query<any, any>({
+          query: query => ({
+            url: PROVIDER_API.DASHBOARD.JOBS_DETAILS,
+            method: HTTP_METHOD.GET,
+            params: query,
+          }),
+        }),
     // createRequest: builder.mutation<any, any>({
     //   query: credentials => ({
     //     url: PROVIDER_API.DASHBOARD.CREATE_REQUEST,
@@ -109,4 +125,6 @@ export const {
   useSendOfferMutation,
   // useCreateRequestMutation,
   // useAcceptOfferMutation,
+  useGetJobDetailsQuery,
+  useGetJobsQuery
 } = providerHomeApi;

@@ -185,13 +185,15 @@ const MyBookings = () => {
       formData.append('notes', note);
       formData.append('time', selectedTime);
       formData.append('location', isLocationType);
-      formData.append('media_files', selectedMedia);
-      // if (isLocationType === 'My Location') {
-      //   formData.append(
-      //     'address',
-      //     `${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`,
-      //   );
-      // }
+      // formData.append('media_files', selectedMedia);
+      selectedMedia.forEach((media, index) => {
+        const fileObject = {
+          uri: media.uri,
+          type: media.type,
+          name: media.name || `media_${index}.${media.type.split('/')[1]}`,
+        };
+        formData.append('media_files', fileObject); // <-- use same key for all
+      });
 
       // Add dynamic field values to meta_data
       Object.keys(dynamicFieldValues).forEach(fieldName => {

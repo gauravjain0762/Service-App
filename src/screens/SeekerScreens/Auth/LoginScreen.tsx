@@ -5,13 +5,14 @@ import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
 import {Colors} from '@/constants/Colors';
-import {rowReverseRTL} from '@/utils/arabicStyles';
+import {alignSelfLTR, alignSelfRTL, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import {
   emailCheck,
   errorToast,
+  goBack,
   navigateTo,
   resetNavigation,
   successToast,
@@ -39,7 +40,6 @@ const LoginScreen = ({}: any) => {
   const {fcmToken} = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
 
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
     email: __DEV__ ? 'test@gmail.com' : '',
     password: __DEV__ ? 'Test@123' : '',
@@ -74,7 +74,7 @@ const LoginScreen = ({}: any) => {
       }
 
       let obj = {
-        email: details.email,
+        email: details.email.toLowerCase(),
         password: details.password,
         deviceToken: fcmToken,
       };
@@ -172,6 +172,18 @@ const LoginScreen = ({}: any) => {
 
   return (
     <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
+      <CustomImage
+        onPress={() => {
+          goBack();
+        }}
+        source={IMAGES.backArrow}
+        size={getFontSize(2.5)}
+        containerStyle={{
+          padding: getFontSize(2),
+          ...alignSelfLTR(),
+        }}
+        imageStyle={{...flipImage()}}
+      />
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
@@ -193,14 +205,14 @@ const LoginScreen = ({}: any) => {
             style={styles.forgotPasswordText}
             onPress={() => navigateTo(SEEKER_SCREENS.ForgotPassword)}
           />
-          <TermsCheckBox
+          {/* <TermsCheckBox
             isSeeker={true}
             toggleCheckBox={toggleCheckBox}
             setToggleCheckBox={setToggleCheckBox}
             checkedCheckBoxColor={Colors.seeker_primary}
             isChecked={toggleCheckBox}
             onClick={() => setToggleCheckBox(!toggleCheckBox)}
-          />
+          /> */}
         </View>
 
         <View style={{marginTop: hp(50), gap: hp(30)}}>
@@ -260,7 +272,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.white,
     paddingHorizontal: getFontSize(2.2),
-    paddingTop: getFontSize(10),
+    paddingTop: getFontSize(7),
   },
   topLabel: {
     ...commonFontStyle(600, 3.4, Colors.black),

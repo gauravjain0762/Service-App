@@ -5,9 +5,10 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
-import {navigateTo} from '../common/commonFunction';
+import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {useAppSelector} from '@/Hooks/hooks';
 
 type Props = {
   item?: any;
@@ -32,6 +33,12 @@ const ProviderHeader = ({
   avatarContainerStyle,
   isStarVisible = false,
 }: Props) => {
+  const {userInfo, dropDownCategories, language} = useAppSelector(
+    state => state.auth,
+  );
+  const categoryData = dropDownCategories?.find(
+    val => val?._id === userInfo?.category_id,
+  );
   return (
     <View style={[styles.container, style]}>
       <View style={styles.leftSection}>
@@ -44,7 +51,7 @@ const ProviderHeader = ({
         </View>
         <View style={styles.infoContainer}>
           <CommonText
-            text={item?.name || 'Service Provider'}
+            text={item?.name || userInfo?.name || 'Service Provider'}
             style={[styles.title, titleStyle]}
           />
 
@@ -65,7 +72,13 @@ const ProviderHeader = ({
           <CommonText
             numberOfLines={3}
             style={[styles.subtitle, subtitleStyle]}
-            text={item?.review_desc || 'Welcome back!'}
+            text={
+              getLocalizedText(
+                categoryData?.title,
+                categoryData?.title_ar,
+                language,
+              ) || 'Welcome back!'
+            }
           />
         </View>
       </View>

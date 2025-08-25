@@ -60,13 +60,13 @@ const SeekerTabNavigation = () => {
             let iconHeight = hp(25);
 
             if (route.name === SEEKER_SCREENS.Home) {
-              iconName = IMAGES.home;
+              iconName = focused ? IMAGES.home : IMAGES.homeUnSelected;
             } else if (route.name === SEEKER_SCREENS.MyRequest) {
-              iconName = IMAGES.feed;
+              iconName = focused ? IMAGES.feed : IMAGES.feedUnselected;
             } else if (route.name === SEEKER_SCREENS.MyBookingsTab) {
-              iconName = IMAGES.calendar;
+              iconName = focused ? IMAGES.calendar : IMAGES.calendarUnselected;
             } else if (route.name === SEEKER_SCREENS.Profile) {
-              iconName = IMAGES.profile;
+              iconName = focused ? IMAGES.profile : IMAGES.profileUnselected;
             }
             return (
               <View style={[styles.iconContainer]}>
@@ -76,10 +76,8 @@ const SeekerTabNavigation = () => {
                   style={{
                     width: iconWidth,
                     height: iconHeight,
-                    opacity: !focused ? 0.85 : 1,
                   }}
                   resizeMode={FastImage.resizeMode.contain}
-                  tintColor={focused ? Colors.white : Colors._68d2a1}
                 />
               </View>
             );

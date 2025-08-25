@@ -78,7 +78,7 @@ const OTPScreen = () => {
         : verifyOTP(obj)
       ).unwrap();
       if (response?.status) {
-        successToast(response?.message);
+        // successToast(response?.message);
         resetNavigation(
           isProvider
             ? PROVIDER_SCREENS.Subscription

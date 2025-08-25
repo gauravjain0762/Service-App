@@ -82,7 +82,7 @@ const ProSignupScreen = () => {
 
       let obj = {
         name: userData.name,
-        email: userData.email,
+        email: userData.email.toLowerCase(),
         password: userData.password,
         phone_code: callingCode,
         phone: userData.phone,

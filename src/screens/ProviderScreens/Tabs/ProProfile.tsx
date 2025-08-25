@@ -18,10 +18,12 @@ import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 import {useLogoutMutation} from '@/api/Provider/authApi';
 import {resetStore} from '@/store';
 import {clearToken} from '@/features/authSlice';
-import {useAppDispatch} from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 
 const ProProfile = () => {
+  const {userInfo} = useAppSelector<any>(state => state.auth);
+
   const route = useRoute<any>();
   const {isProvider} = route.params ?? {};
   const dispatch = useAppDispatch();
@@ -104,6 +106,7 @@ const ProProfile = () => {
       }, 300);
     }
   };
+  console.log(userInfo, 'userInfo');
 
   return (
     <SafeareaProvider loading={isLoading} style={GeneralStyle.container}>
@@ -122,14 +125,14 @@ const ProProfile = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <CustomImage
-          source={IMAGES.user_profile_icon}
+          uri={userInfo?.logo}
           containerStyle={styles.userImageStyle}
           size={getFontSize(7)}
           onPress={() => navigateTo(PROVIDER_SCREENS.ProfileDetail)}
         />
 
-        <CommonText text="Master Sanitary Fittings" style={styles.name} />
-        <CommonText text="serviceprovider.com" style={styles.link} />
+        <CommonText text={userInfo?.name} style={styles.name} />
+        <CommonText text={userInfo?.email} style={styles.link} />
 
         <View style={styles.serviceContainer}>
           <View style={styles.serviceView}>

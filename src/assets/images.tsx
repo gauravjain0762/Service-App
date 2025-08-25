@@ -68,6 +68,10 @@ export const IMAGES = {
   true_mark: require('./icons/true_mark.png'),
   photoUpload: require('./icons/photoUpload.png'),
   pdfIcon: require('./icons/pdfIcon.png'),
+  calendarUnselected: require('./icons/calendarUnselected.png'),
+  profileUnselected: require('./icons/profileUnselected.png'),
+  homeUnSelected: require('./icons/homeUnSelected.png'),
+  feedUnselected: require('./icons/feedUnselected.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

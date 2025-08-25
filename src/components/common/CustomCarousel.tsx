@@ -30,13 +30,13 @@ const CustomCarousel = () => {
     return () => clearInterval(intervalId);
   }, [activeIndex]);
 
-  const renderItem = ({item, index}: any) => {
+  const renderItem = ({item,index}:any) => {
     return (
       <View style={styles.imageWrapper}>
         <Image
           source={item.image}
           resizeMode="contain"
-          style={index === 1 ? styles.stickyBottomImage : styles.logoImage}
+          style={item?.id === '2' ? styles.stickyBottomImage : styles.logoImage}
         />
       </View>
     );
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     height: hp(370),
   },
   logoImage: {
-    width: '70%',
-    height: '70%',
+    width: '100%',
+    height: '100%',
+    marginTop:100,
   },
   stickyBottomImage: {
-    bottom: '-3%',
     width: '100%',
-    height: '80%',
-    position: 'absolute',
+    height: '100%',
+    marginTop:25,
   },
   pagination: {
     marginTop: hp(21),

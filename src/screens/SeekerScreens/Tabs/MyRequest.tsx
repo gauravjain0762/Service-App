@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   cardsContainer: {
-    flexGrow: 1,
+    flex: 1,
     marginTop: hp(20),
   },
   cardContent: {

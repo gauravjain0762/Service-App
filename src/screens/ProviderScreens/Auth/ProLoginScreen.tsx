@@ -4,11 +4,12 @@ import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
-import {rowReverseRTL} from '@/utils/arabicStyles';
+import { alignSelfLTR, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import {
   emailCheck,
   errorToast,
+  goBack,
   navigateTo,
   resetNavigation,
   successToast,
@@ -22,6 +23,8 @@ import {useLoginMutation} from '@/api/Provider/authApi';
 import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {getAsyncFCMToken, setAsyncFCMToken} from '@/Hooks/asyncStorage';
 import {setFcmToken} from '@/features/authSlice';
+import CustomImage from '@/components/common/CustomImage';
+import { IMAGES } from '@/assets/images';
 
 const ProLoginScreen = ({}: any) => {
   const {fcmToken} = useAppSelector(state => state.auth);
@@ -53,7 +56,7 @@ const ProLoginScreen = ({}: any) => {
       }
 
       let obj = {
-        email: details.email,
+        email: details.email.toLowerCase(),
         password: details.password,
         deviceToken: fcmToken,
       };
@@ -76,6 +79,18 @@ const ProLoginScreen = ({}: any) => {
 
   return (
     <SafeareaProvider style={{backgroundColor: Colors.white}}>
+      <CustomImage
+        onPress={() => {
+          goBack();
+        }}
+        source={IMAGES.backArrow}
+        size={getFontSize(2.5)}
+        containerStyle={{
+          padding: getFontSize(2),
+          ...alignSelfLTR(),
+        }}
+        imageStyle={{...flipImage()}}
+      />
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
@@ -101,13 +116,13 @@ const ProLoginScreen = ({}: any) => {
               })
             }
           />
-          <TermsCheckBox
+          {/* <TermsCheckBox
             toggleCheckBox={toggleCheckBox}
             setToggleCheckBox={setToggleCheckBox}
             checkedCheckBoxColor={Colors.seeker_primary}
             isChecked={toggleCheckBox}
             onClick={() => setToggleCheckBox(!toggleCheckBox)}
-          />
+          /> */}
         </View>
 
         <View style={{marginTop: hp(50), gap: hp(30)}}>

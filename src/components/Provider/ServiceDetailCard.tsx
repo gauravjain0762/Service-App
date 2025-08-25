@@ -23,6 +23,7 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
     Number(requestDetails?.meta_data?.no_hours),
     'hours',
   );
+  console.log(requestDetails, 'requestDetails');
 
   const serviceData = [
     {
@@ -40,8 +41,12 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
       )}`,
     },
     {'Booking Date': `${start.format('ddd, DD MMM')}`},
-    {'Booking Time': `${start.format('hh:mm')} - ${end.format('hh:mm')}`},
-    {Location: requestDetails?.address},
+    {'Booking Time': requestDetails?.time},
+    {
+      Location: requestDetails?.address
+        ? `${requestDetails?.address?.apt_villa_no} ${requestDetails?.address?.building_name} ${requestDetails?.address?.directions}`
+        : '',
+    },
     {'No. of Hour': `${requestDetails?.meta_data?.no_hours} Hours`},
     {
       'No. of Professional': `${requestDetails?.meta_data?.no_professionals} Person`,

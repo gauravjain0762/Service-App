@@ -5,52 +5,88 @@ import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CustomImage from './CustomImage';
 
 type Props = {
   color?: string;
   service?: string;
   providerName?: string;
   isViewProfile?: boolean;
+  source?: any;
+  onCallPress?: any;
+  onMessagePress?: any;
 };
 
-const ServiceProvider = ({providerName, service, color, isViewProfile=true}: Props) => {
+const ServiceProvider = ({
+  providerName,
+  service,
+  color,
+  isViewProfile = true,
+  source,
+  onCallPress,
+  onMessagePress,
+}: Props) => {
   return (
     <View style={[styles.providerCard, {backgroundColor: color}]}>
-      <View style={styles.providerAvatarWrapper}>
+      {/* <View style={styles.providerAvatarWrapper}>
         <Image
           resizeMode="contain"
           source={IMAGES.profile}
           style={styles.providerAvatar}
         />
-      </View>
+      </View> */}
+      <CustomImage
+        uri={source}
+        source={IMAGES.profile}
+        containerStyle={styles.providerAvatarWrapper}
+        imageStyle={styles.providerAvatar}
+        resizeMode="contain"
+      />
       <View style={styles.providerInfo}>
         <View style={styles.providerTopRow}>
           <CommonText
             text={providerName || 'Royal Santary Store'}
             style={styles.providerName}
           />
-         {isViewProfile && <View style={styles.ratingRow}>
-            <Image source={IMAGES.star} />
-            <CommonText text={'4.9'} style={styles.ratingText} />
-          </View>}
+          {isViewProfile && (
+            <View style={styles.ratingRow}>
+              <Image source={IMAGES.star} />
+              <CommonText text={'4.9'} style={styles.ratingText} />
+            </View>
+          )}
         </View>
-        <CommonText
-          text={service || 'AC Regular Services'}
-          style={styles.providerService}
-        />
+        {service && (
+          <CommonText
+            text={service || 'AC Regular Services'}
+            style={styles.providerService}
+          />
+        )}
         <View style={styles.actionRow}>
           <View style={styles.actionIconGroup}>
-            <View style={styles.iconContainer}>
-              <Image source={IMAGES.call} tintColor={color} />
-            </View>
-            <View style={styles.iconContainer}>
-              <Image source={IMAGES.message} tintColor={color} />
-            </View>
+            <CustomImage
+              onPress={onCallPress}
+              source={IMAGES.call}
+              containerStyle={styles.iconContainer}
+              imageStyle={{width: '60%', height: '60%'}}
+              tintColor={color}
+            />
+            <CustomImage
+              onPress={onMessagePress}
+              source={IMAGES.message}
+              containerStyle={styles.iconContainer}
+              imageStyle={{width: '60%', height: '60%'}}
+              tintColor={color}
+            />
           </View>
 
-        {isViewProfile &&  <View style={styles.viewProfileBtn}>
-            <CommonText text={'View Profile'} style={styles.viewProfileText} />
-          </View>}
+          {isViewProfile && (
+            <View style={styles.viewProfileBtn}>
+              <CommonText
+                text={'View Profile'}
+                style={styles.viewProfileText}
+              />
+            </View>
+          )}
         </View>
       </View>
     </View>
@@ -70,15 +106,17 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.seeker_primary,
   },
   providerAvatarWrapper: {
-    padding: hp(22),
     borderRadius: hp(20),
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors._F4F4FE,
+    height: hp(80),
+    width: wp(80),
+    overflow: 'hidden',
   },
   providerAvatar: {
-    height: hp(40),
-    width: wp(40),
+    height: '100%',
+    width: '100%',
   },
   providerInfo: {
     flex: 1,
