@@ -44,9 +44,11 @@ const ProviderHeader = ({
       <View style={styles.leftSection}>
         <View style={[styles.avatarContainer, avatarContainerStyle]}>
           <CustomImage
-            size={size || hp(35)}
             onPress={onPressProfile}
-            source={item?.image ? {uri: item?.image} : IMAGES.profile_avatar}
+            imageStyle={{height: '100%', width: '100%'}}
+            source={!item?.image && IMAGES.profile_avatar}
+            uri={item?.image}
+            containerStyle={{height: '100%', width: '100%'}}
           />
         </View>
         <View style={styles.infoContainer}>
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: Colors._f4f4fe,
+    overflow: 'hidden',
   },
   infoContainer: {
     flex: 1,

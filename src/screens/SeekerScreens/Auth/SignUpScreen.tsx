@@ -49,31 +49,41 @@ const SignUpScreen = () => {
 
   const onSignUp = async () => {
     try {
-      if (!emailCheck(userData.email)) {
-        errorToast('Please enter valid email');
+      if (!userData?.name.trim()) {
+        errorToast('Enter a full name');
+      } else if (!userData?.email.trim()) {
+        errorToast('Enter a Email');
+      } else if (!emailCheck(userData?.email.trim().toLocaleLowerCase())) {
+        errorToast('Please enter a valid email');
+      } else if (!userData?.phone.trim()) {
+        errorToast('Enter a phone number');
+      } else if (userData?.phone.length < 9 || userData?.phone.length > 12) {
+        errorToast('Enter a valid phone number');
         return;
-      }
-
-      let obj = {
-        name: userData.name,
-        email: userData.email.toLowerCase(),
-        password: userData.password,
-        phone_code: callingCode,
-        phone: userData.phone,
-        deviceToken: fcmToken,
-      };
-
-      const response = await signUp(obj).unwrap();
-
-      if (response?.status) {
-        navigateTo(SEEKER_SCREENS.OtpScreen, {
-          userId: response?.data?.user?._id,
-          phone: callingCode + userData.phone,
-          isProvider: false,
-        });
-        successToast(response?.message);
+      } else if (userData?.password === '') {
+        errorToast('Please enter password');
       } else {
-        errorToast(response?.message);
+        let obj = {
+          name: userData?.name.trim(),
+          email: userData?.email.trim().toLowerCase(),
+          password: userData?.password.trim(),
+          phone_code: callingCode,
+          phone: userData.phone,
+          deviceToken: fcmToken,
+        };
+
+        const response = await signUp(obj).unwrap();
+
+        if (response?.status) {
+          navigateTo(SEEKER_SCREENS.OtpScreen, {
+            userId: response?.data?.user?._id,
+            phone: callingCode + userData.phone,
+            isProvider: false,
+          });
+          successToast(response?.message);
+        } else {
+          errorToast(response?.message);
+        }
       }
     } catch (error: any) {
       console.log(error);

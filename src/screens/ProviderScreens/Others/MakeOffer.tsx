@@ -40,6 +40,7 @@ const MakeOffer = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
+  const [submittedJobData, setSubmittedJobData] = useState<any>(null);
 
   const onSubmitOffer = async () => {
     try {
@@ -86,6 +87,7 @@ const MakeOffer = () => {
       const response = await sendOffer(formData).unwrap();
       if (response?.status) {
         setIsSubmitModalVisible(true);
+        setSubmittedJobData(response?.data);
       }
     } catch (error: any) {
       console.log(error);
@@ -225,7 +227,9 @@ const MakeOffer = () => {
           color={Colors.provider_primary}
           handleCardPress={() => {
             setIsSubmitModalVisible(false);
-            resetNavigation(PROVIDER_SCREENS.ProOfferDetails);
+            resetNavigation(PROVIDER_SCREENS.ProOfferDetails, {
+              job_id: submittedJobData?.job_id,
+            });
           }}
           bookingNumber={8321}
           requestCardStyle={{backgroundColor: Colors.provider_primary}}

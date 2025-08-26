@@ -39,10 +39,11 @@ type UserProps = {
   password: string;
   service: string;
   category: string | any;
-  subCategory: string | any;
+  subCategory: string[] | number[] | any;
   license: any;
   certificate: any;
-  photo: any;
+  picture: any;
+  about: string | any;
 };
 
 const ProSignupScreen = () => {
@@ -61,10 +62,11 @@ const ProSignupScreen = () => {
     password: __DEV__ ? 'user@123' : '',
     service: '',
     category: '',
-    subCategory: '',
+    subCategory: [],
     license: null,
     certificate: null,
-    photo: null,
+    picture: null,
+    about: '',
   });
 
   useEffect(() => {
@@ -73,38 +75,87 @@ const ProSignupScreen = () => {
     }
   }, [subCatTrigger, userData.category]);
 
+  const getSelectedSubCategoryLabels = () => {
+    if (!userData.subCategory || userData.subCategory.length === 0) return '';
+
+    const selectedLabels = dropDownSubCategories
+      .filter(item => userData.subCategory.includes(item.value))
+      .map(item => item.label);
+
+    return selectedLabels.join(', ');
+  };
+
   const onSignUp = async () => {
     try {
-      if (!emailCheck(userData.email)) {
-        errorToast('Please enter valid email');
+      if (!userData?.name.trim()) {
+        errorToast('Enter a full name');
+      } else if (!userData?.email.trim()) {
+        errorToast('Enter a Email');
+      } else if (!emailCheck(userData?.email.trim().toLocaleLowerCase())) {
+        errorToast('Please enter a valid email');
+      } else if (!userData?.phone.trim()) {
+        errorToast('Enter a phone number');
+      } else if (userData?.phone.length < 9 || userData?.phone.length > 12) {
+        errorToast('Enter a valid phone number');
         return;
-      }
-
-      let obj = {
-        name: userData.name,
-        email: userData.email.toLowerCase(),
-        password: userData.password,
-        phone_code: callingCode,
-        phone: userData.phone,
-        category_id: userData.category,
-        sub_categories: userData.subCategory,
-        service_type: userData.service,
-        deviceToken: fcmToken,
-      };
-
-      const response = await signUp(obj).unwrap();
-      console.log('response', response);
-
-      if (response?.status) {
-        navigateTo(PROVIDER_SCREENS.OtpScreen, {
-          userId: response?.data?.company?._id,
-          phone: callingCode + userData.phone,
-          isProvider: true,
-        });
-        // navigateTo(PROVIDER_SCREENS.OtpScreen, {isProvider: true});
-        successToast(response?.message);
+      } else if (userData?.password === '') {
+        errorToast('Please enter password');
+      } else if (!userData.subCategory || userData.subCategory.length === 0) {
+        errorToast('Please select at least one subcategory');
+      } else if (!userData.service) {
+        errorToast('Please select service type');
+      } else if (!userData.category) {
+        errorToast('Please select category');
+      } else if (!userData.picture) {
+        errorToast('Please upload profile picture');
+      } else if (!userData.certificate) {
+        errorToast('Please upload certificate');
+      } else if (!userData.license) {
+        errorToast('Please upload license');
+      } else if (!userData.about) {
+        errorToast('Please enter about your self');
       } else {
-        errorToast(response?.message);
+        const formData = new FormData();
+        formData.append('name', userData.name);
+        formData.append('email', userData.email.toLowerCase());
+        formData.append('password', userData.password);
+        formData.append('phone_code', callingCode);
+        formData.append('phone', userData.phone);
+        formData.append('category_id', userData.category);
+        formData.append('sub_categories', userData.subCategory.join(','));
+        formData.append('service_type', userData.service);
+        formData.append('about', userData.about);
+
+        formData.append('picture', {
+          uri: userData?.picture?.sourceURL,
+          type: userData?.picture?.mime,
+          name: userData?.picture?.name,
+        });
+        formData.append('certificate', {
+          uri: userData?.certificate?.sourceURL,
+          type: userData?.certificate?.mime,
+          name: userData?.certificate?.name,
+        });
+        formData.append('license', {
+          uri: userData?.license?.sourceURL,
+          type: userData?.license?.mime,
+          name: userData?.license?.name,
+        });
+
+        const response = await signUp(formData).unwrap();
+        console.log('response-----', response);
+
+        if (response?.status) {
+          navigateTo(PROVIDER_SCREENS.OtpScreen, {
+            userId: response?.data?.company?._id,
+            phone: callingCode + userData.phone,
+            isProvider: true,
+          });
+          // navigateTo(PROVIDER_SCREENS.OtpScreen, {isProvider: true});
+          successToast(response?.message);
+        } else {
+          errorToast(response?.message);
+        }
       }
     } catch (error: any) {
       console.log(error);
@@ -172,16 +223,17 @@ const ProSignupScreen = () => {
             data={dropDownSubCategories}
             value={userData?.subCategory}
             placeholder="Type of Subcategory"
-            onChange={item =>
-              setUserData({...userData, subCategory: item.value})
-            }
+            onChange={selectedItems => {
+              setUserData({...userData, subCategory: selectedItems});
+            }}
+            multiSelect
           />
         </View>
 
         <UploadImage
           style={{marginVertical: getFontSize(2)}}
-          value={userData.photo}
-          onSelect={res => setUserData({...userData, photo: res})}
+          value={userData.picture}
+          onSelect={res => setUserData({...userData, picture: res})}
         />
 
         <View style={styles.uploadSection}>
@@ -201,6 +253,8 @@ const ProSignupScreen = () => {
           multiline
           containerStyle={styles.aboutInput}
           placeholder="About Your Self"
+          value={userData.about}
+          onChangeText={e => setUserData({...userData, about: e})}
         />
 
         <View style={styles.buttonSection}>

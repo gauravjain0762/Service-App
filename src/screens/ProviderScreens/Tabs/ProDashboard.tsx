@@ -3,7 +3,7 @@ import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CommonText from '@/components/common/CommonText';
 import ProviderHeader from '@/components/Provider/ProviderHeader';
@@ -68,7 +68,7 @@ const ProDashboard = () => {
   ];
   return (
     <SafeareaProvider style={styles.safearea}>
-      <ProviderHeader />
+      <ProviderHeader item={{image: userInfo?.logo}} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -103,6 +103,23 @@ const ProDashboard = () => {
           }}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
+          ListEmptyComponent={() => (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: getFontSize(15),
+              }}>
+              <CommonText
+                text="No recent bookings"
+                style={{
+                  textAlign: 'center',
+                  ...commonFontStyle(500, 2, Colors._898989),
+                }}
+              />
+            </View>
+          )}
         />
       </ScrollView>
     </SafeareaProvider>

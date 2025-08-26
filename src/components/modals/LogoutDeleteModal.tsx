@@ -28,7 +28,7 @@ const LogoutDeleteModal = ({
   descriptionText,
   headerText,
   image,
-  onPressConfirm
+  onPressConfirm,
 }: Props) => {
   return (
     <BottomModal onClose={() => {}} onPressCancel={() => {}} visible={visible}>
@@ -45,6 +45,12 @@ const LogoutDeleteModal = ({
 
         <View style={styles.buttonRow}>
           <CustomButton
+            title="Cancel"
+            onPress={onPressClose}
+            btnStyle={styles.cancelButton}
+            textStyle={styles.cancelButtonText}
+          />
+          <CustomButton
             title={buttonTitle}
             btnStyle={[
               styles.primaryButton,
@@ -53,12 +59,6 @@ const LogoutDeleteModal = ({
                 : {backgroundColor: Colors.seeker_primary},
             ]}
             onPress={onPressConfirm}
-          />
-          <CustomButton
-            title="Cancel"
-            onPress={onPressClose}
-            btnStyle={styles.cancelButton}
-            textStyle={styles.cancelButtonText}
           />
         </View>
       </View>
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   contentContainer: {
-    padding: wp(20),
+    paddingHorizontal: wp(20),
+    paddingBottom: wp(20),
     alignItems: 'center',
     justifyContent: 'center',
   },

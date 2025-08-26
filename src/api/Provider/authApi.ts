@@ -35,6 +35,10 @@ export const providerAuthApi = createApi({
         url: PROVIDER_API.AUTH.REGISTER,
         method: HTTP_METHOD.POST,
         data: credentials,
+        headers: {
+         'Cache-Control': 'no-cache, no-store, must-revalidate',
+         'Content-Type': 'multipart/form-data',
+        },
       }),
       invalidatesTags: ['Auth'],
     }),
