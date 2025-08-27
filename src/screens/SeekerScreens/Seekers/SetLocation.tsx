@@ -325,6 +325,7 @@ const SetLocation = () => {
                   // setIsLocationModalVisible(true);
                 }}
                 setIsLocationModalVisible={setIsLocationModalVisible}
+                regions={regions}
               />
             </BottomModal>
           )}

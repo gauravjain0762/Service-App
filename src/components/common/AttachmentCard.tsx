@@ -23,11 +23,11 @@ const AttachmentCard = ({requestImages=[]}:any) => {
         }}
       />
       <View style={styles.imageRow}>
-        <Image source={{uri:requestImages &&requestImages[0]}} style={styles.imageBox} />
+        <Image source={{uri:requestImages &&requestImages[0]?.file}} style={styles.imageBox} />
 
         <View style={styles.secondImageWrapper}>
           <Image
-            source={{uri:requestImages && requestImages[1]}}
+            source={{uri:requestImages && requestImages[1]?.file}}
             style={[styles.imageBox, styles.blurredImage]}
             blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
           />

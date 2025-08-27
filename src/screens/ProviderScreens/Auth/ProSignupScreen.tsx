@@ -56,10 +56,10 @@ const ProSignupScreen = () => {
   const [subCatTrigger] = useLazySubCategoryQuery();
   const [callingCode, setCallingCode] = useState('971');
   const [userData, setUserData] = useState<UserProps>({
-    name: __DEV__ ? 'user' : '',
-    email: __DEV__ ? 'user@gmail.com' : '',
-    phone: __DEV__ ? '9555454' : '',
-    password: __DEV__ ? 'user@123' : '',
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
     service: '',
     category: '',
     subCategory: [],

@@ -50,7 +50,6 @@ const JobDetails = () => {
         text={'Job Detail'}
         style={{
           paddingHorizontal: wp(24),
-          
         }}
       />
 
@@ -94,6 +93,7 @@ const JobDetails = () => {
                     style={styles.jobSubTitle}
                   />
                   <CommonText
+                    numberOfLines={2}
                     text={`${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`}
                     style={styles.jobLocation}
                   />
@@ -189,6 +189,7 @@ const styles = StyleSheet.create({
   },
   jobInfoContainer: {
     gap: hp(11),
+    flexShrink: 1,
   },
   jobTitle: {
     ...commonFontStyle(600, 1.9, Colors.black),
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.7, Colors._898989),
   },
   jobLocation: {
+    flexShrink: 1,
     ...commonFontStyle(400, 1.6, Colors._7D7D7D),
   },
   bookingContainer: {

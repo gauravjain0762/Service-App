@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
@@ -23,12 +23,58 @@ import {
 } from '@/api/Seeker/homeApi';
 import CommonText from '@/components/common/CommonText';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
+import PaymentMethodModal from '@/components/common/PaymentMethodModel';
+import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
 
 const Offers = () => {
   const {params} = useRoute<any>();
   const isResetNav = params?.isResetNav;
   const request_id = params?.request_id;
   const [acceptOffer, {isLoading}] = useAcceptOfferMutation();
+  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
+    useState(false);
+  const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
+    useState(false);
+  const [isModalId, setIsModalId] = useState<any>(null);
+
+  const openPaymentMethodModal = async () => {
+    setIsPaymentMethodModalVisible(true);
+  };
+
+  const acceptOffers = async () => {
+    try {
+      const data = {
+        offer_id: isModalId?._id,
+        payment_method: 'Card',
+        transaction_id: '',
+      };
+
+      const response = await acceptOffer(data).unwrap();
+      if (response?.status) {
+        setTimeout(() => {
+          setIsPaymentSuccessModalVisible(true);
+        }, 500);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
+  };
+
+  const closePaymentMethodModal = () => {
+    setIsPaymentMethodModalVisible(false);
+  };
+
+  const handlePaymentSelect = () => {
+    closePaymentMethodModal();
+    acceptOffers();
+  };
+
+  const closePaymentSuccessModal = () => {
+    setIsPaymentSuccessModalVisible(false);
+  };
 
   const {language} = useAppSelector(state => state.auth);
 
@@ -49,26 +95,26 @@ const Offers = () => {
   const requestDetails = requestData?.data?.job;
   const requestDetailsOffers = requestData?.data?.offers;
 
-  const openPaymentMethodModal = async (item: any) => {
-    // navigateTo(SCREENS.JobDetails);
-    try {
-      const data = {
-        offer_id: item?._id,
-        payment_method: 'Card',
-        // transaction_id: '',
-      };
+  // const openPaymentMethodModal = async (item: any) => {
+  //   // navigateTo(SCREENS.JobDetails);
+  //   try {
+  //     const data = {
+  //       offer_id: item?._id,
+  //       payment_method: 'Card',
+  //       // transaction_id: '',
+  //     };
 
-      const response = await acceptOffer(data).unwrap();
-      if (response?.status) {
-        // setIsSubmitModalVisible(true);
-      }
-    } catch (error: any) {
-      console.log(error);
-      errorToast(
-        error?.data?.message || error?.message || 'Something went wrong',
-      );
-    }
-  };
+  //     const response = await acceptOffer(data).unwrap();
+  //     if (response?.status) {
+  //       // setIsSubmitModalVisible(true);
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     errorToast(
+  //       error?.data?.message || error?.message || 'Something went wrong',
+  //     );
+  //   }
+  // };
   return (
     <SafeareaProvider style={styles.safeArea}>
       {requestLoading ? (
@@ -125,7 +171,8 @@ const Offers = () => {
                       });
                     }}
                     onPressAcceptOffer={() => {
-                      openPaymentMethodModal(item);
+                      setIsModalId(item);
+                      openPaymentMethodModal();
                     }}
                   />
                 );
@@ -148,6 +195,16 @@ const Offers = () => {
               }
             />
           </View>
+          <PaymentMethodModal
+            visible={isPaymentMethodModalVisible}
+            onClose={closePaymentMethodModal}
+            onPaymentSelect={handlePaymentSelect}
+          />
+          <PaymentSuccessModal
+            onClose={closePaymentSuccessModal}
+            visible={isPaymentSuccessModalVisible}
+            amount={isModalId?.offer_price}
+          />
         </>
       )}
     </SafeareaProvider>

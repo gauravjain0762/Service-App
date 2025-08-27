@@ -23,6 +23,7 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {
   useAppleSignInMutation,
   useGoogleSignInMutation,
+  useGuestLoginMutation,
   useSignUpMutation,
 } from '@/api/Seeker/authApi';
 import {useAppSelector} from '@/Hooks/hooks';
@@ -34,6 +35,7 @@ import {WEB_CLIENT_ID} from '@/utils/constants/api';
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
   const {fcmToken} = useAppSelector(state => state.auth);
+  const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();
   const [appleLogin] = useAppleSignInMutation();
   const [googleLogin] = useGoogleSignInMutation();
   const [loading, setLoading] = React.useState(false);
@@ -41,10 +43,10 @@ const SignUpScreen = () => {
   const [callingCode, setCallingCode] = React.useState('971');
 
   const [userData, setUserData] = React.useState<any>({
-    name: __DEV__ ? 'Test' : '',
-    email: __DEV__ ? 'test@gmail.com' : '',
-    phone: __DEV__ ? '324420121' : '',
-    password: __DEV__ ? 'Test@123' : '',
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
   });
 
   const onSignUp = async () => {
@@ -168,13 +170,27 @@ const SignUpScreen = () => {
     }
   };
 
+  const onGuestUser = async () => {
+    let data = {
+      device_token: fcmToken || 's',
+      device_type: Platform.OS,
+    };
+    const response = await guestLogin(data).unwrap();
+  };
   return (
     <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         style={styles.container}>
-        <CommonText text="Create New Account" style={styles.topLabel} />
-
+        <View style={styles.headerRow}>
+          <CustomImage
+            size={hp(20)}
+            disabled={false}
+            onPress={() => goBack()}
+            source={IMAGES.backArrow2}
+          />
+          <CommonText text="Create New Account" style={styles.topLabel} />
+        </View>
         <View style={{gap: hp(20), marginTop: hp(45)}}>
           <CustomTextInput
             placeholder="Full name"
@@ -223,7 +239,9 @@ const SignUpScreen = () => {
             isPrimary="seeker"
             title={'Login as a Guest'}
             type="outline"
-            onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
+            // onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
+            loading={isGuestLoading}
+            // onPress={onGuestUser}
           />
         </View>
 
@@ -270,7 +288,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: getFontSize(2.2),
     paddingTop: getFontSize(3),
   },
+  headerRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   topLabel: {
+    flex: 3,
     ...commonFontStyle(600, 3.4, Colors.black),
     textAlign: 'center',
   },

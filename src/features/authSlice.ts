@@ -19,6 +19,7 @@ export interface AuthState {
   dropDownCategories: any[];
   dropDownSubCategories: any[];
   packages?: any[];
+  guestUser?: boolean;
 }
 
 // Initial state
@@ -37,7 +38,8 @@ const initialState: AuthState = {
 
   dropDownCategories: [],
   dropDownSubCategories: [],
-  packages:[]
+  packages:[],
+  guestUser: false,
 };
 
 // Create the auth slice
@@ -59,6 +61,9 @@ const authSlice = createSlice({
 
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
+    },
+    setGuestLogin: (state, action: PayloadAction<boolean>) => {
+      state.guestUser = action.payload;
     },
     setUserInfo: (state, action: PayloadAction<any>) => {
       state.userInfo = action.payload;
@@ -110,6 +115,7 @@ export const {
   setDropDownCategories,
   setDropDownSubCategories,
   setPackages,
+  setGuestLogin,
 } = authSlice.actions;
 
 // Selectors

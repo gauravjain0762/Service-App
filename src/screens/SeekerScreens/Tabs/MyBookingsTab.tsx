@@ -32,6 +32,7 @@ const MyBookingsTab = () => {
       refetchOnFocus: true,
     },
   );
+  console.log(jobData, 'jobDatajobDatajobDatajobData');
 
   React.useEffect(() => {
     if (jobData) {
@@ -89,15 +90,26 @@ const MyBookingsTab = () => {
             onEndReachedThreshold={0.5}
             keyExtractor={(item: any) => item?._id?.toString()}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+            contentContainerStyle={[
+              styles.scrollContent,
+              allJobData?.length == 0 && {flexGrow: 1},
+            ]}
             ListEmptyComponent={
-              <CommonText
-                text={
-                  activeTab === 'Active'
-                    ? 'No active bookings'
-                    : 'No completed bookings'
-                }
-              />
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CommonText
+                  text={
+                    activeTab === 'Active'
+                      ? 'No active bookings'
+                      : 'No completed bookings'
+                  }
+                  style={styles.noData}
+                />
+              </View>
             }
           />
         </View>
@@ -127,9 +139,13 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 2.2, Colors._909090),
   },
   cardsContainer: {
+    flex: 1,
     marginTop: hp(20),
   },
   scrollContent: {
     paddingBottom: '20%',
+  },
+  noData: {
+    ...commonFontStyle(500, 2.5, Colors.black),
   },
 });

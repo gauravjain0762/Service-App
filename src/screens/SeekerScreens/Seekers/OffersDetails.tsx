@@ -36,8 +36,8 @@ const OffersDetails = () => {
   const openPaymentMethodModal = async () => {
     setIsPaymentMethodModalVisible(true);
   };
-  
-  const acceptOffers = async()=>{
+
+  const acceptOffers = async () => {
     try {
       const data = {
         offer_id: offerDetail?._id,
@@ -57,7 +57,7 @@ const OffersDetails = () => {
         error?.data?.message || error?.message || 'Something went wrong',
       );
     }
-  }
+  };
 
   const closePaymentMethodModal = () => {
     setIsPaymentMethodModalVisible(false);
@@ -65,7 +65,7 @@ const OffersDetails = () => {
 
   const handlePaymentSelect = () => {
     closePaymentMethodModal();
-    acceptOffers()
+    acceptOffers();
   };
 
   const closePaymentSuccessModal = () => {
@@ -168,13 +168,12 @@ const OffersDetails = () => {
 
           <View style={styles.imageRow}>
             <Image
-              source={offerDetail?.media_files && offerDetail?.media_files[0]}
+              source={{uri:offerDetail?.media_files && offerDetail?.media_files[0]?.file}}
               style={styles.imageBox}
             />
-
             <View style={styles.secondImageWrapper}>
               <Image
-                source={offerDetail?.media_files && offerDetail?.media_files[1]}
+                source={{uri:offerDetail?.media_files && offerDetail?.media_files[1]?.file}}
                 style={[styles.imageBox, styles.blurredImage]}
                 blurRadius={
                   offerDetail?.media_files &&
@@ -304,6 +303,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: hp(20),
+    flexWrap: 'wrap',
+    gap: wp(10),
   },
   featureBadge: {
     borderRadius: hp(50),
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
     height: hp(50),
     paddingHorizontal: wp(27),
     backgroundColor: Colors.seeker_primary,
-    minWidth:'30%'
+    minWidth: '30%',
   },
   acceptText: {
     ...commonFontStyle(600, 1.7, Colors.white),

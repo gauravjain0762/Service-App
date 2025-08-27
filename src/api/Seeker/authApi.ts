@@ -1,7 +1,10 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../services/api/baseQuery';
 import {SEEKER_API, HTTP_METHOD} from '@/utils/constants/api';
-import {setAuthToken, setUserInfo} from '@/features/authSlice';
+import {setAuthToken, setGuestLogin, setUserInfo} from '@/features/authSlice';
+import { setAsyncToken, setAsyncUserInfo } from '@/Hooks/asyncStorage';
+import { resetNavigation } from '@/components/common/commonFunction';
+import { SEEKER_SCREENS } from '@/navigation/screenNames';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -20,6 +23,7 @@ export const authApi = createApi({
 
           dispatch(setAuthToken(data?.data?.auth_token));
           dispatch(setUserInfo(data?.data?.user));
+          dispatch(setGuestLogin(false));
         } catch (error) {}
       },
       invalidatesTags: ['Auth'],
@@ -41,6 +45,22 @@ export const authApi = createApi({
         data: credentials,
       }),
       invalidatesTags: ['Auth'],
+       async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        try {
+          const {data} = await queryFulfilled;
+          console.log(data, 'datadatadatadatadatadata');
+          if (data?.data?.auth_token) {
+            await setAsyncToken(data?.data?.auth_token);
+            dispatch(setAuthToken(data.data?.auth_token));
+            dispatch(setUserInfo(data.data?.user));
+            await setAsyncUserInfo(data.data?.user);
+            dispatch(setGuestLogin(true));
+            resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+          }
+        } catch (error) {
+          console.log('Guest Login Error', error);
+        }
+      },
     }),
 
     verifyOTP: builder.mutation<any, any>({
@@ -110,6 +130,7 @@ export const authApi = createApi({
           const {data} = await queryFulfilled;
           dispatch(setAuthToken(data?.data?.auth_token));
           dispatch(setUserInfo(data?.data?.user));
+          dispatch(setGuestLogin(false));
         } catch (error) {}
       },
     }),
@@ -126,6 +147,7 @@ export const authApi = createApi({
           const {data} = await queryFulfilled;
           dispatch(setAuthToken(data?.data?.auth_token));
           dispatch(setUserInfo(data?.data?.user));
+          dispatch(setGuestLogin(false));
         } catch (error) {}
       },
     }),

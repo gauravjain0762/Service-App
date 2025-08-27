@@ -119,7 +119,11 @@ const MyRequest = () => {
             onEndReachedThreshold={0.5}
             keyExtractor={(item: any) => item?._id?.toString()}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContent}
+            style={{flex: 1}}
+            contentContainerStyle={[
+              styles.scrollContent,
+              allRequestData?.length == 0 && {flexGrow: 1},
+            ]}
             ListEmptyComponent={() => (
               <View
                 style={{
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1,
+    // flexGrow: 1,
     paddingBottom: '20%',
     paddingHorizontal: wp(20),
     justifyContent: 'center',

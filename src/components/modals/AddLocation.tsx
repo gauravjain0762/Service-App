@@ -20,6 +20,7 @@ interface AddLocationProps {
   currentLocation: string;
   onConfirm: () => void;
   setIsLocationModalVisible: any;
+  regions?:any
 }
 
 const AddLocation: React.FC<AddLocationProps> = ({
@@ -29,7 +30,10 @@ const AddLocation: React.FC<AddLocationProps> = ({
   currentLocation,
   onConfirm,
   setIsLocationModalVisible,
+  regions
 }) => {
+  console.log(regions,'regionsregionsregions');
+  
   const [details, setDetails] = React.useState({
     type: selectedType,
     building_name: currentLocation?.split('-')[0],
@@ -57,6 +61,8 @@ const AddLocation: React.FC<AddLocationProps> = ({
       formData.append('address[building_name]', details?.building_name);
       formData.append('address[apt_villa_no]', details?.apt_villa_no);
       formData.append('address[directions]', details?.directions);
+      formData.append('address[lat]', regions?.latitude ? regions?.latitude?.toString() : '');
+      formData.append('address[lng]', regions?.longitude ? regions?.longitude?.toString() : '');
       const response = await updateProfile(formData).unwrap();
       if (response?.status) {
         successToast(response?.message);

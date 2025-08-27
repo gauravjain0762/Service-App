@@ -45,12 +45,18 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
     {
       Location: requestDetails?.address
         ? `${requestDetails?.address?.apt_villa_no} ${requestDetails?.address?.building_name} ${requestDetails?.address?.directions}`
-        : '',
+        : requestDetails?.location,
     },
-    {'No. of Hour': `${requestDetails?.meta_data?.no_hours} Hours`},
-    {
-      'No. of Professional': `${requestDetails?.meta_data?.no_professionals} Person`,
-    },
+    ...(requestDetails?.meta_data?.no_hours
+      ? [{'No. of Hour': `${requestDetails?.meta_data?.no_hours} Hours`}]
+      : []),
+    ...(requestDetails?.meta_data?.no_professionals
+      ? [
+          {
+            'No. of Professional': `${requestDetails?.meta_data?.no_professionals} Person`,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -58,7 +64,11 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
       {serviceData.map((item, index) => (
         <View key={index} style={styles.row}>
           <CommonText text={Object.keys(item)[0]} style={styles.labelText} />
-          <CommonText text={Object.values(item)[0]} style={styles.valueText} />
+          <CommonText
+            numberOfLines={2}
+            text={Object.values(item)[0]}
+            style={styles.valueText}
+          />
         </View>
       ))}
       <AttachmentCard requestImages={requestDetails?.media_files} />
@@ -94,11 +104,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: hp(25),
+    gap: wp(15),
   },
   labelText: {
     ...commonFontStyle(400, 1.9, Colors._919191),
   },
   valueText: {
+    flexShrink: 1,
     ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+    textAlign: 'right',
   },
 });

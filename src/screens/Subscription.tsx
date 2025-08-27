@@ -48,14 +48,15 @@ const Subscription = () => {
   const acceptOffers = async () => {
     try {
       const data = {
-        package_id: packageDetails?.id,
+        package_id: packageDetails?._id,
       };
 
       const response = await buyPackage(data).unwrap();
       if (response?.status) {
-        setTimeout(() => {
           setIsPaymentSuccessModalVisible(true);
-        }, 500);
+      }
+      else{
+        setIsPaymentSuccessModalVisible(true);
       }
     } catch (error: any) {
       console.log(error);

@@ -66,6 +66,10 @@ const MakeOffer = () => {
         errorToast('Please select a date');
         return;
       }
+      if (!toggleCheckBox) {
+        errorToast('Please check the terms of use');
+        return;
+      }
 
       const formData = new FormData();
       formData.append('request_id', requestDetails?._id);

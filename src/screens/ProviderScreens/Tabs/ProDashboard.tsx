@@ -23,33 +23,13 @@ import {useCategoryQuery} from '@/api/Provider/authApi';
 import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
 import { useGetProfileQuery } from '@/api/Provider/profileApi';
 
-const BookingData = [
-  {
-    id: '#D-698321',
-    title: 'Repair & Maintenance',
-    subtitle: 'AC Regular Services',
-    status: 'Accepted',
-    address: 'Dubai Internet City UAE',
-    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
-    customer: 'Luis Fernando Salazar',
-  },
-  {
-    id: '#D-698321',
-    title: 'Repair & Maintenance',
-    subtitle: 'AC Regular Services',
-    status: 'Accepted',
-    address: 'Dubai Internet City UAE',
-    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
-    customer: 'Luis Fernando Salazar',
-  },
-];
-
 const ProDashboard = () => {
   const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
   const {} = useGetProfileQuery({});
 
   const {isLoading} = useGetDashboardQuery({});
+console.log(userInfo,'userInfo');
 
   const DashboarData = [
     {
@@ -92,9 +72,6 @@ const ProDashboard = () => {
         </View>
 
         <CommonText
-          onPress={() => {
-            navigateTo(PROVIDER_SCREENS.Subscription);
-          }}
           text={'Recently Booking'}
           style={styles.headingText}
         />
@@ -137,7 +114,7 @@ const ProDashboard = () => {
           )}
         />
         <ProvidersVerifyModal
-          visible={userInfo?.approval_status !== 'Approved'}
+          visible={userInfo?.approval_status != 'Approved'}
           onPressClose={() => {
             // BackHandler.exitApp();
           }}

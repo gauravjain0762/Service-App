@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: wp(4),
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   totalAmountRow: {
     gap: wp(4),

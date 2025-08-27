@@ -24,6 +24,7 @@ import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {
   useAppleSignInMutation,
   useGoogleSignInMutation,
+  useGuestLoginMutation,
   useLoginMutation,
 } from '@/api/Seeker/authApi';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -45,6 +46,7 @@ const LoginScreen = ({}: any) => {
     password: __DEV__ ? 'Test@123' : '',
   });
   const [login, {isLoading}] = useLoginMutation();
+  const [guestLogin, {isLoading:isGuestLoading}] = useGuestLoginMutation();
   const [appleLogin] = useAppleSignInMutation();
   const [googleLogin] = useGoogleSignInMutation();
   const [loading, setLoading] = useState(false);
@@ -57,6 +59,13 @@ const LoginScreen = ({}: any) => {
     const oldFcmToken = await getAsyncFCMToken();
     setAsyncFCMToken(oldFcmToken);
     dispatch(setFcmToken(oldFcmToken));
+  };
+  const onGuestUser = async () => {
+    let data = {
+      device_token: fcmToken || 's',
+      device_type: Platform.OS,
+    };
+    const response = await guestLogin(data).unwrap();
   };
   const onLogin = async () => {
     try {
@@ -227,7 +236,8 @@ const LoginScreen = ({}: any) => {
             isPrimary="seeker"
             title={'Login as a Guest'}
             type="outline"
-            // onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
+            loading={isGuestLoading}
+            // onPress={onGuestUser}
           />
         </View>
 
