@@ -10,7 +10,7 @@ import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import ProfileActionItem from '@/components/common/ProfileActionItem';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {SCREEN_NAMES} from '@/navigation/screenNames';
+import {SCREEN_NAMES, SCREENS} from '@/navigation/screenNames';
 import LanguageModal from '@/components/common/LanguageModel';
 import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 import {useLogoutMutation} from '@/api/Seeker/authApi';
@@ -55,28 +55,48 @@ const Profile = () => {
       leftIcon: IMAGES.phone,
       title: 'Contact us',
       rightIcon: IMAGES.rightArrow,
-      onPress: () => {},
+      onPress: () => {
+        navigateTo(SCREENS.WebViewScreen, {
+          url: 'https://www.devicebee.com/contact-us/',
+          title: 'Contact us',
+        });
+      },
     },
     {
       key: 'about_us',
       leftIcon: IMAGES.iBtn,
       title: 'About us',
       rightIcon: IMAGES.rightArrow,
-      onPress: () => {},
+      onPress: () => {
+        navigateTo(SCREENS.WebViewScreen, {
+          url: 'https://www.devicebee.com/about-us/',
+          title: 'About us',
+        });
+      },
     },
     {
       key: 'privacy_policy',
       leftIcon: IMAGES.privacy,
       title: 'Privacy Policy',
       rightIcon: IMAGES.rightArrow,
-      onPress: () => {},
+      onPress: () => {
+        navigateTo(SCREENS.WebViewScreen, {
+          url: '',
+          title: 'Privacy Policy',
+        });
+      },
     },
     {
       key: 'terms_conditions',
       leftIcon: IMAGES.file,
       title: 'Terms & Conditions',
       rightIcon: IMAGES.rightArrow,
-      onPress: () => {},
+      onPress: () => {
+        navigateTo(SCREENS.WebViewScreen, {
+          url: '',
+          title: 'Terms & Conditions',
+        });
+      },
     },
     {
       key: 'delete_account',

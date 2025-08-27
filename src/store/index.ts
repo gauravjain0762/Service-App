@@ -23,6 +23,7 @@ import {homeApi} from '@/api/Seeker/homeApi';
 import {providerAuthApi} from '@/api/Provider/authApi';
 import {providerHomeApi} from '@/api/Provider/homeApi';
 import {addressApi} from '@/api/Seeker/addressApi';
+import { providerProfileApi } from '@/api/Provider/profileApi';
 
 // Persisted reducer from your slice
 
@@ -40,6 +41,7 @@ const appReducer = combineReducers({
   // Provider API
   [providerAuthApi.reducerPath]: providerAuthApi.reducer,
   [providerHomeApi.reducerPath]: providerHomeApi.reducer,
+  [providerProfileApi.reducerPath]: providerProfileApi.reducer,
   // [authApi.reducerPath]: authApi.reducer, // RTK Query for cached data all HTTP requests
 
   // Add other reducers here
@@ -95,6 +97,7 @@ export const store = configureStore({
       // Provider API
       .concat(providerAuthApi.middleware)
       .concat(providerHomeApi.middleware)
+      .concat(providerProfileApi.middleware)
       // .concat(authApi.middleware) // RTK Query
       .concat(loadingMiddleware) // your loader counter
       .concat(analyticsMiddleware), // logging

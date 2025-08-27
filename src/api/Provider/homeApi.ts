@@ -6,7 +6,7 @@ import {setDashboard, setPackages} from '@/features/authSlice';
 export const providerHomeApi = createApi({
   reducerPath: 'providerHomeApi',
   baseQuery: axiosBaseQuery,
-  tagTypes: ['providerHomeApi'],
+  tagTypes: ['providerHomeApi', 'getDashboard'],
   keepUnusedDataFor: 300, // 5 minutes
   refetchOnFocus: true,
   refetchOnReconnect: true,
@@ -76,6 +76,15 @@ export const providerHomeApi = createApi({
       }),
       invalidatesTags: ['providerHomeApi'],
     }),
+    // Update Job Status
+    updateJobStatus: builder.mutation<any, any>({
+      query: credentials => ({
+        url: PROVIDER_API.DASHBOARD.UPDATE_JOB_STATUS,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+      }),
+      invalidatesTags: ['providerHomeApi', 'getDashboard'],
+    }),
 
     getJobs: builder.query<any, any>({
       query: query => ({
@@ -129,7 +138,7 @@ export const providerHomeApi = createApi({
       query: credentials => ({
         url: PROVIDER_API.DASHBOARD.BUY_PACKAGE,
         method: HTTP_METHOD.POST,
-        data: credentials,
+        params: credentials,
       }),
       invalidatesTags: [],
     }),
@@ -148,5 +157,6 @@ export const {
   useGetJobDetailsQuery,
   useGetJobsQuery,
   useBuyPackageMutation,
-  useGetPackagesQuery
+  useGetPackagesQuery,
+  useUpdateJobStatusMutation,
 } = providerHomeApi;

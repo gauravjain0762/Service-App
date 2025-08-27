@@ -11,9 +11,10 @@ import CustomButton from '../common/CustomButton';
 type Props = {
   close?: boolean;
   onPressGoBack: () => void;
-  onPressCompleted: () => void;
+  onPressCompleted: () => void | any;
   isCompleteBookingModal: boolean;
   setIsCompleteBookingModal: React.Dispatch<React.SetStateAction<boolean>>;
+  serviceName?: string;
 };
 
 const CompleteBookingModal = ({
@@ -22,6 +23,7 @@ const CompleteBookingModal = ({
   isCompleteBookingModal,
   setIsCompleteBookingModal,
   close,
+  serviceName = '',
 }: Props) => {
   return (
     <BottomModal
@@ -42,7 +44,7 @@ const CompleteBookingModal = ({
 
         <CommonText style={styles.descriptionText}>
           {`Are you sure you have completed the `}
-          <CommonText style={styles.highlightText}>{`AC Repair `}</CommonText>
+          <CommonText style={styles.highlightText}>{serviceName} </CommonText>
           Service?
         </CommonText>
 

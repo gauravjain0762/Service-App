@@ -24,7 +24,10 @@ import {
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import UpdateWorkStatusModal from '@/components/modals/UpdateWorkStatusModal';
 import {useRoute} from '@react-navigation/native';
-import {useGetJobDetailsQuery} from '@/api/Provider/homeApi';
+import {
+  useGetJobDetailsQuery,
+  useUpdateJobStatusMutation,
+} from '@/api/Provider/homeApi';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
@@ -49,6 +52,8 @@ const ProOfferDetails = () => {
   );
   const jobDetails = jobData?.data?.job;
 
+  const [updateJobStatus, {isLoading}] = useUpdateJobStatusMutation();
+
   const {bottom} = useSafeAreaInsets();
   const [selectedOption, setSelectedOption] = useState('Complete Job');
   const [isChooseOptionsModal, setIsChooseOptionsModal] =
@@ -58,6 +63,18 @@ const ProOfferDetails = () => {
   const [isUpdateWorkStatusModal, setIsUpdateWorkStatusModal] =
     useState<boolean>(false);
 
+  const onPressCompleted = async () => {
+    let obj = {
+      job_id: jobDetails?._id,
+      status: 'Completed',
+    };
+    const response = await updateJobStatus(obj).unwrap();
+    console.log('response', response);
+    if (response?.status) {
+      setIsCompleteBookingModal(false);
+      resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+    }
+  };
   return (
     <SafeareaProvider edges={['top', 'bottom']} style={[styles.safeArea, {}]}>
       <BackHeader
@@ -151,13 +168,16 @@ const ProOfferDetails = () => {
           </View>
           <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />
           <View style={{paddingHorizontal: wp(24)}}>
-            <ServiceBillSummary style={{width: '100%'}} />
+            <ServiceBillSummary
+              style={{width: '100%'}}
+              jobDetails={jobDetails}
+            />
           </View>
 
           <CustomButton
-            title={'Update Work Status'}
+            title={'Mark as Completed'}
             btnStyle={styles.backToHomeBtn}
-            onPress={() => setIsChooseOptionsModal(true)}
+            onPress={() => setIsCompleteBookingModal(true)}
           />
         </ScrollView>
       )}
@@ -170,7 +190,7 @@ const ProOfferDetails = () => {
         ]}
         close={false}
         textStyle={{...commonFontStyle(400, 2.2, Colors._686868)}}
-        buttonTitle={'Mark as Start'}
+        buttonTitle={'Submit'}
         selectedOption={selectedOption}
         headerTitle={'Update Work Status'}
         isChooseOptionsModal={isChooseOptionsModal}
@@ -207,14 +227,20 @@ const ProOfferDetails = () => {
         onPressGoBack={() => {
           resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
         }}
-        onPressCompleted={() => {
-          setIsCompleteBookingModal(false);
-          setTimeout(() => {
-            setIsUpdateWorkStatusModal(true);
-          }, 500);
-        }}
+        // onPressCompleted={() => {
+        //   setIsCompleteBookingModal(false);
+        //   setTimeout(() => {
+        //     setIsUpdateWorkStatusModal(true);
+        //   }, 500);
+        // }}
+        serviceName={getLocalizedText(
+          jobDetails?.sub_category_id?.title,
+          jobDetails?.sub_category_id?.title_ar,
+          language,
+        )}
         isCompleteBookingModal={isCompleteBookingModal}
         setIsCompleteBookingModal={setIsCompleteBookingModal}
+        onPressCompleted={onPressCompleted}
       />
 
       <UpdateWorkStatusModal

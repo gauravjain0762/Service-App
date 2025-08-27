@@ -17,6 +17,7 @@ export const SCREENS = {
   Notifications: 'Notifications',
   JobDetails: 'JobDetails',
   TermsWebScreen: 'TermsWebScreen',
+  WebViewScreen: 'WebViewScreen',
   Home: 'Home',
   MyRequest: 'My Request',
   MyBookingsTab: 'My BookingsTab',

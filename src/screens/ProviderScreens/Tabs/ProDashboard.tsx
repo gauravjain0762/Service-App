@@ -1,5 +1,11 @@
 import React from 'react';
-import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  BackHandler,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
@@ -14,6 +20,8 @@ import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetDashboardQuery} from '@/api/Provider/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useCategoryQuery} from '@/api/Provider/authApi';
+import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
+import { useGetProfileQuery } from '@/api/Provider/profileApi';
 
 const BookingData = [
   {
@@ -39,6 +47,7 @@ const BookingData = [
 const ProDashboard = () => {
   const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
+  const {} = useGetProfileQuery({});
 
   const {isLoading} = useGetDashboardQuery({});
 
@@ -82,9 +91,13 @@ const ProDashboard = () => {
           })}
         </View>
 
-        <CommonText onPress={()=>{
-          navigateTo(PROVIDER_SCREENS.Subscription)
-        }} text={'Recently Booking'} style={styles.headingText} />
+        <CommonText
+          onPress={() => {
+            navigateTo(PROVIDER_SCREENS.Subscription);
+          }}
+          text={'Recently Booking'}
+          style={styles.headingText}
+        />
 
         <FlatList
           data={dashboard?.recent_bookings || []}
@@ -122,6 +135,12 @@ const ProDashboard = () => {
               />
             </View>
           )}
+        />
+        <ProvidersVerifyModal
+          visible={userInfo?.approval_status !== 'Approved'}
+          onPressClose={() => {
+            // BackHandler.exitApp();
+          }}
         />
       </ScrollView>
     </SafeareaProvider>

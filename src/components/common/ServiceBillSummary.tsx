@@ -10,14 +10,14 @@ import Divider from './Divider';
 
 type Props = {
   style?: ViewStyle;
+  jobDetails?: any;
 };
 
-const ServiceBillSummary = ({style}: Props) => {
+const ServiceBillSummary = ({style, jobDetails}: Props) => {
   const summaryDetails = [
-    {label: 'Service Charges', amount: '25,00'},
-    {label: 'Sub Total', amount: '100,00'},
+    {label: 'Service Charges', amount: jobDetails?.service_charges ?? ''},
+    {label: 'Sub Total', amount: jobDetails?.sub_total ?? ''},
   ];
-
   return (
     <ShadowCard style={[styles.card, style]}>
       {summaryDetails.map((item, index) => (
@@ -50,7 +50,10 @@ const ServiceBillSummary = ({style}: Props) => {
             tintColor={Colors.black}
             style={styles.currencyIcon}
           />
-          <CommonText text="125,00" style={styles.totalAmountText} />
+          <CommonText
+            text={jobDetails?.pay_amount ?? ''}
+            style={styles.totalAmountText}
+          />
         </View>
       </View>
     </ShadowCard>

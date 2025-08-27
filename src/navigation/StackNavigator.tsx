@@ -8,6 +8,7 @@ import SeekerNavigator from './Seeker/navigation';
 import Subscription from '@/screens/Subscription';
 import ProviderTabNavigation from './Provider/ProviderTabNavigation';
 import SeekerTabNavigation from './Seeker/SeekerTabNavigation';
+import WebViewScreen from '@/components/common/WebViewScreen';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -27,6 +28,7 @@ const StackNavigator: FC = () => {
     },
     {name: SCREENS.SeekerTabNavigation, component: SeekerTabNavigation},
     {name: SCREENS.Subscription, component: Subscription},
+    {name: SCREENS.WebViewScreen, component: WebViewScreen},
   ];
   return (
     <Stack.Navigator

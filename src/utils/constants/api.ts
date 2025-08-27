@@ -70,6 +70,7 @@ export const PROVIDER_API = {
     JOBS_DETAILS: '/company/getJobDetails',
     PACKAGES:'/company/getPackages',
     BUY_PACKAGE:'/company/buyPackage',
+    UPDATE_JOB_STATUS:'/company/updateJobStatus'
   },
 } as const;
 

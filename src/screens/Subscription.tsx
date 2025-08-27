@@ -9,15 +9,65 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  navigateTo,
+  resetNavigation,
+} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {useAppSelector} from '@/Hooks/hooks';
-import {useGetPackagesQuery} from '@/api/Provider/homeApi';
+import {
+  useBuyPackageMutation,
+  useGetPackagesQuery,
+} from '@/api/Provider/homeApi';
+import PaymentMethodModal from '@/components/common/PaymentMethodModel';
+import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
 
 const Subscription = () => {
   const {packages} = useAppSelector<any>(state => state.auth);
   const {isLoading} = useGetPackagesQuery({});
+  const [buyPackage, {isLoading: isBuyLoading}] = useBuyPackageMutation();
+  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
+    React.useState(false);
+  const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
+    React.useState(false);
   const packageDetails = packages[0];
+
+  const openPaymentMethodModal = async () => {
+    setIsPaymentMethodModalVisible(true);
+  };
+  const closePaymentMethodModal = () => {
+    setIsPaymentMethodModalVisible(false);
+  };
+
+  const handlePaymentSelect = () => {
+    closePaymentMethodModal();
+    acceptOffers();
+  };
+
+  const acceptOffers = async () => {
+    try {
+      const data = {
+        package_id: packageDetails?.id,
+      };
+
+      const response = await buyPackage(data).unwrap();
+      if (response?.status) {
+        setTimeout(() => {
+          setIsPaymentSuccessModalVisible(true);
+        }, 500);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
+    }
+  };
+  const closePaymentSuccessModal = () => {
+    setIsPaymentSuccessModalVisible(false);
+    navigateTo(PROVIDER_SCREENS.ProviderTabNavigation);
+  };
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -60,11 +110,12 @@ const Subscription = () => {
                 </View>
               ))}
 
-              {packageDetails?.is_free_trial && 
-              <CustomButton
-                btnStyle={styles.btnStyle}
-                title={`Get ${packageDetails?.free_trial_days} Days Free Trail`}
-              />}
+              {packageDetails?.is_free_trial && (
+                <CustomButton
+                  btnStyle={styles.btnStyle}
+                  title={`Get ${packageDetails?.free_trial_days} Days Free Trail`}
+                />
+              )}
             </View>
           </View>
         </ImageBackground>
@@ -72,7 +123,17 @@ const Subscription = () => {
         <CustomButton
           title={'Subscription'}
           btnStyle={{marginTop: hp(40)}}
-          onPress={() => navigateTo(PROVIDER_SCREENS.ProviderTabNavigation)}
+          onPress={() => openPaymentMethodModal()}
+        />
+        <PaymentMethodModal
+          visible={isPaymentMethodModalVisible}
+          onClose={closePaymentMethodModal}
+          onPaymentSelect={handlePaymentSelect}
+        />
+        <PaymentSuccessModal
+          onClose={closePaymentSuccessModal}
+          visible={isPaymentSuccessModalVisible}
+          amount={packageDetails?.price}
         />
       </View>
     </SafeareaProvider>

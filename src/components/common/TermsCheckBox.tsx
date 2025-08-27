@@ -26,7 +26,10 @@ const TermsCheckBox = ({
       <CommonText onPress={()=>setToggleCheckBox(!toggleCheckBox)} text="I agree to follow the" style={styles.checkBoxText}>
         {' '}
         <CommonText
-          onPress={() => navigateTo(SCREENS.TermsWebScreen)}
+          onPress={() => navigateTo(SCREENS.WebViewScreen, {
+                    url: 'https://www.devicebee.com/about-us/',
+                    title: 'Terms of Use',
+                  })}
           text="terms of use"
           style={[
             styles.checkBoxText2,

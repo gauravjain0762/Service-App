@@ -52,8 +52,6 @@ const ProMyBookings = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState('All');
   const [allOptions] = useState(['All', 'Accepted', 'Active', 'Completed']);
-  const [filteredData, setFilteredData] = useState(DATA);
-
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allJobData, setAllJobData] = React.useState([]);
   const {
@@ -61,7 +59,7 @@ const ProMyBookings = () => {
     isLoading: jobLoading,
     refetch: refetchJobList,
   } = useGetJobsQuery<any>(
-    {status: selectedOption == 'Active' ? 'Active' : 'Completed'},
+    {status: selectedOption},
     {
       refetchOnReconnect: true,
       refetchOnMountOrArgChange: true,
@@ -144,6 +142,8 @@ const ProMyBookings = () => {
               />
             );
           }}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
           keyExtractor={(item: any) => item._id}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
