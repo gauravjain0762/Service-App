@@ -68,6 +68,8 @@ export const PROVIDER_API = {
     SEND_OFFER:'/company/sendOffer',
     JOBS: '/company/getJobs',
     JOBS_DETAILS: '/company/getJobDetails',
+    PACKAGES:'/company/getPackages',
+    BUY_PACKAGE:'/company/buyPackage',
   },
 } as const;
 

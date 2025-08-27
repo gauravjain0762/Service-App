@@ -29,7 +29,8 @@ import {
   useProResendOTPMutation,
   useProVerifyOTPMutation,
 } from '@/api/Provider/authApi';
-import { useAppSelector } from '@/Hooks/hooks';
+import {useAppSelector} from '@/Hooks/hooks';
+import {useGetPackagesQuery} from '@/api/Provider/homeApi';
 
 const CELL_COUNT = 4;
 
@@ -38,6 +39,8 @@ const OTPScreen = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const {t} = useTranslation();
+  const {isLoadingS} = useGetPackagesQuery({});
+
   const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
   const [proVerifyOTP, {isLoading: isProLoading}] = useProVerifyOTPMutation();
 

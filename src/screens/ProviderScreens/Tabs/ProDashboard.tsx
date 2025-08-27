@@ -82,7 +82,9 @@ const ProDashboard = () => {
           })}
         </View>
 
-        <CommonText text={'Recently Booking'} style={styles.headingText} />
+        <CommonText onPress={()=>{
+          navigateTo(PROVIDER_SCREENS.Subscription)
+        }} text={'Recently Booking'} style={styles.headingText} />
 
         <FlatList
           data={dashboard?.recent_bookings || []}

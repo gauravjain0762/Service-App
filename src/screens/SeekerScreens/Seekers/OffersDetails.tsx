@@ -36,6 +36,7 @@ const OffersDetails = () => {
   const openPaymentMethodModal = async () => {
     setIsPaymentMethodModalVisible(true);
   };
+  
   const acceptOffers = async()=>{
     try {
       const data = {
@@ -207,6 +208,7 @@ const OffersDetails = () => {
           <PaymentSuccessModal
             onClose={closePaymentSuccessModal}
             visible={isPaymentSuccessModalVisible}
+            amount={offerDetail?.offer_price}
           />
           <CustomButton
             title={'Accept Offer'}

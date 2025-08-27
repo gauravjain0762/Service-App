@@ -18,6 +18,7 @@ export interface AuthState {
   };
   dropDownCategories: any[];
   dropDownSubCategories: any[];
+  packages?: any[];
 }
 
 // Initial state
@@ -36,6 +37,7 @@ const initialState: AuthState = {
 
   dropDownCategories: [],
   dropDownSubCategories: [],
+  packages:[]
 };
 
 // Create the auth slice
@@ -75,6 +77,9 @@ const authSlice = createSlice({
     setDropDownSubCategories: (state, action: PayloadAction<any>) => {
       state.dropDownSubCategories = action.payload;
     },
+    setPackages: (state, action: PayloadAction<any>) => {
+      state.packages = action.payload;
+    },
 
     clearToken: () => ({...initialState}),
   },
@@ -104,6 +109,7 @@ export const {
   clearToken,
   setDropDownCategories,
   setDropDownSubCategories,
+  setPackages,
 } = authSlice.actions;
 
 // Selectors

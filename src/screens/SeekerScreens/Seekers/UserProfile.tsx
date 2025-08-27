@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {use, useState} from 'react';
 import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomTextInput from '@/components/common/CustomTextInput';
@@ -9,27 +9,70 @@ import {hp, wp} from '@/utils/responsiveFn';
 import {IMAGES} from '@/assets/images';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useAppSelector} from '@/Hooks/hooks';
+import {useUpdateProfileMutation} from '@/api/Seeker/profileApi';
+import {
+  errorToast,
+  goBack,
+  successToast,
+} from '@/components/common/commonFunction';
+import EditPicture from '@/components/common/EditPicture';
 
 const UserProfile = () => {
+  const {userInfo} = useAppSelector(state => state.auth);
+  console.log(userInfo, 'userInfo');
+  const [updateProfile, {isLoading}] = useUpdateProfileMutation();
+
   const {bottom} = useSafeAreaInsets();
-  const [formData, setFormData] = useState({
-    name: 'Jofra Williamson',
-    dateOfBirth: '12/27/1995',
-    gender: 'Male',
-    email: 'jofra@williamson.gmail.com',
-    phone: '+974 259 3886 58',
-    location: 'Dubai',
+  const [userData, setUserData] = useState({
+    name: userInfo?.name,
+    email: userInfo?.email,
+    picture: userInfo?.picture,
+    phone: `+${userInfo?.phone_code} ${userInfo?.phone}`,
+    location: `${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`,
   });
+  const [userImage, setUserImage] = useState<any>(null);
+  const [isOpenPicker, setIsOpenPicker] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setUserData(prev => ({
       ...prev,
       [field]: value,
     }));
   };
+  const onImagePick = (e: any) => {
+    setUserImage(e);
+    setUserData({...userData, picture: e?.sourceURL});
+  };
 
-  const handleUpdate = () => {
-    console.log('Update profile:', formData);
+  const handleUpdate = async () => {
+    try {
+      if (!userData?.name.trim()) {
+        errorToast('Enter a full name');
+      } else {
+        const formData = new FormData();
+        formData.append('name', userData?.name);
+        if (userImage != null) {
+          formData.append('picture', {
+            uri: userImage?.sourceURL,
+            type: userImage?.mime,
+            name: userImage?.sourceURL.split('/').pop(),
+          });
+        }
+        const response = await updateProfile(formData).unwrap();
+        if (response?.status) {
+          successToast(response?.message);
+          goBack();
+        } else {
+          errorToast(response?.message);
+        }
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.message || error?.data?.message || 'Something went wrong',
+      );
+    }
   };
 
   return (
@@ -41,58 +84,65 @@ const UserProfile = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}>
         <View style={styles.avatarContainer}>
-          <View style={styles.avatar}>
-            <CustomImage
-              source={IMAGES.profile}
-              size={hp(50)}
-              tintColor={Colors.black}
-            />
-          </View>
+          <CustomImage
+            uri={userData?.picture}
+            size={hp(50)}
+            tintColor={Colors.black}
+            containerStyle={styles.avatar}
+            imageStyle={{width: '100%', height: '100%'}}
+            onPress={() => {
+              setIsOpenPicker(true);
+            }}
+            resizeMode='stretch'
+          />
         </View>
 
         <View style={styles.formContainer}>
           <CustomTextInput
-            value={formData.name}
+            value={userData.name}
             onChangeText={text => handleInputChange('name', text)}
             placeholder="Full Name"
             containerStyle={styles.inputContainer}
           />
 
-          <CustomTextInput
-            value={formData.dateOfBirth}
+          {/* <CustomTextInput
+            value={userData.dateOfBirth}
             onChangeText={text => handleInputChange('dateOfBirth', text)}
             placeholder="Date of Birth"
             containerStyle={styles.dateInput}
           />
 
           <CustomTextInput
-            value={formData.gender}
+            value={userData.gender}
             onChangeText={text => handleInputChange('gender', text)}
             placeholder="Gender"
             containerStyle={styles.inputContainer}
-          />
+          /> */}
 
           <CustomTextInput
-            value={formData.email}
+            value={userData.email}
             onChangeText={text => handleInputChange('email', text)}
             placeholder="Email"
             containerStyle={styles.inputContainer}
             keyboardType="email-address"
+            editable={false}
           />
 
           <CustomTextInput
-            value={formData.phone}
+            value={userData.phone}
             onChangeText={text => handleInputChange('phone', text)}
             placeholder="Phone Number"
             containerStyle={styles.inputContainer}
             keyboardType="phone-pad"
+            editable={false}
           />
 
           <CustomTextInput
-            value={formData.location}
+            value={userData.location}
             onChangeText={text => handleInputChange('location', text)}
             placeholder="Location"
             containerStyle={styles.inputContainer}
+            editable={false}
           />
         </View>
 
@@ -102,8 +152,16 @@ const UserProfile = () => {
             onPress={handleUpdate}
             btnStyle={styles.updateButton}
             isPrimary="seeker"
+            loading={isLoading}
+            disabled={isLoading}
           />
         </View>
+
+        <EditPicture
+          visible={isOpenPicker}
+          setVisible={setIsOpenPicker}
+          onChangeText={(e: any) => onImagePick(e)}
+        />
       </ScrollView>
     </SafeareaProvider>
   );
@@ -133,6 +191,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F4FE',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   formContainer: {
     gap: hp(20),

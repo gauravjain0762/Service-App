@@ -21,9 +21,10 @@ Dimensions.get('window');
 type PaymentSuccessModalProps = {
   visible: boolean;
   onClose: () => void;
+  amount?: string;
 };
 
-const PaymentSuccessModal = ({visible, onClose}: PaymentSuccessModalProps) => {
+const PaymentSuccessModal = ({visible, onClose,amount}: PaymentSuccessModalProps) => {
   return (
     <BottomModal
       close
@@ -43,7 +44,7 @@ const PaymentSuccessModal = ({visible, onClose}: PaymentSuccessModalProps) => {
       <View style={styles.rowText}>
         <CommonText text="Successfully Paid " style={styles.description} />
         <Image source={IMAGES.dollar} style={styles.inlineIcon} />
-        <CommonText text=" 10,000" style={styles.description} />
+        <CommonText text={amount??''} style={styles.description} />
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity

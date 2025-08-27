@@ -11,8 +11,14 @@ import CommonText from '@/components/common/CommonText';
 import CustomButton from '@/components/common/CustomButton';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
+import {useAppSelector} from '@/Hooks/hooks';
+import {useGetPackagesQuery} from '@/api/Provider/homeApi';
 
 const Subscription = () => {
+  const {packages} = useAppSelector<any>(state => state.auth);
+  const {isLoading} = useGetPackagesQuery({});
+  const packageDetails = packages[0];
+
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -33,45 +39,32 @@ const Subscription = () => {
                 source={IMAGES.currency}
                 tintColor={Colors.white}
               />
-              <CommonText text={'1000/Lifetime'} style={styles.priceText} />
+              <CommonText
+                text={`${packageDetails?.price}/${packageDetails?.expiry_type}`}
+                style={styles.priceText}
+              />
             </View>
 
             <CommonText
-              text={
-                'Enjoy complete access to UnifiedHR shield features for a lifetime'
-              }
+              text={packageDetails?.short_desc}
               style={styles.description}
             />
 
             <View style={styles.benefitsWrapper}>
               <CommonText text={'Benefits'} style={styles.benefitsTitle} />
 
-              <View style={styles.benefitItem}>
-                <CustomImage source={IMAGES.true_mark} size={hp(24)} />
-                <CommonText
-                  text={'Unlimited view offers & get work.'}
-                  style={styles.benefitText}
-                />
-              </View>
-              <View style={styles.benefitItem}>
-                <CustomImage source={IMAGES.true_mark} size={hp(24)} />
-                <CommonText
-                  text={'Review & rating upgrade your profile.'}
-                  style={styles.benefitText}
-                />
-              </View>
-              <View style={styles.benefitItem}>
-                <CustomImage source={IMAGES.true_mark} size={hp(24)} />
-                <CommonText
-                  text={'Get earning & show your skills.'}
-                  style={styles.benefitText}
-                />
-              </View>
+              {packageDetails?.features?.map(val => (
+                <View key={val} style={styles.benefitItem}>
+                  <CustomImage source={IMAGES.true_mark} size={hp(24)} />
+                  <CommonText text={val} style={styles.benefitText} />
+                </View>
+              ))}
 
+              {packageDetails?.is_free_trial && 
               <CustomButton
                 btnStyle={styles.btnStyle}
-                title={'Get 7 Days Free Trail'}
-              />
+                title={`Get ${packageDetails?.free_trial_days} Days Free Trail`}
+              />}
             </View>
           </View>
         </ImageBackground>

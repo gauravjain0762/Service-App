@@ -167,6 +167,7 @@ const Profile = () => {
             size={hp(80)}
             disabled={true}
             containerStyle={styles.avatar}
+            resizeMode="stretch"
           />
           <CommonText text={userInfo?.name} style={styles.name} />
         </Pressable>
@@ -223,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: hp(40),
     backgroundColor: Colors._EBFCF4,
     marginBottom: hp(12),
-    overflow:'hidden'
+    overflow: 'hidden',
   },
   name: {
     ...commonFontStyle(700, 2.4, Colors.black),

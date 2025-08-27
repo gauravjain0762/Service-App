@@ -1,7 +1,7 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../services/api/baseQuery';
 import {PROVIDER_API, HTTP_METHOD} from '@/utils/constants/api';
-import {setDashboard} from '@/features/authSlice';
+import {setDashboard, setPackages} from '@/features/authSlice';
 
 export const providerHomeApi = createApi({
   reducerPath: 'providerHomeApi',
@@ -77,21 +77,21 @@ export const providerHomeApi = createApi({
       invalidatesTags: ['providerHomeApi'],
     }),
 
-     getJobs: builder.query<any, any>({
-          query: query => ({
-            url: PROVIDER_API.DASHBOARD.JOBS,
-            method: HTTP_METHOD.GET,
-            params: query,
-          }),
-        }),
-    
-        getJobDetails: builder.query<any, any>({
-          query: query => ({
-            url: PROVIDER_API.DASHBOARD.JOBS_DETAILS,
-            method: HTTP_METHOD.GET,
-            params: query,
-          }),
-        }),
+    getJobs: builder.query<any, any>({
+      query: query => ({
+        url: PROVIDER_API.DASHBOARD.JOBS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
+
+    getJobDetails: builder.query<any, any>({
+      query: query => ({
+        url: PROVIDER_API.DASHBOARD.JOBS_DETAILS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
     // createRequest: builder.mutation<any, any>({
     //   query: credentials => ({
     //     url: PROVIDER_API.DASHBOARD.CREATE_REQUEST,
@@ -113,6 +113,26 @@ export const providerHomeApi = createApi({
     //   }),
     //   invalidatesTags: ['providerHomeApi'],
     // }),
+    getPackages: builder.query<any, any>({
+      query: () => ({
+        url: PROVIDER_API.DASHBOARD.PACKAGES,
+        method: HTTP_METHOD.GET,
+      }),
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        try {
+          const {data} = await queryFulfilled;
+          dispatch(setPackages(data?.data?.packages));
+        } catch (error) {}
+      },
+    }),
+    buyPackage: builder.mutation<any, any>({
+      query: credentials => ({
+        url: PROVIDER_API.DASHBOARD.BUY_PACKAGE,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+      }),
+      invalidatesTags: [],
+    }),
   }),
 });
 
@@ -126,5 +146,7 @@ export const {
   // useCreateRequestMutation,
   // useAcceptOfferMutation,
   useGetJobDetailsQuery,
-  useGetJobsQuery
+  useGetJobsQuery,
+  useBuyPackageMutation,
+  useGetPackagesQuery
 } = providerHomeApi;
