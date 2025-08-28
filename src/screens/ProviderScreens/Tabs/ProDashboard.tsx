@@ -21,15 +21,21 @@ import {useGetDashboardQuery} from '@/api/Provider/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useCategoryQuery} from '@/api/Provider/authApi';
 import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
-import { useGetProfileQuery } from '@/api/Provider/profileApi';
+import {useGetProfileQuery} from '@/api/Provider/profileApi';
 
 const ProDashboard = () => {
   const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
   const {} = useGetProfileQuery({});
 
-  const {isLoading} = useGetDashboardQuery({});
-console.log(userInfo,'userInfo');
+  const {isLoading} = useGetDashboardQuery(
+    {},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
 
   const DashboarData = [
     {
@@ -43,14 +49,14 @@ console.log(userInfo,'userInfo');
       image: IMAGES.ic_earning,
     },
     {
-      amount: dashboard?.stats ? dashboard?.stats?.total_jobs.toString() : '0',
+      amount: dashboard?.stats
+        ? dashboard?.stats?.total_requests.toString()
+        : '0',
       desc: 'Total Request',
       image: IMAGES.ic_request,
     },
     {
-      amount: dashboard?.stats
-        ? dashboard?.stats?.total_requests.toString()
-        : '0',
+      amount: dashboard?.stats ? dashboard?.stats?.total_jobs.toString() : '0',
       desc: 'Completed Job',
       image: IMAGES.ic_completed,
     },
@@ -71,10 +77,7 @@ console.log(userInfo,'userInfo');
           })}
         </View>
 
-        <CommonText
-          text={'Recently Booking'}
-          style={styles.headingText}
-        />
+        <CommonText text={'Recently Booking'} style={styles.headingText} />
 
         <FlatList
           data={dashboard?.recent_bookings || []}

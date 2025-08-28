@@ -61,7 +61,7 @@ const UserProfile = () => {
         }
         const response = await updateProfile(formData).unwrap();
         if (response?.status) {
-          successToast(response?.message);
+          // successToast(response?.message);
           goBack();
         } else {
           errorToast(response?.message);

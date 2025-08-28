@@ -55,7 +55,7 @@ const CreateNewPass = () => {
             ? PROVIDER_SCREENS.ProLoginScreen
             : SEEKER_SCREENS.LoginScreen,
         );
-        successToast(response?.message);
+        // successToast(response?.message);
       } else {
         errorToast(response?.message);
       }

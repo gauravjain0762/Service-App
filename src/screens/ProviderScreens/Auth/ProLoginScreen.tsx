@@ -64,7 +64,7 @@ const ProLoginScreen = ({}: any) => {
       console.log('response', response);
 
       if (response?.status) {
-        successToast(response?.message);
+        // successToast(response?.message);
         resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
       } else {
         errorToast(response?.message);

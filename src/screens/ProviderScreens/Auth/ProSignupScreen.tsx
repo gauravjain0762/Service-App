@@ -152,7 +152,7 @@ const ProSignupScreen = () => {
             isProvider: true,
           });
           // navigateTo(PROVIDER_SCREENS.OtpScreen, {isProvider: true});
-          successToast(response?.message);
+          // successToast(response?.message);
         } else {
           errorToast(response?.message);
         }

@@ -159,8 +159,8 @@ const CustomDropdown = ({
                   style={[
                     styles.itemContainer,
                     isSelected && {
-                      backgroundColor: Colors._F9F9F9,
-                      borderRadius: 8,
+                      backgroundColor: '#E8F4FD',
+                      // borderRadius: 8,
                     },
                   ]}>
                   <CommonText

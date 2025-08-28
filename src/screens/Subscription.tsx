@@ -53,9 +53,8 @@ const Subscription = () => {
 
       const response = await buyPackage(data).unwrap();
       if (response?.status) {
-          setIsPaymentSuccessModalVisible(true);
-      }
-      else{
+        setIsPaymentSuccessModalVisible(true);
+      } else {
         setIsPaymentSuccessModalVisible(true);
       }
     } catch (error: any) {
@@ -126,17 +125,21 @@ const Subscription = () => {
           btnStyle={{marginTop: hp(40)}}
           onPress={() => openPaymentMethodModal()}
         />
-        <PaymentMethodModal
-          visible={isPaymentMethodModalVisible}
-          onClose={closePaymentMethodModal}
-          onPaymentSelect={handlePaymentSelect}
-        />
-        <PaymentSuccessModal
-          onClose={closePaymentSuccessModal}
-          visible={isPaymentSuccessModalVisible}
-          amount={packageDetails?.price}
-          isProvide={true}
-        />
+        {isPaymentMethodModalVisible && (
+          <PaymentMethodModal
+            visible={isPaymentMethodModalVisible}
+            onClose={closePaymentMethodModal}
+            onPaymentSelect={handlePaymentSelect}
+          />
+        )}
+        {isPaymentSuccessModalVisible && (
+          <PaymentSuccessModal
+            onClose={closePaymentSuccessModal}
+            visible={isPaymentSuccessModalVisible}
+            amount={packageDetails?.price}
+            isProvide={true}
+          />
+        )}
       </View>
     </SafeareaProvider>
   );

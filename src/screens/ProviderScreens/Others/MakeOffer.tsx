@@ -40,64 +40,65 @@ const MakeOffer = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
-  const [submittedJobData, setSubmittedJobData] = useState<any>(null);
 
   const onSubmitOffer = async () => {
-  try {
-    if (!timeToComplete) {
-      errorToast('Please enter estimated time');
-      return;
-    }
-    if (!offerPrice) {
-      errorToast('Please enter offer price');
-      return;
-    }
-    if (!toggleCheckBox) {
-      errorToast('Please check the terms of use');
-      return;
-    }
+    try {
+      if (!timeToComplete) {
+        errorToast('Please enter estimated time');
+        return;
+      }
+      if (!offerPrice) {
+        errorToast('Please enter offer price');
+        return;
+      }
+      if (!toggleCheckBox) {
+        errorToast('Please check the terms of use');
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append('request_id', requestDetails?._id);
-    formData.append('offer_price', offerPrice);
-    formData.append('estimated_time', timeToComplete);
+      const formData = new FormData();
+      formData.append('request_id', requestDetails?._id);
+      formData.append('offer_price', offerPrice);
+      formData.append('estimated_time', timeToComplete);
 
-    // ✅ append optional fields only if present
-    if (note) {
-      formData.append('notes', note);
-    }
+      // ✅ append optional fields only if present
+      if (note) {
+        formData.append('notes', note);
+      }
 
-    if (selectedDate?.isoDate) {
-      formData.append('date', selectedDate.isoDate);
-    }
+      if (selectedDate?.isoDate) {
+        formData.append('date', selectedDate.isoDate);
+      }
 
-    if (selectedTime) {
-      formData.append('time', selectedTime);
-    }
+      if (selectedTime) {
+        formData.append('time', selectedTime);
+      }
 
-    if (selectedMedia?.length > 0) {
-      selectedMedia.forEach((media, index) => {
-        const fileObject = {
-          uri: media.uri,
-          type: media.type,
-          name: media.name || `media_${index}.${media.type.split('/')[1]}`,
-        };
-        formData.append('media_files', fileObject);
-      });
-    }
+      if (selectedMedia?.length > 0) {
+        selectedMedia.forEach((media, index) => {
+          const fileObject = {
+            uri: media.uri,
+            type: media.type,
+            name: media.name || `media_${index}.${media.type.split('/')[1]}`,
+          };
+          formData.append('media_files', fileObject);
+        });
+      }
 
-    const response = await sendOffer(formData).unwrap();
-    if (response?.status) {
-      setIsSubmitModalVisible(true);
-      setSubmittedJobData(response?.data);
+      const response = await sendOffer(formData).unwrap();
+
+      if (response?.status) {
+        setIsSubmitModalVisible(true);
+      } else {
+        errorToast(response?.message);
+      }
+    } catch (error: any) {
+      console.log(error);
+      errorToast(
+        error?.data?.message || error?.message || 'Something went wrong',
+      );
     }
-  } catch (error: any) {
-    console.log(error);
-    errorToast(
-      error?.data?.message || error?.message || 'Something went wrong',
-    );
-  }
-};
+  };
 
   return (
     <SafeAreaView style={[GeneralStyle.container]}>
@@ -230,9 +231,10 @@ const MakeOffer = () => {
           color={Colors.provider_primary}
           handleCardPress={() => {
             setIsSubmitModalVisible(false);
-            resetNavigation(PROVIDER_SCREENS.ProOfferDetails, {
-              job_id: submittedJobData?.job_id,
-            });
+            resetNavigation(
+              PROVIDER_SCREENS.ProviderTabNavigation,
+              SCREENS.Dashboard,
+            );
           }}
           bookingNumber={`#${requestDetails?.job_code}`}
           requestCardStyle={{backgroundColor: Colors.provider_primary}}

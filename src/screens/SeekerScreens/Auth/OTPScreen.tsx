@@ -113,7 +113,7 @@ const OTPScreen = () => {
       ).unwrap();
 
       if (response?.status) {
-        successToast(response?.message);
+        // successToast(response?.message);
         setTimer(60);
       }
     } catch (error: any) {

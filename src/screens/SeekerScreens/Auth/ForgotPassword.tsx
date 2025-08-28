@@ -53,7 +53,7 @@ const ForgotPassword = () => {
           email: email,
           isProvider: isProvider,
         });
-        successToast(response?.message);
+        // successToast(response?.message);
       }
     } catch (error: any) {
       console.log(error);
