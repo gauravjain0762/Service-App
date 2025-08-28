@@ -16,6 +16,7 @@ export const providerHomeApi = createApi({
         url: PROVIDER_API.DASHBOARD.DASHBOARD,
         method: HTTP_METHOD.GET,
       }),
+      providesTags:['getDashboard'],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;

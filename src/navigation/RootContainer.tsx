@@ -16,11 +16,15 @@ import {
   requestNotificationUserPermission,
 } from '@/Hooks/notificationHandler';
 import {useAppDispatch} from '@/Hooks/hooks';
+import GuestModal from '@/components/modals/GuestModal';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/store';
 
 export const navigationRef = createNavigationContainerRef<any>();
 
 const RootContainer: FC = () => {
   // const loginModal = useSelector((state: RootState) => state.auth?.loginModal);
+  const guestUserModal = useSelector((state: RootState) => state.auth?.guestUserModal);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -39,6 +43,7 @@ const RootContainer: FC = () => {
         {/* {isLoading && <Loader />} */}
 
         {/* {loginModal && <LoginModal isVisible={loginModal} />} */}
+        {guestUserModal && <GuestModal visible={guestUserModal} />}
       </NavigationContainer>
     </SafeAreaProvider>
   );

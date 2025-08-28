@@ -91,7 +91,7 @@ const LoginScreen = ({}: any) => {
       console.log('response', response);
 
       if (response?.status) {
-        successToast(response?.message);
+        // successToast(response?.message);
         resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
       } else {
         errorToast(response?.message);
@@ -125,7 +125,7 @@ const LoginScreen = ({}: any) => {
 
       if (response?.status) {
         setLoading(false);
-        successToast(response?.message);
+        // successToast(response?.message);
         resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
       }
     } catch (error: any) {
@@ -166,7 +166,7 @@ const LoginScreen = ({}: any) => {
         if (response?.status) {
           setLoading(false);
 
-          successToast(response?.message);
+          // successToast(response?.message);
           resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
         }
       }
@@ -237,7 +237,7 @@ const LoginScreen = ({}: any) => {
             title={'Login as a Guest'}
             type="outline"
             loading={isGuestLoading}
-            // onPress={onGuestUser}
+            onPress={onGuestUser}
           />
         </View>
 

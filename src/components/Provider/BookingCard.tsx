@@ -34,6 +34,7 @@ const BookingCard = ({
     const end = moment(start).add(Number(no_hours), 'hours');
     return `${start.format('ddd, DD MMM')} - ${time}`;
   };
+  console.log(item, 'itemitem');
 
   return (
     <TouchableOpacity
@@ -49,6 +50,7 @@ const BookingCard = ({
           }
           size={getFontSize(5)}
           containerStyle={styles.image}
+          imageStyle={{width: '100%', height: '100%'}}
         />
         <View style={styles.textContainer}>
           <View style={styles.titleRow}>
@@ -61,7 +63,7 @@ const BookingCard = ({
               )}
             />
             {isBooking && (
-              <CommonText style={styles.id} text={item?.job_code} />
+              <CommonText style={styles.id} text={`Req-${item?.job_code}`} />
             )}
           </View>
 
@@ -74,7 +76,9 @@ const BookingCard = ({
             )}
           />
 
-          {!isBooking && <CommonText style={styles.id} text={item?.job_code} />}
+          {!isBooking && (
+            <CommonText style={styles.id} text={`Req-${item?.job_code}`} />
+          )}
 
           {isBooking && (
             <CustomButton
@@ -97,7 +101,11 @@ const BookingCard = ({
         <CommonText style={styles.label} text={'Address'} />
         <CommonText
           style={styles.value}
-          text={`${item.address?.apt_villa_no} ${item.address?.building_name}  ${item.address?.directions}`}
+          text={
+            item.location === 'Your Location'
+              ? 'Your Location'
+              : `${item.address?.apt_villa_no} ${item.address?.building_name}  ${item.address?.directions}`
+          }
         />
       </View>
       <View style={styles.detailView}>
@@ -156,6 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: getFontSize(2),
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   textContainer: {
     flex: 1,

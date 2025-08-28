@@ -166,7 +166,7 @@ const ProOfferDetails = () => {
               }}
             />
           </View>
-          <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />
+          <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} isProvider/>
           <View style={{paddingHorizontal: wp(24)}}>
             <ServiceBillSummary
               style={{width: '100%'}}
@@ -275,6 +275,7 @@ const styles = StyleSheet.create({
     gap: wp(20),
   },
   jobInfoContainer: {
+    flexShrink: 1,
     gap: hp(11),
   },
   jobTitle: {
@@ -284,6 +285,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.7, Colors._898989),
   },
   jobLocation: {
+    flexShrink: 1,
     ...commonFontStyle(400, 1.6, Colors._7D7D7D),
   },
   bookingContainer: {

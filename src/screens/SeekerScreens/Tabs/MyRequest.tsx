@@ -60,7 +60,7 @@ const MyRequest = () => {
         backgroundColor: Colors.white,
       }}>
       <BackHeader
-        text="My Request"
+        text="My Requests"
         style={{
           paddingHorizontal: wp(20),
         }}

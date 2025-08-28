@@ -210,7 +210,7 @@ const ProSignupScreen = () => {
           <CustomDropdown
             data={ServiceList}
             value={userData?.service}
-            placeholder="Type of Service"
+            placeholder="Business Type"
             onChange={item => setUserData({...userData, service: item.label})}
           />
           <CustomDropdown

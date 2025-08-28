@@ -40,12 +40,12 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    if (!selectedDate) {
-      const currentDate = moment().format('DDMM');
+  if (!selectedDate && !isProvider) {
+    const currentDate = moment().format('DDMM');
+    setSelectedDate?.(dates.find(d => d.key === currentDate));
+  }
+}, [selectedDate, setSelectedDate, isProvider]);
 
-      setSelectedDate?.(dates.find(d => d.key === currentDate));
-    }
-  }, [selectedDate, setSelectedDate]);
 
   useEffect(() => {
     if (!selectedDate) {

@@ -14,13 +14,32 @@ import {SEEKER_SCREENS} from '../screenNames';
 import MyRequest from '@/screens/SeekerScreens/Tabs/MyRequest';
 import MyBookingsTab from '@/screens/SeekerScreens/Tabs/MyBookingsTab';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {setGuestLogin, setGuestUserModal} from '@/features/authSlice';
+import {useAppDispatch} from '@/Hooks/hooks';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/store';
 
 const Tab = createBottomTabNavigator();
 
 const SeekerTabNavigation = () => {
+  const guestUser = useSelector((state: RootState) => state.auth?.guestUser);
+  const dispatch = useAppDispatch();
+
   const CustomTabBarButton = ({children, route, ...props}: any) => {
     const handlePress = () => {
-      navigateTo(route.name);
+      if (
+        guestUser &&
+        [
+          SEEKER_SCREENS.MyBookingsTab,
+          SEEKER_SCREENS.MyRequest,
+          SEEKER_SCREENS.Profile,
+        ].includes(route?.name)
+      ) {
+        dispatch(setGuestUserModal(true));
+        return;
+      } else {
+        navigateTo(route.name);
+      }
     };
 
     return (

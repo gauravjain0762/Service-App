@@ -15,9 +15,10 @@ type Props = {
 
 const ServiceBillSummary = ({style, jobDetails}: Props) => {
   const summaryDetails = [
-    {label: 'Service Charges', amount: jobDetails?.service_charges ?? ''},
+    {label: 'Platform Fees', amount: jobDetails?.service_charges ?? ''},
     {label: 'Sub Total', amount: jobDetails?.sub_total ?? ''},
   ];
+  
   return (
     <ShadowCard style={[styles.card, style]}>
       {summaryDetails.map((item, index) => (

@@ -3,15 +3,21 @@
 import {Image} from 'react-native';
 import React, {useEffect} from 'react';
 import {SCREENS} from '../navigation/screenNames';
-import {useAppSelector} from '../Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '../Hooks/hooks';
 import {resetNavigation} from '../components/common/commonFunction';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import {IMAGES} from '@/assets/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {hp} from '@/utils/responsiveFn';
+import {setGuestLogin} from '@/features/authSlice';
 
 const SplashScreen = () => {
-  const {token: authToken, isProvider} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
+  const {
+    token: authToken,
+    isProvider,
+    guestUser,
+  } = useAppSelector(state => state.auth);
 
   useEffect(() => {
     setTimeout(() => {
@@ -22,6 +28,9 @@ const SplashScreen = () => {
   const getToken = async () => {
     try {
       if (authToken) {
+        if (guestUser) {
+          dispatch(setGuestLogin(true));
+        }
         resetNavigation(
           isProvider === false
             ? SCREENS.SeekerNavigator

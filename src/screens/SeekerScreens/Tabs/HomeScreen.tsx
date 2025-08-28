@@ -13,7 +13,7 @@ import ServicesModal from '@/components/modals/ServicesModal';
 import {useRoute} from '@react-navigation/native';
 import ReviewModal from '@/components/common/ReviewModel';
 import MiniCarousel from '@/components/common/MiniCarousel';
-import {useAppSelector} from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {useGetProfileQuery} from '@/api/Seeker/profileApi';
 import {
   useGetDashboardQuery,
@@ -22,11 +22,12 @@ import {
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 import CategoryList from '@/components/Seeker/CategoryList';
 import CustomImage from '@/components/common/CustomImage';
+import {setGuestUserModal} from '@/features/authSlice';
 
 const HomeScreen = () => {
   const {params} = useRoute<any>();
-  const {userInfo, dashboard} = useAppSelector(state => state.auth);
-
+  const {userInfo, dashboard, guestUser} = useAppSelector(state => state.auth);
+  const dispatch = useAppDispatch();
   const [selectedCatId, setSelectedCatId] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -66,7 +67,10 @@ const HomeScreen = () => {
     <SafeareaProvider style={styles.safeArea}>
       <View style={styles.topSection}>
         <View style={styles.greetingContainer}>
-          <CommonText text={'Hey, ' + userInfo?.name} style={styles.topLabel} />
+          <CommonText
+            text={'Hey, ' + `${guestUser ? 'Guest User' : userInfo?.name}`}
+            style={styles.topLabel}
+          />
           <CommonText
             style={styles.topLabel1}
             text={'Whats service do you need?'}
@@ -77,7 +81,11 @@ const HomeScreen = () => {
           source={IMAGES.bell}
           size={hp(20)}
           containerStyle={styles.bellContainer}
-          onPress={() => navigateTo(SCREENS.Notifications)}
+          onPress={() => {
+            guestUser
+              ? dispatch(setGuestUserModal(true))
+              : navigateTo(SCREENS.Notifications);
+          }}
         />
       </View>
 
@@ -98,10 +106,14 @@ const HomeScreen = () => {
           <CategoryList
             data={dashboard?.categories ?? []}
             onPress={item => {
-              setIsModalVisible(true);
-              // setServiceName(item?.title);
-              setSelectedCatId(item?._id);
-              setSelectedCategory(item);
+              {
+                guestUser
+                  ? dispatch(setGuestUserModal(true))
+                  : setIsModalVisible(true);
+                // setServiceName(item?.title);
+                setSelectedCatId(item?._id);
+                setSelectedCategory(item);
+              }
             }}
           />
         </ScrollView>

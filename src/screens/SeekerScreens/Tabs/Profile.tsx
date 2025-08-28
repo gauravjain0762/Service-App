@@ -182,7 +182,6 @@ const Profile = () => {
           onPress={() => navigateTo(SCREEN_NAMES.UserProfile)}
           style={styles.avatarSection}>
           <CustomImage
-            source={IMAGES.user_profile}
             uri={userInfo?.picture}
             size={hp(80)}
             disabled={true}

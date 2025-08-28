@@ -82,7 +82,7 @@ const SignUpScreen = () => {
             phone: callingCode + userData.phone,
             isProvider: false,
           });
-          successToast(response?.message);
+          // successToast(response?.message);
         } else {
           errorToast(response?.message);
         }
@@ -116,7 +116,7 @@ const SignUpScreen = () => {
 
       if (response?.status) {
         setLoading(false);
-        successToast(response?.message);
+        // successToast(response?.message);
         resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
       }
     } catch (error: any) {
@@ -157,7 +157,7 @@ const SignUpScreen = () => {
         if (response?.status) {
           setLoading(false);
 
-          successToast(response?.message);
+          // successToast(response?.message);
           resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
         }
       }
@@ -241,7 +241,7 @@ const SignUpScreen = () => {
             type="outline"
             // onPress={() => resetNavigation(SEEKER_SCREENS.SeekerTabNavigation)}
             loading={isGuestLoading}
-            // onPress={onGuestUser}
+            onPress={onGuestUser}
           />
         </View>
 

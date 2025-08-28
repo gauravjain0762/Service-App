@@ -20,6 +20,7 @@ export interface AuthState {
   dropDownSubCategories: any[];
   packages?: any[];
   guestUser?: boolean;
+  guestUserModal?: boolean;
 }
 
 // Initial state
@@ -40,6 +41,7 @@ const initialState: AuthState = {
   dropDownSubCategories: [],
   packages:[],
   guestUser: false,
+  guestUserModal: false
 };
 
 // Create the auth slice
@@ -85,6 +87,9 @@ const authSlice = createSlice({
     setPackages: (state, action: PayloadAction<any>) => {
       state.packages = action.payload;
     },
+    setGuestUserModal: (state, action: PayloadAction<boolean>) => {
+      state.guestUserModal = action.payload;
+    },
 
     clearToken: () => ({...initialState}),
   },
@@ -94,7 +99,7 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   // Only persist these fields
-  whitelist: ['token', 'userInfo', 'language', 'isProvider'],
+  whitelist: ['token', 'userInfo', 'language', 'isProvider','guestUser'],
 };
 
 // Create the persisted reducer
@@ -116,6 +121,7 @@ export const {
   setDropDownSubCategories,
   setPackages,
   setGuestLogin,
+  setGuestUserModal
 } = authSlice.actions;
 
 // Selectors

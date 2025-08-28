@@ -14,7 +14,7 @@ import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
 import CustomImage from './CustomImage';
 import {navigateTo, resetNavigation} from './commonFunction';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 
 Dimensions.get('window');
 
@@ -22,9 +22,15 @@ type PaymentSuccessModalProps = {
   visible: boolean;
   onClose: () => void;
   amount?: string;
+  isProvide?: boolean;
 };
 
-const PaymentSuccessModal = ({visible, onClose,amount}: PaymentSuccessModalProps) => {
+const PaymentSuccessModal = ({
+  visible,
+  onClose,
+  amount,
+  isProvide = false,
+}: PaymentSuccessModalProps) => {
   return (
     <BottomModal
       close
@@ -32,26 +38,51 @@ const PaymentSuccessModal = ({visible, onClose,amount}: PaymentSuccessModalProps
       onClose={onClose}
       onPressCancel={onClose}
       style={styles.modalContainer}>
-      <View style={styles.dashedCircle}>
-        <View style={styles.innerCircle}>
+      <View
+        style={[
+          styles.dashedCircle,
+          isProvide && {borderColor: Colors.provider_primary},
+        ]}>
+        <View
+          style={[
+            styles.innerCircle,
+            isProvide && {backgroundColor: Colors.provider_primary},
+          ]}>
           <View style={styles.checkmarkContainer}>
             <CustomImage source={IMAGES.right} size={getFontSize(10)} />
           </View>
         </View>
       </View>
-      <CommonText text="Payment Successful!!" style={styles.title} />
+      <CommonText
+        text={isProvide ? 'Welcome aboard!' : 'Payment Successful!!'}
+        style={styles.title}
+      />
 
-      <View style={styles.rowText}>
-        <CommonText text="Successfully Paid " style={styles.description} />
-        <Image source={IMAGES.dollar} style={styles.inlineIcon} />
-        <CommonText text={amount??''} style={styles.description} />
-      </View>
+      {isProvide ? (
+        <CommonText
+          text={`We’ll notify you as soon as your account is activated`}
+          style={styles.description}
+        />
+      ) : (
+        <View style={styles.rowText}>
+          <CommonText text="Successfully Paid " style={styles.description} />
+          <Image source={IMAGES.dollar} style={styles.inlineIcon} />
+          <CommonText text={amount ?? ''} style={styles.description} />
+        </View>
+      )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.cancelButton}
+          style={[
+            styles.cancelButton,
+            isProvide && {backgroundColor: Colors.provider_primary},
+          ]}
           onPress={() => {
             onClose();
-            resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+            if (isProvide) {
+              resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+            } else {
+              resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+            }
           }}>
           <Text style={styles.cancelButtonText}>Go to Dashboard</Text>
         </TouchableOpacity>

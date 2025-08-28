@@ -123,7 +123,7 @@ const Offers = () => {
         <>
           <View style={styles.topContainer}>
             <BackHeader
-              text={'Request'}
+              text={'Request Offer'}
               onPressBack={() => {
                 if (isResetNav) {
                   resetNavigation(

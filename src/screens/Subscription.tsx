@@ -122,7 +122,7 @@ const Subscription = () => {
         </ImageBackground>
 
         <CustomButton
-          title={'Subscription'}
+          title={'Confirm & Pay'}
           btnStyle={{marginTop: hp(40)}}
           onPress={() => openPaymentMethodModal()}
         />
@@ -135,6 +135,7 @@ const Subscription = () => {
           onClose={closePaymentSuccessModal}
           visible={isPaymentSuccessModalVisible}
           amount={packageDetails?.price}
+          isProvide={true}
         />
       </View>
     </SafeareaProvider>

@@ -80,7 +80,7 @@ const OffersDetails = () => {
   const end = moment(start).add(Number(offerDetail?.estimated_time), 'hours');
 
   return (
-    <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
+    <SafeareaProvider style={[styles.safeArea]}>
       <View style={styles.topContainer}>
         <BackHeader
           text={'Offers Detail'}
@@ -126,7 +126,7 @@ const OffersDetails = () => {
         </View>
 
         <View style={styles.referenceRow}>
-          <CommonText text={'Reference Code: '} style={styles.refLabel} />
+          <CommonText text={'Reference Id: '} style={styles.refLabel} />
           <CommonText text={requestDetails?.job_code} style={styles.refValue} />
         </View>
 
@@ -163,40 +163,50 @@ const OffersDetails = () => {
           </View>
         </View>
 
-        <ShadowCard style={styles.shadowCard}>
-          <CommonText text={'Watch My Work'} style={styles.watchTitle} />
+        {offerDetail?.media_files?.length > 0 && (
+          <ShadowCard style={styles.shadowCard}>
+            <CommonText text={'Attachments'} style={styles.watchTitle} />
 
-          <View style={styles.imageRow}>
-            <Image
-              source={{uri:offerDetail?.media_files && offerDetail?.media_files[0]?.file}}
-              style={styles.imageBox}
-            />
-            <View style={styles.secondImageWrapper}>
+            <View style={styles.imageRow}>
               <Image
-                source={{uri:offerDetail?.media_files && offerDetail?.media_files[1]?.file}}
-                style={[styles.imageBox, styles.blurredImage]}
-                blurRadius={
-                  offerDetail?.media_files &&
-                  offerDetail?.media_files.length > 2
-                    ? 5
-                    : 0
-                }
+                source={{
+                  uri:
+                    offerDetail?.media_files &&
+                    offerDetail?.media_files[0]?.file,
+                }}
+                style={styles.imageBox}
               />
-              {offerDetail?.media_files &&
-                offerDetail?.media_files.length > 2 && (
-                  <View style={styles.overlay}>
-                    <CommonText
-                      text={`+${
-                        offerDetail?.media_files &&
-                        offerDetail?.media_files.length - 2
-                      }`}
-                      style={styles.overlayText}
-                    />
-                  </View>
-                )}
+              <View style={styles.secondImageWrapper}>
+                <Image
+                  source={{
+                    uri:
+                      offerDetail?.media_files &&
+                      offerDetail?.media_files[1]?.file,
+                  }}
+                  style={[styles.imageBox, styles.blurredImage]}
+                  blurRadius={
+                    offerDetail?.media_files &&
+                    offerDetail?.media_files.length > 2
+                      ? 5
+                      : 0
+                  }
+                />
+                {offerDetail?.media_files &&
+                  offerDetail?.media_files.length > 2 && (
+                    <View style={styles.overlay}>
+                      <CommonText
+                        text={`+${
+                          offerDetail?.media_files &&
+                          offerDetail?.media_files.length - 2
+                        }`}
+                        style={styles.overlayText}
+                      />
+                    </View>
+                  )}
+              </View>
             </View>
-          </View>
-        </ShadowCard>
+          </ShadowCard>
+        )}
 
         <View style={styles.bottomRow}>
           <PaymentMethodModal
@@ -354,7 +364,7 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     width: '48%',
-    height: hp(150),
+    height: hp(100),
     borderRadius: hp(10),
   },
   bottomRow: {
@@ -388,7 +398,7 @@ const styles = StyleSheet.create({
   secondImageWrapper: {
     position: 'relative',
     width: '48%',
-    height: hp(150),
+    height: hp(100),
   },
   blurredImage: {
     width: '100%',

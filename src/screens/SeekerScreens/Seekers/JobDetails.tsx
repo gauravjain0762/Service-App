@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -43,9 +43,10 @@ const JobDetails = () => {
     },
   );
   const jobDetails = jobData?.data?.job;
+  console.log(jobDetails, 'jobDetails');
 
   return (
-    <SafeareaProvider style={[styles.safeArea, {paddingBottom: bottom}]}>
+    <SafeareaProvider style={[styles.safeArea]}>
       <BackHeader
         text={'Job Detail'}
         style={{
@@ -130,14 +131,23 @@ const JobDetails = () => {
           <View style={{paddingHorizontal: wp(24)}}>
             <CommonText text={'Service Provider'} style={styles.sectionTitle} />
             <ServiceProvider
-              isViewProfile={true}
+              isViewProfile={false}
               color={Colors.seeker_primary}
+              source={jobDetails?.company_id?.logo}
+              providerName={jobDetails?.company_id?.name}
+              onCallPress={() => {
+                const url = `tel:${jobDetails?.company_id?.phone_code}${jobDetails?.company_id?.phone}`;
+                Linking.openURL(url);
+              }}
             />
           </View>
           <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />
 
           <View style={{paddingHorizontal: wp(24)}}>
-            <ServiceBillSummary style={{width: '100%'}} />
+            <ServiceBillSummary
+              style={{width: '100%'}}
+              jobDetails={jobDetails}
+            />
           </View>
 
           <CustomButton

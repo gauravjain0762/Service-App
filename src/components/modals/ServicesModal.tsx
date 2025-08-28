@@ -55,7 +55,7 @@ const ServicesModal = ({
   return (
     <BottomModal
       close
-      style={{paddingTop: hp(30)}}
+      style={{paddingTop: hp(30), maxHeight: '85%'}}
       visible={isModalVisible}
       onPressCancel={handleClose}
       onClose={handleClose}>
@@ -73,7 +73,6 @@ const ServicesModal = ({
             if (item.isEmpty) {
               return <View style={styles.emptySlot} />;
             }
-
             return (
               <ServiceCard
                 source={item?.image ?? ''}
@@ -93,6 +92,7 @@ const ServicesModal = ({
               />
             );
           }}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <CommonText text={'No Service Found'} style={styles.emptyText} />
           }

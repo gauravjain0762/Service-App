@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   card: {
     height: '100%',
     marginHorizontal: wp(5),
-    width: width - wp(34) - wp(10),
+    width: width - wp(34) - wp(5),
     borderRadius: hp(20),
     overflow: 'hidden',
     alignSelf: 'center',

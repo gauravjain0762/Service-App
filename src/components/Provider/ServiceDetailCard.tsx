@@ -71,7 +71,9 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
           />
         </View>
       ))}
-      <AttachmentCard requestImages={requestDetails?.media_files} />
+      {requestDetails?.media_files?.length > 0 && (
+        <AttachmentCard requestImages={requestDetails?.media_files} />
+      )}
       <View style={{marginVertical: hp(29), width: '100%'}}>
         <AdittionalNote additionalNotes={requestDetails?.notes} />
       </View>

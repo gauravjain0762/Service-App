@@ -43,63 +43,62 @@ const MakeOffer = () => {
   const [submittedJobData, setSubmittedJobData] = useState<any>(null);
 
   const onSubmitOffer = async () => {
-    try {
-      if (!note) {
-        errorToast('Please enter a note');
-        return;
-      }
+  try {
+    if (!timeToComplete) {
+      errorToast('Please enter estimated time');
+      return;
+    }
+    if (!offerPrice) {
+      errorToast('Please enter offer price');
+      return;
+    }
+    if (!toggleCheckBox) {
+      errorToast('Please check the terms of use');
+      return;
+    }
 
-      if (!selectedTime) {
-        errorToast('Please select a time slot');
-        return;
-      }
+    const formData = new FormData();
+    formData.append('request_id', requestDetails?._id);
+    formData.append('offer_price', offerPrice);
+    formData.append('estimated_time', timeToComplete);
 
-      if (!offerPrice) {
-        errorToast('Please enter offer price');
-        return;
-      }
-      if (!timeToComplete) {
-        errorToast('Please enter estimated time');
-        return;
-      }
-      if (!selectedDate) {
-        errorToast('Please select a date');
-        return;
-      }
-      if (!toggleCheckBox) {
-        errorToast('Please check the terms of use');
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('request_id', requestDetails?._id);
+    // ✅ append optional fields only if present
+    if (note) {
       formData.append('notes', note);
-      // formData.append('media_files', selectedMedia);
+    }
+
+    if (selectedDate?.isoDate) {
+      formData.append('date', selectedDate.isoDate);
+    }
+
+    if (selectedTime) {
+      formData.append('time', selectedTime);
+    }
+
+    if (selectedMedia?.length > 0) {
       selectedMedia.forEach((media, index) => {
         const fileObject = {
           uri: media.uri,
           type: media.type,
           name: media.name || `media_${index}.${media.type.split('/')[1]}`,
         };
-        formData.append('media_files', fileObject); // <-- use same key for all
+        formData.append('media_files', fileObject);
       });
-      formData.append('offer_price', offerPrice);
-      formData.append('date', selectedDate?.isoDate);
-      formData.append('time', selectedTime);
-      formData.append('estimated_time', timeToComplete);
-
-      const response = await sendOffer(formData).unwrap();
-      if (response?.status) {
-        setIsSubmitModalVisible(true);
-        setSubmittedJobData(response?.data);
-      }
-    } catch (error: any) {
-      console.log(error);
-      errorToast(
-        error?.data?.message || error?.message || 'Something went wrong',
-      );
     }
-  };
+
+    const response = await sendOffer(formData).unwrap();
+    if (response?.status) {
+      setIsSubmitModalVisible(true);
+      setSubmittedJobData(response?.data);
+    }
+  } catch (error: any) {
+    console.log(error);
+    errorToast(
+      error?.data?.message || error?.message || 'Something went wrong',
+    );
+  }
+};
+
   return (
     <SafeAreaView style={[GeneralStyle.container]}>
       <BackHeader
@@ -235,7 +234,7 @@ const MakeOffer = () => {
               job_id: submittedJobData?.job_id,
             });
           }}
-          bookingNumber={8321}
+          bookingNumber={`#${requestDetails?.job_code}`}
           requestCardStyle={{backgroundColor: Colors.provider_primary}}
           text1={getLocalizedText(
             requestDetails?.category_id?.title,

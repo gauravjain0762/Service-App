@@ -28,7 +28,7 @@ const UserProfile = () => {
     name: userInfo?.name,
     email: userInfo?.email,
     picture: userInfo?.picture,
-    phone: `+${userInfo?.phone_code} ${userInfo?.phone}`,
+    phone: userInfo?.phone_code ? `+${userInfo?.phone_code} ${userInfo?.phone}` : '',
     location: `${userInfo?.address?.apt_villa_no} ${userInfo?.address?.building_name} ${userInfo?.address?.directions}`,
   });
   const [userImage, setUserImage] = useState<any>(null);
@@ -134,7 +134,7 @@ const UserProfile = () => {
             placeholder="Phone Number"
             containerStyle={styles.inputContainer}
             keyboardType="phone-pad"
-            editable={false}
+            editable={userInfo?.phone_code ? false :true}
           />
 
           <CustomTextInput

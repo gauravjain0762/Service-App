@@ -1,5 +1,14 @@
 import React from 'react';
-import {FlatList, StyleSheet, View, ViewStyle} from 'react-native';
+import {
+  FlatList,
+  Linking,
+  Platform,
+  StyleSheet,
+  Touchable,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
@@ -8,13 +17,15 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {getLocalizedText} from './commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
+import CustomButton from './CustomButton';
 
 type Props = {
   style?: ViewStyle;
   jobDetails?: any;
+  isProvider?: boolean;
 };
 
-const ServiceDetails = ({style, jobDetails}: Props) => {
+const ServiceDetails = ({style, jobDetails, isProvider = false}: Props) => {
   const {language} = useAppSelector(state => state.auth);
 
   const ServiceDetail = [
@@ -34,9 +45,15 @@ const ServiceDetails = ({style, jobDetails}: Props) => {
       ),
     },
     {
-      'Services Address': jobDetails?.address
-        ? `${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`
-        : '',
+      [jobDetails?.location === 'My Location'
+        ? isProvider
+          ? 'Customer Address'
+          : 'My Address'
+        : 'Service Provider Address']: jobDetails?.address
+        ? `${jobDetails?.address?.apt_villa_no ?? ''} ${
+            jobDetails?.address?.building_name ?? ''
+          } ${jobDetails?.address?.directions ?? ''}`.trim()
+        : 'Provider location',
     },
     {
       'Service Date & Time': jobDetails?.date
@@ -49,6 +66,21 @@ const ServiceDetails = ({style, jobDetails}: Props) => {
       'Service Status': jobDetails?.status ?? '',
     },
   ];
+
+  const OpenMapButton = () => {
+    const latitude = jobDetails?.address?.lat ?? '23.4241';
+    const longitude = jobDetails?.address?.lng ?? '53.8478';
+
+    const url = Platform.select({
+      ios: `maps:0,0?q=${latitude},${longitude}`,
+      android: `geo:0,0?q=${latitude},${longitude}`,
+    });
+
+    Linking.openURL(url).catch(err =>
+      console.error('Failed to open map:', err),
+    );
+  };
+
   return (
     <>
       <FlatList
@@ -60,20 +92,55 @@ const ServiceDetails = ({style, jobDetails}: Props) => {
           paddingHorizontal: wp(24),
         }}
         data={ServiceDetail}
-        renderItem={({item, index}) => (
-          <ShadowCard key={index} style={[styles.paymentCard, style]}>
-            <View style={styles.paymentInfo}>
-              <CommonText
-                text={Object.keys(item)}
-                style={styles.paymentLabel}
-              />
-              <CommonText
-                text={Object.values(item)}
-                style={styles.paymentValue}
-              />
-            </View>
-          </ShadowCard>
-        )}
+        renderItem={({item, index}) => {
+          const label = Object.keys(item)[0];
+          const value = Object.values(item)[0];
+
+          const isAddressRow =
+            label === 'My Address' ||
+            label === 'Customer Address' ||
+            label === 'Service Provider Address';
+
+          return (
+            <ShadowCard key={index} style={[styles.paymentCard, style]}>
+              <View style={styles.paymentInfo}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}>
+                  <CommonText
+                    text={Object.keys(item)}
+                    style={styles.paymentLabel}
+                  />
+                  {isAddressRow && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        OpenMapButton();
+                      }}
+                      style={[
+                        styles.changeBtn,
+                        isProvider && {backgroundColor: Colors._EDFAFF},
+                      ]}>
+                      <CommonText
+                        text={'Get Direction'}
+                        style={[
+                          styles.changeBtnText,
+                          isProvider && {color: Colors.provider_primary},
+                        ]}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <CommonText
+                  text={Object.values(item)}
+                  style={styles.paymentValue}
+                />
+              </View>
+            </ShadowCard>
+          );
+        }}
       />
     </>
   );
@@ -86,15 +153,28 @@ const styles = StyleSheet.create({
     width: '95%',
     marginTop: hp(17),
     alignItems: 'flex-start',
-    paddingHorizontal: wp(25),
+    paddingHorizontal: wp(20),
   },
   paymentInfo: {
     gap: hp(13),
   },
   paymentLabel: {
-    ...commonFontStyle(700, 2.2, Colors.black),
+    ...commonFontStyle(700, 2, Colors.black),
   },
   paymentValue: {
     ...commonFontStyle(400, 2.2, Colors._828282),
+  },
+  changeBtn: {
+    flexShrink: 1,
+    borderRadius: hp(50),
+    paddingVertical: hp(6),
+    paddingHorizontal: wp(12),
+    backgroundColor: Colors._EBFCF4,
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  changeBtnText: {
+    ...commonFontStyle(400, 1.2, Colors._039B55),
   },
 });
