@@ -36,6 +36,7 @@ import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@/Hooks/hooks';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 import CustomImage from '@/components/common/CustomImage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const MyBookings = () => {
   const {t} = useTranslation();
@@ -230,9 +231,10 @@ const MyBookings = () => {
         }}
       />
 
-      <ScrollView
+      <KeyboardAwareScrollView
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}>
         <View
           style={{
             paddingHorizontal: wp(24),
@@ -383,7 +385,7 @@ const MyBookings = () => {
           btnStyle={styles.sendRequestBtn}
           onPress={() => onSend()}
         />
-      </ScrollView>
+      </KeyboardAwareScrollView>
 
       <BottomModal
         close

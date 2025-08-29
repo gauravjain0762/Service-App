@@ -19,6 +19,7 @@ import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import {useAcceptOfferMutation} from '@/api/Seeker/homeApi';
+import AttachmentCard from '@/components/common/AttachmentCard';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
@@ -162,8 +163,7 @@ const OffersDetails = () => {
             <CommonText text={offerDetail?.time} style={styles.bookingValue} />
           </View>
         </View>
-
-        {offerDetail?.media_files?.length > 0 && (
+        {/* {offerDetail?.media_files?.length > 0 && (
           <ShadowCard style={styles.shadowCard}>
             <CommonText text={'Attachments'} style={styles.watchTitle} />
 
@@ -206,19 +206,29 @@ const OffersDetails = () => {
               </View>
             </View>
           </ShadowCard>
+        )} */}
+        {offerDetail?.media_files?.length > 0 && (
+          <AttachmentCard
+            requestImages={offerDetail?.media_files}
+            title="Attachments"
+          />
         )}
 
         <View style={styles.bottomRow}>
-          <PaymentMethodModal
-            visible={isPaymentMethodModalVisible}
-            onClose={closePaymentMethodModal}
-            onPaymentSelect={handlePaymentSelect}
-          />
-          <PaymentSuccessModal
-            onClose={closePaymentSuccessModal}
-            visible={isPaymentSuccessModalVisible}
-            amount={offerDetail?.offer_price}
-          />
+          {isPaymentMethodModalVisible && (
+            <PaymentMethodModal
+              visible={isPaymentMethodModalVisible}
+              onClose={closePaymentMethodModal}
+              onPaymentSelect={handlePaymentSelect}
+            />
+          )}
+          {isPaymentSuccessModalVisible && (
+            <PaymentSuccessModal
+              onClose={closePaymentSuccessModal}
+              visible={isPaymentSuccessModalVisible}
+              amount={offerDetail?.offer_price}
+            />
+          )}
           <CustomButton
             title={'Accept Offer'}
             btnStyle={styles.acceptBtn}

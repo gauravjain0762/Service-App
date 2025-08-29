@@ -75,6 +75,7 @@ const CreateNewPass = () => {
         backgroundColor: Colors.white,
       }}>
       <KeyboardAwareScrollView
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         style={styles.container}
         contentContainerStyle={styles.scrollContent}

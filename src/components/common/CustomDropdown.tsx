@@ -17,6 +17,7 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from './CommonText';
 import FastImage from 'react-native-fast-image';
+import {textRTL} from '@/utils/arabicStyles';
 
 export type DropdownItem = {
   label: string;
@@ -153,19 +154,21 @@ const CustomDropdown = ({
             renderItem={(item: DropdownItem) => {
               const isSelected =
                 Array.isArray(value) && value.includes(item[valueField]);
-
               return (
                 <View
                   style={[
-                    styles.itemContainer,
+                    styles.selectedItemsDropdown,
                     isSelected && {
                       backgroundColor: '#E8F4FD',
-                      // borderRadius: 8,
                     },
                   ]}>
                   <CommonText
-                    style={styles.itemText}
-                    text={item?.label || ''}
+                    style={{
+                      ...commonFontStyle(400, 2, Colors.black),
+                      ...textRTL(),
+                      paddingHorizontal: 10,
+                    }}
+                    text={item?.label}
                   />
                 </View>
               );
@@ -183,6 +186,13 @@ const CustomDropdown = ({
                 <Text style={styles.removeIcon}>×</Text>
               </TouchableOpacity>
             )}
+            containerStyle={{
+              backgroundColor: Colors.white,
+              borderRadius: getFontSize(1.3),
+              borderWidth: 1,
+              borderColor: Colors._CDCDCD,
+              overflow: 'hidden',
+            }}
           />
         </View>
       ) : (
@@ -211,15 +221,33 @@ const CustomDropdown = ({
               resizeMode={'contain'}
             />
           )}
-          renderItem={(item: DropdownItem) => (
-            <View style={styles.itemContainer}>
-              <CommonText style={styles.itemText} text={item?.label || ''} />
-            </View>
-          )}
+          renderItem={(item: any, selected: any): any => {
+            if (item[labelField] && item[labelField] !== '') {
+              return (
+                <View style={styles.selectedItemsDropdown}>
+                  <CommonText
+                    style={{
+                      ...commonFontStyle(400, 2, Colors.black),
+                      ...textRTL(),
+                      paddingHorizontal: 10,
+                    }}
+                    text={item[labelField]}
+                  />
+                </View>
+              );
+            }
+          }}
           flatListProps={{
             ListEmptyComponent: () => (
               <CommonText style={styles.noData} text="No data found" />
             ),
+          }}
+          containerStyle={{
+            backgroundColor: Colors.white,
+            borderRadius: getFontSize(1.3),
+            borderWidth: 1,
+            borderColor: Colors._CDCDCD,
+            overflow: 'hidden',
           }}
         />
       )}
@@ -335,4 +363,8 @@ const styles = StyleSheet.create({
     width: wp(16),
     textAlign: 'center',
   },
+  selectedItemsDropdown: {
+    padding: getFontSize(1.5),
+  },
+  inputContainer: {},
 });

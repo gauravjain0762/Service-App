@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   BackHandler,
   FlatList,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   View,
@@ -22,13 +23,15 @@ import {useAppSelector} from '@/Hooks/hooks';
 import {useCategoryQuery} from '@/api/Provider/authApi';
 import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
 import {useGetProfileQuery} from '@/api/Provider/profileApi';
+import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
+import ProHomeSkeleton from '@/components/skeleton/ProHomeSkeleton';
 
 const ProDashboard = () => {
   const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
-  const {} = useGetProfileQuery({});
+  const {refetch: profileRefetch} = useGetProfileQuery({});
 
-  const {isLoading} = useGetDashboardQuery(
+  const {isLoading, isFetching, refetch} = useGetDashboardQuery(
     {},
     {
       refetchOnReconnect: true,
@@ -61,68 +64,87 @@ const ProDashboard = () => {
       image: IMAGES.ic_completed,
     },
   ];
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    profileRefetch();
+    setRefreshing(false);
+  }, [refetch]);
   return (
     <SafeareaProvider style={styles.safearea}>
       <ProviderHeader item={{image: userInfo?.logo}} />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          marginTop: hp(25),
-        }}
-        contentContainerStyle={{paddingBottom: hp(50)}}>
-        <View style={styles.dashboardContainer}>
-          {DashboarData.map((item, index: any) => {
-            return <ProviderCards item={item} index={index} key={index} />;
-          })}
-        </View>
-
-        <CommonText text={'Recently Booking'} style={styles.headingText} />
-
-        <FlatList
-          data={dashboard?.recent_bookings || []}
-          scrollEnabled={false}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({item, index}) => {
-            return (
-              <BookingCard
-                item={item}
-                index={index}
-                onPress={() => {
-                  navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
-                    job_id: item?._id,
-                  });
-                }}
-              />
-            );
-          }}
+      {isLoading ? (
+        <ProHomeSkeleton isBanner />
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[Colors.provider_primary]}
+              tintColor={Colors.provider_primary}
+            />
+          }
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainer}
-          ListEmptyComponent={() => (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: getFontSize(15),
-              }}>
-              <CommonText
-                text="No recent bookings"
-                style={{
-                  textAlign: 'center',
-                  ...commonFontStyle(500, 2, Colors._898989),
-                }}
-              />
-            </View>
-          )}
-        />
-        <ProvidersVerifyModal
-          visible={userInfo?.approval_status != 'Approved'}
-          onPressClose={() => {
-            // BackHandler.exitApp();
+          style={{
+            marginTop: hp(25),
           }}
-        />
-      </ScrollView>
+          contentContainerStyle={{paddingBottom: hp(50)}}>
+          <View style={styles.dashboardContainer}>
+            {DashboarData.map((item, index: any) => {
+              return <ProviderCards item={item} index={index} key={index} />;
+            })}
+          </View>
+
+          <CommonText text={'Recently Booking'} style={styles.headingText} />
+
+          <FlatList
+            data={dashboard?.recent_bookings || []}
+            scrollEnabled={false}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({item, index}) => {
+              return (
+                <BookingCard
+                  item={item}
+                  index={index}
+                  onPress={() => {
+                    navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
+                      job_id: item?._id,
+                    });
+                  }}
+                />
+              );
+            }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.contentContainer}
+            ListEmptyComponent={() => (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: getFontSize(15),
+                }}>
+                <CommonText
+                  text="No recent bookings"
+                  style={{
+                    textAlign: 'center',
+                    ...commonFontStyle(500, 2, Colors._898989),
+                  }}
+                />
+              </View>
+            )}
+          />
+          <ProvidersVerifyModal
+            visible={userInfo?.approval_status != 'Approved'}
+            onPressClose={() => {
+              // BackHandler.exitApp();
+            }}
+          />
+        </ScrollView>
+      )}
     </SafeareaProvider>
   );
 };

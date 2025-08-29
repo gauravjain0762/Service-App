@@ -7,6 +7,7 @@ import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import BookingCard from '@/components/Provider/BookingCard';
+import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
@@ -51,7 +52,7 @@ const ProMyBookings = () => {
   const status = params?.status as {status: undefined | string}['status'];
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState('All');
-  const [allOptions] = useState(['All', 'Accepted', 'Active', 'Completed']);
+  const [allOptions] = useState(['All', 'Active', 'Completed', 'Cancelled']);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allJobData, setAllJobData] = React.useState([]);
   const {
@@ -59,7 +60,7 @@ const ProMyBookings = () => {
     isLoading: jobLoading,
     refetch: refetchJobList,
   } = useGetJobsQuery<any>(
-    {status: selectedOption},
+    {status: params?.status === 'Completed' ? 'Completed' : selectedOption},
     {
       refetchOnReconnect: true,
       refetchOnMountOrArgChange: true,
@@ -100,56 +101,78 @@ const ProMyBookings = () => {
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <View style={styles.mainContainer}>
-        <BackHeader text="My Bookings" style={GeneralStyle.back} />
-
-        <CustomTextInput
-          editable={false}
-          placeholder={selectedOption}
-          onPressSearchBar={() => {
-            setIsModalVisible(true);
-          }}
-          onPressIn={() => {
-            setIsModalVisible(true);
-          }}
-          onPress={() => {
-            setIsModalVisible(true);
-          }}
-          containerStyle={{marginHorizontal: wp(32)}}
-          rightIcon={
-            <CustomImage
-              source={IMAGES.downArrow}
-              onPress={() => {
-                setIsModalVisible(true);
-              }}
-              size={hp(25)}
-            />
-          }
-        />
-
-        <FlatList
-          data={allJobData}
-          renderItem={({item, index}: any) => {
-            return (
-              <BookingCard
-                item={item}
-                index={index}
-                isBooking={true}
-                onPress={() => {
-                  navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
-                    job_id: item?._id,
-                  });
+        <BackHeader text={'My Bookings'} style={GeneralStyle.back} />
+        {jobLoading ? (
+          <ProMyBookingsSkeleton />
+        ) : (
+          <>
+            {params?.status !== 'Completed' && (
+              <CustomTextInput
+                editable={false}
+                placeholder={selectedOption}
+                onPressSearchBar={() => {
+                  setIsModalVisible(true);
                 }}
+                onPressIn={() => {
+                  setIsModalVisible(true);
+                }}
+                onPress={() => {
+                  setIsModalVisible(true);
+                }}
+                containerStyle={{marginHorizontal: wp(32)}}
+                rightIcon={
+                  <CustomImage
+                    source={IMAGES.downArrow}
+                    onPress={() => {
+                      setIsModalVisible(true);
+                    }}
+                    size={hp(25)}
+                  />
+                }
               />
-            );
-          }}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          keyExtractor={(item: any) => item._id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainer}
-        />
-      </View>
+            )}
 
+            <FlatList
+              data={allJobData}
+              renderItem={({item, index}: any) => {
+                return (
+                  <BookingCard
+                    item={item}
+                    index={index}
+                    isBooking={true}
+                    onPress={() => {
+                      navigateTo(PROVIDER_SCREENS.ProOfferDetails, {
+                        job_id: item?._id,
+                      });
+                    }}
+                  />
+                );
+              }}
+              onEndReached={handleLoadMore}
+              onEndReachedThreshold={0.5}
+              keyExtractor={(item: any) => item._id}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.contentContainer}
+              ListEmptyComponent={() => (
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <CommonText
+                    text="No recent bookings"
+                    style={{
+                      textAlign: 'center',
+                      ...commonFontStyle(500, 2, Colors._898989),
+                    }}
+                  />
+                </View>
+              )}
+            />
+          </>
+        )}
+      </View>
       <BottomModal
         close
         visible={isModalVisible}
@@ -187,6 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
+    flexGrow: 1,
     paddingHorizontal: getFontSize(2),
     paddingTop: getFontSize(2),
     paddingBottom: getFontSize(12),

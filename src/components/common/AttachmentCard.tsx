@@ -9,11 +9,11 @@ import ShadowCard from './ShadowCard';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
-const AttachmentCard = ({requestImages=[]}:any) => {
+const AttachmentCard = ({requestImages = [],title}: any) => {
   return (
     <ShadowCard style={{width: '100%', alignItems: 'center'}}>
       <CommonText
-        text="Additional Attachment"
+        text={title ? title :"Additional Attachment"}
         style={{
           textAlign: 'left',
           marginBottom: hp(17),
@@ -23,15 +23,28 @@ const AttachmentCard = ({requestImages=[]}:any) => {
         }}
       />
       <View style={styles.imageRow}>
-        <Image source={{uri:requestImages &&requestImages[0]?.file}} style={styles.imageBox} />
+        <Image
+          source={
+            requestImages[0]?.type != 'image'
+              ? IMAGES.pdfIcon
+              : {uri: requestImages && requestImages[0]?.file}
+          }
+          style={styles.imageBox}
+        />
 
         <View style={styles.secondImageWrapper}>
-          <Image
-            source={{uri:requestImages && requestImages[1]?.file}}
-            style={[styles.imageBox, styles.blurredImage]}
-            blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
-          />
-          {requestImages &&requestImages.length > 2 && (
+          {requestImages && requestImages[1] && (
+            <Image
+              source={
+                requestImages[1]?.type != 'image'
+                  ? IMAGES.pdfIcon
+                  : {uri: requestImages && requestImages[1]?.file}
+              }
+              style={[styles.imageBox, styles.blurredImage]}
+              blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
+            />
+          )}
+          {requestImages && requestImages.length > 2 && (
             <View style={styles.overlay}>
               <CommonText
                 text={requestImages && `+${requestImages.length - 2}`}
@@ -57,13 +70,15 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     width: '48%',
-    height: hp(150),
+    height: hp(100),
     borderRadius: hp(10),
+    resizeMode: 'contain',
   },
   secondImageWrapper: {
     position: 'relative',
     width: '48%',
-    height: hp(150),
+    height: hp(100),
+    resizeMode: 'contain',
   },
   blurredImage: {
     width: '100%',

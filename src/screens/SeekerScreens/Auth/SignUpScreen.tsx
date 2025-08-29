@@ -180,6 +180,7 @@ const SignUpScreen = () => {
   return (
     <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         style={styles.container}>
         <View style={styles.headerRow}>

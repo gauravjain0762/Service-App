@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import BackHeader from '@/components/common/BackHeader';
@@ -110,6 +110,7 @@ const MakeOffer = () => {
       />
 
       <KeyboardAwareScrollView
+        nestedScrollEnabled
         // style={{flex: 1}}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid
@@ -121,6 +122,7 @@ const MakeOffer = () => {
             style={styles.uploadBox}
             btnStyle={styles.uploadBtn}
             setSelectedMedia={setSelectedMedia}
+            isDocument={true}
           />
         </View>
 
@@ -148,6 +150,8 @@ const MakeOffer = () => {
               style={[styles.noteContainer, {height: hp(60)}]}
               value={timeToComplete}
               onChangeText={setTimeToComplete}
+              keyboardType="numeric"
+              maxLength={2}
             />
           </View>
 
@@ -185,6 +189,8 @@ const MakeOffer = () => {
                 },
               ]}
               style={[styles.noteContainer, {height: hp(60)}]}
+              keyboardType="numeric"
+              maxLength={7}
             />
           </View>
 

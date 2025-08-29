@@ -168,6 +168,7 @@ const ProSignupScreen = () => {
   return (
     <SafeareaProvider style={styles.safeArea}>
       <KeyboardAwareScrollView
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         style={styles.container}>
         <View style={styles.headerRow}>

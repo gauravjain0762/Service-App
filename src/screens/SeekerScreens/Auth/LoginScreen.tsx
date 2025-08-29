@@ -194,6 +194,7 @@ const LoginScreen = ({}: any) => {
         imageStyle={{...flipImage()}}
       />
       <KeyboardAwareScrollView
+        nestedScrollEnabled
         showsVerticalScrollIndicator={false}
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />

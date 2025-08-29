@@ -31,6 +31,7 @@ import {
 } from '@/api/Provider/authApi';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useGetPackagesQuery} from '@/api/Provider/homeApi';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const CELL_COUNT = 4;
 
@@ -126,111 +127,118 @@ const OTPScreen = () => {
   return (
     <SafeareaProvider style={GeneralStyle.container}>
       <View style={styles.subContainer}>
-        <OTPHeader />
+        <KeyboardAwareScrollView
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}>
+          <OTPHeader />
 
-        <View style={styles.iconOuter}>
-          <View
-            style={[
-              styles.iconInner,
+          <View style={styles.iconOuter}>
+            <View
+              style={[
+                styles.iconInner,
+                {
+                  backgroundColor: isProvider
+                    ? Colors.provider_primary
+                    : Colors.seeker_primary,
+                },
+              ]}>
+              <CustomImage source={IMAGES.ic_otp} size={hp(60)} />
+            </View>
+          </View>
+
+          <CommonText text={'Verification code'} style={styles.topLabel} />
+
+          <CommonText
+            text="Enter the verification code we’ve send to your"
+            style={styles.topSubLabel}>
+            {' '}
+            <CommonText
+              text={
+                params?.email || '+' + params?.phone || 'muhammad.zuhri.com'
+              }
+              style={styles.topSubLabel}
+            />
+          </CommonText>
+
+          <View style={styles.otpContainer}>
+            <CodeField
+              ref={ref}
+              value={value}
+              autoFocus={false}
+              onChangeText={setValue}
+              cellCount={CELL_COUNT}
+              rootStyle={styles.codeFieldRoot}
+              keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              renderCell={({index, symbol, isFocused}) => (
+                <Text
+                  key={index}
+                  style={[
+                    styles.cell,
+                    isFocused && {
+                      ...styles.focusCell,
+                      borderColor: isProvider
+                        ? Colors.provider_primary
+                        : Colors.seeker_primary,
+                      backgroundColor: isProvider
+                        ? Colors.provider_primary
+                        : Colors.seeker_primary,
+                    },
+                  ]}
+                  onLayout={getCellOnLayoutHandler(index)}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              )}
+            />
+          </View>
+
+          <CustomButton
+            isPrimary="seeker"
+            title={t('Confirm')}
+            disabled={value.length < 4}
+            loading={isLoading || isProLoading}
+            btnStyle={[
+              styles.confirmButton,
               {
                 backgroundColor: isProvider
                   ? Colors.provider_primary
                   : Colors.seeker_primary,
               },
-            ]}>
-            <CustomImage source={IMAGES.ic_otp} size={hp(60)} />
-          </View>
-        </View>
-
-        <CommonText text={'Verification code'} style={styles.topLabel} />
-
-        <CommonText
-          text="Enter the verification code we’ve send to your"
-          style={styles.topSubLabel}>
-          {' '}
-          <CommonText
-            text={params?.email || '+' + params?.phone || 'muhammad.zuhri.com'}
-            style={styles.topSubLabel}
+            ]}
+            onPress={onLoginSubmit}
           />
-        </CommonText>
 
-        <View style={styles.otpContainer}>
-          <CodeField
-            ref={ref}
-            value={value}
-            autoFocus={false}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={styles.codeFieldRoot}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <Text
-                key={index}
+          {timer !== 0 ? (
+            <CommonText text="Resend code in" style={styles.accountText}>
+              {' '}
+              <CommonText
+                text={timer !== 0 ? timer : '0'}
+                style={styles.accountText}
+              />
+              <CommonText text={'s'} style={styles.accountText} />
+            </CommonText>
+          ) : (
+            <CommonText
+              onPress={onResendOtp}
+              text="Didn’t receive code?"
+              style={styles.accountText}>
+              {' '}
+              <CommonText
+                text={'Resend'}
                 style={[
-                  styles.cell,
-                  isFocused && {
-                    ...styles.focusCell,
-                    borderColor: isProvider
-                      ? Colors.provider_primary
-                      : Colors.seeker_primary,
-                    backgroundColor: isProvider
+                  styles.resendText,
+                  {
+                    color: isProvider
                       ? Colors.provider_primary
                       : Colors.seeker_primary,
                   },
                 ]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
-        </View>
-
-        <CustomButton
-          isPrimary="seeker"
-          title={t('Confirm')}
-          disabled={value.length < 4}
-          loading={isLoading || isProLoading}
-          btnStyle={[
-            styles.confirmButton,
-            {
-              backgroundColor: isProvider
-                ? Colors.provider_primary
-                : Colors.seeker_primary,
-            },
-          ]}
-          onPress={onLoginSubmit}
-        />
-
-        {timer !== 0 ? (
-          <CommonText text="Resend code in" style={styles.accountText}>
-            {' '}
-            <CommonText
-              text={timer !== 0 ? timer : '0'}
-              style={styles.accountText}
-            />
-            <CommonText text={'s'} style={styles.accountText} />
-          </CommonText>
-        ) : (
-          <CommonText
-            onPress={onResendOtp}
-            text="Didn’t receive code?"
-            style={styles.accountText}>
-            {' '}
-            <CommonText
-              text={'Resend'}
-              style={[
-                styles.resendText,
-                {
-                  color: isProvider
-                    ? Colors.provider_primary
-                    : Colors.seeker_primary,
-                },
-              ]}
-            />
-          </CommonText>
-        )}
-        {(isResendLoading || isProResendLoading) && <Loader />}
+              />
+            </CommonText>
+          )}
+          {(isResendLoading || isProResendLoading) && <Loader />}
+        </KeyboardAwareScrollView>
       </View>
     </SafeareaProvider>
   );

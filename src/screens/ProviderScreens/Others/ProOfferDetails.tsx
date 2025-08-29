@@ -116,7 +116,13 @@ const ProOfferDetails = () => {
                     style={styles.jobSubTitle}
                   />
                   <CommonText
-                    text={`${jobDetails?.address?.apt_villa_no} ${jobDetails?.address?.building_name} ${jobDetails?.address?.directions}`}
+                    text={
+                      jobDetails?.address
+                        ? `${jobDetails?.address?.apt_villa_no ?? ''} ${
+                            jobDetails?.address?.building_name ?? ''
+                          } ${jobDetails?.address?.directions ?? ''}`.trim()
+                        : 'Provider location'
+                    }
                     style={styles.jobLocation}
                   />
                 </View>
@@ -166,7 +172,11 @@ const ProOfferDetails = () => {
               }}
             />
           </View>
-          <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} isProvider/>
+          <ServiceDetails
+            style={{width: '100%'}}
+            jobDetails={jobDetails}
+            isProvider
+          />
           <View style={{paddingHorizontal: wp(24)}}>
             <ServiceBillSummary
               style={{width: '100%'}}

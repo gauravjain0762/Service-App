@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, ViewStyle, View, FlatList} from 'react-native';
+import {StyleSheet, ViewStyle, View, FlatList, Image} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
@@ -9,6 +9,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
+import DocumentPicker from 'react-native-document-picker';
 
 type Props = {
   desc?: string;
@@ -17,6 +18,7 @@ type Props = {
   isButton?: boolean;
   btnStyle?: ViewStyle;
   setSelectedMedia?: any;
+  isDocument?: boolean;
 };
 
 const UploadBox = ({
@@ -26,12 +28,13 @@ const UploadBox = ({
   desc,
   isButton = true,
   setSelectedMedia,
+  isDocument = false,
 }: Props) => {
   const [files, setFiles] = useState<any[]>([]);
 
   const handleBrowseFiles = () => {
     ImagePicker.openPicker({
-      multiple: false, // ✅ allow multiple
+      multiple: false,
       mediaType: 'photo',
     })
       .then(images => {
@@ -60,6 +63,37 @@ const UploadBox = ({
     setSelectedMedia(updatedFiles);
   };
 
+  const openDocPicker = async () => {
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        presentationStyle: 'fullScreen',
+        type: [
+          DocumentPicker.types.doc,
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.images,
+          DocumentPicker.types.zip,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.ppt,
+          DocumentPicker.types.pptx,
+          DocumentPicker.types.xls,
+          DocumentPicker.types.xlsx,
+          DocumentPicker.types.plainText,
+        ],
+      });
+
+      console.log('pickerResult', pickerResult);
+      const newFile = {
+        uri: pickerResult.uri,
+        name: pickerResult.name,
+        type: pickerResult.type,
+      };
+      // onSelect(newFile);
+      setFiles(prev => [...prev, newFile]);
+      setSelectedMedia((prev: any) => [...prev, newFile]);
+    } catch (e) {
+      console.log('error--', e);
+    }
+  };
   const renderFile = ({item, index}: {item: any; index?: number}) => {
     const isImage = item.mime?.includes('image');
     const isVideo = item.mime?.includes('video');
@@ -102,7 +136,9 @@ const UploadBox = ({
     <ShadowCard style={[style]}>
       {title && <CommonText style={styles.title} text={title} />}
 
-      {files.length > 0 ? (
+      {isDocument && files.length > 0 ? (
+        <Image style={styles.pdfIcon} source={IMAGES.pdfIcon} />
+      ) : files.length > 0 ? (
         <FlatList
           data={files}
           renderItem={renderFile}
@@ -120,7 +156,7 @@ const UploadBox = ({
           resizeMode="contain"
           source={IMAGES.photoUpload}
           imageStyle={[styles.icon]}
-          onPress={handleBrowseFiles}
+          onPress={isDocument? openDocPicker :handleBrowseFiles}
         />
       )}
 
@@ -131,7 +167,7 @@ const UploadBox = ({
 
       {isButton && (
         <CustomButton
-          onPress={handleBrowseFiles}
+          onPress={isDocument? openDocPicker:handleBrowseFiles}
           btnStyle={[styles.browseBtn, btnStyle]}
           title="Browse Files"
           textStyle={styles.browseText}
@@ -196,5 +232,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1,
     elevation: 3,
+  },
+  pdfIcon: {
+    height: hp(50),
+    width: hp(50),
   },
 });

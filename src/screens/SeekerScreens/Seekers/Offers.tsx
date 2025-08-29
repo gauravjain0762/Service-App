@@ -195,16 +195,20 @@ const Offers = () => {
               }
             />
           </View>
-          <PaymentMethodModal
-            visible={isPaymentMethodModalVisible}
-            onClose={closePaymentMethodModal}
-            onPaymentSelect={handlePaymentSelect}
-          />
-          <PaymentSuccessModal
-            onClose={closePaymentSuccessModal}
-            visible={isPaymentSuccessModalVisible}
-            amount={isModalId?.offer_price}
-          />
+          {isPaymentMethodModalVisible && (
+            <PaymentMethodModal
+              visible={isPaymentMethodModalVisible}
+              onClose={closePaymentMethodModal}
+              onPaymentSelect={handlePaymentSelect}
+            />
+          )}
+          {isPaymentSuccessModalVisible && (
+            <PaymentSuccessModal
+              onClose={closePaymentSuccessModal}
+              visible={isPaymentSuccessModalVisible}
+              amount={isModalId?.offer_price}
+            />
+          )}
         </>
       )}
     </SafeareaProvider>

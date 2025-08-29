@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {FlatList, Image, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import BackHeader from '@/components/common/BackHeader';
@@ -7,32 +14,33 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import BookingCard from '@/components/common/BookingCard';
-import TabSwitch from '@/components/common/TabSwitch';
 import CustomImage from '@/components/common/CustomImage';
 import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {useGetJobsQuery} from '@/api/Seeker/homeApi';
 import MyRequestSkeleton from '@/components/skeleton/MyRequestSkeleton';
 import CommonText from '@/components/common/CommonText';
+import CustomTextInput from '@/components/common/CustomTextInput';
+import BottomModal from '@/components/common/BottomModal';
 
 const MyBookingsTab = () => {
-  const [activeTab, setActiveTab] = useState<'Active' | 'Complete'>('Active');
-
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allJobData, setAllJobData] = React.useState([]);
+  const [selectedOption, setSelectedOption] = useState('All');
+  const [allOptions] = useState(['All', 'Active', 'Completed', 'Cancelled']);
   const {
     data: jobData,
     isLoading: jobLoading,
     refetch: refetchJobList,
   } = useGetJobsQuery<any>(
-    {status: activeTab == 'Active' ? 'Active' : 'Completed'},
+    {status: selectedOption},
     {
       refetchOnReconnect: true,
       refetchOnMountOrArgChange: true,
       refetchOnFocus: true,
     },
   );
-  console.log(jobData, 'jobDatajobDatajobDatajobData');
 
   React.useEffect(() => {
     if (jobData) {
@@ -57,8 +65,11 @@ const MyBookingsTab = () => {
   };
   React.useEffect(() => {
     refetchJobList();
-  }, [activeTab]);
-
+  }, [selectedOption]);
+  const handleOptionSelect = (option: string) => {
+    setSelectedOption(option);
+    setIsModalVisible(false);
+  };
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -72,10 +83,28 @@ const MyBookingsTab = () => {
         }
       />
 
-      <TabSwitch
-        tabs={['Active', 'Complete']}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+      <CustomTextInput
+        editable={false}
+        placeholder={selectedOption}
+        onPressSearchBar={() => {
+          setIsModalVisible(true);
+        }}
+        onPressIn={() => {
+          setIsModalVisible(true);
+        }}
+        onPress={() => {
+          setIsModalVisible(true);
+        }}
+        containerStyle={{marginVertical: hp(10)}}
+        rightIcon={
+          <CustomImage
+            source={IMAGES.downArrow}
+            onPress={() => {
+              setIsModalVisible(true);
+            }}
+            size={hp(25)}
+          />
+        }
       />
       {jobLoading ? (
         <MyRequestSkeleton />
@@ -102,11 +131,7 @@ const MyBookingsTab = () => {
                   alignItems: 'center',
                 }}>
                 <CommonText
-                  text={
-                    activeTab === 'Active'
-                      ? 'No active bookings'
-                      : 'No completed bookings'
-                  }
+                  text={`No ${selectedOption} bookings`}
                   style={styles.noData}
                 />
               </View>
@@ -114,6 +139,32 @@ const MyBookingsTab = () => {
           />
         </View>
       )}
+      <BottomModal
+        close
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onPressCancel={() => setIsModalVisible(false)}
+        style={styles.modalContainer}>
+        <View style={styles.paymentContainer}>
+          {allOptions.map(option => (
+            <TouchableOpacity
+              key={option}
+              style={styles.paymentOption}
+              onPress={() => handleOptionSelect(option)}>
+              <CommonText text={option} style={styles.paymentText} />
+              <View
+                style={[
+                  styles.radioButton,
+                  selectedOption === option && styles.radioButtonSelected,
+                ]}>
+                {selectedOption === option && (
+                  <View style={styles.radioButtonInner} />
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </BottomModal>
     </SafeareaProvider>
   );
 };
@@ -147,5 +198,54 @@ const styles = StyleSheet.create({
   },
   noData: {
     ...commonFontStyle(500, 2.5, Colors.black),
+  },
+  modalContainer: {
+    paddingTop: hp(30),
+    paddingBottom: hp(40),
+    paddingHorizontal: wp(20),
+    position: 'relative',
+  },
+  title: {
+    ...commonFontStyle(700, 2.2, Colors.black),
+    textAlign: 'left',
+    marginBottom: hp(25),
+    marginTop: hp(10),
+    marginLeft: wp(5),
+  },
+  paymentContainer: {
+    gap: hp(23),
+  },
+  paymentOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: wp(10),
+    borderRadius: hp(12),
+    backgroundColor: Colors.white,
+  },
+  paymentInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paymentText: {
+    ...commonFontStyle(500, 2.0, Colors.black),
+  },
+  radioButton: {
+    width: wp(25),
+    height: hp(25),
+    borderRadius: wp(100),
+    borderWidth: 2,
+    borderColor: Colors.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioButtonSelected: {
+    borderColor: '#000000',
+  },
+  radioButtonInner: {
+    width: wp(12),
+    height: hp(12),
+    borderRadius: wp(100),
+    backgroundColor: Colors.black,
   },
 });

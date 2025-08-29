@@ -9,6 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {navigateTo} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetRequestsQuery} from '@/api/Provider/homeApi';
+import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 
 const DATA = [
   {
@@ -41,7 +42,7 @@ const DATA = [
 ];
 
 const NewRequestScreen = () => {
-    const [currentPage, setCurrentPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const [allRequestData, setAllRequestData] = React.useState([]);
   const {
     data: requestData,
@@ -74,35 +75,43 @@ const NewRequestScreen = () => {
       setCurrentPage(nextPage);
     }
   };
-  
+
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <View style={styles.mainContainer}>
         <BackHeader text="New Request" style={GeneralStyle.back} />
 
-        <FlatList
-          data={allRequestData}
-          renderItem={({item, index}:any) => {
-            return (
-              <BookingCard
-                item={item}
-                index={index}
-                isBooking={false}
-                onPress={() => {
-                  navigateTo(PROVIDER_SCREENS.ProRequestDetail,{request_id:item?._id});
-                }}
-                onPressButton={() => {
-                  navigateTo(PROVIDER_SCREENS.MakeOffer,{requestDetails:item});
-                }}
-              />
-            );
-          }}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          keyExtractor={(item:any) => item?._id?.toString()}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.contentContainer}
-        />
+        {requestLoading ? (
+          <ProMyBookingsSkeleton />
+        ) : (
+          <FlatList
+            data={allRequestData}
+            renderItem={({item, index}: any) => {
+              return (
+                <BookingCard
+                  item={item}
+                  index={index}
+                  isBooking={false}
+                  onPress={() => {
+                    navigateTo(PROVIDER_SCREENS.ProRequestDetail, {
+                      request_id: item?._id,
+                    });
+                  }}
+                  onPressButton={() => {
+                    navigateTo(PROVIDER_SCREENS.MakeOffer, {
+                      requestDetails: item,
+                    });
+                  }}
+                />
+              );
+            }}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            keyExtractor={(item: any) => item?._id?.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.contentContainer}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
