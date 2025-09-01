@@ -25,10 +25,10 @@ const PaymentMethodModal = ({
   onClose,
   onPaymentSelect,
 }: PaymentMethodModalProps) => {
-  const [selectedPayment, setselectedPayment] = useState('');
+  const [selectedPayment, setSelectedPayment] = useState('');
 
   const handlePaymentSelect = (method: string) => {
-    setselectedPayment(method);
+    setSelectedPayment(method);
     onPaymentSelect(method);
   };
 

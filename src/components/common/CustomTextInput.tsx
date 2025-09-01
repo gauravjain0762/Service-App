@@ -27,6 +27,7 @@ interface CustomTextInputProps extends TextInputProps {
   inputStyle?: ViewStyle;
   mainStyle?: ViewStyle;
   onPressSearchBar?: () => void;
+  isError?: boolean;
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -40,6 +41,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   inputStyle,
   mainStyle,
   onPressSearchBar,
+  isError = false,
   ...rest
 }) => {
   const {t} = useTranslation();
@@ -52,7 +54,13 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           {required && <Text style={styles.required}>*</Text>}
         </CommonText>
       )}
-      <Pressable onPress={onPressSearchBar} style={[styles.inputContainer, containerStyle]}>
+      <Pressable
+        onPress={onPressSearchBar}
+        style={[
+          styles.inputContainer,
+          isError && {borderColor: Colors.red},
+          containerStyle,
+        ]}>
         {leftIcon && leftIcon}
         <TextInput
           style={[styles.input, inputStyle]}
@@ -104,6 +112,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     ...rowReverseRTL(),
     // flex: 1,
+    borderWidth: 1,
+    borderColor: Colors._F9F9F9,
   },
 });
 

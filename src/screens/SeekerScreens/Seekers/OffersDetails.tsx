@@ -163,50 +163,6 @@ const OffersDetails = () => {
             <CommonText text={offerDetail?.time} style={styles.bookingValue} />
           </View>
         </View>
-        {/* {offerDetail?.media_files?.length > 0 && (
-          <ShadowCard style={styles.shadowCard}>
-            <CommonText text={'Attachments'} style={styles.watchTitle} />
-
-            <View style={styles.imageRow}>
-              <Image
-                source={{
-                  uri:
-                    offerDetail?.media_files &&
-                    offerDetail?.media_files[0]?.file,
-                }}
-                style={styles.imageBox}
-              />
-              <View style={styles.secondImageWrapper}>
-                <Image
-                  source={{
-                    uri:
-                      offerDetail?.media_files &&
-                      offerDetail?.media_files[1]?.file,
-                  }}
-                  style={[styles.imageBox, styles.blurredImage]}
-                  blurRadius={
-                    offerDetail?.media_files &&
-                    offerDetail?.media_files.length > 2
-                      ? 5
-                      : 0
-                  }
-                />
-                {offerDetail?.media_files &&
-                  offerDetail?.media_files.length > 2 && (
-                    <View style={styles.overlay}>
-                      <CommonText
-                        text={`+${
-                          offerDetail?.media_files &&
-                          offerDetail?.media_files.length - 2
-                        }`}
-                        style={styles.overlayText}
-                      />
-                    </View>
-                  )}
-              </View>
-            </View>
-          </ShadowCard>
-        )} */}
         {offerDetail?.media_files?.length > 0 && (
           <AttachmentCard
             requestImages={offerDetail?.media_files}
