@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, ViewStyle, View, FlatList, Image} from 'react-native';
+import {
+  StyleSheet,
+  ViewStyle,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
 import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
@@ -10,6 +17,7 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
 import DocumentPicker from 'react-native-document-picker';
+import Video from 'react-native-video';
 
 type Props = {
   desc?: string;
@@ -35,19 +43,17 @@ const UploadBox = ({
   const handleBrowseFiles = () => {
     ImagePicker.openPicker({
       multiple: false,
-      mediaType: 'photo',
+      mediaType: 'any',
     })
       .then(images => {
-        // If single file, wrap in array
         const newFiles: any = Array.isArray(images) ? images : [images];
-        setFiles(prev => [...prev, ...newFiles]); // ✅ append instead of overwrite
-
+        setFiles(prev => [...prev, ...newFiles]);
         const data: any = {
           uri: newFiles[0]?.sourceURL,
           type: newFiles[0]?.mime,
           name: newFiles[0]?.sourceURL.split('/').pop(),
         };
-        setSelectedMedia((prev: any) => [...prev, data]); // ✅ append instead of overwrite
+        setSelectedMedia((prev: any) => [...prev, data]);
       })
       .catch(error => {
         if (error.code !== 'E_PICKER_CANCELLED') {
@@ -107,11 +113,10 @@ const UploadBox = ({
             // imageStyle={styles.previewImg}
           />
         ) : isVideo ? (
-          <CustomImage
-            size={hp(12)}
-            resizeMode="contain"
-            source={IMAGES.photoUpload} // replace with your video icon
-            imageStyle={styles.previewImg}
+          <Video
+            source={{uri: item.path}}
+            style={{width: wp(80), height: hp(80), borderRadius: hp(2)}}
+            muted={true}
           />
         ) : (
           <CustomImage
@@ -156,7 +161,7 @@ const UploadBox = ({
           resizeMode="contain"
           source={IMAGES.photoUpload}
           imageStyle={[styles.icon]}
-          onPress={isDocument? openDocPicker :handleBrowseFiles}
+          onPress={isDocument ? openDocPicker : handleBrowseFiles}
         />
       )}
 
@@ -167,7 +172,7 @@ const UploadBox = ({
 
       {isButton && (
         <CustomButton
-          onPress={isDocument? openDocPicker:handleBrowseFiles}
+          onPress={isDocument ? openDocPicker : handleBrowseFiles}
           btnStyle={[styles.browseBtn, btnStyle]}
           title="Browse Files"
           textStyle={styles.browseText}

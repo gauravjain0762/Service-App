@@ -10,12 +10,17 @@ import CustomImage from './CustomImage';
 import {SCREENS} from '@/navigation/screenNames';
 import {navigateTo} from './commonFunction';
 import ImageListModal from '../modals/ImageListModal';
+import ImageViewer from '../modals/ImageViewer';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const AttachmentCard = ({requestImages = [], title}: any) => {
   console.log(requestImages, 'requestImages');
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [selectedImage, setSelectedImage] = React.useState({
+    isOpen: false,
+    image: null,
+  });
   return (
     <>
       <ShadowCard style={{width: '100%', alignItems: 'center'}}>
@@ -37,7 +42,10 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
                     url: requestImages[0]?.file,
                     title: requestImages[0]?.name,
                   })
-                : {};
+                : setSelectedImage({
+                    isOpen: true,
+                    image: requestImages[0]?.file,
+                  });
             }}
             source={
               requestImages[0]?.type != 'image'
@@ -74,11 +82,22 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
           </View>
         </View>
       </ShadowCard>
-      <ImageListModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        requestImages={requestImages}
-      />
+      {isModalVisible && (
+        <ImageListModal
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          requestImages={requestImages}
+        />
+      )}
+      {selectedImage?.isOpen && (
+        <ImageViewer
+          visible={selectedImage?.isOpen}
+          onClose={() => {
+            setSelectedImage({isOpen: false, image: null});
+          }}
+          imageUri={selectedImage?.image}
+        />
+      )}
     </>
   );
 };

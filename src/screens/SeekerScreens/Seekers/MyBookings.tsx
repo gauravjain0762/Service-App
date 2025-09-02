@@ -233,8 +233,11 @@ const MyBookings = () => {
 
       <KeyboardAwareScrollView
         nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}>
+        // style={{flex: 1}}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
+        showsVerticalScrollIndicator={false}>
         <View
           style={{
             paddingHorizontal: wp(24),

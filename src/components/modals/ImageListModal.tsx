@@ -10,6 +10,7 @@ import HomeSkeleton from '../skeleton/HomeSkeleton';
 import BottomModal from '../common/BottomModal';
 import CustomImage from '../common/CustomImage';
 import {IMAGES} from '@/assets/images';
+import ImageViewer from './ImageViewer';
 
 type Props = {
   visible: boolean;
@@ -23,6 +24,10 @@ const ImageListModal = ({
   requestImages,
 }: Props) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState({
+    isOpen: false,
+    image: null,
+  });
 
   useEffect(() => {
     setIsModalVisible(visible);
@@ -62,7 +67,7 @@ const ImageListModal = ({
                         url: item?.file,
                         title: item?.name,
                       })
-                    : {};
+                    : setSelectedImage({isOpen: true, image: item?.file});
                 }}
                 source={
                   item?.type != 'image'
@@ -80,6 +85,13 @@ const ImageListModal = ({
           }
         />
       )}
+      <ImageViewer
+        visible={selectedImage?.isOpen}
+        onClose={() => {
+          setSelectedImage({isOpen: false, image: null});
+        }}
+        imageUri={selectedImage?.image}
+      />
     </BottomModal>
   );
 };
