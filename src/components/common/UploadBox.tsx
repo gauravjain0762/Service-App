@@ -27,6 +27,7 @@ type Props = {
   btnStyle?: ViewStyle;
   setSelectedMedia?: any;
   isDocument?: boolean;
+  isAllDocument?: boolean;
 };
 
 const UploadBox = ({
@@ -36,6 +37,7 @@ const UploadBox = ({
   desc,
   isButton = true,
   setSelectedMedia,
+  isAllDocument = false,
   isDocument = false,
 }: Props) => {
   const [files, setFiles] = useState<any[]>([]);
@@ -73,17 +75,30 @@ const UploadBox = ({
     try {
       const pickerResult = await DocumentPicker.pickSingle({
         presentationStyle: 'fullScreen',
+        type: [DocumentPicker.types.pdf],
+      });
+
+      console.log('pickerResult', pickerResult);
+      const newFile = {
+        uri: pickerResult.uri,
+        name: pickerResult.name,
+        type: pickerResult.type,
+      };
+      // onSelect(newFile);
+      setFiles(prev => [...prev, newFile]);
+      setSelectedMedia((prev: any) => [...prev, newFile]);
+    } catch (e) {
+      console.log('error--', e);
+    }
+  };
+  const openAllPicker = async () => {
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        presentationStyle: 'fullScreen',
         type: [
-          DocumentPicker.types.doc,
           DocumentPicker.types.pdf,
           DocumentPicker.types.images,
-          DocumentPicker.types.zip,
-          DocumentPicker.types.docx,
-          DocumentPicker.types.ppt,
-          DocumentPicker.types.pptx,
-          DocumentPicker.types.xls,
-          DocumentPicker.types.xlsx,
-          DocumentPicker.types.plainText,
+          DocumentPicker.types.video,
         ],
       });
 
@@ -100,21 +115,27 @@ const UploadBox = ({
       console.log('error--', e);
     }
   };
+
   const renderFile = ({item, index}: {item: any; index?: number}) => {
-    const isImage = item.mime?.includes('image');
-    const isVideo = item.mime?.includes('video');
+    const isImage =
+      item.mime?.includes('image') || item.type?.includes('image');
+    const isVideo =
+      item.mime?.includes('video') || item.type?.includes('video');
+    const isPdf = item.mime?.includes('pdf') || item.type?.includes('pdf');
     return (
       <View style={styles.fileContainer}>
-        {isImage ? (
+        {isPdf ? (
+          <CustomImage size={hp(80)} source={IMAGES.pdfIcon} />
+        ) : isImage ? (
           <CustomImage
             size={hp(80)}
             resizeMode="cover"
-            uri={item.path}
+            uri={item.path ?? item?.uri}
             // imageStyle={styles.previewImg}
           />
         ) : isVideo ? (
           <Video
-            source={{uri: item.path}}
+            source={{uri: item.path ?? item?.uri}}
             style={{width: wp(80), height: hp(80), borderRadius: hp(2)}}
             muted={true}
           />
@@ -141,9 +162,7 @@ const UploadBox = ({
     <ShadowCard style={[style]}>
       {title && <CommonText style={styles.title} text={title} />}
 
-      {isDocument && files.length > 0 ? (
-        <Image style={styles.pdfIcon} source={IMAGES.pdfIcon} />
-      ) : files.length > 0 ? (
+      {files.length > 0 ? (
         <FlatList
           data={files}
           renderItem={renderFile}
@@ -161,7 +180,13 @@ const UploadBox = ({
           resizeMode="contain"
           source={IMAGES.photoUpload}
           imageStyle={[styles.icon]}
-          onPress={isDocument ? openDocPicker : handleBrowseFiles}
+          onPress={
+            isAllDocument
+              ? openAllPicker
+              : isDocument
+              ? openDocPicker
+              : handleBrowseFiles
+          }
         />
       )}
 
@@ -172,7 +197,13 @@ const UploadBox = ({
 
       {isButton && (
         <CustomButton
-          onPress={isDocument ? openDocPicker : handleBrowseFiles}
+          onPress={
+            isAllDocument
+              ? openAllPicker
+              : isDocument
+              ? openDocPicker
+              : handleBrowseFiles
+          }
           btnStyle={[styles.browseBtn, btnStyle]}
           title="Browse Files"
           textStyle={styles.browseText}
@@ -239,7 +270,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   pdfIcon: {
-    height: hp(50),
-    width: hp(50),
+    height: hp(80),
+    width: hp(80),
   },
 });

@@ -37,7 +37,14 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
         />
         <View style={styles.imageRow}>
           {requestImages[0]?.type === 'video' ? (
-            <TouchableOpacity style={styles.imageBox}>
+            <TouchableOpacity
+              style={styles.imageBox}
+              onPress={() => {
+                navigateTo(SCREENS.WebViewScreen, {
+                  url: requestImages[0]?.file,
+                  title: '',
+                });
+              }}>
               <Video
                 source={{uri: requestImages[0]?.file}}
                 style={{width: '100%', height: '100%'}}
@@ -47,15 +54,10 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
           ) : (
             <CustomImage
               onPress={() => {
-                requestImages[0]?.type != 'image'
-                  ? navigateTo(SCREENS.WebViewScreen, {
-                      url: requestImages[0]?.file,
-                      title: requestImages[0]?.name,
-                    })
-                  : setSelectedImage({
-                      isOpen: true,
-                      image: requestImages[0]?.file,
-                    });
+                navigateTo(SCREENS.WebViewScreen, {
+                  url: requestImages[0]?.file,
+                  title: '',
+                });
               }}
               source={
                 requestImages[0]?.type != 'image'
@@ -81,15 +83,10 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
               ) : (
                 <CustomImage
                   onPress={() => {
-                    requestImages[1]?.type != 'image'
-                      ? navigateTo(SCREENS.WebViewScreen, {
-                          url: requestImages[1]?.file,
-                          title: requestImages[1]?.name,
-                        })
-                      : setSelectedImage({
-                          isOpen: true,
-                          image: requestImages[1]?.file,
-                        });
+                    navigateTo(SCREENS.WebViewScreen, {
+                      url: requestImages[1]?.file,
+                      title: '',
+                    });
                   }}
                   source={
                     requestImages[1]?.type != 'image'

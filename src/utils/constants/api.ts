@@ -31,6 +31,7 @@ export const SEEKER_API = {
     ACCEPT_OFFER: '/acceptOffer',
     JOBS: '/getJobs',
     JOBS_DETAILS: '/getJobDetails',
+    REQUEST_CHANGE: '/requestChange',
   },
 } as const;
 

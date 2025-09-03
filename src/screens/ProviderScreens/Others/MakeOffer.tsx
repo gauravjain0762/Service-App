@@ -123,6 +123,7 @@ const MakeOffer = () => {
             btnStyle={styles.uploadBtn}
             setSelectedMedia={setSelectedMedia}
             isDocument={true}
+            desc="Upload PDF's here."
           />
         </View>
 

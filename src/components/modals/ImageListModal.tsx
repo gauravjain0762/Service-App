@@ -61,27 +61,17 @@ const ImageListModal = ({
               return <View style={styles.emptySlot} />;
             }
             return (
-              // <CustomImage
-              //   onPress={() => {
-              //     item?.type != 'image'
-              //       ? navigateTo(SCREENS.WebViewScreen, {
-              //           url: item?.file,
-              //           title: item?.name,
-              //         })
-              //       : setSelectedImage({isOpen: true, image: item?.file});
-              //   }}
-              //   source={
-              //     item?.type != 'image'
-              //       ? IMAGES.pdfIcon
-              //       : {uri: requestImages && item?.file}
-              //   }
-              //   containerStyle={styles.imageBox}
-              //   imageStyle={{width: '100%', height: '100%'}}
-              //   resizeMode='cover'
-              // />
               <>
                 {item?.type === 'video' ? (
-                  <TouchableOpacity style={styles.imageBox}>
+                  <TouchableOpacity
+                    style={styles.imageBox}
+                    onPress={() => {
+                      navigateTo(SCREENS.WebViewScreen, {
+                        url: item?.file,
+                        title: '',
+                      });
+                      handleClose();
+                    }}>
                     <Video
                       source={{uri: item?.file}}
                       style={{width: '100%', height: '100%'}}
@@ -91,15 +81,11 @@ const ImageListModal = ({
                 ) : (
                   <CustomImage
                     onPress={() => {
-                      item?.type != 'image'
-                        ? navigateTo(SCREENS.WebViewScreen, {
-                            url: item?.file,
-                            title: item?.name,
-                          })
-                        : setSelectedImage({
-                            isOpen: true,
-                            image: item?.file,
-                          });
+                      navigateTo(SCREENS.WebViewScreen, {
+                        url: item?.file,
+                        title: '',
+                      });
+                      handleClose();
                     }}
                     source={
                       item?.type != 'image'

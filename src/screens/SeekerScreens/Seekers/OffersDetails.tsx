@@ -20,6 +20,7 @@ import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import {useAcceptOfferMutation} from '@/api/Seeker/homeApi';
 import AttachmentCard from '@/components/common/AttachmentCard';
+import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
@@ -33,6 +34,7 @@ const OffersDetails = () => {
     useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     useState(false);
+  const [isEditRequest, setIsEditRequest] = useState(false);
 
   const openPaymentMethodModal = async () => {
     setIsPaymentMethodModalVisible(true);
@@ -183,6 +185,15 @@ const OffersDetails = () => {
               onClose={closePaymentSuccessModal}
               visible={isPaymentSuccessModalVisible}
               amount={offerDetail?.offer_price}
+            />
+          )}
+          {isEditRequest && (
+            <RequestEditServiceModal
+              onClose={() => {
+                setIsEditRequest(false);
+              }}
+              visible={isEditRequest}
+              offer_id={offerDetail?._id}
             />
           )}
           <CustomButton

@@ -25,6 +25,7 @@ import CommonText from '@/components/common/CommonText';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
+import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
 
 const Offers = () => {
   const {params} = useRoute<any>();
@@ -35,6 +36,7 @@ const Offers = () => {
     useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     useState(false);
+  const [isEditRequest, setIsEditRequest] = useState(false);
   const [isModalId, setIsModalId] = useState<any>(null);
 
   const openPaymentMethodModal = async () => {
@@ -174,6 +176,7 @@ const Offers = () => {
                       setIsModalId(item);
                       openPaymentMethodModal();
                     }}
+                    // setIsEditRequest(true)
                   />
                 );
               }}
@@ -207,6 +210,15 @@ const Offers = () => {
               onClose={closePaymentSuccessModal}
               visible={isPaymentSuccessModalVisible}
               amount={isModalId?.offer_price}
+            />
+          )}
+          {isEditRequest && (
+            <RequestEditServiceModal
+              onClose={() => {
+                setIsEditRequest(false);
+              }}
+              visible={isEditRequest}
+              offer_id={isModalId?._id}
             />
           )}
         </>

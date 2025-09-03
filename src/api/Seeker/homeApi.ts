@@ -72,9 +72,18 @@ export const homeApi = createApi({
         method: HTTP_METHOD.POST,
         data: credentials,
         headers: {
-         'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Content-Type': 'multipart/form-data',
         },
+      }),
+      invalidatesTags: ['homeApi'],
+    }),
+
+    requestChange: builder.mutation<any, any>({
+      query: credentials => ({
+        url: SEEKER_API.DASHBOARD.REQUEST_CHANGE,
+        method: HTTP_METHOD.POST,
+        data: credentials,
       }),
       invalidatesTags: ['homeApi'],
     }),
@@ -116,5 +125,6 @@ export const {
   useCreateRequestMutation,
   useAcceptOfferMutation,
   useGetJobDetailsQuery,
-  useGetJobsQuery
+  useGetJobsQuery,
+  useRequestChangeMutation
 } = homeApi;

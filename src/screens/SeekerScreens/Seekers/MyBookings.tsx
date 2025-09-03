@@ -357,6 +357,7 @@ const MyBookings = () => {
             title="Upload Video/Image"
             style={{width: '100%'}}
             setSelectedMedia={setSelectedMedia}
+            isAllDocument
           />
         </View>
 
