@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import {IMAGES} from '@/assets/images';
 import CommonText from './CommonText';
@@ -11,6 +11,7 @@ import {SCREENS} from '@/navigation/screenNames';
 import {navigateTo} from './commonFunction';
 import ImageListModal from '../modals/ImageListModal';
 import ImageViewer from '../modals/ImageViewer';
+import Video from 'react-native-video';
 
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
@@ -35,49 +36,82 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
           }}
         />
         <View style={styles.imageRow}>
-          <CustomImage
-            onPress={() => {
-              requestImages[0]?.type != 'image'
-                ? navigateTo(SCREENS.WebViewScreen, {
-                    url: requestImages[0]?.file,
-                    title: requestImages[0]?.name,
-                  })
-                : setSelectedImage({
-                    isOpen: true,
-                    image: requestImages[0]?.file,
-                  });
-            }}
-            source={
-              requestImages[0]?.type != 'image'
-                ? IMAGES.pdfIcon
-                : {uri: requestImages && requestImages[0]?.file}
-            }
-            containerStyle={styles.imageBox}
-            imageStyle={{width: '100%', height: '100%'}}
-          />
+          {requestImages[0]?.type === 'video' ? (
+            <TouchableOpacity style={styles.imageBox}>
+              <Video
+                source={{uri: requestImages[0]?.file}}
+                style={{width: '100%', height: '100%'}}
+                muted={true}
+              />
+            </TouchableOpacity>
+          ) : (
+            <CustomImage
+              onPress={() => {
+                requestImages[0]?.type != 'image'
+                  ? navigateTo(SCREENS.WebViewScreen, {
+                      url: requestImages[0]?.file,
+                      title: requestImages[0]?.name,
+                    })
+                  : setSelectedImage({
+                      isOpen: true,
+                      image: requestImages[0]?.file,
+                    });
+              }}
+              source={
+                requestImages[0]?.type != 'image'
+                  ? IMAGES.pdfIcon
+                  : {uri: requestImages && requestImages[0]?.file}
+              }
+              containerStyle={styles.imageBox}
+              imageStyle={{width: '100%', height: '100%'}}
+            />
+          )}
+
           <View style={styles.secondImageWrapper}>
-            {requestImages && requestImages[1] && (
-              <CustomImage
+            {requestImages &&
+              requestImages[1] &&
+              (requestImages[1]?.type === 'video' ? (
+                <TouchableOpacity style={styles.imageBox}>
+                  <Video
+                    source={{uri: requestImages[0]?.file}}
+                    style={{width: '100%', height: '100%'}}
+                    muted={true}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <CustomImage
+                  onPress={() => {
+                    requestImages[1]?.type != 'image'
+                      ? navigateTo(SCREENS.WebViewScreen, {
+                          url: requestImages[1]?.file,
+                          title: requestImages[1]?.name,
+                        })
+                      : setSelectedImage({
+                          isOpen: true,
+                          image: requestImages[1]?.file,
+                        });
+                  }}
+                  source={
+                    requestImages[1]?.type != 'image'
+                      ? IMAGES.pdfIcon
+                      : {uri: requestImages && requestImages[1]?.file}
+                  }
+                  containerStyle={[styles.imageBox, styles.blurredImage]}
+                  imageStyle={{width: '100%', height: '100%'}}
+                  blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
+                />
+              ))}
+            {requestImages && requestImages.length > 2 && (
+              <TouchableOpacity
                 onPress={() => {
                   setIsModalVisible(true);
                 }}
-                source={
-                  requestImages[1]?.type != 'image'
-                    ? IMAGES.pdfIcon
-                    : {uri: requestImages && requestImages[1]?.file}
-                }
-                containerStyle={[styles.imageBox, styles.blurredImage]}
-                imageStyle={{width: '100%', height: '100%'}}
-                blurRadius={requestImages && requestImages.length > 2 ? 5 : 0}
-              />
-            )}
-            {requestImages && requestImages.length > 2 && (
-              <View style={styles.overlay}>
+                style={styles.overlay}>
                 <CommonText
                   text={requestImages && `+${requestImages.length - 2}`}
                   style={styles.overlayText}
                 />
-              </View>
+              </TouchableOpacity>
             )}
           </View>
         </View>

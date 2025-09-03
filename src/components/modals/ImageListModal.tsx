@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import ServiceCard from '../common/ServiceCard';
@@ -11,6 +11,7 @@ import BottomModal from '../common/BottomModal';
 import CustomImage from '../common/CustomImage';
 import {IMAGES} from '@/assets/images';
 import ImageViewer from './ImageViewer';
+import Video from 'react-native-video';
 
 type Props = {
   visible: boolean;
@@ -60,23 +61,56 @@ const ImageListModal = ({
               return <View style={styles.emptySlot} />;
             }
             return (
-              <CustomImage
-                onPress={() => {
-                  item?.type != 'image'
-                    ? navigateTo(SCREENS.WebViewScreen, {
-                        url: item?.file,
-                        title: item?.name,
-                      })
-                    : setSelectedImage({isOpen: true, image: item?.file});
-                }}
-                source={
-                  item?.type != 'image'
-                    ? IMAGES.pdfIcon
-                    : {uri: requestImages && item?.file}
-                }
-                containerStyle={styles.imageBox}
-                imageStyle={{width: '100%', height: '100%'}}
-              />
+              // <CustomImage
+              //   onPress={() => {
+              //     item?.type != 'image'
+              //       ? navigateTo(SCREENS.WebViewScreen, {
+              //           url: item?.file,
+              //           title: item?.name,
+              //         })
+              //       : setSelectedImage({isOpen: true, image: item?.file});
+              //   }}
+              //   source={
+              //     item?.type != 'image'
+              //       ? IMAGES.pdfIcon
+              //       : {uri: requestImages && item?.file}
+              //   }
+              //   containerStyle={styles.imageBox}
+              //   imageStyle={{width: '100%', height: '100%'}}
+              //   resizeMode='cover'
+              // />
+              <>
+                {item?.type === 'video' ? (
+                  <TouchableOpacity style={styles.imageBox}>
+                    <Video
+                      source={{uri: item?.file}}
+                      style={{width: '100%', height: '100%'}}
+                      muted={true}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <CustomImage
+                    onPress={() => {
+                      item?.type != 'image'
+                        ? navigateTo(SCREENS.WebViewScreen, {
+                            url: item?.file,
+                            title: item?.name,
+                          })
+                        : setSelectedImage({
+                            isOpen: true,
+                            image: item?.file,
+                          });
+                    }}
+                    source={
+                      item?.type != 'image'
+                        ? IMAGES.pdfIcon
+                        : {uri: requestImages && item?.file}
+                    }
+                    containerStyle={styles.imageBox}
+                    imageStyle={{width: '100%', height: '100%'}}
+                  />
+                )}
+              </>
             );
           }}
           showsVerticalScrollIndicator={false}
