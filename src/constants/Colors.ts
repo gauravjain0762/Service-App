@@ -87,6 +87,7 @@ export const Colors = {
   _D3D3D3: '#D3D3D3',
   _ECECEC: '#ECECEC',
   _BEBEBE: '#BEBEBE',
+  _FBC943: '#FBC943',
   containerBGColor: 'rgba(51, 50, 50, 0.4)',
   orangeOpacity: 'rgba(255, 0, 0, 0.3)',
   red: 'rgba(255, 0, 0, 0.9)',

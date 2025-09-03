@@ -72,6 +72,8 @@ export const IMAGES = {
   profileUnselected: require('./icons/profileUnselected.png'),
   homeUnSelected: require('./icons/homeUnSelected.png'),
   feedUnselected: require('./icons/feedUnselected.png'),
+  loyalty_credit: require('./icons/loyalty_credit.png'),
+  loyalty_credit_card: require('./icons/loyalty_credit_card.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

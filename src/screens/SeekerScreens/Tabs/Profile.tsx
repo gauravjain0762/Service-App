@@ -10,7 +10,7 @@ import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import ProfileActionItem from '@/components/common/ProfileActionItem';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
-import {SCREEN_NAMES, SCREENS} from '@/navigation/screenNames';
+import {SCREEN_NAMES, SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import LanguageModal from '@/components/common/LanguageModel';
 import LogoutDeleteModal from '@/components/modals/LogoutDeleteModal';
 import {useLogoutMutation} from '@/api/Seeker/authApi';
@@ -38,6 +38,15 @@ const Profile = () => {
   };
 
   const ACTIONS = [
+    {
+      key: 'loyalty_credits',
+      leftIcon: IMAGES.loyalty_credit,
+      title: 'Loyalty Credits',
+      rightIcon: IMAGES.rightArrow,
+      onPress: () => {
+        navigateTo(SEEKER_SCREENS.LoyaltyCredit);
+      },
+    },
     {
       key: 'language',
       leftIcon: IMAGES.language,

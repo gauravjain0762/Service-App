@@ -22,6 +22,7 @@ import SearchScreen from '@/screens/SeekerScreens/Seekers/SearchScreen';
 import HomeScreen from '@/screens/SeekerScreens/Tabs/HomeScreen';
 import Subscription from '@/screens/Subscription';
 import {useAppSelector} from '@/Hooks/hooks';
+import LoyaltyCredit from '@/screens/SeekerScreens/Seekers/LoyaltyCredit';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -51,6 +52,7 @@ const SeekerNavigator: FC = ({}) => {
     {name: SEEKER_SCREENS.SearchScreen, component: SearchScreen},
     {name: SEEKER_SCREENS.HomeScreen, component: HomeScreen},
     {name: SEEKER_SCREENS.Subscription, component: Subscription},
+    {name: SEEKER_SCREENS.LoyaltyCredit, component: LoyaltyCredit},
   ];
   return (
     <Stack.Navigator
