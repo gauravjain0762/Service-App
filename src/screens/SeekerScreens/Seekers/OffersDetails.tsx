@@ -172,47 +172,58 @@ const OffersDetails = () => {
           />
         )}
 
-        <View style={styles.bottomRow}>
-          {isPaymentMethodModalVisible && (
-            <PaymentMethodModal
-              visible={isPaymentMethodModalVisible}
-              onClose={closePaymentMethodModal}
-              onPaymentSelect={handlePaymentSelect}
-            />
-          )}
-          {isPaymentSuccessModalVisible && (
-            <PaymentSuccessModal
-              onClose={closePaymentSuccessModal}
-              visible={isPaymentSuccessModalVisible}
-              amount={offerDetail?.offer_price}
-            />
-          )}
-          {isEditRequest && (
-            <RequestEditServiceModal
-              onClose={() => {
-                setIsEditRequest(false);
-              }}
-              visible={isEditRequest}
-              offer_id={offerDetail?._id}
-            />
-          )}
-          <CustomButton
-            title={'Accept Offer'}
-            btnStyle={styles.acceptBtn}
-            textStyle={styles.acceptText}
-            onPress={openPaymentMethodModal}
-            disabled={isLoading}
-            loading={isLoading}
+        {isPaymentMethodModalVisible && (
+          <PaymentMethodModal
+            visible={isPaymentMethodModalVisible}
+            onClose={closePaymentMethodModal}
+            onPaymentSelect={handlePaymentSelect}
           />
-          <View style={styles.priceRow}>
-            <Image source={IMAGES.currency} style={styles.currencyIcon} />
-            <CommonText
-              text={offerDetail?.offer_price}
-              style={styles.priceText}
-            />
-          </View>
-        </View>
+        )}
+        {isPaymentSuccessModalVisible && (
+          <PaymentSuccessModal
+            onClose={closePaymentSuccessModal}
+            visible={isPaymentSuccessModalVisible}
+            amount={offerDetail?.offer_price}
+          />
+        )}
+        {isEditRequest && (
+          <RequestEditServiceModal
+            onClose={() => {
+              setIsEditRequest(false);
+            }}
+            visible={isEditRequest}
+            offer_id={offerDetail?._id}
+          />
+        )}
+        <CustomButton
+          isPrimary="seeker"
+          title={'Request To Edit Service'}
+          type="outline"
+          btnStyle={{borderColor: Colors.black, margin: 0}}
+          style={{margin: 0}}
+          textStyle={{color: Colors.black}}
+          onPress={() => {
+            setIsEditRequest(true);
+          }}
+        />
       </ScrollView>
+      <View style={styles.bottomRow}>
+        <CustomButton
+          title={'Accept Offer'}
+          btnStyle={styles.acceptBtn}
+          textStyle={styles.acceptText}
+          onPress={openPaymentMethodModal}
+          disabled={isLoading}
+          loading={isLoading}
+        />
+        <View style={styles.priceRow}>
+          <Image source={IMAGES.currency} style={styles.currencyIcon} />
+          <CommonText
+            text={offerDetail?.offer_price}
+            style={styles.priceText}
+          />
+        </View>
+      </View>
     </SafeareaProvider>
   );
 };
@@ -346,10 +357,15 @@ const styles = StyleSheet.create({
   },
   bottomRow: {
     width: '100%',
-    marginTop: hp(45),
+    // marginTop: hp(45),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    position: 'absolute',
+    backgroundColor: Colors.white,
+    bottom: 0,
+    alignSelf: 'center',
+    paddingHorizontal: wp(24),
   },
   acceptBtn: {
     height: hp(50),

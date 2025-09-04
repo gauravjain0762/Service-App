@@ -54,6 +54,17 @@ const OfferCard = ({
 
       <View style={styles.bottomRow}>
         <CustomButton
+          isPrimary="seeker"
+          title={'Request Edit'}
+          type="fill"
+          btnStyle={[styles.acceptBtn, {backgroundColor: Colors.black}]}
+          style={{margin: 0}}
+          textStyle={styles.acceptText}
+          onPress={() => {
+            // setIsEditRequest(true);
+          }}
+        />
+        <CustomButton
           title={'Accept Offer'}
           textStyle={styles.acceptText}
           btnStyle={styles.acceptBtn}

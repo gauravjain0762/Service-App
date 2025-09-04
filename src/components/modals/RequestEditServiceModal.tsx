@@ -1,22 +1,12 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Image,
-  Dimensions,
-  TextInput,
-} from 'react-native';
+import {StyleSheet, Dimensions, TextInput} from 'react-native';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
-import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
-import {PROVIDER_SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
-import CustomImage from '../common/CustomImage';
-import {errorToast, resetNavigation} from '../common/commonFunction';
+import {errorToast} from '../common/commonFunction';
 import {useRequestChangeMutation} from '@/api/Seeker/homeApi';
+import CustomButton from '../common/CustomButton';
 
 Dimensions.get('window');
 
@@ -43,11 +33,12 @@ const RequestEditServiceModal = ({
         errorToast('Please enter a Description');
         return;
       }
-      const formData = new FormData();
-      formData.append('offer_id', offer_id);
-      formData.append('note', note);
+      const data = {
+        offer_id: offer_id,
+        note: note,
+      };
 
-      const response = await requestChange(formData).unwrap();
+      const response = await requestChange(data).unwrap();
       console.log('response', response);
 
       if (response?.status) {
@@ -77,18 +68,22 @@ const RequestEditServiceModal = ({
         value={note}
         onChangeText={setNote}
       />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[
-            styles.cancelButton,
-            isProvide && {backgroundColor: Colors.provider_primary},
-          ]}
-          onPress={() => {
-            onChangeRequest();
-          }}>
-          <Text style={styles.cancelButtonText}>Send Request</Text>
-        </TouchableOpacity>
-      </View>
+
+      <CustomButton
+        isPrimary="seeker"
+        title={'Send Request'}
+        type="fill"
+        btnStyle={[
+          styles.cancelButton,
+          isProvide && {backgroundColor: Colors.provider_primary},
+        ]}
+        style={styles.buttonContainer}
+        textStyle={styles.cancelButtonText}
+        onPress={() => {
+          onChangeRequest();
+        }}
+        loading={isLoading}
+      />
     </BottomModal>
   );
 };
