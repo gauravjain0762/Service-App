@@ -6,7 +6,7 @@ import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import CustomButton from './CustomButton';
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
 type Props = {
   item?: any;
@@ -14,6 +14,7 @@ type Props = {
   onPressOffer: () => void;
   onCardPress?: () => void;
   onPressAcceptOffer?: () => void;
+  onPressEdit?: () => void;
 };
 
 const OfferCard = ({
@@ -22,6 +23,7 @@ const OfferCard = ({
   onPressOffer,
   onCardPress,
   onPressAcceptOffer,
+  onPressEdit,
 }: Props) => {
   return (
     <ShadowCard onCardPress={onCardPress} style={styles.card}>
@@ -50,26 +52,28 @@ const OfferCard = ({
         ))}
       </View>
 
-      <CommonText text={item?.notes} style={styles.description} />
+      {item?.notes && (
+        <CommonText text={item?.notes} style={styles.description} />
+      )}
 
       <View style={styles.bottomRow}>
-        <CustomButton
-          isPrimary="seeker"
-          title={'Request Edit'}
-          type="fill"
-          btnStyle={[styles.acceptBtn, {backgroundColor: Colors.black}]}
-          style={{margin: 0}}
-          textStyle={styles.acceptText}
-          onPress={() => {
-            // setIsEditRequest(true);
-          }}
-        />
-        <CustomButton
-          title={'Accept Offer'}
-          textStyle={styles.acceptText}
-          btnStyle={styles.acceptBtn}
-          onPress={onPressAcceptOffer}
-        />
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            isPrimary="seeker"
+            title={'Edit'}
+            type="fill"
+            btnStyle={[styles.acceptBtn, {backgroundColor: Colors.black}]}
+            style={{margin: 0}}
+            textStyle={styles.acceptText}
+            onPress={onPressEdit}
+          />
+          <CustomButton
+            title={'Accept'}
+            textStyle={styles.acceptText}
+            btnStyle={styles.acceptBtn}
+            onPress={onPressAcceptOffer}
+          />
+        </View>
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
           <CommonText text={item?.offer_price} style={styles.priceText} />
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 1.3, Colors.black),
   },
   description: {
-    marginVertical: hp(20),
+    marginTop: getFontSize(1.5),
     ...commonFontStyle(400, 1.6, Colors._676767),
   },
   bottomRow: {
@@ -142,6 +146,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    marginTop: getFontSize(1.5),
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: getFontSize(1),
   },
   acceptBtn: {
     height: hp(50),
@@ -149,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.seeker_primary,
   },
   acceptText: {
-    ...commonFontStyle(600, 1.7, Colors.white),
+    ...commonFontStyle(600, 1.5, Colors.white),
   },
   priceRow: {
     flexDirection: 'row',
@@ -157,10 +167,10 @@ const styles = StyleSheet.create({
     gap: wp(7),
   },
   currencyIcon: {
-    height: hp(30),
-    width: wp(30),
+    height: hp(25),
+    width: wp(25),
   },
   priceText: {
-    ...commonFontStyle(700, 3.7, Colors.black),
+    ...commonFontStyle(700, 2.7, Colors.black),
   },
 });

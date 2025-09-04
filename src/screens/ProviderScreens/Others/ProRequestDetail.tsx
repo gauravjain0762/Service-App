@@ -33,7 +33,6 @@ const ProRequestDetail = () => {
     },
   );
   const requestDetails = requestData?.data?.job;
-  console.log(requestDetails,'requestDetails');
   
   return (
     <SafeAreaView style={GeneralStyle.container}>

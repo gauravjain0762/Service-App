@@ -176,7 +176,10 @@ const Offers = () => {
                       setIsModalId(item);
                       openPaymentMethodModal();
                     }}
-                    // setIsEditRequest(true)
+                    onPressEdit={() => {
+                      setIsModalId(item);
+                      setIsEditRequest(true);
+                    }}
                   />
                 );
               }}

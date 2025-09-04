@@ -11,6 +11,8 @@ import CustomButton from '../common/CustomButton';
 import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import moment from 'moment';
+import CustomImage from '../common/CustomImage';
+import {IMAGES} from '@/assets/images';
 
 const ServiceDetailCard = ({requestDetails, language}: any) => {
   const start = moment(
@@ -58,6 +60,7 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
         ]
       : []),
   ];
+  console.log(requestDetails, 'requestDetails');
 
   return (
     <ShadowCard style={styles.card}>
@@ -77,16 +80,52 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
       <View style={{marginVertical: hp(29), width: '100%'}}>
         <AdittionalNote additionalNotes={requestDetails?.notes} />
       </View>
-
-      <CustomButton
-        title={'Make an Offer'}
-        onPress={() => {
-          navigateTo(PROVIDER_SCREENS.MakeOffer, {
-            requestDetails: requestDetails,
-          });
-        }}
-        btnStyle={{alignSelf: 'center', width: '70%'}}
-      />
+      {false ? (
+        <>
+          <CustomButton
+            isPrimary="seeker"
+            title={'Edit Service Offer'}
+            type="outline"
+            btnStyle={{
+              borderColor: Colors.black,
+              margin: 0,
+              width: '100%',
+              marginBottom: hp(10),
+            }}
+            // style={{margin: 0,width:'100%'}}
+            textStyle={{color: Colors.black}}
+            onPress={() => {
+              // setIsEditRequest(true);
+            }}
+          />
+          <View style={styles.bottomRow}>
+            <CustomButton
+              isPrimary={'provider'}
+              title={'Offer Submitted'}
+              btnStyle={styles.acceptBtn}
+              textStyle={styles.acceptText}
+            />
+            <View style={styles.priceRow}>
+              <CustomImage
+                source={IMAGES.currency}
+                imageStyle={{height: '100%', width: '100%'}}
+                containerStyle={styles.currencyIcon}
+              />
+              <CommonText text={'1000'} style={styles.priceText} />
+            </View>
+          </View>
+        </>
+      ) : (
+        <CustomButton
+          title={'Make an Offer'}
+          onPress={() => {
+            navigateTo(PROVIDER_SCREENS.MakeOffer, {
+              requestDetails: requestDetails,
+            });
+          }}
+          btnStyle={{alignSelf: 'center', width: '70%'}}
+        />
+      )}
     </ShadowCard>
   );
 };
@@ -98,7 +137,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: hp(20),
     paddingVertical: hp(30),
-    paddingHorizontal: wp(24),
+    paddingHorizontal: wp(15),
   },
   row: {
     width: '100%',
@@ -115,5 +154,33 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     ...commonFontStyle(700, 1.9, Colors._2C2C2C),
     textAlign: 'right',
+  },
+  bottomRow: {
+    width: '100%',
+    // marginTop: hp(45),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  acceptBtn: {
+    height: hp(50),
+    paddingHorizontal: wp(27),
+    backgroundColor: Colors.provider_primary,
+    minWidth: '30%',
+  },
+  acceptText: {
+    ...commonFontStyle(600, 1.7, Colors.white),
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: wp(7),
+  },
+  currencyIcon: {
+    height: hp(30),
+    width: wp(30),
+  },
+  priceText: {
+    ...commonFontStyle(700, 3.7, Colors.black),
   },
 });
