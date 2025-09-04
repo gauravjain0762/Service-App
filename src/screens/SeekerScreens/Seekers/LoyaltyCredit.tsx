@@ -1,4 +1,4 @@
-import {ImageBackground, StyleSheet, View} from 'react-native';
+import {FlatList, ImageBackground, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import BackHeader from '@/components/common/BackHeader';
@@ -8,7 +8,8 @@ import {IMAGES} from '@/assets/images';
 import {commonFontStyle, hp, SCREEN_WIDTH} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
-import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
+// import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
+import LoyaltyCreditTransaction from '@/components/Seeker/LoyaltyCreditTransaction';
 
 const LoyaltyCredit = () => {
   return (
@@ -40,6 +41,18 @@ const LoyaltyCredit = () => {
             />
           </View>
         </ImageBackground>
+        <CommonText text="Last Transaction" style={styles.transactionTitle} />
+        <FlatList
+          data={Array.from({length: 4})}
+          renderItem={({index}) => (
+            <View key={index} style={styles.transactionItem}>
+              <LoyaltyCreditTransaction />
+            </View>
+          )}
+          showsVerticalScrollIndicator={false}
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+        />
       </View>
     </SafeareaProvider>
   );
@@ -50,7 +63,7 @@ export default LoyaltyCredit;
 const styles = StyleSheet.create({
   mainContainer: {},
   imageStyle: {
-    width: SCREEN_WIDTH - hp(40),
+    width: SCREEN_WIDTH - hp(60),
     height: hp(200),
     alignSelf: 'center',
     overflow: 'hidden',
@@ -62,7 +75,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   cardBottomText: {
-    ...commonFontStyle(500, 1.9, Colors.black),
+    ...commonFontStyle(500, 1.6, Colors.black),
     padding: hp(10),
     color: Colors.black,
     textAlign: 'center',
@@ -84,5 +97,24 @@ const styles = StyleSheet.create({
   },
   creditText: {
     ...commonFontStyle(400, 1.9, Colors.white),
+  },
+
+  transactionTitle: {
+    ...commonFontStyle(600, 2.4, Colors._323232),
+    paddingHorizontal: hp(20),
+    marginTop: hp(15),
+  },
+
+  scrollView: {
+    marginTop: hp(15),
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: '20%',
+  },
+  transactionItem: {
+    paddingBottom: hp(34),
+    paddingHorizontal: hp(20),
   },
 });
