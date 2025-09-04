@@ -1,10 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
 
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import moment from 'moment';
 
 type Props = {
   isProvider?: boolean;
@@ -16,24 +17,20 @@ type Props = {
 // Function to generate time slots from current time till 12:00 AM
 const generateTimeSlots = (dateString: string) => {
   const slots: string[] = [];
-  const selectedDate = new Date(dateString);
-
-  const now = new Date();
+  const selectedDate = moment(dateString);
+  const now = moment();
 
   let hours = 0;
 
-  if (
-    selectedDate.getFullYear() === now.getFullYear() &&
-    selectedDate.getMonth() === now.getMonth() &&
-    selectedDate.getDate() === now.getDate()
-  ) {
-    hours = now.getHours();
-    if (now.getMinutes() > 0) {
+  // If selected date is today, start from current hour
+  if (selectedDate.isSame(now, 'day')) {
+    hours = now.hour();
+    if (now.minute() > 0) {
       hours += 1; // move to next hour if minutes already passed
     }
   }
 
-  // Otherwise (future date) → start from 0 (12:00 AM)
+  // Generate time slots from the calculated start hour till end of day
   while (hours < 24) {
     let displayHours = hours % 12 || 12; // convert to 12hr
     let ampm = hours < 12 ? 'AM' : 'PM';
@@ -51,9 +48,21 @@ const TimeSlots = ({
   selectedTime,
   setSelectedTime,
 }: Props) => {
-  // const [selectedTime, setSelectedTime] = useState('');
+  const timeSlots = useMemo(() => {
+    if (!date) return [];
+    return generateTimeSlots(date);
+  }, [date]);
 
-  const timeSlots = useMemo(() => generateTimeSlots(date), [date]);
+  // Reset selectedTime if it's no longer available in the current timeSlots
+  useEffect(() => {
+    if (selectedTime && timeSlots.length > 0 && !timeSlots.includes(selectedTime)) {
+      setSelectedTime?.('');
+    }
+  }, [timeSlots, selectedTime, setSelectedTime]);
+
+  if (!date) {
+    return null; // Don't render anything if no date is selected
+  }
 
   return (
     <View style={styles.container}>

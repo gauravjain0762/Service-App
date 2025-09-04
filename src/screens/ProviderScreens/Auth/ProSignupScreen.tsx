@@ -169,8 +169,11 @@ const ProSignupScreen = () => {
     <SafeareaProvider style={styles.safeArea}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        style={styles.container}>
+        style={styles.container}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.headerRow}>
           <CustomImage
             size={hp(20)}

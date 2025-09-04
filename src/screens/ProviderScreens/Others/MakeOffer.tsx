@@ -23,23 +23,59 @@ import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useRoute} from '@react-navigation/native';
-import {useSendOfferMutation} from '@/api/Provider/homeApi';
+import {
+  useModifyOfferMutation,
+  useSendOfferMutation,
+} from '@/api/Provider/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
+import moment from 'moment';
 
 const MakeOffer = () => {
   const {
-    params: {requestDetails},
+    params: {requestDetails, myOffer},
   } = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
   const [sendOffer, {isLoading}] = useSendOfferMutation();
-  const [selectedTime, setSelectedTime] = useState('');
-  const [note, setNote] = useState<string>('');
-  const [timeToComplete, setTimeToComplete] = useState<string>('');
-  const [offerPrice, setOfferPrice] = useState<string>('');
-  const [selectedDate, setSelectedDate] = useState<any>(null);
+  const [modifyOffer, {isLoading: isModifyOfferLoading}] =
+    useModifyOfferMutation();
+  const [selectedTime, setSelectedTime] = useState(myOffer?.time ?? '');
+  const [note, setNote] = useState<string>(myOffer?.notes ?? '');
+  const [timeToComplete, setTimeToComplete] = useState<string>(
+    myOffer?.estimated_time ?? '',
+  );
+  const [offerPrice, setOfferPrice] = useState<string>(
+    myOffer?.offer_price?.toString() ?? '',
+  );
+  const [selectedDate, setSelectedDate] = useState<any>(() => {
+    if (myOffer?.date) {
+      const offerDate = moment(myOffer?.date);
+      if (offerDate.isBefore(moment(), 'day')) {
+        return null;
+      }
+      return {
+        key: offerDate && offerDate.format('DDMM'),
+        month: offerDate && offerDate.format('MMM'),
+        day: offerDate && offerDate.format('DD'),
+        weekday: offerDate && offerDate.format('ddd'),
+        isoDate: offerDate && offerDate.format('YYYY-MM-DD'),
+      };
+    }
+    return null;
+  });
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
-  const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
+  // const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
+  const [selectedMedia, setSelectedMedia] = useState<any[]>(() => {
+    if (myOffer?.media_files) {
+      return myOffer.media_files.map((file: any, index: number) => ({
+        uri: file.file,
+        type: file.type === 'other' ? 'application/pdf' : file.type,
+        name: file.name,
+        isExisting: true, // flag to identify existing files
+      }));
+    }
+    return [];
+  });
 
   const onSubmitOffer = async () => {
     try {
@@ -57,7 +93,11 @@ const MakeOffer = () => {
       }
 
       const formData = new FormData();
-      formData.append('request_id', requestDetails?._id);
+      if (myOffer) {
+        formData.append('offer_id', myOffer?._id);
+      } else {
+        formData.append('request_id', requestDetails?._id);
+      }
       formData.append('offer_price', offerPrice);
       formData.append('estimated_time', timeToComplete);
 
@@ -85,7 +125,10 @@ const MakeOffer = () => {
         });
       }
 
-      const response = await sendOffer(formData).unwrap();
+      const response = await (true
+        ? modifyOffer(formData)
+        : sendOffer(formData)
+      ).unwrap();
 
       if (response?.status) {
         setIsSubmitModalVisible(true);
@@ -124,6 +167,7 @@ const MakeOffer = () => {
             setSelectedMedia={setSelectedMedia}
             isDocument={true}
             desc="Upload PDF's here."
+            selectedMedia={selectedMedia}
           />
         </View>
 

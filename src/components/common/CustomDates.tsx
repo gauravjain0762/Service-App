@@ -20,7 +20,7 @@ const generateDates = () => {
       month: current.format('MMM'),
       day: current.format('DD'),
       weekday: current.format('ddd'),
-      isoDate: current.format('YYYY-MM-DD'), // <- add this
+      isoDate: current.format('YYYY-MM-DD'),
     });
     current.add(1, 'day');
   }
@@ -40,12 +40,11 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-  if (!selectedDate && !isProvider) {
-    const currentDate = moment().format('DDMM');
-    setSelectedDate?.(dates.find(d => d.key === currentDate));
-  }
-}, [selectedDate, setSelectedDate, isProvider]);
-
+    if (!selectedDate && !isProvider) {
+      const currentDate = moment().format('DDMM');
+      setSelectedDate?.(dates.find(d => d.key === currentDate));
+    }
+  }, [selectedDate, setSelectedDate, isProvider]);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -53,16 +52,47 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
     }
 
     const index = dates.findIndex(d => d.key === selectedDate.key);
+    
     if (index !== -1 && flatListRef.current) {
-      flatListRef.current.scrollToIndex({
-        index,
-        animated: true,
-        viewPosition: 0.5,
-      });
+      // Add a small delay to ensure FlatList is fully rendered
+      const scrollTimer = setTimeout(() => {
+        try {
+          flatListRef.current?.scrollToIndex({
+            index,
+            animated: true,
+            viewPosition: 0.5,
+          });
+        } catch (error) {
+          console.log('ScrollToIndex error:', error);
+          // Fallback to scrollToOffset if scrollToIndex fails
+          const itemWidth = wp(70); // approximate item width including margin
+          flatListRef.current?.scrollToOffset({
+            offset: index * itemWidth,
+            animated: true,
+          });
+        }
+      }, 100);
+
+      return () => clearTimeout(scrollTimer);
     }
   }, [selectedDate]);
 
   const isSelected = (item: any) => selectedDate?.key === item.key;
+
+  // Add onScrollToIndexFailed handler
+  const handleScrollToIndexFailed = (info: any) => {
+    console.log('ScrollToIndexFailed:', info);
+    const wait = new Promise(resolve => setTimeout(resolve, 500));
+    wait.then(() => {
+      if (flatListRef.current) {
+        flatListRef.current.scrollToIndex({
+          index: info.index,
+          animated: true,
+          viewPosition: 0.5,
+        });
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -78,6 +108,12 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
           ref={flatListRef}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.flatList}
+          onScrollToIndexFailed={handleScrollToIndexFailed}
+          getItemLayout={(data, index) => ({
+            length: wp(70), // item width + margin
+            offset: wp(70) * index,
+            index,
+          })}
           renderItem={({item}) => {
             const selected = isSelected(item);
             return (
@@ -89,7 +125,6 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
                 ]}
                 onPress={() => {
                   setSelectedDate?.(item);
-                  console.log('item', item);
                 }}>
                 <CommonText
                   style={[styles.month, selected && styles.selectedText]}
@@ -108,18 +143,6 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
           }}
           keyExtractor={item => item.key}
         />
-
-        {/* <LinearGradient
-          colors={[Colors.white, 'rgba(255,255,255,0)']}
-          style={styles.leftFade}
-          pointerEvents="none"
-        /> */}
-
-        {/* <LinearGradient
-          colors={['rgba(255,255,255,0)', Colors.white]}
-          style={styles.rightFade}
-          pointerEvents="none"
-        /> */}
       </View>
     </View>
   );

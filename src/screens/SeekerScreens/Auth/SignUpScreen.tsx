@@ -181,8 +181,11 @@ const SignUpScreen = () => {
     <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        style={styles.container}>
+        style={styles.container}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.headerRow}>
           <CustomImage
             size={hp(20)}

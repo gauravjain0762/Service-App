@@ -33,6 +33,7 @@ const ProRequestDetail = () => {
     },
   );
   const requestDetails = requestData?.data?.job;
+  const requestMyOffersDetails = requestData?.data?.my_offer;
   
   return (
     <SafeAreaView style={GeneralStyle.container}>
@@ -83,7 +84,7 @@ const ProRequestDetail = () => {
               ...commonFontStyle(700, 2.2, Colors.black),
             }}
           />
-          <ServiceDetailCard  requestDetails={requestDetails} language={language}/>
+          <ServiceDetailCard  requestDetails={requestDetails} language={language} requestMyOffersDetails={requestMyOffersDetails}/>
         </View>
       </ScrollView>
     </SafeAreaView>

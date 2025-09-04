@@ -130,6 +130,8 @@ const OTPScreen = () => {
         <KeyboardAwareScrollView
           nestedScrollEnabled
           showsVerticalScrollIndicator={false}
+          enableOnAndroid
+          extraHeight={hp(200)}
           contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}>
           <OTPHeader />
 

@@ -14,7 +14,11 @@ import moment from 'moment';
 import CustomImage from '../common/CustomImage';
 import {IMAGES} from '@/assets/images';
 
-const ServiceDetailCard = ({requestDetails, language}: any) => {
+const ServiceDetailCard = ({
+  requestDetails,
+  language,
+  requestMyOffersDetails,
+}: any) => {
   const start = moment(
     `${moment(requestDetails?.date).format('YYYY-MM-DD')} ${
       requestDetails?.time
@@ -25,7 +29,6 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
     Number(requestDetails?.meta_data?.no_hours),
     'hours',
   );
-  console.log(requestDetails, 'requestDetails');
 
   const serviceData = [
     {
@@ -60,7 +63,6 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
         ]
       : []),
   ];
-  console.log(requestDetails, 'requestDetails');
 
   return (
     <ShadowCard style={styles.card}>
@@ -80,7 +82,7 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
       <View style={{marginVertical: hp(29), width: '100%'}}>
         <AdittionalNote additionalNotes={requestDetails?.notes} />
       </View>
-      {false ? (
+      {requestMyOffersDetails ? (
         <>
           <CustomButton
             isPrimary="seeker"
@@ -92,11 +94,13 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
               width: '100%',
               marginBottom: hp(10),
             }}
-            // style={{margin: 0,width:'100%'}}
             textStyle={{color: Colors.black}}
             onPress={() => {
-              // setIsEditRequest(true);
-            }}
+                navigateTo(PROVIDER_SCREENS.MakeOffer, {
+                  requestDetails: requestDetails,
+                  myOffer: requestMyOffersDetails,
+                });
+              }}
           />
           <View style={styles.bottomRow}>
             <CustomButton
@@ -111,7 +115,10 @@ const ServiceDetailCard = ({requestDetails, language}: any) => {
                 imageStyle={{height: '100%', width: '100%'}}
                 containerStyle={styles.currencyIcon}
               />
-              <CommonText text={'1000'} style={styles.priceText} />
+              <CommonText
+                text={requestMyOffersDetails?.offer_price}
+                style={styles.priceText}
+              />
             </View>
           </View>
         </>

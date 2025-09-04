@@ -77,6 +77,17 @@ export const providerHomeApi = createApi({
       }),
       invalidatesTags: ['providerHomeApi'],
     }),
+    modifyOffer: builder.mutation<any, any>({
+      query: credentials => ({
+        url: PROVIDER_API.DASHBOARD.MODIFY_OFFER,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }),
+      invalidatesTags: ['providerHomeApi'],
+    }),
     // Update Job Status
     updateJobStatus: builder.mutation<any, any>({
       query: credentials => ({
@@ -160,4 +171,5 @@ export const {
   useBuyPackageMutation,
   useGetPackagesQuery,
   useUpdateJobStatusMutation,
+  useModifyOfferMutation
 } = providerHomeApi;

@@ -5,7 +5,12 @@ import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
 import {Colors} from '@/constants/Colors';
-import {alignSelfLTR, alignSelfRTL, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
+import {
+  alignSelfLTR,
+  alignSelfRTL,
+  flipImage,
+  rowReverseRTL,
+} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
@@ -46,7 +51,7 @@ const LoginScreen = ({}: any) => {
     password: __DEV__ ? 'Test@123' : '',
   });
   const [login, {isLoading}] = useLoginMutation();
-  const [guestLogin, {isLoading:isGuestLoading}] = useGuestLoginMutation();
+  const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();
   const [appleLogin] = useAppleSignInMutation();
   const [googleLogin] = useGoogleSignInMutation();
   const [loading, setLoading] = useState(false);
@@ -196,6 +201,9 @@ const LoginScreen = ({}: any) => {
       <KeyboardAwareScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />
         <View style={{gap: hp(20)}}>

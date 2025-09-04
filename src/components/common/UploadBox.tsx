@@ -28,6 +28,7 @@ type Props = {
   setSelectedMedia?: any;
   isDocument?: boolean;
   isAllDocument?: boolean;
+  selectedMedia?: any
 };
 
 const UploadBox = ({
@@ -39,9 +40,15 @@ const UploadBox = ({
   setSelectedMedia,
   isAllDocument = false,
   isDocument = false,
+  selectedMedia
 }: Props) => {
-  const [files, setFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<any[]>(selectedMedia || []);
 
+   React.useEffect(() => {
+    if (selectedMedia && selectedMedia.length > 0) {
+      setFiles(selectedMedia);
+    }
+  }, [selectedMedia]);
   const handleBrowseFiles = () => {
     ImagePicker.openPicker({
       multiple: false,
@@ -78,7 +85,6 @@ const UploadBox = ({
         type: [DocumentPicker.types.pdf],
       });
 
-      console.log('pickerResult', pickerResult);
       const newFile = {
         uri: pickerResult.uri,
         name: pickerResult.name,
@@ -102,7 +108,6 @@ const UploadBox = ({
         ],
       });
 
-      console.log('pickerResult', pickerResult);
       const newFile = {
         uri: pickerResult.uri,
         name: pickerResult.name,

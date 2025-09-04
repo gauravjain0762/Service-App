@@ -5,7 +5,7 @@ import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
@@ -199,7 +199,11 @@ const OffersDetails = () => {
           isPrimary="seeker"
           title={'Request To Edit Service'}
           type="outline"
-          btnStyle={{borderColor: Colors.black, margin: 0}}
+          btnStyle={{
+            borderColor: Colors.black,
+            margin: 0,
+            marginTop: getFontSize(1.5),
+          }}
           style={{margin: 0}}
           textStyle={{color: Colors.black}}
           onPress={() => {
@@ -239,7 +243,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(24),
   },
   scrollContainer: {
-    paddingBottom: '5%',
+    paddingBottom: '15%',
     paddingHorizontal: wp(24),
   },
   requestCard: {

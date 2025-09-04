@@ -4,7 +4,7 @@ import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
-import { alignSelfLTR, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
+import {alignSelfLTR, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import {
   emailCheck,
@@ -24,7 +24,7 @@ import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {getAsyncFCMToken, setAsyncFCMToken} from '@/Hooks/asyncStorage';
 import {setFcmToken} from '@/features/authSlice';
 import CustomImage from '@/components/common/CustomImage';
-import { IMAGES } from '@/assets/images';
+import {IMAGES} from '@/assets/images';
 
 const ProLoginScreen = ({}: any) => {
   const {fcmToken} = useAppSelector(state => state.auth);
@@ -94,6 +94,9 @@ const ProLoginScreen = ({}: any) => {
       <KeyboardAwareScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        enableOnAndroid
+        extraHeight={hp(200)}
         style={styles.container}>
         <CommonText text="Login to Your Account" style={styles.topLabel} />
         <View style={{gap: hp(20), marginTop: hp(60)}}>
