@@ -32,7 +32,9 @@ export const SEEKER_API = {
     JOBS: '/getJobs',
     JOBS_DETAILS: '/getJobDetails',
     REQUEST_CHANGE: '/requestChange',
-    LOYALTY:'/getUserLoyalty'
+    LOYALTY: '/getUserLoyalty',
+    STRIPE_PAYMENT: '/stripePayment',
+    OFFER_DETAILS:'/getOfferDetails'
   },
 } as const;
 
@@ -67,13 +69,13 @@ export const PROVIDER_API = {
     SUB_CATEGORIES: '/company/getSubCategories',
     REQUESTS: '/company/getRequests',
     REQUEST_DETAILS: '/company/getRequestDetails',
-    SEND_OFFER:'/company/sendOffer',
+    SEND_OFFER: '/company/sendOffer',
     JOBS: '/company/getJobs',
     JOBS_DETAILS: '/company/getJobDetails',
-    PACKAGES:'/company/getPackages',
-    BUY_PACKAGE:'/company/buyPackage',
-    UPDATE_JOB_STATUS:'/company/updateJobStatus',
-    MODIFY_OFFER:'/company/modifyOffer',
+    PACKAGES: '/company/getPackages',
+    BUY_PACKAGE: '/company/buyPackage',
+    UPDATE_JOB_STATUS: '/company/updateJobStatus',
+    MODIFY_OFFER: '/company/modifyOffer',
   },
 } as const;
 
@@ -136,6 +138,9 @@ export const GOOGLE_MAP_API_KEY = 'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'; //'
 export const WEB_CLIENT_ID =
   '594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com';
 
+export const livePublishKey = '';
+export const testPublishKey =
+  'pk_test_51QrPz7BtUwgqucKCMxBHGoSsqQtZ7TszLNsJv5ndPzTxLxZe3o1B77zuvI9px72dAFTY8UmT5UOaKVZfi79sHqce00sUfqrhvF';
 export type HttpMethod = keyof typeof HTTP_METHOD;
 export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
 export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];

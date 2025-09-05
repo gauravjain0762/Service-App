@@ -55,7 +55,7 @@ const LoyaltyCredit = () => {
 
   return (
     <SafeareaProvider>
-      <BackHeader text={'Loyalty Credit'} style={GeneralStyle.back} />
+      <BackHeader text={'Loyalty Points'} style={GeneralStyle.back} />
 
       {isLoading ? (
         <ProMyBookingsSkeleton />
@@ -65,11 +65,11 @@ const LoyaltyCredit = () => {
             source={IMAGES.loyalty_credit_card}
             style={styles.imageStyle}
             resizeMode="stretch">
-            <CommonText text={'Loyalty Credit'} style={styles.headingText} />
+            <CommonText text={'Loyalty Points'} style={styles.headingText} />
             <View style={styles.creditView}>
               <AnimatedCircleProgress
-                total={loyaltyDetails?.remaining_orders_for_reward}
-                value={loyaltyDetails?.pagination?.total_records}>
+                total={loyaltyDetails?.total_orders_for_reward}
+                value={loyaltyDetails?.remaining_orders_for_reward}>
                 <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
               </AnimatedCircleProgress>
               <View>
@@ -91,7 +91,7 @@ const LoyaltyCredit = () => {
               />
             </View>
           </ImageBackground>
-          <CommonText text="Last Transaction" style={styles.transactionTitle} />
+          <CommonText text="Loyalty Points History" style={styles.transactionTitle} />
           <FlatList
             data={allLoyaltyData}
             renderItem={({item, index}) => (
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
   transactionTitle: {
     ...commonFontStyle(600, 2.4, Colors._323232),
     paddingHorizontal: hp(20),
-    marginTop: hp(15),
+    marginTop: hp(25),
   },
 
   scrollView: {

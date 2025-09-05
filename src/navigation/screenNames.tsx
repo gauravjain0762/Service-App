@@ -63,6 +63,7 @@ export const SEEKER_SCREENS = {
   SearchScreen: 'SearchScreen',
   Subscription: 'Subscription',
   LoyaltyCredit: 'LoyaltyCredit',
+  OfferSummary: 'OfferSummary',
 };
 
 export const PROVIDER_SCREENS = {

@@ -65,6 +65,13 @@ export const homeApi = createApi({
         params: query,
       }),
     }),
+    getOffersDetails: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.OFFER_DETAILS,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
 
     createRequest: builder.mutation<any, any>({
       query: credentials => ({
@@ -120,6 +127,16 @@ export const homeApi = createApi({
         params: query,
       }),
     }),
+      // Stripe
+    stripePayment: builder.mutation<any, any>({
+      query: credentials => ({
+        url: SEEKER_API.DASHBOARD.STRIPE_PAYMENT,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+        skipLoader: false,
+      }),
+      invalidatesTags: [],
+    }),
   }),
 });
 
@@ -134,5 +151,7 @@ export const {
   useGetJobDetailsQuery,
   useGetJobsQuery,
   useRequestChangeMutation,
-  useGetUserLoyaltyQuery
+  useGetUserLoyaltyQuery,
+  useStripePaymentMutation,
+  useGetOffersDetailsQuery
 } = homeApi;

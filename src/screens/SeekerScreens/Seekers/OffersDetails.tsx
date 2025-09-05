@@ -9,20 +9,25 @@ import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
-import ShadowCard from '@/components/common/ShadowCard';
 import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
-import {errorToast, getLocalizedText} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  getLocalizedText,
+  navigateTo,
+} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
-import {useAcceptOfferMutation} from '@/api/Seeker/homeApi';
+import {
+  useAcceptOfferMutation,
+} from '@/api/Seeker/homeApi';
 import AttachmentCard from '@/components/common/AttachmentCard';
 import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
-const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const OffersDetails = () => {
   const {
@@ -36,10 +41,6 @@ const OffersDetails = () => {
     useState(false);
   const [isEditRequest, setIsEditRequest] = useState(false);
 
-  const openPaymentMethodModal = async () => {
-    setIsPaymentMethodModalVisible(true);
-  };
-
   const acceptOffers = async () => {
     try {
       const data = {
@@ -49,10 +50,12 @@ const OffersDetails = () => {
       };
 
       const response = await acceptOffer(data).unwrap();
+      console.log(response, 'response');
+
       if (response?.status) {
-        setTimeout(() => {
-          setIsPaymentSuccessModalVisible(true);
-        }, 500);
+        setIsPaymentSuccessModalVisible(true);
+      } else {
+        errorToast(response?.message);
       }
     } catch (error: any) {
       console.log(error);
@@ -124,7 +127,10 @@ const OffersDetails = () => {
           />
           <View style={styles.ratingRow}>
             <Image source={IMAGES.star} />
-            <CommonText text={'4.9'} style={styles.ratingText} />
+            <CommonText
+              text={offerDetail?.company_id?.avg_rating?.toString()}
+              style={styles.ratingText}
+            />
           </View>
         </View>
 
@@ -216,7 +222,12 @@ const OffersDetails = () => {
           title={'Accept Offer'}
           btnStyle={styles.acceptBtn}
           textStyle={styles.acceptText}
-          onPress={openPaymentMethodModal}
+          onPress={() => {
+            navigateTo(SEEKER_SCREENS.OfferSummary, {
+              offer_id: offerDetail?._id,
+              requestDetails: requestDetails,
+            });
+          }} //nitializePaymentSheet} //openPaymentMethodModal
           disabled={isLoading}
           loading={isLoading}
         />

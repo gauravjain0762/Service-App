@@ -38,7 +38,10 @@ const OfferCard = ({
         />
         <View style={styles.ratingRow}>
           <Image source={IMAGES.star} />
-          <CommonText text={'4.9'} style={styles.ratingText} />
+          <CommonText
+            text={item?.company_id?.avg_rating?.toString()}
+            style={styles.ratingText}
+          />
         </View>
       </View>
 

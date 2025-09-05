@@ -173,8 +173,12 @@ const Offers = () => {
                       });
                     }}
                     onPressAcceptOffer={() => {
-                      setIsModalId(item);
-                      openPaymentMethodModal();
+                      navigateTo(SEEKER_SCREENS.OfferSummary, {
+                        offer_id: item?._id,
+                        requestDetails: requestDetails,
+                      });
+                      // setIsModalId(item);
+                      // openPaymentMethodModal();
                     }}
                     onPressEdit={() => {
                       setIsModalId(item);

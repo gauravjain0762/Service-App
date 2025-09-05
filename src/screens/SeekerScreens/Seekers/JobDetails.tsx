@@ -139,6 +139,7 @@ const JobDetails = () => {
                 const url = `tel:${jobDetails?.company_id?.phone_code}${jobDetails?.company_id?.phone}`;
                 Linking.openURL(url);
               }}
+              rating={jobDetails?.company_id?.avg_rating?.toString()}
             />
           </View>
           <ServiceDetails style={{width: '100%'}} jobDetails={jobDetails} />

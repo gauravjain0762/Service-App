@@ -15,6 +15,7 @@ type Props = {
   source?: any;
   onCallPress?: any;
   onMessagePress?: any;
+  rating?: any;
 };
 
 const ServiceProvider = ({
@@ -25,6 +26,7 @@ const ServiceProvider = ({
   source,
   onCallPress,
   onMessagePress,
+  rating,
 }: Props) => {
   return (
     <View style={[styles.providerCard, {backgroundColor: color}]}>
@@ -51,7 +53,7 @@ const ServiceProvider = ({
           {isViewProfile && (
             <View style={styles.ratingRow}>
               <Image source={IMAGES.star} />
-              <CommonText text={'4.9'} style={styles.ratingText} />
+              <CommonText text={rating} style={styles.ratingText} />
             </View>
           )}
         </View>

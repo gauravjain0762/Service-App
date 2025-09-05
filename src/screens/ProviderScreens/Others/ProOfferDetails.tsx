@@ -156,7 +156,6 @@ const ProOfferDetails = () => {
           <Divider />
 
           <CommonText text={'Customer Detail'} style={styles.sectionTitle} />
-
           <View
             style={{
               paddingHorizontal: wp(24),
@@ -170,6 +169,7 @@ const ProOfferDetails = () => {
                 const url = `tel:${jobDetails?.user_id?.phone_code}${jobDetails?.user_id?.phone}`;
                 Linking.openURL(url);
               }}
+              rating={jobDetails?.company_id?.avg_rating?.toString()}
             />
           </View>
           <ServiceDetails

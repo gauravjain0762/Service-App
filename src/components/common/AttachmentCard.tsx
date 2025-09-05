@@ -16,7 +16,6 @@ import Video from 'react-native-video';
 const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
 
 const AttachmentCard = ({requestImages = [], title}: any) => {
-  console.log(requestImages, 'requestImages');
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState({
     isOpen: false,

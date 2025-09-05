@@ -9,6 +9,8 @@ import {persistor, store} from '@/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {getLanguageKey} from '@/components/common/commonFunction';
 import ToastConfig from '@/components/ToastConfig';
+import {StripeProvider} from '@stripe/stripe-react-native';
+import {livePublishKey, testPublishKey} from './utils/constants/api';
 
 LogBox.ignoreAllLogs();
 const App = ({}) => {
@@ -29,24 +31,29 @@ const App = ({}) => {
       useNativeDriver: false, // width anim can't use native driver
     }).start();
   };
-
+  const publishKey = false ? livePublishKey : testPublishKey;
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        {/* <SafeAreaView style={GeneralStyle.flex}> */}
-        <RootContainer />
-        <Toast
-          config={ToastConfig(lineAnim)}
-          position="bottom"
-          topOffset={0}
-          visibilityTime={3000}
-          onShow={() => {
-            startLineAnimation();
-          }}
-        />
-        {/* </SafeAreaView> */}
-      </PersistGate>
-    </Provider>
+    <StripeProvider
+      publishableKey={publishKey}
+      // merchantIdentifier="merchant.com.gearapp.ae" // required for Apple Pay
+    >
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          {/* <SafeAreaView style={GeneralStyle.flex}> */}
+          <RootContainer />
+          <Toast
+            config={ToastConfig(lineAnim)}
+            position="bottom"
+            topOffset={0}
+            visibilityTime={3000}
+            onShow={() => {
+              startLineAnimation();
+            }}
+          />
+          {/* </SafeAreaView> */}
+        </PersistGate>
+      </Provider>
+    </StripeProvider>
   );
 };
 

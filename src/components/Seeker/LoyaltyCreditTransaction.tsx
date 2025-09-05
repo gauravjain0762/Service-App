@@ -19,29 +19,39 @@ const LoyaltyCreditTransaction = ({item, style}: Props) => {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.leftSection}>
-        <View style={styles.imageContainer}>
-          <CustomImage source={IMAGES.dummy} size={hp(68)} />
-        </View>
-
         <View style={styles.textContainer}>
           <CommonText
-            text={getLocalizedText(item?.title, item?.title_ar, language)}
+            text={getLocalizedText(
+              item?.job_id?.category_id?.title,
+              item?.job_id?.category_id?.title_ar,
+              language,
+            )}
             style={styles.titleText}
           />
-          {/* <CommonText text="AC Regular Services" style={styles.subtitleText} /> */}
+          <CommonText
+            text={getLocalizedText(
+              item?.job_id?.sub_category_id?.title,
+              item?.job_id?.sub_category_id?.title_ar,
+              language,
+            )}
+            style={styles.subtitleText}
+          />
         </View>
       </View>
 
       <View style={styles.priceSection}>
         <CommonText
-          text={`${item?.is_credited ? '+' : '-'}${item?.points}`}
+          text={`${item?.points_type === 'reward' ? '+' : '-'}${item?.points}`}
           style={[
             styles.priceText,
-            item?.is_credited && {color: Colors.green},
+            item?.points_type === 'reward' && {color: Colors._03B463},
           ]}>
           <CommonText
             text="pts"
-            style={[styles.ptsText, item?.is_credited && {color: Colors.green}]}
+            style={[
+              styles.ptsText,
+              item?.points_type === 'reward' && {color: Colors._03B463},
+            ]}
           />
         </CommonText>
       </View>
