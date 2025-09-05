@@ -10,6 +10,7 @@ import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 // import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
 import LoyaltyCreditTransaction from '@/components/Seeker/LoyaltyCreditTransaction';
+import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
 
 const LoyaltyCredit = () => {
   return (
@@ -22,9 +23,9 @@ const LoyaltyCredit = () => {
           resizeMode="stretch">
           <CommonText text={'Loyalty Credit'} style={styles.headingText} />
           <View style={styles.creditView}>
-            {/* <AnimatedCircleProgress total={25} value={20}> */}
-            <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
-            {/* </AnimatedCircleProgress> */}
+            <AnimatedCircleProgress total={25} value={20}>
+              <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
+            </AnimatedCircleProgress>
             <View>
               <CommonText text={'250pts'} style={styles.creditPoint} />
               <CommonText

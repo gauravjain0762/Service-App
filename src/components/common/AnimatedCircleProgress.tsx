@@ -22,8 +22,8 @@ type Props = {
 export default function AnimatedCircleProgress({
   total,
   value,
-  size = 200,
-  strokeWidth = 12,
+  size = 70,
+  strokeWidth = 5,
   duration = 1500,
   children,
 }: Props) {
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf:'center'
   },
   trophy: {
     width: 50,
