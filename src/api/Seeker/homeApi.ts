@@ -105,6 +105,13 @@ export const homeApi = createApi({
         params: query,
       }),
     }),
+    getUserLoyalty: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.LOYALTY,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+    }),
 
     getJobDetails: builder.query<any, any>({
       query: query => ({
@@ -126,5 +133,6 @@ export const {
   useAcceptOfferMutation,
   useGetJobDetailsQuery,
   useGetJobsQuery,
-  useRequestChangeMutation
+  useRequestChangeMutation,
+  useGetUserLoyaltyQuery
 } = homeApi;

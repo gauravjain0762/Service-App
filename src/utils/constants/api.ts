@@ -32,6 +32,7 @@ export const SEEKER_API = {
     JOBS: '/getJobs',
     JOBS_DETAILS: '/getJobDetails',
     REQUEST_CHANGE: '/requestChange',
+    LOYALTY:'/getUserLoyalty'
   },
 } as const;
 

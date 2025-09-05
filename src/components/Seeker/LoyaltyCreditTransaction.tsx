@@ -6,12 +6,16 @@ import {Colors} from '@/constants/Colors';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import {getLocalizedText} from '../common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
 
 type Props = {
+  item?: any;
   style?: ViewStyle;
 };
 
-const LoyaltyCreditTransaction = ({style}: Props) => {
+const LoyaltyCreditTransaction = ({item, style}: Props) => {
+  const {language} = useAppSelector(state => state.auth);
   return (
     <View style={[styles.container, style]}>
       <View style={styles.leftSection}>
@@ -20,14 +24,25 @@ const LoyaltyCreditTransaction = ({style}: Props) => {
         </View>
 
         <View style={styles.textContainer}>
-          <CommonText text="Repair & Maintena..." style={styles.titleText} />
-          <CommonText text="AC Regular Services" style={styles.subtitleText} />
+          <CommonText
+            text={getLocalizedText(item?.title, item?.title_ar, language)}
+            style={styles.titleText}
+          />
+          {/* <CommonText text="AC Regular Services" style={styles.subtitleText} /> */}
         </View>
       </View>
 
       <View style={styles.priceSection}>
-        <CommonText text="-150" style={styles.priceText}>
-          <CommonText text="pts" style={styles.ptsText} />
+        <CommonText
+          text={`${item?.is_credited ? '+' : '-'}${item?.points}`}
+          style={[
+            styles.priceText,
+            item?.is_credited && {color: Colors.green},
+          ]}>
+          <CommonText
+            text="pts"
+            style={[styles.ptsText, item?.is_credited && {color: Colors.green}]}
+          />
         </CommonText>
       </View>
     </View>
