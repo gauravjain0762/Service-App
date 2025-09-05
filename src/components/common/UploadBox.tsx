@@ -16,7 +16,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
-import DocumentPicker from 'react-native-document-picker';
+import {pick, types} from '@react-native-documents/picker';
 import Video from 'react-native-video';
 
 type Props = {
@@ -28,7 +28,7 @@ type Props = {
   setSelectedMedia?: any;
   isDocument?: boolean;
   isAllDocument?: boolean;
-  selectedMedia?: any
+  selectedMedia?: any;
 };
 
 const UploadBox = ({
@@ -40,11 +40,11 @@ const UploadBox = ({
   setSelectedMedia,
   isAllDocument = false,
   isDocument = false,
-  selectedMedia
+  selectedMedia,
 }: Props) => {
   const [files, setFiles] = useState<any[]>(selectedMedia || []);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (selectedMedia && selectedMedia.length > 0) {
       setFiles(selectedMedia);
     }
@@ -80,11 +80,10 @@ const UploadBox = ({
 
   const openDocPicker = async () => {
     try {
-      const pickerResult = await DocumentPicker.pickSingle({
+      const [pickerResult] = await pick({
         presentationStyle: 'fullScreen',
-        type: [DocumentPicker.types.pdf],
+        type: [types.pdf],
       });
-
       const newFile = {
         uri: pickerResult.uri,
         name: pickerResult.name,
@@ -99,15 +98,10 @@ const UploadBox = ({
   };
   const openAllPicker = async () => {
     try {
-      const pickerResult = await DocumentPicker.pickSingle({
+      const [pickerResult] = await pick({
         presentationStyle: 'fullScreen',
-        type: [
-          DocumentPicker.types.pdf,
-          DocumentPicker.types.images,
-          DocumentPicker.types.video,
-        ],
+        type: [types.pdf, types.images, types.video],
       });
-
       const newFile = {
         uri: pickerResult.uri,
         name: pickerResult.name,

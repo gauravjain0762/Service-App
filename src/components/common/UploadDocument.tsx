@@ -1,6 +1,6 @@
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import DocumentPicker from 'react-native-document-picker';
+import { pick, types } from '@react-native-documents/picker';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import {IMAGES} from '@/assets/images';
@@ -15,19 +15,19 @@ type Props = {
 const UploadDocument = ({value, onSelect = () => {}, title}: Props) => {
   const openDocPicker = async () => {
     try {
-      const pickerResult = await DocumentPicker.pickSingle({
+      const pickerResult = await pick({
         presentationStyle: 'fullScreen',
         type: [
-          DocumentPicker.types.doc,
-          DocumentPicker.types.pdf,
-          DocumentPicker.types.images,
-          DocumentPicker.types.zip,
-          DocumentPicker.types.docx,
-          DocumentPicker.types.ppt,
-          DocumentPicker.types.pptx,
-          DocumentPicker.types.xls,
-          DocumentPicker.types.xlsx,
-          DocumentPicker.types.plainText,
+          types.doc,
+          types.pdf,
+          types.images,
+          types.zip,
+          types.docx,
+          types.ppt,
+          types.pptx,
+          types.xls,
+          types.xlsx,
+          types.plainText,
         ],
       });
 

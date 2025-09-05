@@ -1444,7 +1444,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-document-picker (9.3.1):
+  - react-native-document-picker (10.1.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2547,7 +2547,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
-  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
   - react-native-drop-shadow (from `../node_modules/react-native-drop-shadow`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-maps/Google (from `../node_modules/react-native-maps`)
@@ -2714,7 +2714,7 @@ EXTERNAL SOURCES:
   React-microtasksnativemodule:
     :path: "../node_modules/react-native/ReactCommon/react/nativemodule/microtasks"
   react-native-document-picker:
-    :path: "../node_modules/react-native-document-picker"
+    :path: "../node_modules/@react-native-documents/picker"
   react-native-drop-shadow:
     :path: "../node_modules/react-native-drop-shadow"
   react-native-geolocation:
@@ -2887,7 +2887,7 @@ SPEC CHECKSUMS:
   React-logger: 514fac028fee60c84591f951c7c04ba1c5023334
   React-Mapbuffer: 02f95b72f631228befdfb7e71ad8e2e12b6dae0d
   React-microtasksnativemodule: 953b922f9473c100dd153cc51739e0d210bfd617
-  react-native-document-picker: 0eb4bc05e780c799870bfb5c26572ecedfb9fe44
+  react-native-document-picker: eb87472ec25e0525bc1777aedc9845c29d3bc5b7
   react-native-drop-shadow: aeb76e4b46c09924b4a8ee3d454dd00fdb5c62d9
   react-native-geolocation: fcd6daeef13402b1cbb3aadc7711b4e6ed9d89e0
   react-native-maps: 23605177cbb7e77d2d8368f8d3004bfdf0c12b72
@@ -2951,4 +2951,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: e21b5696d643bc2fbee7736bc09e52c9d3ab2ee7
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
