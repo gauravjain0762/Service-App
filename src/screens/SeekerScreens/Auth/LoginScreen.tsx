@@ -90,7 +90,7 @@ const LoginScreen = ({}: any) => {
       let obj = {
         email: details.email.toLowerCase(),
         password: details.password,
-        deviceToken: fcmToken,
+        device_token: fcmToken,
       };
       const response = await login(obj).unwrap();
       console.log('response', response);
@@ -121,8 +121,8 @@ const LoginScreen = ({}: any) => {
         name: userInfo?.user?.name,
         email: userInfo?.user.email,
         googleId: userInfo?.user?.id,
-        deviceToken: fcmToken,
-        deviceType: Platform.OS.toUpperCase(),
+        device_token: fcmToken,
+        device_type: Platform.OS.toUpperCase(),
       };
       console.log('data', data);
 
@@ -164,7 +164,7 @@ const LoginScreen = ({}: any) => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          deviceToken: fcmToken,
+          device_token: fcmToken,
         };
 
         const response = await appleLogin(data).unwrap();

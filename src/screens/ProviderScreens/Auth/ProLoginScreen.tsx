@@ -58,7 +58,7 @@ const ProLoginScreen = ({}: any) => {
       let obj = {
         email: details.email.toLowerCase(),
         password: details.password,
-        deviceToken: fcmToken,
+        device_token: fcmToken,
       };
       const response = await login(obj).unwrap();
       console.log('response', response);

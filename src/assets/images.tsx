@@ -107,7 +107,7 @@ export const IMAGES = {
   dummy_carousel: require('./Images/dummy_carousel.png'),
   subs_bg: require('./Images/subs_bg.png'),
   subs_bg2: require('./Images/subs_bg2.png'),
-  service_splash: require('./Images/service_splash.jpeg'),
+  service_splash: require('./Images/service_splash.png'),
 };
 
 export const Animation = {};

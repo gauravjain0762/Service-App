@@ -71,7 +71,7 @@ const SignUpScreen = () => {
           password: userData?.password.trim(),
           phone_code: callingCode,
           phone: userData.phone,
-          deviceToken: fcmToken,
+          device_token: fcmToken,
         };
 
         const response = await signUp(obj).unwrap();
@@ -107,8 +107,8 @@ const SignUpScreen = () => {
         name: userInfo?.user?.name,
         email: userInfo?.user.email,
         googleId: userInfo?.user?.id,
-        deviceToken: fcmToken,
-        deviceType: Platform.OS.toUpperCase(),
+        device_token: fcmToken,
+        device_type: Platform.OS.toUpperCase(),
       };
       console.log('data', data);
 
@@ -150,7 +150,7 @@ const SignUpScreen = () => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          deviceToken: fcmToken,
+          device_token: fcmToken,
         };
 
         const response = await appleLogin(data).unwrap();

@@ -70,7 +70,7 @@ const OTPScreen = () => {
       let obj: any = {
         otp: value,
         device_type: Platform.OS,
-        deviceToken: fcmToken,
+        device_token: fcmToken,
       };
       if (isProvider) {
         obj.company_id = params?.userId;

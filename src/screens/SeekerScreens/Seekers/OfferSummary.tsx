@@ -38,6 +38,9 @@ import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal
 import {
   initPaymentSheet,
   presentPaymentSheet,
+  confirmPlatformPayPayment,
+  PlatformPay,
+  isPlatformPaySupported,
 } from '@stripe/stripe-react-native';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import ServiceBillSummary from '@/components/common/ServiceBillSummary';
@@ -143,7 +146,7 @@ const OfferSummary = () => {
 
   const fetchPaymentSheetParams = async () => {
     let data = {
-      amount: offerDetail?.offer_price,
+      amount: offerDetails?.total_amount.toString(),
     };
 
     const paymentResponse = await stripePayment(data).unwrap();
@@ -162,23 +165,58 @@ const OfferSummary = () => {
       acceptOffers();
     }
   };
+  const startApplePayFlow = async () => {
+    if (!(await isPlatformPaySupported())) {
+      errorToast('Apple Pay is not supported.');
+      return;
+    }
+    const {paymentIntent, secretKey, ephemeralKey, customer, publishableKey} =
+      await fetchPaymentSheetParams();
+    const {error} = await confirmPlatformPayPayment(secretKey, {
+      applePay: {
+        cartItems: [
+          {
+            label: 'Helpio',
+            amount: offerDetails?.total_amount.toString(),
+            paymentType: PlatformPay.PaymentType.Immediate,
+          },
+        ],
+        merchantCountryCode: 'AE',
+        currencyCode: 'AED',
+      },
+    });
+    if (error) {
+      console.log(error, 'error');
+      errorToast(error.message);
+      return;
+    } else {
+      presentSheet();
+    }
+  };
+
   const initializePaymentSheet = async () => {
     if (!toggleCheckBox) {
       errorToast('Please check the Terms Of Use');
       return;
     }
+    if (isPaymentMethod === 'applePay') {
+      // 🔹 Direct Apple Pay flow
+      await startApplePayFlow();
+      return;
+    }
+
     try {
       // dispatchAction(dispatch, IS_LOADING, true);
       const {paymentIntent, ephemeralKey, customer, publishableKey} =
         await fetchPaymentSheetParams();
 
       const {error, paymentOption} = await initPaymentSheet({
-        merchantDisplayName: 'Service Marketplace',
+        merchantDisplayName: 'Helpio',
         customerId: customer,
         customerEphemeralKeySecret: ephemeralKey,
         paymentIntentClientSecret: paymentIntent,
         allowsDelayedPaymentMethods: true,
-        primaryButtonLabel: `Pay AED ${offerDetail?.offer_price}`,
+        primaryButtonLabel: `Pay AED ${offerDetails?.total_amount.toString()}`,
         defaultBillingDetails: {
           name: 'Test',
         },
@@ -188,10 +226,10 @@ const OfferSummary = () => {
         //   merchantCountryCode: 'AE',
         //   testEnv: false, // use test environment
         // },
-        applePay: {
-          // merchantCountryCode: 'UAE',
-          merchantCountryCode: 'AE',
-        },
+        // applePay: {
+        //   // merchantCountryCode: 'UAE',
+        //   merchantCountryCode: 'AE',
+        // },
       });
       if (!error) {
         presentSheet();
@@ -407,7 +445,7 @@ const OfferSummary = () => {
               <PaymentSuccessModal
                 onClose={closePaymentSuccessModal}
                 visible={isPaymentSuccessModalVisible}
-                amount={offerDetail?.offer_price}
+                amount={offerDetails?.total_amount}
               />
             )}
             {isEditRequest && (
