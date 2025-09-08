@@ -137,8 +137,6 @@ export const ITEMS_PER_PAGE = 10;
 export const GOOGLE_MAP_API_KEY = 'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'; //'AIzaSyDI54CSbb2x46H2986nVnG15-E0iqgONwc'
 export const WEB_CLIENT_ID =
   '594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com';
-export const secretKey =
-'sk_test_51QrPz7BtUwgqucKC3S7iGXWlLhCbJmbmbJ4qhWhIIlbASvLFGHMgnBG7MC4DFKyX38Wrhh6ahMuwrdpjG1wmQucL00bozmxeAw'
 export const livePublishKey = '';
 export const testPublishKey =
   'pk_test_51QrPz7BtUwgqucKCMxBHGoSsqQtZ7TszLNsJv5ndPzTxLxZe3o1B77zuvI9px72dAFTY8UmT5UOaKVZfi79sHqce00sUfqrhvF';

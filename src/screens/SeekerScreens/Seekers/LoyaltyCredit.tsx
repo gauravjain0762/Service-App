@@ -91,7 +91,10 @@ const LoyaltyCredit = () => {
               />
             </View>
           </ImageBackground>
-          <CommonText text="Loyalty Points History" style={styles.transactionTitle} />
+          <CommonText
+            text="Loyalty Points History"
+            style={styles.transactionTitle}
+          />
           <FlatList
             data={allLoyaltyData}
             renderItem={({item, index}) => (
@@ -99,11 +102,25 @@ const LoyaltyCredit = () => {
                 <LoyaltyCreditTransaction item={item} />
               </View>
             )}
+            bounces={allLoyaltyData?.length > 0}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={0.5}
             showsVerticalScrollIndicator={false}
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
+            ListEmptyComponent={
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CommonText
+                  text="No loyalty points history yet"
+                  style={styles.noData}
+                />
+              </View>
+            }
           />
         </View>
       )}
@@ -169,5 +186,9 @@ const styles = StyleSheet.create({
   transactionItem: {
     paddingBottom: hp(34),
     paddingHorizontal: hp(20),
+  },
+  noData: {
+    textAlign: 'center',
+    ...commonFontStyle(500, 2, Colors._898989),
   },
 });

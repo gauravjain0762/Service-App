@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Image, ScrollView, StyleSheet, View} from 'react-native';
-
 import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -10,80 +9,24 @@ import CommonText from '@/components/common/CommonText';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import CustomButton from '@/components/common/CustomButton';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import PaymentMethodModal from '@/components/common/PaymentMethodModel';
-import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
-import {
-  errorToast,
-  getLocalizedText,
-  navigateTo,
-} from '@/components/common/commonFunction';
+import {getLocalizedText, navigateTo} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
-import {
-  useAcceptOfferMutation,
-} from '@/api/Seeker/homeApi';
 import AttachmentCard from '@/components/common/AttachmentCard';
 import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
-
 const OffersDetails = () => {
   const {
-    params: {requestDetails, offerDetail, offerIndex},
+    params: {requestDetails, offerDetail},
   } = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
-  const [acceptOffer, {isLoading}] = useAcceptOfferMutation();
-  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
-    useState(false);
-  const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
-    useState(false);
   const [isEditRequest, setIsEditRequest] = useState(false);
-
-  const acceptOffers = async () => {
-    try {
-      const data = {
-        offer_id: offerDetail?._id,
-        payment_method: 'Card',
-        transaction_id: '',
-      };
-
-      const response = await acceptOffer(data).unwrap();
-      console.log(response, 'response');
-
-      if (response?.status) {
-        setIsPaymentSuccessModalVisible(true);
-      } else {
-        errorToast(response?.message);
-      }
-    } catch (error: any) {
-      console.log(error);
-      errorToast(
-        error?.data?.message || error?.message || 'Something went wrong',
-      );
-    }
-  };
-
-  const closePaymentMethodModal = () => {
-    setIsPaymentMethodModalVisible(false);
-  };
-
-  const handlePaymentSelect = () => {
-    closePaymentMethodModal();
-    acceptOffers();
-  };
-
-  const closePaymentSuccessModal = () => {
-    setIsPaymentSuccessModalVisible(false);
-  };
-
-  const {bottom} = useSafeAreaInsets();
   const start = moment(
     `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
     'YYYY-MM-DD hh:mm A',
   );
-  const end = moment(start).add(Number(offerDetail?.estimated_time), 'hours');
 
   return (
     <SafeareaProvider style={[styles.safeArea]}>
@@ -177,21 +120,6 @@ const OffersDetails = () => {
             title="Attachments"
           />
         )}
-
-        {isPaymentMethodModalVisible && (
-          <PaymentMethodModal
-            visible={isPaymentMethodModalVisible}
-            onClose={closePaymentMethodModal}
-            onPaymentSelect={handlePaymentSelect}
-          />
-        )}
-        {isPaymentSuccessModalVisible && (
-          <PaymentSuccessModal
-            onClose={closePaymentSuccessModal}
-            visible={isPaymentSuccessModalVisible}
-            amount={offerDetail?.offer_price}
-          />
-        )}
         {isEditRequest && (
           <RequestEditServiceModal
             onClose={() => {
@@ -227,9 +155,7 @@ const OffersDetails = () => {
               offer_id: offerDetail?._id,
               requestDetails: requestDetails,
             });
-          }} //nitializePaymentSheet} //openPaymentMethodModal
-          disabled={isLoading}
-          loading={isLoading}
+          }}
         />
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />

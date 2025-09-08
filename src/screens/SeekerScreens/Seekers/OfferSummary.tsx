@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -104,7 +103,7 @@ const OfferSummary = () => {
     try {
       const data = {
         offer_id: offerDetail?._id,
-        payment_method: 'Card',
+        payment_method: isPaymentMethod,
         transaction_id: '',
       };
 
@@ -157,7 +156,6 @@ const OfferSummary = () => {
   const presentSheet = async () => {
     const {error, paymentOption} = await presentPaymentSheet();
     if (error) {
-      // dispatchAction(dispatch, IS_LOADING, false);
       if (error.code !== 'Canceled') {
         errorToast(error.message);
       }
@@ -199,14 +197,15 @@ const OfferSummary = () => {
       errorToast('Please check the Terms Of Use');
       return;
     }
+    if (isPaymentMethod === 'COD') {
+      acceptOffers();
+      return;
+    }
     if (isPaymentMethod === 'applePay') {
-      // 🔹 Direct Apple Pay flow
       await startApplePayFlow();
       return;
     }
-
     try {
-      // dispatchAction(dispatch, IS_LOADING, true);
       const {paymentIntent, ephemeralKey, customer, publishableKey} =
         await fetchPaymentSheetParams();
 
@@ -220,29 +219,14 @@ const OfferSummary = () => {
         defaultBillingDetails: {
           name: 'Test',
         },
-        // googlePay: {
-        //   // merchantCountryCode: 'UAE',
-        //   currencyCode: 'AED',
-        //   merchantCountryCode: 'AE',
-        //   testEnv: false, // use test environment
-        // },
-        // applePay: {
-        //   // merchantCountryCode: 'UAE',
-        //   merchantCountryCode: 'AE',
-        // },
       });
       if (!error) {
         presentSheet();
       } else {
-        console.log(error, 'error.message');
-
-        // dispatchAction(dispatch, IS_LOADING, false);
         errorToast(error.message);
       }
     } catch (error: any) {
-      // dispatchAction(dispatch, IS_LOADING, false);
       errorToast(error.message);
-      console.log(error, 'error');
     }
   };
 
