@@ -121,3 +121,10 @@ export const getLocalizedText = (
 ) => {
   return language === 'ar' ? arText : enText;
 };
+export const formatePrice = (num: string | number | undefined): string => {
+  const value = Number(num || 0);
+  return value.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+};

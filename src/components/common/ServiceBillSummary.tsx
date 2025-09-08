@@ -12,10 +12,10 @@ type Props = {
   style?: ViewStyle;
   jobDetails?: any;
   data?: any;
-  totalAmount?:any
+  totalAmount?: any;
 };
 
-const ServiceBillSummary = ({style, jobDetails, data,totalAmount}: Props) => {
+const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
   const summaryDetails = [
     {label: 'Platform Fees', amount: jobDetails?.service_charges ?? ''},
     {label: 'Sub Total', amount: jobDetails?.sub_total ?? ''},
@@ -32,14 +32,28 @@ const ServiceBillSummary = ({style, jobDetails, data,totalAmount}: Props) => {
             index < billData.length - 1 && styles.rowSpacing,
           ]}>
           <View style={styles.row}>
-            <CommonText text={item.label} style={styles.label} />
+            <CommonText
+              text={item.label}
+              style={[
+                styles.label,
+                item?.isGreen && {color: Colors.seeker_primary},
+              ]}
+            />
             <View style={styles.amountRow}>
               <Image
                 source={IMAGES.currency}
-                tintColor={Colors._828282}
+                tintColor={
+                  item?.isGreen ? Colors.seeker_primary : Colors._828282
+                }
                 style={styles.currencyIcon}
               />
-              <CommonText text={item.amount} style={styles.amountText} />
+              <CommonText
+                text={item.amount}
+                style={[
+                  styles.amountText,
+                  item?.isGreen && {color: Colors.seeker_primary},
+                ]}
+              />
             </View>
           </View>
         </View>
@@ -55,7 +69,7 @@ const ServiceBillSummary = ({style, jobDetails, data,totalAmount}: Props) => {
             style={styles.currencyIcon}
           />
           <CommonText
-            text={jobDetails?.pay_amount ?? totalAmount?? ''}
+            text={jobDetails?.pay_amount ?? totalAmount ?? ''}
             style={styles.totalAmountText}
           />
         </View>

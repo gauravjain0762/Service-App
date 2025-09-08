@@ -74,6 +74,9 @@ export const IMAGES = {
   feedUnselected: require('./icons/feedUnselected.png'),
   loyalty_credit: require('./icons/loyalty_credit.png'),
   loyalty_credit_card: require('./icons/loyalty_credit_card.png'),
+  cashPay: require('./icons/cashPay.png'),
+  loyalty_card: require('./icons/loyalty_card.png'),
+  cardPay: require('./icons/cardPay.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),

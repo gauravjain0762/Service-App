@@ -35,7 +35,7 @@ const App = ({}) => {
   return (
     <StripeProvider
       publishableKey={publishKey}
-      // merchantIdentifier="merchant.com.gearapp.ae" // required for Apple Pay
+      merchantIdentifier="merchant.com.services.marketplace.app" // required for Apple Pay
     >
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

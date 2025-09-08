@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import RequestCard from '@/components/common/RequestCard';
@@ -13,7 +20,11 @@ import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
-import {errorToast, getLocalizedText} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  formatePrice,
+  getLocalizedText,
+} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
@@ -31,6 +42,9 @@ import {
 import TermsCheckBox from '@/components/common/TermsCheckBox';
 import ServiceBillSummary from '@/components/common/ServiceBillSummary';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import CustomImage from '@/components/common/CustomImage';
+import {payment_method} from '@/utils/CommonArray';
 
 const OfferSummary = () => {
   const {
@@ -46,6 +60,8 @@ const OfferSummary = () => {
     useState(false);
   const [isEditRequest, setIsEditRequest] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [isPaymentMethod, setIsPaymentMethod] = useState('COD');
+  const [paymentData, setPaymentData] = useState<any>(payment_method);
 
   const {
     data: offerData,
@@ -54,6 +70,7 @@ const OfferSummary = () => {
   } = useGetOffersDetailsQuery<any>(
     {
       offer_id: offer_id,
+      ...(isPaymentMethod === 'loyalty' && {apply_loyalty: true}),
     },
     {
       refetchOnReconnect: true,
@@ -64,7 +81,21 @@ const OfferSummary = () => {
 
   const offerDetails = offerData?.data;
   const offerDetail = offerData?.data?.offer;
-  console.log(offer_id, 'requestDatarequestDatarequestData', offerData);
+
+  React.useEffect(() => {
+    if (offerDetails?.can_apply_loyalty) {
+      setPaymentData([
+        {
+          id: 1,
+          title: 'Loyalty Credit',
+          img: IMAGES.loyalty_card,
+          isWallet: true,
+          value: 'loyalty',
+        },
+        ...paymentData,
+      ]);
+    }
+  }, [offerDetails?.can_apply_loyalty]);
 
   const acceptOffers = async () => {
     try {
@@ -142,7 +173,7 @@ const OfferSummary = () => {
         await fetchPaymentSheetParams();
 
       const {error, paymentOption} = await initPaymentSheet({
-        merchantDisplayName: 'Digit',
+        merchantDisplayName: 'Service Marketplace',
         customerId: customer,
         customerEphemeralKeySecret: ephemeralKey,
         paymentIntentClientSecret: paymentIntent,
@@ -157,10 +188,10 @@ const OfferSummary = () => {
         //   merchantCountryCode: 'AE',
         //   testEnv: false, // use test environment
         // },
-        // applePay: {
-        //   // merchantCountryCode: 'UAE',
-        //   merchantCountryCode: 'AE',
-        // },
+        applePay: {
+          // merchantCountryCode: 'UAE',
+          merchantCountryCode: 'AE',
+        },
       });
       if (!error) {
         presentSheet();
@@ -177,6 +208,60 @@ const OfferSummary = () => {
     }
   };
 
+  const onPressPayment = (item: any) => {
+    const updatedData = paymentData?.map((i: any) => ({
+      ...i,
+      isSelected: i?.id === item?.id,
+    }));
+    setPaymentData(updatedData);
+    setIsPaymentMethod(item?.value);
+  };
+  const renderpaymentItem = ({item}: any) => {
+    return (
+      <TouchableOpacity
+        // disabled={item?.id !== 2}
+        onPress={() => onPressPayment(item)}
+        style={styles.paymentItemContainer}>
+        <View style={[styles.cardContainer, styles.paymentCard]}>
+          <CustomImage
+            source={item?.img}
+            resizeMode="contain"
+            imageStyle={{width: '100%', height: '100%'}}
+            containerStyle={styles.paymentIconStyle}
+          />
+          <CommonText text={item?.title} style={styles.paymentTitle} />
+        </View>
+        <View style={styles.radioButtonView}>
+          {item?.isWallet && (
+            <CommonText
+              text={`AED ${formatePrice(offerDetails?.loyalty_points)}`}
+              style={styles.walletMoneyText}
+            />
+          )}
+          <View
+            style={[
+              styles.radioButton,
+              {
+                borderColor: Colors.seeker_primary,
+              },
+            ]}>
+            {item?.isSelected && (
+              <View
+                style={[
+                  styles.radioButtonInner,
+                  {
+                    backgroundColor: Colors.seeker_primary,
+                  },
+                ]}
+              />
+            )}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const itemSeparatorPaymentComponent = () => <View style={{height: hp(8)}} />;
   return (
     <SafeareaProvider style={[styles.safeArea]}>
       <View style={styles.topContainer}>
@@ -274,7 +359,17 @@ const OfferSummary = () => {
               />
             )}
 
-            <CommonText text={'Payment method'} style={styles.sectionTitle} />
+            <View style={styles.paymentMethodView}>
+              <CommonText text={'Payment method'} style={styles.sectionTitle} />
+              <View style={styles.saperatLine1} />
+
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={paymentData}
+                renderItem={renderpaymentItem}
+                ItemSeparatorComponent={itemSeparatorPaymentComponent}
+              />
+            </View>
 
             <View style={{paddingHorizontal: wp(0)}}>
               <ServiceBillSummary
@@ -288,6 +383,15 @@ const OfferSummary = () => {
                     label: 'Platform Fee',
                     amount: offerDetails?.sub_total ?? '',
                   },
+                  ...(offerDetails?.loyalty_discount > 0
+                    ? [
+                        {
+                          label: 'Loyalty Points Redeem',
+                          amount: offerDetails?.loyalty_discount ?? '',
+                          isGreen: true,
+                        },
+                      ]
+                    : []),
                 ]}
                 totalAmount={offerDetails?.total_amount}
               />
@@ -518,7 +622,61 @@ const styles = StyleSheet.create({
     ...commonFontStyle(700, 2.5, Colors.white),
   },
   sectionTitle: {
-    marginTop: hp(30),
     ...commonFontStyle(600, 2.2, Colors.black),
+  },
+  paymentMethodView: {
+    marginVertical: hp(18),
+    padding: hp(10),
+  },
+  saperatLine1: {
+    width: '100%',
+    height: hp(2),
+    opacity: 0.7,
+    marginTop: hp(11),
+    marginBottom: hp(16),
+    backgroundColor: Colors._EEEEEE,
+  },
+  radioButton: {
+    width: wp(25),
+    height: hp(25),
+    borderRadius: wp(100),
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioButtonInner: {
+    width: wp(10),
+    height: hp(10),
+    borderRadius: wp(5),
+  },
+  paymentItemContainer: {
+    ...rowReverseRTL(),
+    alignItems: 'center',
+    paddingVertical: hp(7),
+  },
+  cardContainer: {
+    ...rowReverseRTL(),
+    alignItems: 'flex-start',
+  },
+  paymentCard: {
+    gap: wp(18),
+    flex: 1,
+  },
+  paymentIconStyle: {
+    width: wp(24),
+    height: wp(24),
+  },
+  paymentTitle: {
+    ...commonFontStyle(400, 2, Colors.black),
+    ...textRTL(),
+  },
+  radioButtonView: {
+    ...rowReverseRTL(),
+    alignItems: 'center',
+    gap: wp(10),
+  },
+  walletMoneyText: {
+    ...commonFontStyle(700, 2, Colors.seeker_primary),
+    ...textRTL(),
   },
 });
