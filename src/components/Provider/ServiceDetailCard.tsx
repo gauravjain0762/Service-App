@@ -79,35 +79,53 @@ const ServiceDetailCard = ({
       {requestDetails?.media_files?.length > 0 && (
         <AttachmentCard requestImages={requestDetails?.media_files} />
       )}
-      <View style={{marginVertical: hp(29), width: '100%'}}>
-        <AdittionalNote additionalNotes={requestDetails?.notes} />
-      </View>
+      {requestDetails?.notes && (
+        <View style={{marginVertical: hp(10), width: '100%'}}>
+          <AdittionalNote additionalNotes={requestDetails?.notes} />
+        </View>
+      )}
+      {requestMyOffersDetails?.request_change?.note && (
+        <View style={{marginVertical: hp(10), width: '100%'}}>
+          <AdittionalNote
+            title="Change Request Note"
+            additionalNotes={requestMyOffersDetails?.request_change?.note}
+            style={{borderWidth: 1, borderColor: Colors.provider_primary}}
+          />
+        </View>
+      )}
       {requestMyOffersDetails ? (
         <>
-          <CustomButton
-            isPrimary="seeker"
-            title={'Edit Service Offer'}
-            type="outline"
-            btnStyle={{
-              borderColor: Colors.black,
-              margin: 0,
-              width: '100%',
-              marginBottom: hp(10),
-            }}
-            textStyle={{color: Colors.black}}
-            onPress={() => {
+          {requestMyOffersDetails?.request_change?.requested && (
+            <CustomButton
+              isPrimary="seeker"
+              title={'Edit Service Offer'}
+              type="outline"
+              btnStyle={{
+                borderColor: Colors.black,
+                margin: 0,
+                width: '100%',
+                marginBottom: hp(10),
+              }}
+              textStyle={{color: Colors.black}}
+              onPress={() => {
                 navigateTo(PROVIDER_SCREENS.MakeOffer, {
                   requestDetails: requestDetails,
                   myOffer: requestMyOffersDetails,
                 });
               }}
-          />
+            />
+          )}
           <View style={styles.bottomRow}>
             <CustomButton
               isPrimary={'provider'}
               title={'Offer Submitted'}
               btnStyle={styles.acceptBtn}
               textStyle={styles.acceptText}
+              onPress={() => {
+                navigateTo(PROVIDER_SCREENS.ProviderOfferDetails, {
+                  request_id: requestDetails?._id,
+                });
+              }}
             />
             <View style={styles.priceRow}>
               <CustomImage
@@ -130,7 +148,7 @@ const ServiceDetailCard = ({
               requestDetails: requestDetails,
             });
           }}
-          btnStyle={{alignSelf: 'center', width: '70%'}}
+          btnStyle={{alignSelf: 'center', width: '70%', marginTop: hp(15)}}
         />
       )}
     </ShadowCard>
@@ -143,7 +161,8 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     borderRadius: hp(20),
-    paddingVertical: hp(30),
+    paddingTop: hp(30),
+    paddingBottom: hp(20),
     paddingHorizontal: wp(15),
   },
   row: {
@@ -164,7 +183,7 @@ const styles = StyleSheet.create({
   },
   bottomRow: {
     width: '100%',
-    // marginTop: hp(45),
+    marginTop: hp(15),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

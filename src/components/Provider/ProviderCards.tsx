@@ -6,7 +6,7 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
 import {navigateTo} from '../common/commonFunction';
-import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 
 type Props = {
   item?: any;

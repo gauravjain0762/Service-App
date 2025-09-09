@@ -6,17 +6,20 @@ import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp} from '@/utils/responsiveFn';
 
-const AdittionalNote = ({additionalNotes}:any) => {
+const AdittionalNote = ({title, additionalNotes, style}: any) => {
   return (
     <ShadowCard
-      style={{
-        padding: hp(19),
-        width: '100%',
-        alignItems: 'flex-start',
-        gap: hp(12),
-      }}>
+      style={[
+        {
+          padding: hp(19),
+          width: '100%',
+          alignItems: 'flex-start',
+          gap: hp(12),
+        },
+        style,
+      ]}>
       <CommonText
-        text={'Additional Note'}
+        text={title ? title : 'Additional Note'}
         style={{
           ...commonFontStyle(600, 1.7, Colors._202020),
         }}

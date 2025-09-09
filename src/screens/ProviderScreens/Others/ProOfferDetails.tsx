@@ -69,7 +69,6 @@ const ProOfferDetails = () => {
       status: 'Completed',
     };
     const response = await updateJobStatus(obj).unwrap();
-    console.log('response', response);
     if (response?.status) {
       setIsCompleteBookingModal(false);
       resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);

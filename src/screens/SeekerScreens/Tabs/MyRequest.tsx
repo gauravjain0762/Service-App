@@ -22,11 +22,14 @@ const MyRequest = () => {
     data: requestData,
     isLoading: requestLoading,
     refetch: refetchRequestList,
-  } = useGetRequestsQuery<any>({
-    refetchOnReconnect: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
-  });
+  } = useGetRequestsQuery<any>(
+    {},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
 
   React.useEffect(() => {
     if (requestData) {
@@ -53,6 +56,7 @@ const MyRequest = () => {
   const handleCardPress = (item: any) => {
     navigateTo(SEEKER_SCREENS.Offers, {request_id: item?._id});
   };
+
   return (
     <SafeareaProvider
       style={{
@@ -101,6 +105,14 @@ const MyRequest = () => {
                           item?.sub_category_id?.title_ar,
                           language,
                         )}
+                        style={styles.serviceDescription}
+                      />
+                      <CommonText
+                        text={`${
+                          item?.offer_count == 0
+                            ? 'No Offers received yet'
+                            : item?.offer_count + 'Offer Received'
+                        }`}
                         style={styles.serviceDescription}
                       />
                     </View>

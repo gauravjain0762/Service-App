@@ -60,7 +60,7 @@ const MyBookings = () => {
 
   const [note, setNote] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
-  const [jobCode, setJobCode] = useState<string>('');
+  const [jobCode, setJobCode] = useState<any>(null);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
 
   const handleDynamicFieldChange = (fieldName: string, value: any) => {
@@ -175,10 +175,6 @@ const MyBookings = () => {
         errorToast('Please choose a location type');
         return;
       }
-      if (!note) {
-        errorToast('Please enter a note');
-        return;
-      }
       const formData = new FormData();
       formData.append('category_id', category_id);
       formData.append('sub_category_id', _id);
@@ -211,7 +207,7 @@ const MyBookings = () => {
 
       if (response?.status) {
         setIsSubmitModalVisible(true);
-        setJobCode(response?.data?.job_code);
+        setJobCode(response?.data);
       }
     } catch (error: any) {
       console.log(error);
@@ -390,7 +386,7 @@ const MyBookings = () => {
           onPress={() => onSend()}
         />
       </KeyboardAwareScrollView>
-
+      {console.log(category_name, 'category_name', 'title', title)}
       <BottomModal
         close
         style={{paddingTop: hp(40)}}
@@ -406,13 +402,16 @@ const MyBookings = () => {
         <RequestSubmitModal
           handleCardPress={() => {
             setIsSubmitModalVisible(false);
-            resetNavigation(SEEKER_SCREENS.Offers, '', {isResetNav: true});
+            navigateTo(SEEKER_SCREENS.Offers, {
+              isResetNav: true,
+              request_id: jobCode?._id,
+            });
           }}
           color={Colors.seeker_primary}
           text1={category_name}
           text2={title}
           imageSource={category_image}
-          jobCode={jobCode}
+          jobCode={jobCode?.job_code}
         />
       </BottomModal>
     </SafeareaProvider>

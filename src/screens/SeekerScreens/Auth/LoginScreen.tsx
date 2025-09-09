@@ -22,7 +22,7 @@ import {
   resetNavigation,
   successToast,
 } from '@/components/common/commonFunction';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
@@ -131,7 +131,8 @@ const LoginScreen = ({}: any) => {
       if (response?.status) {
         setLoading(false);
         // successToast(response?.message);
-        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        resetNavigation(SCREENS.SeekerNavigator);
       }
     } catch (error: any) {
       setLoading(false);
@@ -172,7 +173,8 @@ const LoginScreen = ({}: any) => {
           setLoading(false);
 
           // successToast(response?.message);
-          resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+          // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+          resetNavigation(SCREENS.SeekerNavigator);
         }
       }
     } catch (error: any) {

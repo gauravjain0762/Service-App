@@ -87,6 +87,14 @@ export const resetNavigation = (
   });
 };
 
+// export const resetNavigation = (name: string, params?: any | undefined) => {
+//   navigationRef.dispatch(
+//     CommonActions.reset({
+//       index: 1,
+//       routes: [{name: name, params: params}],
+//     }),
+//   );
+// };
 export const navigateTo = (name: string, params?: any | undefined) => {
   try {
     navigationRef.navigate(name, params);

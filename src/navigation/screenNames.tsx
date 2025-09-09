@@ -89,6 +89,7 @@ export const PROVIDER_SCREENS = {
   EmailVerification: 'EmailVerification',
   CreateNewPass: 'CreateNewPass',
   Subscription: 'Subscription',
+  ProviderOfferDetails: 'ProviderOfferDetails',
 };
 
 export interface ScreenNames {

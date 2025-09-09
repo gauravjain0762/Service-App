@@ -125,11 +125,11 @@ const MakeOffer = () => {
         });
       }
 
-      const response = await (true
+      const response = await (myOffer
         ? modifyOffer(formData)
         : sendOffer(formData)
       ).unwrap();
-
+      
       if (response?.status) {
         setIsSubmitModalVisible(true);
       } else {

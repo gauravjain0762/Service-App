@@ -27,6 +27,7 @@ const OffersDetails = () => {
     `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
     'YYYY-MM-DD hh:mm A',
   );
+  console.log(offerDetail, 'offerDetail');
 
   return (
     <SafeareaProvider style={[styles.safeArea]}>
@@ -96,9 +97,6 @@ const OffersDetails = () => {
             ),
           )}
         </View>
-
-        <CommonText text={offerDetail?.notes} style={styles.description} />
-
         <Divider />
 
         <View style={styles.bookingContainer}>
@@ -120,6 +118,38 @@ const OffersDetails = () => {
             title="Attachments"
           />
         )}
+        {offerDetail?.notes && (
+          <View
+            style={{marginVertical: getFontSize(1.5), gap: getFontSize(0.8)}}>
+            <CommonText
+              text={`Additional Note:- `}
+              style={[
+                styles.description,
+                {...commonFontStyle(600, 1.6, Colors._676767)},
+              ]}
+            />
+            <CommonText
+              text={`${offerDetail?.notes}`}
+              style={styles.description}
+            />
+          </View>
+        )}
+        {offerDetail?.request_change?.note && (
+          <View
+            style={{marginVertical: getFontSize(1.5), gap: getFontSize(0.8)}}>
+            <CommonText
+              text={`Change Request Note:-`}
+              style={[
+                styles.description,
+                {...commonFontStyle(600, 1.6, Colors._676767)},
+              ]}
+            />
+            <CommonText
+              text={`${offerDetail?.request_change?.note}`}
+              style={styles.description}
+            />
+          </View>
+        )}
         {isEditRequest && (
           <RequestEditServiceModal
             onClose={() => {
@@ -129,34 +159,45 @@ const OffersDetails = () => {
             offer_id={offerDetail?._id}
           />
         )}
-        <CustomButton
-          isPrimary="seeker"
-          title={'Request To Edit Service'}
-          type="outline"
-          btnStyle={{
-            borderColor: Colors.black,
-            margin: 0,
-            marginTop: getFontSize(1.5),
-          }}
-          style={{margin: 0}}
-          textStyle={{color: Colors.black}}
-          onPress={() => {
-            setIsEditRequest(true);
-          }}
-        />
+        {!offerDetail?.request_change?.requested && (
+          <CustomButton
+            isPrimary="seeker"
+            title={'Request To Edit Service'}
+            type="outline"
+            btnStyle={{
+              borderColor: Colors.black,
+              margin: 0,
+              marginTop: getFontSize(1.5),
+            }}
+            style={{margin: 0}}
+            textStyle={{color: Colors.black}}
+            onPress={() => {
+              setIsEditRequest(true);
+            }}
+          />
+        )}
       </ScrollView>
       <View style={styles.bottomRow}>
-        <CustomButton
-          title={'Accept Offer'}
-          btnStyle={styles.acceptBtn}
-          textStyle={styles.acceptText}
-          onPress={() => {
-            navigateTo(SEEKER_SCREENS.OfferSummary, {
-              offer_id: offerDetail?._id,
-              requestDetails: requestDetails,
-            });
-          }}
-        />
+        {!offerDetail?.request_change?.requested ? (
+          <CustomButton
+            title={'Accept Offer'}
+            btnStyle={styles.acceptBtn}
+            textStyle={styles.acceptText}
+            onPress={() => {
+              navigateTo(SEEKER_SCREENS.OfferSummary, {
+                offer_id: offerDetail?._id,
+                requestDetails: requestDetails,
+              });
+            }}
+          />
+        ) : (
+          <CustomButton
+            title={'Change Requested'}
+            btnStyle={styles.acceptBtn}
+            textStyle={styles.acceptText}
+            disabled
+          />
+        )}
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
           <CommonText
@@ -241,7 +282,7 @@ const styles = StyleSheet.create({
   featuresRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: hp(20),
+    marginVertical: hp(20),
     flexWrap: 'wrap',
     gap: wp(10),
   },
@@ -258,7 +299,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 1.3, Colors.black),
   },
   description: {
-    marginVertical: hp(20),
+    // marginVertical: hp(20),
     ...commonFontStyle(400, 1.6, Colors._676767),
   },
   bookingContainer: {
@@ -307,6 +348,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignSelf: 'center',
     paddingHorizontal: wp(24),
+    paddingVertical: hp(5),
   },
   acceptBtn: {
     height: hp(50),

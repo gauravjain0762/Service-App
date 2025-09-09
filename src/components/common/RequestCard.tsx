@@ -12,6 +12,7 @@ import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CustomImage from './CustomImage';
 
 type props = {
   text1?: string;
@@ -34,17 +35,14 @@ const RequestCard = ({
 }: props) => {
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
-      <View style={styles.imageContainer}>
-        <Image
-          source={imageSource ? {uri: imageSource} : IMAGES.dummy}
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: hp(72),
-          }}
-        />
-      </View>
-
+      <CustomImage
+        source={imageSource ? {uri: imageSource} : IMAGES.dummy}
+        imageStyle={{
+          width: '100%',
+          height: '100%',
+        }}
+        containerStyle={styles.imageContainer}
+      />
       <View style={styles.textContainer}>
         <CommonText
           text={text1 ? text1 : 'AC Regular Services'}
@@ -77,8 +75,10 @@ const styles = StyleSheet.create({
     height: hp(72),
     borderRadius: hp(72),
     backgroundColor: Colors.white,
+    overflow: 'hidden',
   },
   textContainer: {
+    flexShrink: 1,
     gap: hp(5),
   },
   title: {

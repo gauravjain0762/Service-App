@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 
 import BackHeader from '@/components/common/BackHeader';
 import BookingCard from '@/components/Provider/BookingCard';
@@ -10,50 +10,35 @@ import {navigateTo} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetRequestsQuery} from '@/api/Provider/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
-
-const DATA = [
-  {
-    id: 'D-698321',
-    title: 'Repair & Maintenance',
-    subtitle: 'AC Regular Services',
-    address: 'Dubai Internet City UAE',
-    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
-    status: 'Active',
-    customer: 'Luis Fernando Salazar',
-  },
-  {
-    id: 'D-698311',
-    title: 'Repair & Maintenance',
-    subtitle: 'AC Regular Services',
-    address: 'Dubai Internet City UAE',
-    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
-    status: 'Completed',
-    customer: 'Luis Fernando Salazar',
-  },
-  {
-    id: 'D-698301',
-    title: 'Repair & Maintenance',
-    subtitle: 'AC Regular Services',
-    address: 'Dubai Internet City UAE',
-    dateTime: 'Web, 18 Apr - 09:00 - 12:00',
-    status: 'Active',
-    customer: 'Luis Fernando Salazar',
-  },
-];
+import {useIsFocused} from '@react-navigation/native';
 
 const NewRequestScreen = () => {
+  const isFocus = useIsFocused();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allRequestData, setAllRequestData] = React.useState([]);
   const {
     data: requestData,
     isLoading: requestLoading,
     refetch: refetchRequestList,
-  } = useGetRequestsQuery<any>({
-    refetchOnReconnect: true,
-    refetchOnMountOrArgChange: true,
-    refetchOnFocus: true,
-  });
+  } = useGetRequestsQuery(
+    {
+      page: currentPage,
+    },
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+  React.useEffect(() => {
+    if (isFocus) {
+      refetchRequestList();
+    }
+  }, [isFocus]);
 
+  const onRefresh = React.useCallback(() => {
+    refetchRequestList();
+  }, []);
   React.useEffect(() => {
     if (requestData) {
       const newData = requestData.data.requests;
@@ -75,6 +60,7 @@ const NewRequestScreen = () => {
       setCurrentPage(nextPage);
     }
   };
+  console.log(requestData, 'requestData');
 
   return (
     <SafeAreaView style={GeneralStyle.container}>
@@ -86,6 +72,9 @@ const NewRequestScreen = () => {
         ) : (
           <FlatList
             data={allRequestData}
+            refreshControl={
+              <RefreshControl refreshing={false} onRefresh={onRefresh} />
+            }
             renderItem={({item, index}: any) => {
               return (
                 <BookingCard

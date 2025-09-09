@@ -6,17 +6,27 @@ import {setDashboard, setPackages} from '@/features/authSlice';
 export const providerHomeApi = createApi({
   reducerPath: 'providerHomeApi',
   baseQuery: axiosBaseQuery,
-  tagTypes: ['providerHomeApi', 'getDashboard'],
-  keepUnusedDataFor: 300, // 5 minutes
-  refetchOnFocus: true,
-  refetchOnReconnect: true,
+  tagTypes: [
+    'providerHomeApi',
+    'getProviderDashboard',
+    'getProviderSubCategories',
+    'getProviderNotifications',
+    'getProviderRequests',
+    'getProviderPackages',
+    'getProviderRequestsDetails',
+    'getProviderJobs',
+    'getProviderJobDetails',
+  ],
+  // keepUnusedDataFor: 300, // 5 minutes
+  // refetchOnFocus: true,
+  // refetchOnReconnect: true,
   endpoints: builder => ({
     getDashboard: builder.query<any, any>({
       query: () => ({
         url: PROVIDER_API.DASHBOARD.DASHBOARD,
         method: HTTP_METHOD.GET,
       }),
-      providesTags:['getDashboard'],
+      providesTags: ['getProviderDashboard'],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;
@@ -31,15 +41,16 @@ export const providerHomeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getProviderSubCategories'],
     }),
 
     // Notifications API
-
     getNotifications: builder.query<any, any>({
       query: () => ({
         url: PROVIDER_API.DASHBOARD.NOTIFICATIONS,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['getProviderNotifications'],
     }),
 
     clearNotifications: builder.mutation<any, any>({
@@ -52,10 +63,12 @@ export const providerHomeApi = createApi({
 
     // Requests API
     getRequests: builder.query<any, any>({
-      query: () => ({
+      query: query => ({
         url: PROVIDER_API.DASHBOARD.REQUESTS,
         method: HTTP_METHOD.GET,
+        params: query,
       }),
+      providesTags: ['getProviderRequests'],
     }),
 
     getRequestsDetails: builder.query<any, any>({
@@ -64,6 +77,7 @@ export const providerHomeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getProviderRequestsDetails'],
     }),
 
     sendOffer: builder.mutation<any, any>({
@@ -75,7 +89,7 @@ export const providerHomeApi = createApi({
           'Content-Type': 'multipart/form-data',
         },
       }),
-      invalidatesTags: ['providerHomeApi'],
+      invalidatesTags: ['getProviderRequests', 'getProviderRequestsDetails'],
     }),
     modifyOffer: builder.mutation<any, any>({
       query: credentials => ({
@@ -86,7 +100,7 @@ export const providerHomeApi = createApi({
           'Content-Type': 'multipart/form-data',
         },
       }),
-      invalidatesTags: ['providerHomeApi'],
+      invalidatesTags: ['getProviderRequests', 'getProviderRequestsDetails'],
     }),
     // Update Job Status
     updateJobStatus: builder.mutation<any, any>({
@@ -95,7 +109,12 @@ export const providerHomeApi = createApi({
         method: HTTP_METHOD.POST,
         data: credentials,
       }),
-      invalidatesTags: ['providerHomeApi', 'getDashboard'],
+      invalidatesTags: [
+        'providerHomeApi',
+        'getProviderDashboard',
+        'getProviderJobs',
+        'getProviderJobDetails',
+      ],
     }),
 
     getJobs: builder.query<any, any>({
@@ -104,6 +123,7 @@ export const providerHomeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getProviderJobs'],
     }),
 
     getJobDetails: builder.query<any, any>({
@@ -112,33 +132,14 @@ export const providerHomeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getProviderJobDetails'],
     }),
-    // createRequest: builder.mutation<any, any>({
-    //   query: credentials => ({
-    //     url: PROVIDER_API.DASHBOARD.CREATE_REQUEST,
-    //     method: HTTP_METHOD.POST,
-    //     data: credentials,
-    //     headers: {
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //   }),
-    //   invalidatesTags: ['providerHomeApi'],
-    // }),
-
-    // // Accept Offer
-    // acceptOffer: builder.mutation<any, any>({
-    //   query: credentials => ({
-    //     url: PROVIDER_API.DASHBOARD.ACCEPT_OFFER,
-    //     method: HTTP_METHOD.POST,
-    //     data: credentials,
-    //   }),
-    //   invalidatesTags: ['providerHomeApi'],
-    // }),
     getPackages: builder.query<any, any>({
       query: () => ({
         url: PROVIDER_API.DASHBOARD.PACKAGES,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['getProviderPackages'],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;
@@ -171,5 +172,5 @@ export const {
   useBuyPackageMutation,
   useGetPackagesQuery,
   useUpdateJobStatusMutation,
-  useModifyOfferMutation
+  useModifyOfferMutation,
 } = providerHomeApi;

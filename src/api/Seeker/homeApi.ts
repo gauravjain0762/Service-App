@@ -6,7 +6,18 @@ import {setDashboard} from '@/features/authSlice';
 export const homeApi = createApi({
   reducerPath: 'homeApi',
   baseQuery: axiosBaseQuery,
-  tagTypes: ['homeApi'],
+  tagTypes: [
+    'homeApi',
+    'GetDashboard',
+    'getRequests',
+    'getJobDetails',
+    'getRequestsDetails',
+    'getOffersDetails',
+    'getJobs',
+    'getUserLoyalty',
+    'getSubCategories',
+    'getNotifications'
+  ],
   keepUnusedDataFor: 300, // 5 minutes
   refetchOnFocus: true,
   refetchOnReconnect: true,
@@ -16,6 +27,7 @@ export const homeApi = createApi({
         url: SEEKER_API.DASHBOARD.DASHBOARD,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['GetDashboard'],
       async onQueryStarted(_, {dispatch, queryFulfilled}) {
         try {
           const {data} = await queryFulfilled;
@@ -31,6 +43,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getSubCategories'],
     }),
 
     // Notifications API
@@ -40,6 +53,7 @@ export const homeApi = createApi({
         url: SEEKER_API.DASHBOARD.NOTIFICATIONS,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['getNotifications'],
     }),
 
     clearNotifications: builder.mutation<any, any>({
@@ -56,6 +70,7 @@ export const homeApi = createApi({
         url: SEEKER_API.DASHBOARD.REQUESTS,
         method: HTTP_METHOD.GET,
       }),
+      providesTags: ['getRequests'],
     }),
 
     getRequestsDetails: builder.query<any, any>({
@@ -64,6 +79,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getRequestsDetails'],
     }),
     getOffersDetails: builder.query<any, any>({
       query: query => ({
@@ -71,6 +87,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getOffersDetails'],
     }),
 
     createRequest: builder.mutation<any, any>({
@@ -92,7 +109,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.POST,
         data: credentials,
       }),
-      invalidatesTags: ['homeApi'],
+      invalidatesTags: ['homeApi', 'getRequestsDetails'],
     }),
 
     // Accept Offer
@@ -102,7 +119,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.POST,
         data: credentials,
       }),
-      invalidatesTags: ['homeApi'],
+      invalidatesTags: ['homeApi', 'getRequestsDetails'],
     }),
 
     getJobs: builder.query<any, any>({
@@ -111,6 +128,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getJobs'],
     }),
     getUserLoyalty: builder.query<any, any>({
       query: query => ({
@@ -118,6 +136,7 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getUserLoyalty'],
     }),
 
     getJobDetails: builder.query<any, any>({
@@ -126,8 +145,9 @@ export const homeApi = createApi({
         method: HTTP_METHOD.GET,
         params: query,
       }),
+      providesTags: ['getJobDetails'],
     }),
-      // Stripe
+    // Stripe
     stripePayment: builder.mutation<any, any>({
       query: credentials => ({
         url: SEEKER_API.DASHBOARD.STRIPE_PAYMENT,
@@ -153,5 +173,5 @@ export const {
   useRequestChangeMutation,
   useGetUserLoyaltyQuery,
   useStripePaymentMutation,
-  useGetOffersDetailsQuery
+  useGetOffersDetailsQuery,
 } = homeApi;

@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {hp} from '@/utils/responsiveFn';
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const HomeSkeleton = ({
@@ -17,6 +17,16 @@ const HomeSkeleton = ({
       contentContainerStyle={{
         alignSelf: 'center',
       }}>
+      <SkeletonPlaceholder borderRadius={8}>
+        <View
+          style={{
+            width: '100%',
+            height: hp(55),
+            alignSelf: 'center',
+            marginBottom: hp(20),
+          }}
+        />
+      </SkeletonPlaceholder>
       <SkeletonPlaceholder borderRadius={10}>
         <SkeletonPlaceholder.Item alignItems="center">
           {isBanner && (

@@ -46,6 +46,7 @@ const Offers = () => {
   );
   const requestDetails = requestData?.data?.job;
   const requestDetailsOffers = requestData?.data?.offers;
+console.log(requestData,'requestData');
 
   return (
     <SafeareaProvider style={styles.safeArea}>

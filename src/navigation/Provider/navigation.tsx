@@ -18,6 +18,7 @@ import EmailVerification from '@/screens/SeekerScreens/Auth/EmailVerification';
 import CreateNewPass from '@/screens/SeekerScreens/Auth/CreateNewPass';
 import Subscription from '@/screens/Subscription';
 import {useAppSelector} from '@/Hooks/hooks';
+import ProviderOfferDetails from '@/screens/ProviderScreens/Others/ProviderOfferDetails';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -52,6 +53,7 @@ const ProviderNavigator: FC = () => {
     {name: PROVIDER_SCREENS.EmailVerification, component: EmailVerification},
     {name: PROVIDER_SCREENS.CreateNewPass, component: CreateNewPass},
     {name: PROVIDER_SCREENS.Subscription, component: Subscription},
+    {name: PROVIDER_SCREENS.ProviderOfferDetails, component: ProviderOfferDetails},
   ];
   return (
     <Stack.Navigator

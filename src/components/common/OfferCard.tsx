@@ -56,26 +56,62 @@ const OfferCard = ({
       </View>
 
       {item?.notes && (
-        <CommonText text={item?.notes} style={styles.description} />
+        <View style={{marginTop: getFontSize(1.5)}}>
+          <CommonText
+            text={`Additional Note:- `}
+            style={[
+              styles.description,
+              {...commonFontStyle(600, 1.6, Colors._676767)},
+            ]}
+          />
+          <CommonText text={`${item?.notes}`} style={styles.description} />
+        </View>
+      )}
+      {item?.request_change?.note && (
+        <View style={{marginTop: getFontSize(1.5)}}>
+          <CommonText
+            text={`Change Request Note:-`}
+            style={[
+              styles.description,
+              {...commonFontStyle(600, 1.6, Colors._676767)},
+            ]}
+          />
+          <CommonText
+            text={`${item?.request_change?.note}`}
+            style={styles.description}
+          />
+        </View>
       )}
 
       <View style={styles.bottomRow}>
         <View style={styles.buttonContainer}>
-          <CustomButton
-            isPrimary="seeker"
-            title={'Edit'}
-            type="fill"
-            btnStyle={[styles.acceptBtn, {backgroundColor: Colors.black}]}
-            style={{margin: 0}}
-            textStyle={styles.acceptText}
-            onPress={onPressEdit}
-          />
-          <CustomButton
-            title={'Accept'}
-            textStyle={styles.acceptText}
-            btnStyle={styles.acceptBtn}
-            onPress={onPressAcceptOffer}
-          />
+          {!item?.request_change?.requested ? (
+            <>
+              <CustomButton
+                isPrimary="seeker"
+                title={'Edit'}
+                type="fill"
+                btnStyle={[styles.acceptBtn, {backgroundColor: Colors.black}]}
+                style={{margin: 0}}
+                textStyle={styles.acceptText}
+                onPress={onPressEdit}
+              />
+
+              <CustomButton
+                title={'Accept'}
+                textStyle={styles.acceptText}
+                btnStyle={styles.acceptBtn}
+                onPress={onPressAcceptOffer}
+              />
+            </>
+          ) : (
+            <CustomButton
+              title={'Change Requested'}
+              textStyle={styles.acceptText}
+              btnStyle={styles.acceptBtn}
+              disabled
+            />
+          )}
         </View>
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
@@ -141,7 +177,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 1.3, Colors.black),
   },
   description: {
-    marginTop: getFontSize(1.5),
+    // marginTop: getFontSize(1.5),
     ...commonFontStyle(400, 1.6, Colors._676767),
   },
   bottomRow: {

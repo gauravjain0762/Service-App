@@ -18,7 +18,7 @@ import {
   successToast,
 } from '@/components/common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
-import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {
   useAppleSignInMutation,
@@ -117,7 +117,7 @@ const SignUpScreen = () => {
       if (response?.status) {
         setLoading(false);
         // successToast(response?.message);
-        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        resetNavigation(SCREENS.SeekerNavigator);
       }
     } catch (error: any) {
       setLoading(false);
@@ -158,7 +158,7 @@ const SignUpScreen = () => {
           setLoading(false);
 
           // successToast(response?.message);
-          resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+          resetNavigation(SCREENS.SeekerNavigator);
         }
       }
     } catch (error: any) {

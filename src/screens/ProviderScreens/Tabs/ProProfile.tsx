@@ -125,9 +125,9 @@ const ProProfile = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.container}>
         <CustomImage
-          uri={userInfo?.logo}
+          uri={userInfo?.picture}
           containerStyle={styles.userImageStyle}
-          size={getFontSize(7)}
+          imageStyle={{width:'100%',height:'100%'}}
           onPress={() => navigateTo(PROVIDER_SCREENS.ProfileDetail)}
         />
 
@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     marginBottom: getFontSize(2),
     borderRadius: getFontSize(100),
     backgroundColor: Colors._f4f4fe,
+    overflow:'hidden'
   },
 
   name: {

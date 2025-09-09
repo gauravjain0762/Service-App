@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Image, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {Colors} from '@/constants/Colors';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
@@ -32,11 +38,11 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const {} = useGetProfileQuery({}); // profile api
+  const {refetch: profileRefetch} = useGetProfileQuery({}); // profile api
 
-  const {isLoading} = useGetDashboardQuery({}); // dashboard api
+  const {isLoading, refetch} = useGetDashboardQuery({}); // dashboard api
 
-  const [subCatTrigger, {data: subCategories, isLoading: isSubCatLoading}] =
+  const [subCatTrigger, {data: subCategories, isLoading: isSubCatLoading,isFetching}] =
     useLazyGetSubCategoriesQuery();
 
   const openReviewModal = params?.openReviewModal;
@@ -62,7 +68,13 @@ const HomeScreen = () => {
   const closeModal = () => {
     setIsReviewModalVisible(false);
   };
-
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await refetch();
+    profileRefetch();
+    setRefreshing(false);
+  }, [refetch]);
   return (
     <SafeareaProvider style={styles.safeArea}>
       <View style={styles.topSection}>
@@ -88,20 +100,28 @@ const HomeScreen = () => {
           }}
         />
       </View>
-
-      <View style={styles.searchContainer}>
-        <CustomTextInput
-          onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
-          placeholder="Search by Services or Category"
-          leftIcon={
-            <Image source={IMAGES.search} style={styles.searchImages} />
-          }
-        />
-      </View>
       {isLoading ? (
         <HomeSkeleton isBanner />
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[Colors.seeker_primary]}
+              tintColor={Colors.seeker_primary}
+            />
+          }
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.searchContainer}>
+            <CustomTextInput
+              onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
+              placeholder="Search by Services or Category"
+              leftIcon={
+                <Image source={IMAGES.search} style={styles.searchImages} />
+              }
+            />
+          </View>
           <MiniCarousel data={dashboard?.banners ?? []} />
           <CategoryList
             data={dashboard?.categories ?? []}
@@ -124,7 +144,7 @@ const HomeScreen = () => {
         onClose={() => setIsModalVisible(false)}
         selectedCategory={selectedCategory}
         subCategories={subCategories?.data?.sub_categories ?? []}
-        isSubCatLoading={isSubCatLoading}
+        isSubCatLoading={isSubCatLoading || isFetching}
       />
 
       <ReviewModal
@@ -148,6 +168,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingVertical: hp(10),
   },
   greetingContainer: {
     gap: hp(4),

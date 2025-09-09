@@ -62,7 +62,7 @@ const OfferSummary = () => {
     useState(false);
   const [isEditRequest, setIsEditRequest] = useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [isPaymentMethod, setIsPaymentMethod] = useState('COD');
+  const [isPaymentMethod, setIsPaymentMethod] = useState('');
   const [paymentData, setPaymentData] = useState<any>(payment_method);
 
   const {
@@ -193,6 +193,10 @@ const OfferSummary = () => {
   };
 
   const initializePaymentSheet = async () => {
+    if (isPaymentMethod == '') {
+      errorToast('Please select payment methods');
+      return;
+    }
     if (!toggleCheckBox) {
       errorToast('Please check the Terms Of Use');
       return;
@@ -224,9 +228,12 @@ const OfferSummary = () => {
         presentSheet();
       } else {
         errorToast(error.message);
+        console.log(error,'errorerrorerrorerrorerror');
+        
       }
     } catch (error: any) {
       errorToast(error.message);
+      console.log(error,'errorerrorerrorerrorerror');
     }
   };
 

@@ -12,6 +12,7 @@ import {Colors} from '@/constants/Colors';
 import TabSwitch from '@/components/common/TabSwitch';
 import BookingCard from '@/components/Provider/BookingCard';
 import {DATA} from '../Tabs/ProMyBookings';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const REVIEW_DATA = [
   {
@@ -35,6 +36,7 @@ const REVIEW_DATA = [
 ];
 
 const ProfileDetailScreen = () => {
+  const {userInfo} = useAppSelector<any>(state => state.auth);
   const [activeTab, setActiveTab] = useState<'My Jobs' | 'Reviews'>('My Jobs');
 
   return (
@@ -45,6 +47,7 @@ const ProfileDetailScreen = () => {
         isBell={false}
         style={{marginVertical: hp(24)}}
         avatarContainerStyle={{borderRadius: hp(100)}}
+        item={{image: userInfo?.picture}}
       />
 
       <Divider />
@@ -56,7 +59,10 @@ const ProfileDetailScreen = () => {
         </View>
         <View style={styles.detailView}>
           <CommonText style={styles.label} text={'Phone Number'} />
-          <CommonText style={styles.value} text={'+971 25 364 1782'} />
+          <CommonText
+            style={styles.value}
+            text={`+${userInfo?.phone_code} ${userInfo?.phone}`}
+          />
         </View>
 
         <TabSwitch
@@ -85,7 +91,12 @@ const ProfileDetailScreen = () => {
         <FlatList
           data={REVIEW_DATA}
           renderItem={({item, index}) => (
-            <ProviderHeader key={index} item={item} isBell={false} isStarVisible={true} />
+            <ProviderHeader
+              key={index}
+              item={item}
+              isBell={false}
+              isStarVisible={true}
+            />
           )}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}

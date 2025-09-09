@@ -6,7 +6,6 @@ export const payment_method = [
     id: 2,
     title: 'Pay by Cash',
     img: IMAGES.cashPay,
-    isSelected: true,
     value: 'COD',
   },
   {

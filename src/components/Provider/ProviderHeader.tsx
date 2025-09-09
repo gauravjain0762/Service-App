@@ -47,7 +47,7 @@ const ProviderHeader = ({
             onPress={onPressProfile}
             imageStyle={{height: '100%', width: '100%'}}
             source={!item?.image && IMAGES.profile_avatar}
-            uri={item?.image}
+            uri={item?.image || userInfo?.picture}
             containerStyle={{height: '100%', width: '100%'}}
           />
         </View>

@@ -5,9 +5,10 @@ import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
 import CustomImage from '../common/CustomImage';
 import CommonText from '../common/CommonText';
 import CustomButton from '../common/CustomButton';
-import {getLocalizedText} from '../common/commonFunction';
+import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
+import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 
 type Props = {
   item: any;
@@ -34,7 +35,7 @@ const BookingCard = ({
     const end = moment(start).add(Number(no_hours), 'hours');
     return `${start.format('ddd, DD MMM')} - ${time}`;
   };
-  console.log(item, 'itemitem');
+  console.log(item, 'itemitemitemitemitem-----');
 
   return (
     <TouchableOpacity
@@ -125,7 +126,7 @@ const BookingCard = ({
           <CommonText style={styles.value} text={item.user_id?.name} />
         </View>
       )}
-      {!isBooking && (
+      {!isBooking && !item?.is_applied && (
         <CustomButton
           title={'Make an Offer'}
           type="fill"
@@ -133,6 +134,22 @@ const BookingCard = ({
             ...styles.btn,
           }}
           onPress={onPressButton}
+        />
+      )}
+
+      {(item?.is_applied || item?.is_change_requested) && (
+        <CustomButton
+          isPrimary={'provider'}
+          title={item?.is_change_requested ? 'Request edit' : 'Offer Submitted'}
+          btnStyle={{
+            ...styles.btn,
+          }}
+          disabled={item?.is_change_requested}
+          onPress={() => {
+            navigateTo(PROVIDER_SCREENS.ProviderOfferDetails, {
+              request_id: item?._id,
+            });
+          }}
         />
       )}
     </TouchableOpacity>
