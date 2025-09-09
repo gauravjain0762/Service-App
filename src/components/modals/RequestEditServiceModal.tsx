@@ -4,7 +4,7 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import BottomModal from '@/components/common/BottomModal';
-import {errorToast} from '../common/commonFunction';
+import {errorToast, successToast} from '../common/commonFunction';
 import {useRequestChangeMutation} from '@/api/Seeker/homeApi';
 import CustomButton from '../common/CustomButton';
 
@@ -43,6 +43,7 @@ const RequestEditServiceModal = ({
 
       if (response?.status) {
         onClose();
+        successToast(response?.message)
       }
     } catch (error: any) {
       console.log(error);

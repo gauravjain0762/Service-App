@@ -35,7 +35,6 @@ const BookingCard = ({
     const end = moment(start).add(Number(no_hours), 'hours');
     return `${start.format('ddd, DD MMM')} - ${time}`;
   };
-  console.log(item, 'itemitemitemitemitem-----');
 
   return (
     <TouchableOpacity
@@ -49,7 +48,6 @@ const BookingCard = ({
             item?.sub_category_id?.image ||
             'https://cdn-icons-png.flaticon.com/512/2965/2965567.png'
           }
-          size={getFontSize(5)}
           containerStyle={styles.image}
           imageStyle={{width: '100%', height: '100%'}}
         />

@@ -84,7 +84,7 @@ const CustomButton: FC<Props> = ({
         btnStyle,
       ]}>
       {loading ? (
-        <ActivityIndicator color={Colors.white} />
+        <ActivityIndicator color={isPrimary === 'seeker' ?Colors.seeker_primary :Colors.white} />
       ) : (
         <>
           {leftImg && leftImg}

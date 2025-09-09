@@ -154,10 +154,10 @@ const MakeOffer = () => {
 
       <KeyboardAwareScrollView
         nestedScrollEnabled
-        // style={{flex: 1}}
+        style={{flex: 1}}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid
-        extraHeight={hp(200)}
+        extraHeight={hp(260)}
         showsVerticalScrollIndicator={false}>
         <View style={styles.attachmentSection}>
           <CommonText text="Attach Document" style={styles.attachTitle} />
@@ -236,6 +236,7 @@ const MakeOffer = () => {
               style={[styles.noteContainer, {height: hp(60)}]}
               keyboardType="numeric"
               maxLength={7}
+              isLeftImage
             />
           </View>
 
@@ -249,10 +250,10 @@ const MakeOffer = () => {
             />
 
             <CustomButton
-              title={'Submit Offer'}
+              title={myOffer ? 'Update Offer' :'Submit Offer'}
               btnStyle={{marginVertical: hp(27)}}
               onPress={onSubmitOffer}
-              loading={isLoading}
+              loading={isLoading || isModifyOfferLoading}
             />
           </View>
         </View>

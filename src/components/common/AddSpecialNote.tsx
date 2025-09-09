@@ -14,12 +14,15 @@ import CommonText from './CommonText';
 import {useTranslation} from 'react-i18next';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import CustomImage from './CustomImage';
+import {IMAGES} from '@/assets/images';
 
 type Props = {
   title?: string;
   style?: StyleProp<ViewStyle>;
   cardStyle?: StyleProp<ViewStyle>;
   textInputStyle?: TextInputProps['style'];
+  isLeftImage?: boolean;
 } & TextInputProps &
   TextProps;
 
@@ -28,29 +31,56 @@ const AddSpecialNote = ({
   title,
   cardStyle,
   textInputStyle,
+  isLeftImage = false,
   ...rest
 }: Props) => {
   const {t} = useTranslation();
 
   return (
     <View style={[styles.card, cardStyle]}>
-      <ShadowCard style={[styles.shadowCard, style]}>
-        {title && <CommonText text={title} style={styles.specialNoteTitle} />}
-        {/* <TextInput
+      {isLeftImage ? (
+        <ShadowCard style={[styles.shadowCard, style]}>
+          {title && <CommonText text={title} style={styles.specialNoteTitle} />}
+          <View
+            style={[
+              styles.textInput,
+              {flexDirection: 'row', alignItems: 'center'},
+              textInputStyle,
+            ]}>
+            <CustomImage
+              source={IMAGES.currency}
+              size={hp(25)}
+              tintColor={Colors.provider_primary}
+            />
+            <TextInput
+              multiline
+              placeholder={t('Describe here...')}
+              style={[textInputStyle]}
+              scrollEnabled
+              // textAlignVertical="top"
+              {...rest}
+            />
+          </View>
+        </ShadowCard>
+      ) : (
+        <ShadowCard style={[styles.shadowCard, style]}>
+          {title && <CommonText text={title} style={styles.specialNoteTitle} />}
+          {/* <TextInput
           multiline
           placeholder={t('Describe here...')}
           style={[styles.textInput, textInputStyle]}
           {...rest}
         /> */}
-        <TextInput
-          multiline
-          placeholder={t('Describe here...')}
-          style={[styles.textInput, textInputStyle]}
-          scrollEnabled
-          // textAlignVertical="top"
-          {...rest}
-        />
-      </ShadowCard>
+          <TextInput
+            multiline
+            placeholder={t('Describe here...')}
+            style={[styles.textInput, textInputStyle]}
+            scrollEnabled
+            // textAlignVertical="top"
+            {...rest}
+          />
+        </ShadowCard>
+      )}
     </View>
   );
 };

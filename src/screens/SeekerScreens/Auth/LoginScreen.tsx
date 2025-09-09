@@ -97,7 +97,8 @@ const LoginScreen = ({}: any) => {
 
       if (response?.status) {
         // successToast(response?.message);
-        resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+        resetNavigation(SCREENS.SeekerNavigator);
       } else {
         errorToast(response?.message);
       }

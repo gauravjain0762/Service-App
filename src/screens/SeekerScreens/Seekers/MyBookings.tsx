@@ -175,6 +175,10 @@ const MyBookings = () => {
         errorToast('Please choose a location type');
         return;
       }
+      if (selectedMedia?.length == 0) {
+        errorToast('Please upload a Image/Video ');
+        return;
+      }
       const formData = new FormData();
       formData.append('category_id', category_id);
       formData.append('sub_category_id', _id);
@@ -229,10 +233,10 @@ const MyBookings = () => {
 
       <KeyboardAwareScrollView
         nestedScrollEnabled
-        // style={{flex: 1}}
+        style={{flex: 1}}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid
-        extraHeight={hp(200)}
+        extraHeight={hp(260)}
         showsVerticalScrollIndicator={false}>
         <View
           style={{

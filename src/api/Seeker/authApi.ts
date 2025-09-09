@@ -4,7 +4,7 @@ import {SEEKER_API, HTTP_METHOD} from '@/utils/constants/api';
 import {setAuthToken, setGuestLogin, setUserInfo} from '@/features/authSlice';
 import { setAsyncToken, setAsyncUserInfo } from '@/Hooks/asyncStorage';
 import { resetNavigation } from '@/components/common/commonFunction';
-import { SEEKER_SCREENS } from '@/navigation/screenNames';
+import { SCREENS, SEEKER_SCREENS } from '@/navigation/screenNames';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -55,7 +55,7 @@ export const authApi = createApi({
             dispatch(setUserInfo(data.data?.user));
             await setAsyncUserInfo(data.data?.user);
             dispatch(setGuestLogin(true));
-            resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+            resetNavigation(SCREENS.SeekerNavigator);
           }
         } catch (error) {
           console.log('Guest Login Error', error);

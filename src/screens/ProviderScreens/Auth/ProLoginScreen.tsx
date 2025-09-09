@@ -14,7 +14,7 @@ import {
   resetNavigation,
   successToast,
 } from '@/components/common/commonFunction';
-import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
@@ -65,7 +65,8 @@ const ProLoginScreen = ({}: any) => {
 
       if (response?.status) {
         // successToast(response?.message);
-        resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+        // resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+        resetNavigation(SCREENS.ProviderNavigator);
       } else {
         errorToast(response?.message);
       }

@@ -25,6 +25,7 @@ const OfferCard = ({
   onPressAcceptOffer,
   onPressEdit,
 }: Props) => {
+  
   return (
     <ShadowCard onCardPress={onCardPress} style={styles.card}>
       <View style={styles.offerBadge}>
