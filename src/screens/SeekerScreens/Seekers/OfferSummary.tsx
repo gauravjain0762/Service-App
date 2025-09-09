@@ -156,6 +156,7 @@ const OfferSummary = () => {
   const presentSheet = async () => {
     const {error, paymentOption} = await presentPaymentSheet();
     if (error) {
+      console.log(error, 'errorerror');
       if (error.code !== 'Canceled') {
         errorToast(error.message);
       }
@@ -164,31 +165,37 @@ const OfferSummary = () => {
     }
   };
   const startApplePayFlow = async () => {
-    if (!(await isPlatformPaySupported())) {
-      errorToast('Apple Pay is not supported.');
-      return;
-    }
-    const {paymentIntent, secretKey, ephemeralKey, customer, publishableKey} =
-      await fetchPaymentSheetParams();
-    const {error} = await confirmPlatformPayPayment(secretKey, {
-      applePay: {
-        cartItems: [
-          {
-            label: 'Helpio',
-            amount: offerDetails?.total_amount.toString(),
-            paymentType: PlatformPay.PaymentType.Immediate,
-          },
-        ],
-        merchantCountryCode: 'AE',
-        currencyCode: 'AED',
-      },
-    });
-    if (error) {
+    try {
+      if (!(await isPlatformPaySupported())) {
+        errorToast('Apple Pay is not supported.');
+        return;
+      }
+      const {paymentIntent} = await fetchPaymentSheetParams();
+
+      const {error} = await confirmPlatformPayPayment(paymentIntent, {
+        applePay: {
+          cartItems: [
+            {
+              label: 'Helpio',
+              amount: offerDetails?.total_amount.toString(),
+              paymentType: PlatformPay.PaymentType.Immediate,
+            },
+          ],
+          merchantCountryCode: 'AE',
+          currencyCode: 'AED',
+        },
+      });
+      if (error) {
+        console.log(error, 'error');
+        errorToast(error.message);
+        return;
+      } else {
+        console.log('sucesss------');
+        // presentSheet();
+        acceptOffers();
+      }
+    } catch (error) {
       console.log(error, 'error');
-      errorToast(error.message);
-      return;
-    } else {
-      presentSheet();
     }
   };
 
@@ -228,12 +235,11 @@ const OfferSummary = () => {
         presentSheet();
       } else {
         errorToast(error.message);
-        console.log(error,'errorerrorerrorerrorerror');
-        
+        console.log(error, 'errorerrorerrorerrorerror');
       }
     } catch (error: any) {
       errorToast(error.message);
-      console.log(error,'errorerrorerrorerrorerror');
+      console.log(error, 'errorerrorerrorerrorerror');
     }
   };
 

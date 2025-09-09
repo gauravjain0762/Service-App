@@ -17,16 +17,18 @@ const HomeSkeleton = ({
       contentContainerStyle={{
         alignSelf: 'center',
       }}>
-      <SkeletonPlaceholder borderRadius={8}>
-        <View
-          style={{
-            width: '100%',
-            height: hp(55),
-            alignSelf: 'center',
-            marginBottom: hp(20),
-          }}
-        />
-      </SkeletonPlaceholder>
+      {isBanner && (
+        <SkeletonPlaceholder borderRadius={8}>
+          <View
+            style={{
+              width: '100%',
+              height: hp(55),
+              alignSelf: 'center',
+              marginBottom: hp(20),
+            }}
+          />
+        </SkeletonPlaceholder>
+      )}
       <SkeletonPlaceholder borderRadius={10}>
         <SkeletonPlaceholder.Item alignItems="center">
           {isBanner && (
