@@ -48,14 +48,14 @@ const UploadDocument = ({value, onSelect = () => {}, title}: Props) => {
       style={styles.innerUploadView}
       onPress={() => openDocPicker()}>
       {value ? (
-        value?.type.includes('image') ? (
-          <Image
-            style={styles.uploadMultiImagePic}
-            source={{uri: value?.uri || ''}}
-          />
-        ) : (
+        // value?.type.includes('image') ? (
+        //   <Image
+        //     style={styles.uploadMultiImagePic}
+        //     source={{uri: value?.uri || ''}}
+        //   />
+        // ) : (
           <Image style={styles.pdfIcon} source={IMAGES.pdfIcon} />
-        )
+        // )
       ) : (
         <>
           <View style={styles.boxContainer}>
@@ -66,7 +66,7 @@ const UploadDocument = ({value, onSelect = () => {}, title}: Props) => {
           </View>
           <CommonText style={styles.uploadText} text={title} />
         </>
-      )}
+      )} 
     </TouchableOpacity>
   );
 };

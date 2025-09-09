@@ -31,12 +31,20 @@ const PaymentSuccessModal = ({
   amount,
   isProvide = false,
 }: PaymentSuccessModalProps) => {
+  const onClosed = () => {
+    onClose();
+    if (isProvide) {
+      resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
+    } else {
+      resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
+    }
+  };
   return (
     <BottomModal
       close
       visible={visible}
-      onClose={onClose}
-      onPressCancel={onClose}
+      onClose={onClosed}
+      onPressCancel={onClosed}
       style={styles.modalContainer}>
       <View
         style={[

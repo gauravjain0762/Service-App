@@ -23,6 +23,8 @@ import {
   errorToast,
   formatePrice,
   getLocalizedText,
+  navigateTo,
+  resetNavigation,
 } from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
@@ -47,6 +49,7 @@ import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 import CustomImage from '@/components/common/CustomImage';
 import {payment_method} from '@/utils/CommonArray';
+import { SCREENS, SEEKER_SCREENS } from '@/navigation/screenNames';
 
 const OfferSummary = () => {
   const {

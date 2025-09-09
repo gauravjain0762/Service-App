@@ -74,6 +74,8 @@ const ProOfferDetails = () => {
       resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
     }
   };
+  console.log(jobData, 'jobData?');
+
   return (
     <SafeareaProvider edges={['top', 'bottom']} style={[styles.safeArea, {}]}>
       <BackHeader
@@ -184,8 +186,18 @@ const ProOfferDetails = () => {
           </View>
 
           <CustomButton
-            title={'Mark as Completed'}
-            btnStyle={styles.backToHomeBtn}
+            title={
+              jobDetails?.status == 'Completed'
+                ? 'Job Completed'
+                : 'Mark as Completed'
+            }
+            btnStyle={[
+              styles.backToHomeBtn,
+              jobDetails?.status == 'Completed' && {
+                backgroundColor: Colors._03B463,
+              },
+            ]}
+            disabled={jobDetails?.status == 'Completed'}
             onPress={() => setIsCompleteBookingModal(true)}
           />
         </ScrollView>
