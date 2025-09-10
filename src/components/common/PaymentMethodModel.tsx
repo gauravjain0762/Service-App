@@ -44,7 +44,7 @@ const PaymentMethodModal = ({
       <View style={styles.paymentContainer}>
         <TouchableOpacity
           style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('Pay by Card')}>
+          onPress={() => handlePaymentSelect('card')}>
           <View style={styles.paymentInfo}>
             <Image source={IMAGES.card} style={styles.iconCard} />
             <CommonText text="Pay by Card" style={styles.paymentText} />
@@ -52,9 +52,9 @@ const PaymentMethodModal = ({
           <View
             style={[
               styles.radioButton,
-              selectedPayment === 'Pay by Card' && styles.radioButtonSelected,
+              selectedPayment === 'card' && styles.radioButtonSelected,
             ]}>
-            {selectedPayment === 'Pay by Card' && (
+            {selectedPayment === 'card' && (
               <View style={styles.radioButtonInner} />
             )}
           </View>
@@ -62,7 +62,7 @@ const PaymentMethodModal = ({
 
         <TouchableOpacity
           style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('Apple Pay')}>
+          onPress={() => handlePaymentSelect('applePay')}>
           <View style={styles.paymentInfo}>
             <Image source={IMAGES.apple} style={styles.iconApple} />
             <CommonText text="Apple Pay" style={styles.paymentText} />
@@ -70,15 +70,15 @@ const PaymentMethodModal = ({
           <View
             style={[
               styles.radioButton,
-              selectedPayment === 'Apple Pay' && styles.radioButtonSelected,
+              selectedPayment === 'applePay' && styles.radioButtonSelected,
             ]}>
-            {selectedPayment === 'Apple Pay' && (
+            {selectedPayment === 'applePay' && (
               <View style={styles.radioButtonInner} />
             )}
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.paymentOption}
           onPress={() => handlePaymentSelect('Pay by Cash')}>
           <View style={styles.paymentInfo}>
@@ -94,7 +94,7 @@ const PaymentMethodModal = ({
               <View style={styles.radioButtonInner} />
             )}
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </BottomModal>
   );

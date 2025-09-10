@@ -46,7 +46,7 @@ const Offers = () => {
   );
   const requestDetails = requestData?.data?.job;
   const requestDetailsOffers = requestData?.data?.offers;
-console.log(requestData,'requestData');
+  console.log(requestData, 'requestData');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -83,6 +83,7 @@ console.log(requestData,'requestData');
                 requestDetails?.sub_category_id?.title_ar,
                 language,
               )}
+              bookingId={requestDetails?.job_code}
               subtitleStyle={styles.subtitleStyle}
             />
           </View>

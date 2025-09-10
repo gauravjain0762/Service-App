@@ -14,7 +14,13 @@ import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {useFocusEffect, useRoute} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
-import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const DATA = [
@@ -98,6 +104,9 @@ const ProMyBookings = () => {
     setIsModalVisible(false);
   };
 
+  const onRefresh = React.useCallback(() => {
+    refetchJobList();
+  }, []);
   return (
     <SafeAreaView style={GeneralStyle.container}>
       <View style={styles.mainContainer}>
@@ -169,6 +178,14 @@ const ProMyBookings = () => {
                   />
                 </View>
               )}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={onRefresh}
+                  colors={[Colors.provider_primary]}
+                  tintColor={Colors.provider_primary}
+                />
+              }
             />
           </>
         )}

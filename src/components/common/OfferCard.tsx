@@ -7,6 +7,7 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import CustomButton from './CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
+import { formatPriceIN } from './commonFunction';
 
 type Props = {
   item?: any;
@@ -116,7 +117,7 @@ const OfferCard = ({
         </View>
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
-          <CommonText text={item?.offer_price} style={styles.priceText} />
+          <CommonText text={formatPriceIN(item?.offer_price)} style={styles.priceText} />
         </View>
       </View>
     </ShadowCard>

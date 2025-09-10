@@ -120,6 +120,7 @@ const HomeScreen = () => {
               leftIcon={
                 <Image source={IMAGES.search} style={styles.searchImages} />
               }
+              editable={false}
             />
           </View>
           <MiniCarousel data={dashboard?.banners ?? []} />

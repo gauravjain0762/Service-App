@@ -76,6 +76,7 @@ export const PROVIDER_API = {
     BUY_PACKAGE: '/company/buyPackage',
     UPDATE_JOB_STATUS: '/company/updateJobStatus',
     MODIFY_OFFER: '/company/modifyOffer',
+    STRIPE_PAYMENT:'/company/stripePayment'
   },
 } as const;
 

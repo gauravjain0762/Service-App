@@ -22,6 +22,7 @@ type props = {
   subtitleStyle?: ViewStyle;
   style?: StyleProp<ViewStyle>;
   handleCardPress?: () => void;
+  bookingId?: any
 };
 
 const RequestCard = ({
@@ -32,6 +33,7 @@ const RequestCard = ({
   imageSource,
   subtitleStyle,
   handleCardPress,
+  bookingId,
 }: props) => {
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
@@ -52,6 +54,12 @@ const RequestCard = ({
           text={text2 ? text2 : '1 Ton - 1.5 Ton x3'}
           style={[styles.subtitle, subtitleStyle]}
         />
+        {bookingId && (
+          <CommonText
+            text={`${'Booking Ref' + ' ' + '#' + bookingId}`}
+            style={[styles.subtitle, {color: Colors.seeker_primary}]}
+          />
+        )}
       </View>
     </Pressable>
   );

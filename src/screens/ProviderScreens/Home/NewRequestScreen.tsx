@@ -4,13 +4,15 @@ import {FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import BookingCard from '@/components/Provider/BookingCard';
 import {GeneralStyle} from '@/constants/GeneralStyle';
-import {getFontSize} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {navigateTo} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetRequestsQuery} from '@/api/Provider/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 import {useIsFocused} from '@react-navigation/native';
+import CommonText from '@/components/common/CommonText';
+import {Colors} from '@/constants/Colors';
 
 const NewRequestScreen = () => {
   const isFocus = useIsFocused();
@@ -98,7 +100,26 @@ const NewRequestScreen = () => {
             onEndReachedThreshold={0.5}
             keyExtractor={(item: any) => item?._id?.toString()}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.contentContainer}
+            contentContainerStyle={[
+              styles.contentContainer,
+              allRequestData?.length == 0 && {flexGrow: 1},
+            ]}
+            ListEmptyComponent={() => (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <CommonText
+                  text="No new request yet"
+                  style={{
+                    textAlign: 'center',
+                    ...commonFontStyle(500, 2, Colors._898989),
+                  }}
+                />
+              </View>
+            )}
           />
         )}
       </View>

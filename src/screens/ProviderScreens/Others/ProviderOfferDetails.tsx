@@ -9,7 +9,7 @@ import CommonText from '@/components/common/CommonText';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import CustomButton from '@/components/common/CustomButton';
-import {getLocalizedText, navigateTo} from '@/components/common/commonFunction';
+import {formatPriceIN, getLocalizedText, navigateTo} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
@@ -199,7 +199,7 @@ const ProviderOfferDetails = () => {
         <View style={styles.priceRow}>
           <Image source={IMAGES.currency} style={styles.currencyIcon} />
           <CommonText
-            text={offerDetail?.offer_price}
+            text={formatPriceIN(offerDetail?.offer_price)}
             style={styles.priceText}
           />
         </View>

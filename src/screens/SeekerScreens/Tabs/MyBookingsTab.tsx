@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   FlatList,
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -70,6 +71,9 @@ const MyBookingsTab = () => {
     setSelectedOption(option);
     setIsModalVisible(false);
   };
+  const onRefresh = React.useCallback(() => {
+    refetchJobList();
+  }, []);
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
@@ -135,6 +139,14 @@ const MyBookingsTab = () => {
                   style={styles.noData}
                 />
               </View>
+            }
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={onRefresh}
+                colors={[Colors.seeker_primary]}
+                tintColor={Colors.seeker_primary}
+              />
             }
           />
         </View>

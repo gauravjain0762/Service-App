@@ -7,6 +7,7 @@ import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import Divider from './Divider';
+import { formatPriceIN } from './commonFunction';
 
 type Props = {
   style?: ViewStyle;
@@ -48,7 +49,7 @@ const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
                 style={styles.currencyIcon}
               />
               <CommonText
-                text={item.amount}
+                text={formatPriceIN(item.amount)}
                 style={[
                   styles.amountText,
                   item?.isGreen && {color: Colors.seeker_primary},
@@ -69,7 +70,7 @@ const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
             style={styles.currencyIcon}
           />
           <CommonText
-            text={jobDetails?.pay_amount ?? totalAmount ?? ''}
+            text={formatPriceIN(jobDetails?.pay_amount) ?? formatPriceIN(totalAmount) ?? ''}
             style={styles.totalAmountText}
           />
         </View>

@@ -19,14 +19,24 @@ import {useAppSelector} from '@/Hooks/hooks';
 import {
   useBuyPackageMutation,
   useGetPackagesQuery,
+  useStripePaymentMutation,
 } from '@/api/Provider/homeApi';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
+import {
+  confirmPlatformPayPayment,
+  initPaymentSheet,
+  isPlatformPaySupported,
+  PlatformPay,
+  presentPaymentSheet,
+} from '@stripe/stripe-react-native';
 
 const Subscription = () => {
   const {packages} = useAppSelector<any>(state => state.auth);
   const {isLoading} = useGetPackagesQuery({});
   const [buyPackage, {isLoading: isBuyLoading}] = useBuyPackageMutation();
+  const [stripePayment, {isLoading: stripeLoading}] =
+    useStripePaymentMutation();
   const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
     React.useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
@@ -40,9 +50,93 @@ const Subscription = () => {
     setIsPaymentMethodModalVisible(false);
   };
 
-  const handlePaymentSelect = () => {
+  const handlePaymentSelect = (method: any) => {
     closePaymentMethodModal();
-    acceptOffers();
+    initializePaymentSheet(method);
+  };
+  const fetchPaymentSheetParams = async () => {
+    let data = {
+      amount: packageDetails?.price.toString(),
+    };
+
+    const paymentResponse = await stripePayment(data).unwrap();
+    console.log('paymentResponse-->', paymentResponse);
+    return paymentResponse;
+  };
+  const startApplePayFlow = async () => {
+    try {
+      if (!(await isPlatformPaySupported())) {
+        errorToast('Apple Pay is not supported.');
+        return;
+      }
+      const {paymentIntent} = await fetchPaymentSheetParams();
+
+      const {error} = await confirmPlatformPayPayment(paymentIntent, {
+        applePay: {
+          cartItems: [
+            {
+              label: 'Helpio',
+              amount: packageDetails?.price.toString(),
+              paymentType: PlatformPay.PaymentType.Immediate,
+            },
+          ],
+          merchantCountryCode: 'AE',
+          currencyCode: 'AED',
+        },
+      });
+      if (error) {
+        console.log(error, 'error');
+        errorToast(error.message);
+        return;
+      } else {
+        acceptOffers();
+      }
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  };
+
+  const initializePaymentSheet = async (isPaymentMethod = 'card') => {
+    if (isPaymentMethod === 'applePay') {
+      await startApplePayFlow();
+      return;
+    }
+    try {
+      const {paymentIntent, ephemeralKey, customer, publishableKey} =
+        await fetchPaymentSheetParams();
+
+      const {error, paymentOption} = await initPaymentSheet({
+        merchantDisplayName: 'Helpio',
+        customerId: customer,
+        customerEphemeralKeySecret: ephemeralKey,
+        paymentIntentClientSecret: paymentIntent,
+        allowsDelayedPaymentMethods: true,
+        primaryButtonLabel: `Pay AED ${packageDetails?.price.toString()}`,
+        defaultBillingDetails: {
+          name: 'Test',
+        },
+      });
+      if (!error) {
+        presentSheet();
+      } else {
+        errorToast(error.message);
+        console.log(error, 'errorerrorerrorerrorerror');
+      }
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error, 'errorerrorerrorerrorerror');
+    }
+  };
+  const presentSheet = async () => {
+    const {error, paymentOption} = await presentPaymentSheet();
+    if (error) {
+      console.log(error, 'errorerror');
+      if (error.code !== 'Canceled') {
+        errorToast(error.message);
+      }
+    } else {
+      acceptOffers();
+    }
   };
 
   const acceptOffers = async () => {

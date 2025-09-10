@@ -29,6 +29,7 @@ const ProviderTabNavigation = () => {
       icon: IMAGES.feed,
       iconUnSelected: IMAGES.feedUnselected,
       component: NewRequestScreen,
+      options: {tabBarBadge: 2},
     },
     {
       name: PROVIDER_SCREENS.ProMyBookings,
@@ -84,8 +85,9 @@ const ProviderTabNavigation = () => {
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {
-            const {icon,iconUnSelected} = tabs.find(tab => tab.name === route.name) || {};
-            const tabIcon = focused ? icon : iconUnSelected
+            const {icon, iconUnSelected} =
+              tabs.find(tab => tab.name === route.name) || {};
+            const tabIcon = focused ? icon : iconUnSelected;
             return (
               <View style={[styles.iconContainer]}>
                 <FastImage
@@ -111,6 +113,7 @@ const ProviderTabNavigation = () => {
             name={tab.name}
             component={tab.component}
             initialParams={tab?.initialParams}
+            options={tab?.options}
           />
         ))}
       </Tab.Navigator>

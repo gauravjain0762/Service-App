@@ -111,7 +111,11 @@ const SeekerTabNavigation = () => {
           name={SEEKER_SCREENS.MyBookingsTab}
           component={MyBookingsTab}
         />
-        <Tab.Screen name={SEEKER_SCREENS.MyRequest} component={MyRequest} />
+        <Tab.Screen
+          name={SEEKER_SCREENS.MyRequest}
+          component={MyRequest}
+          options={{tabBarBadge: 2}}
+        />
         <Tab.Screen name={SEEKER_SCREENS.Profile} component={Profile} />
       </Tab.Navigator>
     </SafeAreaView>

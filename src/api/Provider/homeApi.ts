@@ -155,6 +155,16 @@ export const providerHomeApi = createApi({
       }),
       invalidatesTags: [],
     }),
+    // Stripe
+    stripePayment: builder.mutation<any, any>({
+      query: credentials => ({
+        url: PROVIDER_API.DASHBOARD.STRIPE_PAYMENT,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+        skipLoader: false,
+      }),
+      invalidatesTags: [],
+    }),
   }),
 });
 
@@ -173,4 +183,5 @@ export const {
   useGetPackagesQuery,
   useUpdateJobStatusMutation,
   useModifyOfferMutation,
+  useStripePaymentMutation
 } = providerHomeApi;

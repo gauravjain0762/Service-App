@@ -136,3 +136,7 @@ export const formatePrice = (num: string | number | undefined): string => {
     maximumFractionDigits: 2,
   });
 };
+export const formatPriceIN = (num: string | number | undefined): string => {
+  const value = Number(num || 0);
+  return new Intl.NumberFormat("en-IN").format(value);
+};

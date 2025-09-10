@@ -59,8 +59,6 @@ const OfferSummary = () => {
   const [acceptOffer, {isLoading}] = useAcceptOfferMutation();
   const [stripePayment, {isLoading: stripeLoading}] =
     useStripePaymentMutation();
-  const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
-    useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     useState(false);
   const [isEditRequest, setIsEditRequest] = useState(false);
@@ -124,15 +122,6 @@ const OfferSummary = () => {
         error?.data?.message || error?.message || 'Something went wrong',
       );
     }
-  };
-
-  const closePaymentMethodModal = () => {
-    setIsPaymentMethodModalVisible(false);
-  };
-
-  const handlePaymentSelect = () => {
-    closePaymentMethodModal();
-    acceptOffers();
   };
 
   const closePaymentSuccessModal = () => {
@@ -327,6 +316,7 @@ const OfferSummary = () => {
                 requestDetails?.sub_category_id?.title_ar,
                 language,
               )}
+              bookingId={requestDetails?.job_code}
               subtitleStyle={styles.subtitleStyle}
             />
 
@@ -434,13 +424,6 @@ const OfferSummary = () => {
                 totalAmount={offerDetails?.total_amount}
               />
             </View>
-            {isPaymentMethodModalVisible && (
-              <PaymentMethodModal
-                visible={isPaymentMethodModalVisible}
-                onClose={closePaymentMethodModal}
-                onPaymentSelect={handlePaymentSelect}
-              />
-            )}
             {isPaymentSuccessModalVisible && (
               <PaymentSuccessModal
                 onClose={closePaymentSuccessModal}

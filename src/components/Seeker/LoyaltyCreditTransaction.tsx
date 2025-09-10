@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: wp(13),
+    flexShrink: 1,
   },
   imageContainer: {
     height: hp(68),

@@ -15,7 +15,7 @@ type Props = {
 const UploadDocument = ({value, onSelect = () => {}, title}: Props) => {
   const openDocPicker = async () => {
     try {
-      const pickerResult = await pick({
+      const [pickerResult] = await pick({
         presentationStyle: 'fullScreen',
         type: [
           types.doc,

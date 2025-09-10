@@ -175,10 +175,10 @@ const MyBookings = () => {
         errorToast('Please choose a location type');
         return;
       }
-      if (selectedMedia?.length == 0) {
-        errorToast('Please upload a Image/Video ');
-        return;
-      }
+      // if (selectedMedia?.length == 0) {
+      //   errorToast('Please upload a Image/Video ');
+      //   return;
+      // }
       const formData = new FormData();
       formData.append('category_id', category_id);
       formData.append('sub_category_id', _id);

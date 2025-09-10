@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {View, StyleSheet, FlatList, RefreshControl} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomImage from '@/components/common/CustomImage';
 import CommonText from '@/components/common/CommonText';
@@ -57,6 +57,9 @@ const MyRequest = () => {
     navigateTo(SEEKER_SCREENS.Offers, {request_id: item?._id});
   };
 
+  const onRefresh = React.useCallback(() => {
+    refetchRequestList();
+  }, []);
   return (
     <SafeareaProvider
       style={{
@@ -81,6 +84,14 @@ const MyRequest = () => {
                   key={index}
                   onCardPress={() => handleCardPress(item)}
                   style={{width: '100%', marginBottom: hp(24)}}>
+                  {item?.offer_count != 0 && (
+                    <View style={styles.rightIcon}>
+                      <CommonText
+                        text={`${item?.offer_count}  Offer`}
+                        style={styles.offerLabel}
+                      />
+                    </View>
+                  )}
                   <View style={styles.cardContent}>
                     <View style={styles.imageContainer}>
                       <CustomImage
@@ -108,12 +119,11 @@ const MyRequest = () => {
                         style={styles.serviceDescription}
                       />
                       <CommonText
-                        text={`${
-                          item?.offer_count == 0
-                            ? 'No Offers received yet'
-                            : item?.offer_count + 'Offer Received'
-                        }`}
-                        style={styles.serviceDescription}
+                        text={`${'Booking Ref' + ' ' + '#' + item?.job_code}`}
+                        style={[
+                          styles.serviceDescription,
+                          {color: Colors.seeker_primary},
+                        ]}
                       />
                     </View>
 
@@ -146,6 +156,14 @@ const MyRequest = () => {
                 <CommonText text={'No Request Yet'} style={styles.noData} />
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={onRefresh}
+                colors={[Colors.seeker_primary]}
+                tintColor={Colors.seeker_primary}
+              />
+            }
           />
         </View>
       )}
@@ -206,6 +224,18 @@ const styles = StyleSheet.create({
   },
   noData: {
     ...commonFontStyle(500, 2.5, Colors.black),
+  },
+  rightIcon: {
+    borderRadius: hp(50),
+    paddingVertical: hp(5),
+    paddingHorizontal: wp(10),
+    backgroundColor: Colors.black,
+    position: 'absolute',
+    right: 15,
+    top: 15,
+  },
+  offerLabel: {
+    ...commonFontStyle(600, 1.3, Colors.white),
   },
 });
 
