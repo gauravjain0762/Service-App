@@ -30,7 +30,7 @@ export const alignItemsLTR = (): any => {
 
 export const alignSelfRTL = (): any => {
   return {
-    alignSelf: i18n.language === 'ar' ? 'flex-start' : 'flex-end',
+    alignSelf: i18n.language === 'en' ? 'flex-start' : 'flex-end',
   };
 };
 

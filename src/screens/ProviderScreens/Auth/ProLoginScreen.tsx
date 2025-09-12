@@ -17,7 +17,6 @@ import {
 import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
-import TermsCheckBox from '@/components/common/TermsCheckBox';
 import {useRoute} from '@react-navigation/native';
 import {useLoginMutation} from '@/api/Provider/authApi';
 import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
@@ -31,7 +30,6 @@ const ProLoginScreen = ({}: any) => {
   const dispatch = useAppDispatch();
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [details, setDetails] = useState({
     email: __DEV__ ? 'user001@gmail.com' : '',
     password: __DEV__ ? 'user@123' : '',

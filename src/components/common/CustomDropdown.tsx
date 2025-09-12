@@ -17,7 +17,8 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from './CommonText';
 import FastImage from 'react-native-fast-image';
-import {textRTL} from '@/utils/arabicStyles';
+import {marginRTLRight, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import {useAppSelector} from '@/Hooks/hooks';
 
 export type DropdownItem = {
   label: string;
@@ -57,6 +58,7 @@ const CustomDropdown = ({
   setSelected,
   multiSelect = false,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
   const handleChange = (item: DropdownItem) => {
     setSelected?.(item.value); // only call if setSelected is passed
     onChange(item);
@@ -137,14 +139,30 @@ const CustomDropdown = ({
               borderWidth: 0,
               backgroundColor: Colors.white,
             }}
-            renderRightIcon={() => (
-              <FastImage
-                source={IMAGES.downArrow}
-                defaultSource={IMAGES.downArrow}
-                style={styles.arrowIcon}
-                resizeMode={'contain'}
-              />
-            )}
+            renderRightIcon={() =>
+              language === 'en' ? (
+                <FastImage
+                  source={IMAGES.downArrow}
+                  defaultSource={IMAGES.downArrow}
+                  style={styles.arrowIcon}
+                  resizeMode={'contain'}
+                />
+              ) : (
+                <></>
+              )
+            }
+            renderLeftIcon={() =>
+              language === 'en' ? (
+                <></>
+              ) : (
+                <FastImage
+                  source={IMAGES.downArrow}
+                  defaultSource={IMAGES.downArrow}
+                  style={styles.arrowIcon}
+                  resizeMode={'contain'}
+                />
+              )
+            }
             search={isSearchable}
             searchPlaceholder={'Search by keyword'}
             maxHeight={250}
@@ -213,14 +231,30 @@ const CustomDropdown = ({
           keyboardAvoiding
           itemContainerStyle={{}}
           onFocus={() => Keyboard.dismiss}
-          renderRightIcon={() => (
-            <FastImage
-              source={IMAGES.downArrow}
-              defaultSource={IMAGES.downArrow}
-              style={styles.arrowIcon}
-              resizeMode={'contain'}
-            />
-          )}
+           renderRightIcon={() =>
+              language === 'en' ? (
+                <FastImage
+                  source={IMAGES.downArrow}
+                  defaultSource={IMAGES.downArrow}
+                  style={styles.arrowIcon}
+                  resizeMode={'contain'}
+                />
+              ) : (
+                <></>
+              )
+            }
+            renderLeftIcon={() =>
+              language === 'en' ? (
+                <></>
+              ) : (
+                <FastImage
+                  source={IMAGES.downArrow}
+                  defaultSource={IMAGES.downArrow}
+                  style={styles.arrowIcon}
+                  resizeMode={'contain'}
+                />
+              )
+            }
           renderItem={(item: any, selected: any): any => {
             if (item[labelField] && item[labelField] !== '') {
               return (
@@ -271,12 +305,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(16),
     backgroundColor: Colors._F9F9F9,
     paddingVertical: hp(8),
+    ...textRTL()
   },
   placeholder: {
     ...commonFontStyle(400, 1.9, '#969595'),
+    ...textRTL()
   },
   selectedText: {
     ...commonFontStyle(400, 1.9, Colors.black),
+    ...textRTL()
   },
   arrowIcon: {
     width: wp(20),
@@ -341,20 +378,20 @@ const styles = StyleSheet.create({
   },
   // Styles for selected items inside dropdown
   selectedItemChip: {
-    flexDirection: 'row',
+    ...rowReverseRTL(),
     alignItems: 'center',
     backgroundColor: '#E8F4FD',
     borderRadius: hp(12),
     paddingHorizontal: wp(8),
     paddingVertical: hp(4),
-    marginRight: wp(4),
+    ...marginRTLRight(wp(4)),
     marginBottom: hp(4),
     borderWidth: 1,
     borderColor: '#B3D9F2',
   },
   selectedItemText: {
     ...commonFontStyle(400, 1.4, '#1976D2'),
-    marginRight: wp(4),
+    ...marginRTLRight(wp(4)),
   },
   removeIcon: {
     color: '#1976D2',

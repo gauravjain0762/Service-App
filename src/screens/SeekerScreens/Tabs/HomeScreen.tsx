@@ -28,7 +28,8 @@ import {
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 import CategoryList from '@/components/Seeker/CategoryList';
 import CustomImage from '@/components/common/CustomImage';
-import {setGuestUserModal} from '@/features/authSlice';
+import {setGuestUserModal, setUserLocation} from '@/features/authSlice';
+import { requestLocationPermission } from '@/Hooks/locationHandler';
 
 const HomeScreen = () => {
   const {params} = useRoute<any>();
@@ -53,11 +54,33 @@ const HomeScreen = () => {
   useEffect(() => {
     if (selectedCatId !== '') {
       subCatTrigger({
-        category_id: selectedCatId,
+        categories: selectedCatId,
       });
       setSelectedCatId('');
     }
   }, [selectedCatId, subCatTrigger]);
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  const getCurrentLocation = async () => {
+    await requestLocationPermission(
+      true,
+      (position) => {
+        let dataTemp = {
+          latitude: position?.latitude,
+          longitude: position?.longitude,
+          latitudeDelta: position?.latitudeDelta,
+          longitudeDelta: position?.longitudeDelta,
+        };
+        dispatch(setUserLocation(dataTemp));
+      },
+      (error: any) => {
+        console.log("requestLocationPermission => error => ", error);
+      }
+    );
+  };
 
   useEffect(() => {
     if (openReviewModal) {

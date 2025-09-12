@@ -23,6 +23,7 @@ import UploadImage from '@/components/common/UploadImage';
 import UploadDocument from '@/components/common/UploadDocument';
 import {
   useCategoryQuery,
+  useEmiratesQuery,
   useLazySubCategoryQuery,
   useSignUpMutation,
 } from '@/api/Provider/authApi';
@@ -38,7 +39,8 @@ type UserProps = {
   phone: string;
   password: string;
   service: string;
-  category: string | any;
+  emirates: string | any;
+  category: string[] | number[] | any;
   subCategory: string[] | number[] | any;
   license: any;
   certificate: any;
@@ -47,12 +49,12 @@ type UserProps = {
 };
 
 const ProSignupScreen = () => {
-  const {dropDownCategories, dropDownSubCategories, fcmToken} = useAppSelector(
-    state => state.auth,
-  );
+  const {dropDownCategories, emirates, dropDownSubCategories, fcmToken} =
+    useAppSelector(state => state.auth);
   const [signUp, {isLoading}] = useSignUpMutation();
 
   const {} = useCategoryQuery({});
+  const {} = useEmiratesQuery({});
   const [subCatTrigger] = useLazySubCategoryQuery();
   const [callingCode, setCallingCode] = useState('971');
   const [userData, setUserData] = useState<UserProps>({
@@ -61,7 +63,8 @@ const ProSignupScreen = () => {
     phone: '',
     password: '',
     service: '',
-    category: '',
+    emirates: '',
+    category: [],
     subCategory: [],
     license: null,
     certificate: null,
@@ -71,7 +74,7 @@ const ProSignupScreen = () => {
 
   useEffect(() => {
     if (userData.category) {
-      subCatTrigger({category_id: userData.category});
+      subCatTrigger({categories: userData.category.join(',')});
     }
   }, [subCatTrigger, userData.category]);
 
@@ -104,9 +107,11 @@ const ProSignupScreen = () => {
         errorToast('Please select at least one subcategory');
       } else if (!userData.service) {
         errorToast('Please select service type');
-      } else if (!userData.category) {
+      } else if (!userData.emirates) {
+        errorToast('Please select emirates');
+      } else if (!userData.category || userData.category.length === 0) {
         errorToast('Please select category');
-      } else if (!userData.picture) {
+      }else if (!userData.picture) {
         errorToast('Please upload profile picture');
       } else if (!userData.certificate) {
         errorToast('Please upload certificate');
@@ -121,7 +126,8 @@ const ProSignupScreen = () => {
         formData.append('password', userData.password);
         formData.append('phone_code', callingCode);
         formData.append('phone', userData.phone);
-        formData.append('category_id', userData.category);
+        formData.append('emirates', userData.emirates);
+        formData.append('categories', userData.category.join(','));
         formData.append('sub_categories', userData.subCategory.join(','));
         formData.append('service_type', userData.service);
         formData.append('about', userData.about);
@@ -218,10 +224,23 @@ const ProSignupScreen = () => {
             onChange={item => setUserData({...userData, service: item.label})}
           />
           <CustomDropdown
+            data={emirates}
+            value={userData?.emirates}
+            placeholder="Type of Emirates"
+            onChange={item => setUserData({...userData, emirates: item.value})}
+          />
+          <CustomDropdown
             data={dropDownCategories}
             value={userData?.category}
             placeholder="Type of Category"
-            onChange={item => setUserData({...userData, category: item.value})}
+            onChange={selectedItems => {
+              if (selectedItems?.length > 3) {
+                errorToast('You can select a maximum of 3 categories');
+                return;
+              }
+              setUserData({...userData, category: selectedItems});
+            }}
+            multiSelect
           />
           <CustomDropdown
             data={dropDownSubCategories}

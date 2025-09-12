@@ -1,4 +1,7 @@
+import { setLanguage } from '@/features/authSlice';
+import i18n from '@/i18n/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import i18next from 'i18next';
 
 export const asyncKeys = {
   // clear in logout time
@@ -12,6 +15,12 @@ export const asyncKeys = {
   biometricPublicKey: '@biometricPublicKey',
   faceIDEnabled: '@faceIDEnabled',
   recentLocationSearches: '@recentLocationSearches',
+};
+
+export const setLanguages = (code: any):any => async(dispatch: any) => {
+  await i18n.changeLanguage(code || 'en'); 
+  await setAsyncLanguage(code);
+  await dispatch(setLanguage(code || 'en'));
 };
 
 export const clearAsync = async () => {

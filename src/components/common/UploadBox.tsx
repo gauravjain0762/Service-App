@@ -158,27 +158,26 @@ const UploadBox = ({
   };
 
   return (
-    <ShadowCard style={[style]}>
-      {title && <CommonText style={styles.title} text={title} />}
+  <ShadowCard style={[style]}>
+    {title && <CommonText style={styles.title} text={title} />}
 
-      {files.length > 0 ? (
-        <FlatList
-          data={files}
-          renderItem={renderFile}
-          keyExtractor={(_, index) => index.toString()}
-          horizontal
-          contentContainerStyle={{
-            paddingVertical: hp(10),
-            gap: hp(10),
-            paddingHorizontal: hp(10),
-          }}
-          showsHorizontalScrollIndicator={false}
-        />
-      ) : (
+    <FlatList
+      data={files}
+      renderItem={renderFile}
+      keyExtractor={(_, index) => index.toString()}
+      horizontal
+      contentContainerStyle={{
+        paddingVertical: hp(10),
+        gap: hp(10),
+        paddingHorizontal: hp(10),
+        alignItems: 'center',
+      }}
+      showsHorizontalScrollIndicator={false}
+      ListFooterComponent={
         <CustomImage
           resizeMode="contain"
           source={IMAGES.photoUpload}
-          imageStyle={[styles.icon]}
+          imageStyle={[styles.icon, { marginTop: 0, marginBottom: 0 }]}
           onPress={
             isAllDocument
               ? openAllPicker
@@ -187,28 +186,15 @@ const UploadBox = ({
               : handleBrowseFiles
           }
         />
-      )}
+      }
+    />
 
-      <CommonText
-        style={styles.subText}
-        text={desc || 'Upload videos, images, or PDFs here.'}
-      />
+    <CommonText
+      style={styles.subText}
+      text={desc || 'Upload videos, images, or PDFs here.'}
+    />
+  </ShadowCard>
 
-      {isButton && (
-        <CustomButton
-          onPress={
-            isAllDocument
-              ? openAllPicker
-              : isDocument
-              ? openDocPicker
-              : handleBrowseFiles
-          }
-          btnStyle={[styles.browseBtn, btnStyle]}
-          title="Browse Files"
-          textStyle={styles.browseText}
-        />
-      )}
-    </ShadowCard>
   );
 };
 

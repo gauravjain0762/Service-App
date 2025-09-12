@@ -9,7 +9,9 @@ import {
   alignSelfLTR,
   alignSelfRTL,
   flipImage,
+  paddingRTLRight,
   rowReverseRTL,
+  textLTR,
 } from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
@@ -361,8 +363,9 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     ...commonFontStyle(400, 1.9, Colors.seeker_primary),
-    textAlign: 'right',
-    paddingRight: getFontSize(0.5),
+    ...textLTR(),
+    ...paddingRTLRight(getFontSize(0.5)),
+    // paddingRight: getFontSize(0.5),
     marginTop: hp(4),
   },
 });

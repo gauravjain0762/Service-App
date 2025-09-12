@@ -14,6 +14,11 @@
     "Email": "البريد الإلكتروني",
     "OTP Code Verification": "التحقق من رمز OTP",
     "Code has been send to ": "تم إرسال الرمز إلى ",
-    "s": "ث"
+    "s": "ث",
+    "Welcome to Home Services":"مرحبا بكم في الخدمات المنزلية",
+    "Our services is to help you to clean your house as quick as possible.":"خدماتنا تهدف إلى مساعدتك في تنظيف منزلك بأسرع وقت ممكن.",
+    "Job Seeker":"الباحث عن عمل",
+    "Service Provider":"مزود الخدمة",
+    "Forgot Password?":"هل نسيت كلمة السر؟"
   }
 }

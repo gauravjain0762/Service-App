@@ -56,6 +56,7 @@ export const PROVIDER_API = {
   DROPDOWN: {
     CATEGORIES: '/company/getCategories',
     SUB_CATEGORIES: '/company/getSubCategories',
+    EMIRATES:'/company/getEmirates'
   },
   PROFILE: {
     PROFILE: '/company/getProfile',

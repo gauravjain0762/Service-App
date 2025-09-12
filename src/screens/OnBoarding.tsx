@@ -17,12 +17,15 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
 import {IMAGES} from '@/assets/images';
 import LanguageModal from '@/components/common/LanguageModel';
-import {useAppDispatch} from '@/Hooks/hooks';
+import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {setIsProvider} from '@/features/authSlice';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {rightRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import {setLanguages} from '@/Hooks/asyncStorage';
 
 const OnBoarding = () => {
   const insets = useSafeAreaInsets();
+  const {language} = useAppSelector(state => state.auth);
   const [isLanguageModalVisible, setIsLanguageModalVisible] = useState(false);
   const dispatch = useAppDispatch();
   const openLanguageModal = () => {
@@ -33,8 +36,13 @@ const OnBoarding = () => {
     setIsLanguageModalVisible(false);
   };
 
-  const handleLanguageSelect = () => {
+  const handleLanguageSelect = (isLanguageSelected = 'English') => {
     closeLanguageModal();
+    if (isLanguageSelected == 'Arabic') {
+      dispatch(setLanguages('ar'));
+    } else {
+      dispatch(setLanguages('en'));
+    }
   };
 
   return (
@@ -46,13 +54,19 @@ const OnBoarding = () => {
       />
       <SafeareaProvider
         SafeAreaProps={{edges: []}}
-        style={{paddingTop: insets?.top,backgroundColor: Colors.seeker_primary}}>
+        style={{
+          paddingTop: insets?.top,
+          backgroundColor: Colors.seeker_primary,
+        }}>
         <View style={styles.wrapper}>
           <TouchableOpacity
             onPress={openLanguageModal}
             style={styles.topRightContainer}>
             <View style={styles.flagContainer}>
-              <Image source={IMAGES.flag} style={styles.flagIcon} />
+              <Image
+                source={language === 'en' ? IMAGES.flag : IMAGES.flag2}
+                style={styles.flagIcon}
+              />
             </View>
             <View style={styles.dropdownContainer}>
               <Image source={IMAGES.dropDown} style={styles.dropdownIcon} />
@@ -116,10 +130,11 @@ const styles = StyleSheet.create({
   topRightContainer: {
     position: 'absolute',
     top: '2%',
-    right: wp(20),
-    flexDirection: 'row',
+    ...rightRTL(wp(20)),
+    ...rowReverseRTL(),
     alignItems: 'center',
     zIndex: 10,
+    gap: 10,
   },
   flagContainer: {
     alignItems: 'center',
@@ -132,7 +147,6 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: wp(5),
   },
   dropdownIcon: {
     width: wp(11),
@@ -145,15 +159,16 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
   },
   heading1: {
-    width: '70%',
+    // width: '70%',
     lineHeight: 43,
-    textAlign: 'left',
+    ...textRTL(),
     marginBottom: hp(22),
     ...commonFontStyle(600, 3.4, Colors.black),
   },
   description: {
     marginBottom: hp(40),
     ...commonFontStyle(400, 2, Colors._888888),
+    ...textRTL()
   },
   btnText: {...commonFontStyle(600, 2, Colors.white)},
 });

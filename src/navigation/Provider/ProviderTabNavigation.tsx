@@ -13,10 +13,16 @@ import ProDashboard from '@/screens/ProviderScreens/Tabs/ProDashboard';
 import ProMyBookings from '@/screens/ProviderScreens/Tabs/ProMyBookings';
 import ProProfile from '@/screens/ProviderScreens/Tabs/ProProfile';
 import NewRequestScreen from '@/screens/ProviderScreens/Home/NewRequestScreen';
+import {useSelector} from 'react-redux';
+import {RootState} from '@/store';
 
 const Tab = createBottomTabNavigator();
 
 const ProviderTabNavigation = () => {
+  const dashboard: any = useSelector(
+    (state: RootState) => state.auth?.dashboard,
+  );
+
   const tabs = [
     {
       name: PROVIDER_SCREENS.ProDashboard,
@@ -29,7 +35,10 @@ const ProviderTabNavigation = () => {
       icon: IMAGES.feed,
       iconUnSelected: IMAGES.feedUnselected,
       component: NewRequestScreen,
-      options: {tabBarBadge: 2},
+      options:
+        dashboard?.unread_requests > 0
+          ? {tabBarBadge: dashboard?.unread_requests}
+          : {},
     },
     {
       name: PROVIDER_SCREENS.ProMyBookings,

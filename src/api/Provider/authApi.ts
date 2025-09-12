@@ -5,6 +5,7 @@ import {
   setAuthToken,
   setDropDownCategories,
   setDropDownSubCategories,
+  setEmirates,
   setUserInfo,
 } from '@/features/authSlice';
 
@@ -149,6 +150,29 @@ export const providerAuthApi = createApi({
         } catch (error) {}
       },
     }),
+     emirates: builder.query<any, any>({
+      query: () => ({
+        url: PROVIDER_API.DROPDOWN.EMIRATES,
+        method: HTTP_METHOD.GET,
+      }),
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        try {
+          const {data} = await queryFulfilled;
+          const newData =
+            (data?.data?.emirates &&
+              data?.data?.emirates?.length > 0 &&
+              data?.data?.emirates?.map((item: any) => {
+                return {
+                  ...item,
+                  label: item?.name,
+                  value: item?._id,
+                };
+              })) ||
+            [];
+          dispatch(setEmirates(newData));
+        } catch (error) {}
+      },
+    }),
   }),
 });
 
@@ -162,4 +186,5 @@ export const {
   useLogoutMutation,
   useCategoryQuery,
   useLazySubCategoryQuery,
+  useEmiratesQuery
 } = providerAuthApi;

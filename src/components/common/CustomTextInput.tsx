@@ -12,7 +12,7 @@ import {Colors} from '../../constants/Colors';
 import CustomImage from './CustomImage';
 import {IMAGES} from '../../assets/images';
 import {commonFontStyle, getFontSize, hp, wp} from '../../utils/responsiveFn';
-import {rowReverseRTL} from '../../utils/arabicStyles';
+import {rowReverseRTL, textRTL} from '../../utils/arabicStyles';
 import CommonText from './CommonText';
 import {useTranslation} from 'react-i18next';
 
@@ -44,7 +44,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   isError = false,
   ...rest
 }) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -61,7 +61,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           isError && {borderColor: Colors.red},
           containerStyle,
         ]}>
-        {leftIcon && leftIcon}
+        {i18n?.language === 'en' ? leftIcon : rightIcon}
         <TextInput
           style={[styles.input, inputStyle]}
           placeholder={placeholder ? t(placeholder) : ''}
@@ -69,7 +69,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           secureTextEntry={secureTextEntry ? !showPassword : false}
           {...rest}
         />
-        {rightIcon && rightIcon}
+        {i18n?.language === 'en' ? rightIcon : leftIcon}
         {secureTextEntry && (
           <CustomImage
             onPress={() => {
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     height: '100%',
     ...commonFontStyle(400, 1.9, Colors.black),
     flex: 1,
+    ...textRTL(),
   },
   inputContainer: {
     backgroundColor: Colors._F9F9F9,

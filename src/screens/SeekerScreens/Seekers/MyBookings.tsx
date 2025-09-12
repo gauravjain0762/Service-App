@@ -40,7 +40,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const MyBookings = () => {
   const {t} = useTranslation();
-  const {userInfo, dashboard} = useAppSelector(state => state.auth);
+  const {userInfo, dashboard,userCurrentLocation} = useAppSelector(state => state.auth);
 
   const {
     params: {category_id, category_name, category_image, title, _id},
@@ -48,6 +48,7 @@ const MyBookings = () => {
   const categoryData = dashboard?.categories?.find(
     val => val?._id === category_id,
   );
+console.log(userCurrentLocation,'userCurrentLocation');
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
   const [isLocationType, setIsLocationType] = useState('Your Location');
@@ -195,6 +196,10 @@ const MyBookings = () => {
         };
         formData.append('media_files', fileObject); // <-- use same key for all
       });
+      if(isLocationType === 'Your Location'){
+        formData.append('lat', userCurrentLocation?.latitude);
+        formData.append('lng', userCurrentLocation?.longitude);
+      }
 
       // Add dynamic field values to meta_data
       Object.keys(dynamicFieldValues).forEach(fieldName => {

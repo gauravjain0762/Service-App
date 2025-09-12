@@ -11,7 +11,7 @@ import {
 import {Colors} from '../../constants/Colors';
 import {IMAGES} from '../../assets/images';
 import {commonFontStyle, getFontSize} from '../../utils/responsiveFn';
-import {rowReverseRTL} from '../../utils/arabicStyles';
+import {paddingRTLLeft, rowReverseRTL, textRTL} from '../../utils/arabicStyles';
 import CountryPicker, {CountryCode} from 'react-native-country-picker-modal';
 import FastImage from 'react-native-fast-image';
 import CommonText from './CommonText';
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     height: '100%',
     ...commonFontStyle(400, 1.9, Colors.black),
     flex: 1,
-    paddingLeft: getFontSize(2),
+    ...paddingRTLLeft(getFontSize(2)),
+    ...textRTL()
   },
 
   inputContainer: {

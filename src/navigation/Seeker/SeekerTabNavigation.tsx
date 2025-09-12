@@ -23,6 +23,7 @@ const Tab = createBottomTabNavigator();
 
 const SeekerTabNavigation = () => {
   const guestUser = useSelector((state: RootState) => state.auth?.guestUser);
+  const dashboard = useSelector((state: RootState) => state.auth?.dashboard);
   const dispatch = useAppDispatch();
 
   const CustomTabBarButton = ({children, route, ...props}: any) => {
@@ -114,7 +115,11 @@ const SeekerTabNavigation = () => {
         <Tab.Screen
           name={SEEKER_SCREENS.MyRequest}
           component={MyRequest}
-          options={{tabBarBadge: 2}}
+          options={
+            dashboard?.offers_unread > 0
+              ? {tabBarBadge: dashboard?.offers_unread}
+              : {}
+          }
         />
         <Tab.Screen name={SEEKER_SCREENS.Profile} component={Profile} />
       </Tab.Navigator>

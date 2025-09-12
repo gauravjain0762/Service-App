@@ -32,6 +32,7 @@ const NewRequestScreen = () => {
       refetchOnFocus: true,
     },
   );
+  
   React.useEffect(() => {
     if (isFocus) {
       refetchRequestList();

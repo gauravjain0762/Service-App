@@ -15,12 +15,15 @@ export interface AuthState {
   dashboard: {
     banners: any[];
     categories: any[];
+    offers_unread: any;
   };
   dropDownCategories: any[];
   dropDownSubCategories: any[];
+  emirates: any[];
   packages?: any[];
   guestUser?: boolean;
   guestUserModal?: boolean;
+  userCurrentLocation: any;
 }
 
 // Initial state
@@ -35,13 +38,16 @@ const initialState: AuthState = {
   dashboard: {
     banners: [],
     categories: [],
+    offers_unread: null
   },
 
   dropDownCategories: [],
   dropDownSubCategories: [],
+  emirates: [],
   packages:[],
   guestUser: false,
-  guestUserModal: false
+  guestUserModal: false,
+  userCurrentLocation:{} 
 };
 
 // Create the auth slice
@@ -73,6 +79,9 @@ const authSlice = createSlice({
     setIsProvider: (state, action: PayloadAction<any>) => {
       state.isProvider = action.payload;
     },
+    setUserLocation: (state, action: PayloadAction<any>) => {
+      state.userCurrentLocation = action.payload;
+    },
     setDashboard: (state, action: PayloadAction<any>) => {
       state.dashboard = action.payload;
     },
@@ -83,6 +92,9 @@ const authSlice = createSlice({
 
     setDropDownSubCategories: (state, action: PayloadAction<any>) => {
       state.dropDownSubCategories = action.payload;
+    },
+    setEmirates: (state, action: PayloadAction<any>) => {
+      state.emirates = action.payload;
     },
     setPackages: (state, action: PayloadAction<any>) => {
       state.packages = action.payload;
@@ -121,7 +133,9 @@ export const {
   setDropDownSubCategories,
   setPackages,
   setGuestLogin,
-  setGuestUserModal
+  setGuestUserModal,
+  setEmirates,
+  setUserLocation
 } = authSlice.actions;
 
 // Selectors
