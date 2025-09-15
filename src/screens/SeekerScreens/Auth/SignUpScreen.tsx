@@ -17,7 +17,7 @@ import {
   resetNavigation,
   successToast,
 } from '@/components/common/commonFunction';
-import {rowReverseRTL} from '@/utils/arabicStyles';
+import {flipImage, rowReverseRTL} from '@/utils/arabicStyles';
 import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {
@@ -34,7 +34,7 @@ import {WEB_CLIENT_ID} from '@/utils/constants/api';
 
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
-  const {fcmToken} = useAppSelector(state => state.auth);
+  const {fcmToken,language} = useAppSelector(state => state.auth);
   const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();
   const [appleLogin] = useAppleSignInMutation();
   const [googleLogin] = useGoogleSignInMutation();
@@ -49,6 +49,10 @@ const SignUpScreen = () => {
     password: '',
   });
 
+  const styles = React.useMemo(
+        () => getGlobalStyles(language),
+        [language],
+      );
   const onSignUp = async () => {
     try {
       if (!userData?.name.trim()) {
@@ -192,6 +196,7 @@ const SignUpScreen = () => {
             disabled={false}
             onPress={() => goBack()}
             source={IMAGES.backArrow2}
+            imageStyle={{...flipImage(language)}}
           />
           <CommonText text="Create New Account" style={styles.topLabel} />
         </View>
@@ -285,7 +290,8 @@ const SignUpScreen = () => {
 
 export default SignUpScreen;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -294,7 +300,7 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     alignItems: 'center',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     justifyContent: 'space-between',
   },
   topLabel: {
@@ -304,7 +310,7 @@ const styles = StyleSheet.create({
   },
 
   dividerContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginHorizontal: wp(23),
     paddingVertical: getFontSize(3),
@@ -320,7 +326,7 @@ const styles = StyleSheet.create({
   },
 
   socialContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     alignSelf: 'center',
     gap: getFontSize(3),
@@ -344,4 +350,4 @@ const styles = StyleSheet.create({
   signUpAccountText: {
     ...commonFontStyle(600, 2, Colors.seeker_primary),
   },
-});
+})}

@@ -3,11 +3,13 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import ServiceCard from '../common/ServiceCard';
-import {navigateTo} from '../common/commonFunction';
+import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 import {Colors} from '@/constants/Colors';
 import HomeSkeleton from '../skeleton/HomeSkeleton';
 import BottomModal from '../common/BottomModal';
+import {useAppSelector} from '@/Hooks/hooks';
+import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   visible: boolean;
@@ -24,8 +26,9 @@ const ServicesModal = ({
   isSubCatLoading,
   selectedCategory,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
+const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   useEffect(() => {
     setIsModalVisible(visible);
   }, [visible]);
@@ -59,7 +62,16 @@ const ServicesModal = ({
       visible={isModalVisible}
       onPressCancel={handleClose}
       onClose={handleClose}>
-      <CommonText text={selectedCategory?.title || ''} />
+      <CommonText
+        text={
+          getLocalizedText(
+            selectedCategory?.title,
+            selectedCategory?.title_ar,
+            language,
+          ) || ''
+        }
+        style={{...textRTL(language)}}
+      />
       {isSubCatLoading ? (
         <HomeSkeleton list={6} />
       ) : (
@@ -81,13 +93,16 @@ const ServicesModal = ({
                   setTimeout(() => {
                     navigateTo(SCREENS.MyBookings, {
                       ...item,
-                      category_name: selectedCategory?.title || '',
+                      category_name: getLocalizedText(selectedCategory?.title, selectedCategory?.title_ar, language) || '',
                       category_id: selectedCategory?._id || '',
                       category_image: selectedCategory?.image || '',
                     });
                   }, 100);
                 }}
-                text={item?.title || 'Handyman Services'}
+                text={
+                  getLocalizedText(item?.title, item?.title_ar, language) ||
+                  'Handyman Services'
+                }
                 containerStyle={styles.containerStyle}
               />
             );
@@ -104,7 +119,8 @@ const ServicesModal = ({
 
 export default ServicesModal;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   containerStyle: {
     flex: 1,
     marginBottom: hp(13),
@@ -116,6 +132,7 @@ const styles = StyleSheet.create({
   },
   columnWrapper: {
     columnGap: wp(13),
+    ...rowReverseRTL(_language),
     justifyContent: 'flex-start',
     paddingHorizontal: 0,
   },
@@ -123,4 +140,4 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: hp(13),
   },
-});
+})}

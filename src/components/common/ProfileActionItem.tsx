@@ -4,6 +4,8 @@ import CustomImage from './CustomImage';
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
+import {useAppSelector} from '@/Hooks/hooks';
+import {flipImage, marginRTLLeft, marginRTLRight, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   leftIcon: any;
@@ -22,6 +24,8 @@ const ProfileActionItem: React.FC<Props> = ({
   isDelete = false,
   languageSection,
 }) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <TouchableOpacity
       style={[styles.actionRow, isDelete && styles.deleteRow]}
@@ -31,31 +35,37 @@ const ProfileActionItem: React.FC<Props> = ({
       {languageSection ? (
         languageSection
       ) : rightIcon ? (
-        <CustomImage source={rightIcon} size={hp(16)} />
+        <CustomImage
+          source={rightIcon}
+          size={hp(16)}
+          imageStyle={{...flipImage(language)}}
+        />
       ) : null}
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  actionRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    // paddingVertical: hp(16),
-    height: hp(60),
-    backgroundColor: Colors._F9F9F9,
-    borderRadius: hp(30),
-    marginBottom: hp(15),
-    paddingHorizontal: wp(16),
-  },
-  actionText: {
-    flex: 1,
-    marginLeft: wp(12),
-    ...commonFontStyle(500, 2, Colors.black),
-  },
-  deleteRow: {
-    backgroundColor: Colors._FFEAEA,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    actionRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      height: hp(60),
+      backgroundColor: Colors._F9F9F9,
+      borderRadius: hp(30),
+      marginBottom: hp(15),
+      paddingHorizontal: wp(16),
+    },
+    actionText: {
+      flex: 1,
+      ...marginRTLRight(_language,wp(12)),
+      ...commonFontStyle(500, 2, Colors.black),
+      ...textRTL(_language)
+    },
+    deleteRow: {
+      backgroundColor: Colors._FFEAEA,
+    },
+  });
+};
 
 export default ProfileActionItem;

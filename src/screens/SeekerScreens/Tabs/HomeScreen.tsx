@@ -29,22 +29,28 @@ import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 import CategoryList from '@/components/Seeker/CategoryList';
 import CustomImage from '@/components/common/CustomImage';
 import {setGuestUserModal, setUserLocation} from '@/features/authSlice';
-import { requestLocationPermission } from '@/Hooks/locationHandler';
+import {requestLocationPermission} from '@/Hooks/locationHandler';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 const HomeScreen = () => {
   const {params} = useRoute<any>();
-  const {userInfo, dashboard, guestUser} = useAppSelector(state => state.auth);
+  const {userInfo, dashboard, guestUser, language} = useAppSelector(
+    state => state.auth,
+  );
   const dispatch = useAppDispatch();
   const [selectedCatId, setSelectedCatId] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {refetch: profileRefetch} = useGetProfileQuery({}); // profile api
 
   const {isLoading, refetch} = useGetDashboardQuery({}); // dashboard api
 
-  const [subCatTrigger, {data: subCategories, isLoading: isSubCatLoading,isFetching}] =
-    useLazyGetSubCategoriesQuery();
+  const [
+    subCatTrigger,
+    {data: subCategories, isLoading: isSubCatLoading, isFetching},
+  ] = useLazyGetSubCategoriesQuery();
 
   const openReviewModal = params?.openReviewModal;
 
@@ -67,7 +73,7 @@ const HomeScreen = () => {
   const getCurrentLocation = async () => {
     await requestLocationPermission(
       true,
-      (position) => {
+      position => {
         let dataTemp = {
           latitude: position?.latitude,
           longitude: position?.longitude,
@@ -77,8 +83,8 @@ const HomeScreen = () => {
         dispatch(setUserLocation(dataTemp));
       },
       (error: any) => {
-        console.log("requestLocationPermission => error => ", error);
-      }
+        console.log('requestLocationPermission => error => ', error);
+      },
     );
   };
 
@@ -140,9 +146,7 @@ const HomeScreen = () => {
             <CustomTextInput
               onPress={() => navigateTo(SEEKER_SCREENS.SearchScreen)}
               placeholder="Search by Services or Category"
-              leftIcon={
-                <Image source={IMAGES.search} style={styles.searchImages} />
-              }
+              leftIcon={<CustomImage source={IMAGES.search} size={wp(30)} />}
               editable={false}
             />
           </View>
@@ -182,65 +186,44 @@ const HomeScreen = () => {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-  safeArea: {
-    paddingHorizontal: wp(15),
-    backgroundColor: Colors.white,
-  },
-  topSection: {
-    marginTop: hp(10),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: hp(10),
-  },
-  greetingContainer: {
-    gap: hp(4),
-  },
-  topLabel: {
-    ...commonFontStyle(600, 1.8, Colors.seeker_primary),
-  },
-  topLabel1: {
-    ...commonFontStyle(400, 1.6, Colors.black),
-  },
-  bellContainer: {
-    width: wp(37),
-    height: hp(37),
-    borderRadius: hp(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._F6F6F6,
-  },
-
-  searchContainer: {
-    marginVertical: hp(24),
-  },
-  searchImages: {
-    width: wp(30),
-    height: hp(30),
-  },
-  bannerContainer: {
-    height: hp(135),
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: hp(20),
-    paddingVertical: hp(22),
-    paddingHorizontal: wp(25),
-    justifyContent: 'space-between',
-    backgroundColor: Colors.seeker_primary,
-  },
-  bannerTextContainer: {
-    gap: hp(9),
-    width: '60%',
-  },
-  bannerTitle: {
-    ...commonFontStyle(700, 2.5, Colors.white),
-  },
-  bannerSubtitle: {
-    ...commonFontStyle(400, 1.5, Colors.white),
-  },
-  bannerImage: {
-    width: wp(130),
-    height: hp(130),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    safeArea: {
+      paddingHorizontal: wp(15),
+      backgroundColor: Colors.white,
+    },
+    topSection: {
+      marginTop: hp(10),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: hp(10),
+    },
+    greetingContainer: {
+      gap: hp(4),
+    },
+    topLabel: {
+      ...commonFontStyle(600, 1.8, Colors.seeker_primary),
+      ...textRTL(_language),
+    },
+    topLabel1: {
+      ...commonFontStyle(400, 1.6, Colors.black),
+      ...textRTL(_language),
+    },
+    bellContainer: {
+      width: wp(37),
+      height: hp(37),
+      borderRadius: hp(10),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._F6F6F6,
+    },
+    searchContainer: {
+      marginVertical: hp(24),
+    },
+    searchImages: {
+      width: wp(30),
+      height: hp(30),
+    },
+  });
+};

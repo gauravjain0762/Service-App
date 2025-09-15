@@ -6,6 +6,8 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomImage from './CustomImage';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   color?: string;
@@ -28,6 +30,8 @@ const ServiceProvider = ({
   onMessagePress,
   rating,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={[styles.providerCard, {backgroundColor: color}]}>
       {/* <View style={styles.providerAvatarWrapper}>
@@ -97,81 +101,84 @@ const ServiceProvider = ({
 
 export default ServiceProvider;
 
-const styles = StyleSheet.create({
-  providerCard: {
-    gap: wp(20),
-    padding: hp(16),
-    marginTop: hp(16),
-    borderRadius: hp(20),
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.seeker_primary,
-  },
-  providerAvatarWrapper: {
-    borderRadius: hp(20),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._F4F4FE,
-    height: hp(80),
-    width: wp(80),
-    overflow: 'hidden',
-  },
-  providerAvatar: {
-    height: '100%',
-    width: '100%',
-  },
-  providerInfo: {
-    flex: 1,
-  },
-  providerTopRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  providerName: {
-    width: '70%',
-    ...commonFontStyle(600, 1.9, Colors.white),
-  },
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    providerCard: {
+      gap: wp(20),
+      padding: hp(16),
+      marginTop: hp(16),
+      borderRadius: hp(20),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      backgroundColor: Colors.seeker_primary,
+    },
+    providerAvatarWrapper: {
+      borderRadius: hp(20),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._F4F4FE,
+      height: hp(80),
+      width: wp(80),
+      overflow: 'hidden',
+    },
+    providerAvatar: {
+      height: '100%',
+      width: '100%',
+    },
+    providerInfo: {
+      flex: 1,
+    },
+    providerTopRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    providerName: {
+      width: '70%',
+      ...commonFontStyle(600, 1.9, Colors.white),
+      ...textRTL(_language),
+    },
 
-  ratingRow: {
-    gap: wp(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingText: {
-    ...commonFontStyle(500, 2, Colors.white),
-  },
-  providerService: {
-    ...commonFontStyle(400, 1.7, Colors.white),
-    marginTop: hp(11),
-  },
-  actionRow: {
-    gap: wp(14),
-    marginTop: hp(14),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  actionIconGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(14),
-  },
-  iconContainer: {
-    width: wp(33),
-    height: hp(33),
-    borderRadius: hp(33),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.white,
-  },
-  viewProfileBtn: {
-    borderRadius: hp(20),
-    paddingVertical: hp(10),
-    paddingHorizontal: wp(15),
-    backgroundColor: Colors.white,
-  },
-  viewProfileText: {
-    ...commonFontStyle(600, 1.2, Colors.seeker_primary),
-  },
-});
+    ratingRow: {
+      gap: wp(5),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    ratingText: {
+      ...commonFontStyle(500, 2, Colors.white),
+    },
+    providerService: {
+      ...commonFontStyle(400, 1.7, Colors.white),
+      marginTop: hp(11),
+    },
+    actionRow: {
+      gap: wp(14),
+      marginTop: hp(14),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    actionIconGroup: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(14),
+    },
+    iconContainer: {
+      width: wp(33),
+      height: hp(33),
+      borderRadius: hp(33),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.white,
+    },
+    viewProfileBtn: {
+      borderRadius: hp(20),
+      paddingVertical: hp(10),
+      paddingHorizontal: wp(15),
+      backgroundColor: Colors.white,
+    },
+    viewProfileText: {
+      ...commonFontStyle(600, 1.2, Colors.seeker_primary),
+    },
+  });
+};

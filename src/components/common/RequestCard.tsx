@@ -13,6 +13,8 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomImage from './CustomImage';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type props = {
   text1?: string;
@@ -22,7 +24,7 @@ type props = {
   subtitleStyle?: ViewStyle;
   style?: StyleProp<ViewStyle>;
   handleCardPress?: () => void;
-  bookingId?: any
+  bookingId?: any;
 };
 
 const RequestCard = ({
@@ -35,6 +37,8 @@ const RequestCard = ({
   handleCardPress,
   bookingId,
 }: props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <Pressable onPress={handleCardPress} style={[styles.main, style]}>
       <CustomImage
@@ -67,32 +71,36 @@ const RequestCard = ({
 
 export default RequestCard;
 
-const styles = StyleSheet.create({
-  main: {
-    gap: wp(14),
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: hp(30),
-    paddingVertical: hp(13),
-    paddingHorizontal: hp(18),
-    backgroundColor: Colors.seeker_primary,
-  },
-  imageContainer: {
-    width: wp(72),
-    height: hp(72),
-    borderRadius: hp(72),
-    backgroundColor: Colors.white,
-    overflow: 'hidden',
-  },
-  textContainer: {
-    flexShrink: 1,
-    gap: hp(5),
-  },
-  title: {
-    ...commonFontStyle(600, 2.1, Colors.white),
-  },
-  subtitle: {
-    ...commonFontStyle(400, 1.8, Colors.white),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    main: {
+      gap: wp(14),
+      width: '100%',
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      borderRadius: hp(30),
+      paddingVertical: hp(13),
+      paddingHorizontal: hp(18),
+      backgroundColor: Colors.seeker_primary,
+    },
+    imageContainer: {
+      width: wp(72),
+      height: hp(72),
+      borderRadius: hp(72),
+      backgroundColor: Colors.white,
+      overflow: 'hidden',
+    },
+    textContainer: {
+      flexShrink: 1,
+      gap: hp(5),
+    },
+    title: {
+      ...commonFontStyle(600, 2.1, Colors.white),
+      ...textRTL(_language),
+    },
+    subtitle: {
+      ...commonFontStyle(400, 1.8, Colors.white),
+      ...textRTL(_language),
+    },
+  });
+};

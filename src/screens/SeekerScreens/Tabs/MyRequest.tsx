@@ -13,9 +13,11 @@ import {useGetRequestsQuery} from '@/api/Seeker/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
 import MyRequestSkeleton from '@/components/skeleton/MyRequestSkeleton';
+import { rightRTL, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 const MyRequest = () => {
   const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allRequestData, setAllRequestData] = React.useState([]);
   const {
@@ -171,7 +173,8 @@ const MyRequest = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   scrollView: {
     flex: 1,
   },
@@ -187,7 +190,7 @@ const styles = StyleSheet.create({
     marginTop: hp(20),
   },
   cardContent: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     paddingHorizontal: wp(20),
   },
@@ -211,9 +214,11 @@ const styles = StyleSheet.create({
   serviceTitle: {
     ...commonFontStyle(700, 2, Colors.black),
     marginBottom: hp(11),
+    ...textRTL(_language)
   },
   serviceDescription: {
     ...commonFontStyle(500, 1.6, Colors._878787),
+     ...textRTL(_language)
   },
   dateContainer: {
     alignItems: 'flex-end',
@@ -231,12 +236,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(10),
     backgroundColor: Colors.black,
     position: 'absolute',
-    right: 15,
     top: 15,
+    ...rightRTL(_language,15)
   },
   offerLabel: {
     ...commonFontStyle(600, 1.3, Colors.white),
   },
-});
+})}
 
 export default MyRequest;

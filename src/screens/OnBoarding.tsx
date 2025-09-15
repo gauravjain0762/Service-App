@@ -21,7 +21,6 @@ import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {setIsProvider} from '@/features/authSlice';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {rightRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
-import {setLanguages} from '@/Hooks/asyncStorage';
 
 const OnBoarding = () => {
   const insets = useSafeAreaInsets();
@@ -31,18 +30,17 @@ const OnBoarding = () => {
   const openLanguageModal = () => {
     setIsLanguageModalVisible(true);
   };
+  const styles = React.useMemo(
+    () => getGlobalStyles(language),
+    [language],
+  );
 
   const closeLanguageModal = () => {
     setIsLanguageModalVisible(false);
   };
 
-  const handleLanguageSelect = (isLanguageSelected = 'English') => {
+  const handleLanguageSelect = () => {
     closeLanguageModal();
-    if (isLanguageSelected == 'Arabic') {
-      dispatch(setLanguages('ar'));
-    } else {
-      dispatch(setLanguages('en'));
-    }
   };
 
   return (
@@ -122,7 +120,8 @@ const OnBoarding = () => {
 
 export default OnBoarding;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   wrapper: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -130,8 +129,8 @@ const styles = StyleSheet.create({
   topRightContainer: {
     position: 'absolute',
     top: '2%',
-    ...rightRTL(wp(20)),
-    ...rowReverseRTL(),
+    ...rightRTL(_language,wp(20)),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     zIndex: 10,
     gap: 10,
@@ -161,14 +160,15 @@ const styles = StyleSheet.create({
   heading1: {
     // width: '70%',
     lineHeight: 43,
-    ...textRTL(),
+    ...textRTL(_language),
     marginBottom: hp(22),
     ...commonFontStyle(600, 3.4, Colors.black),
   },
   description: {
     marginBottom: hp(40),
     ...commonFontStyle(400, 2, Colors._888888),
-    ...textRTL()
+    ...textRTL(_language)
   },
   btnText: {...commonFontStyle(600, 2, Colors.white)},
-});
+})
+}

@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 const SeekerTabNavigation = () => {
   const guestUser = useSelector((state: RootState) => state.auth?.guestUser);
   const dashboard = useSelector((state: RootState) => state.auth?.dashboard);
+  const language = useSelector((state: RootState) => state.auth?.language);
   const dispatch = useAppDispatch();
 
   const CustomTabBarButton = ({children, route, ...props}: any) => {
@@ -49,6 +50,34 @@ const SeekerTabNavigation = () => {
       </TouchableWithoutFeedback>
     );
   };
+
+  const tabScreens = [
+    {
+      name: SEEKER_SCREENS.Home,
+      component: HomeScreen,
+      options: {}
+    },
+    {
+      name: SEEKER_SCREENS.MyBookingsTab,
+      component: MyBookingsTab,
+      options: {}
+    },
+    {
+      name: SEEKER_SCREENS.MyRequest,
+      component: MyRequest,
+      options: dashboard?.offers_unread > 0
+        ? {tabBarBadge: dashboard?.offers_unread}
+        : {}
+    },
+    {
+      name: SEEKER_SCREENS.Profile,
+      component: Profile,
+      options: {}
+    }
+  ];
+
+  // Reverse the order for RTL
+  const orderedScreens = language === 'ar' ? [...tabScreens].reverse() : tabScreens;
 
   return (
     <SafeAreaView
@@ -106,22 +135,16 @@ const SeekerTabNavigation = () => {
             <CustomTabBarButton {...props} route={route} />
           ),
         })}>
-        <Tab.Screen name={SEEKER_SCREENS.Home} component={HomeScreen} />
-
-        <Tab.Screen
-          name={SEEKER_SCREENS.MyBookingsTab}
-          component={MyBookingsTab}
-        />
-        <Tab.Screen
-          name={SEEKER_SCREENS.MyRequest}
-          component={MyRequest}
-          options={
-            dashboard?.offers_unread > 0
-              ? {tabBarBadge: dashboard?.offers_unread}
-              : {}
-          }
-        />
-        <Tab.Screen name={SEEKER_SCREENS.Profile} component={Profile} />
+        
+        {/* Render screens in the correct order based on RTL */}
+        {orderedScreens.map((screen, index) => (
+          <Tab.Screen
+            key={screen.name}
+            name={screen.name}
+            component={screen.component}
+            options={screen.options}
+          />
+        ))}
       </Tab.Navigator>
     </SafeAreaView>
   );

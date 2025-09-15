@@ -12,6 +12,7 @@ import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import CustomImage from './CustomImage';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
+import {flipImage, rowReverseRTL} from '@/utils/arabicStyles';
 
 type Props = {
   item?: any;
@@ -20,7 +21,7 @@ type Props = {
 
 const BookingCard = ({item, onPress}: Props) => {
   const {language} = useAppSelector(state => state.auth);
-
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <>
       <Pressable
@@ -78,58 +79,61 @@ const BookingCard = ({item, onPress}: Props) => {
 
 export default BookingCard;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(20),
-  },
-  imageContainer: {
-    width: wp(100),
-    height: hp(100),
-    borderRadius: hp(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._E5E5E5,
-  },
-  detailsContainer: {
-    gap: hp(8),
-  },
-  titleText: {
-    ...commonFontStyle(700, 1.9, Colors.black),
-  },
-  bookingText: {
-    ...commonFontStyle(400, 1.4, Colors._7F7F7F),
-  },
-  dateText: {
-    ...commonFontStyle(500, 1.6, Colors._7F7F7F),
-  },
-  statusButton: {
-    height: hp(30),
-    width: wp(100),
-    backgroundColor: Colors.seeker_primary,
-  },
-  statusButtonText: {
-    ...commonFontStyle(600, 1.4, Colors.white),
-  },
-  arrowContainer: {
-    width: wp(37),
-    height: hp(37),
-    borderRadius: hp(37),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._F6F6F6,
-  },
-  arrowIcon: {
-    width: wp(15),
-    height: hp(15),
-  },
-  divider: {
-    marginVertical: hp(24),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    contentContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(20),
+    },
+    imageContainer: {
+      width: wp(100),
+      height: hp(100),
+      borderRadius: hp(10),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._E5E5E5,
+    },
+    detailsContainer: {
+      gap: hp(8),
+    },
+    titleText: {
+      ...commonFontStyle(700, 1.9, Colors.black),
+    },
+    bookingText: {
+      ...commonFontStyle(400, 1.4, Colors._7F7F7F),
+    },
+    dateText: {
+      ...commonFontStyle(500, 1.6, Colors._7F7F7F),
+    },
+    statusButton: {
+      height: hp(30),
+      width: wp(100),
+      backgroundColor: Colors.seeker_primary,
+    },
+    statusButtonText: {
+      ...commonFontStyle(600, 1.4, Colors.white),
+    },
+    arrowContainer: {
+      width: wp(37),
+      height: hp(37),
+      borderRadius: hp(37),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._F6F6F6,
+    },
+    arrowIcon: {
+      width: wp(15),
+      height: hp(15),
+      ...flipImage(_language),
+    },
+    divider: {
+      marginVertical: hp(24),
+    },
+  });
+};

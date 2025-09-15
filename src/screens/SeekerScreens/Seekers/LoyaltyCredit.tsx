@@ -13,6 +13,7 @@ import LoyaltyCreditTransaction from '@/components/Seeker/LoyaltyCreditTransacti
 import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
 import {useGetUserLoyaltyQuery} from '@/api/Seeker/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
+import { formatePrice } from '@/components/common/commonFunction';
 
 const LoyaltyCredit = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -55,7 +56,7 @@ const LoyaltyCredit = () => {
 
   return (
     <SafeareaProvider>
-      <BackHeader text={'Loyalty Points'} style={GeneralStyle.back} />
+      <BackHeader text={'Cashback'} style={GeneralStyle.back} />
 
       {isLoading ? (
         <ProMyBookingsSkeleton />
@@ -65,7 +66,7 @@ const LoyaltyCredit = () => {
             source={IMAGES.loyalty_credit_card}
             style={styles.imageStyle}
             resizeMode="stretch">
-            <CommonText text={'Loyalty Points'} style={styles.headingText} />
+            <CommonText text={'Cashback Credit'} style={styles.headingText} />
             <View style={styles.creditView}>
               <AnimatedCircleProgress
                 total={loyaltyDetails?.total_orders_for_reward}
@@ -74,11 +75,11 @@ const LoyaltyCredit = () => {
               </AnimatedCircleProgress>
               <View>
                 <CommonText
-                  text={`${loyaltyDetails?.current_loyalty_points}pts`}
+                  text={`${formatePrice(loyaltyDetails?.current_loyalty_points)} AED`}
                   style={styles.creditPoint}
                 />
                 <CommonText
-                  text={`these points earned in ${loyaltyDetails?.pagination?.total_records} orders`}
+                  text={`these cashback earned in ${loyaltyDetails?.pagination?.total_records} orders`}
                   style={styles.creditText}
                 />
               </View>
@@ -86,13 +87,13 @@ const LoyaltyCredit = () => {
             <View style={styles.cardBgView}>
               <CommonText
                 numberOfLines={1}
-                text={`After ${loyaltyDetails?.remaining_orders_for_reward} order you have get full loyalty credit`}
+                text={`After ${loyaltyDetails?.remaining_orders_for_reward} order you have get full cashback credit`}
                 style={styles.cardBottomText}
               />
             </View>
           </ImageBackground>
           <CommonText
-            text="Loyalty Points History"
+            text="Cashback Transaction History"
             style={styles.transactionTitle}
           />
           <FlatList
@@ -116,7 +117,7 @@ const LoyaltyCredit = () => {
                   alignItems: 'center',
                 }}>
                 <CommonText
-                  text="No loyalty points history yet"
+                  text="you don't have any cashback credit available yet"
                   style={styles.noData}
                 />
               </View>
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
     gap: hp(10),
   },
   creditPoint: {
-    ...commonFontStyle(600, 3.6, Colors.white),
+    ...commonFontStyle(600, 2.5, Colors.white),
   },
   creditText: {
     ...commonFontStyle(400, 1.9, Colors.white),

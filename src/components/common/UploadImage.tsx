@@ -18,6 +18,8 @@ import Modal from 'react-native-modal';
 import ActionSheet from './ActionSheet';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import CustomImage from './CustomImage';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const UploadImage = ({
   onSelect = () => {},
@@ -28,6 +30,9 @@ const UploadImage = ({
   style?: ViewStyle;
   value?: any;
 }) => {
+  const {language} = useAppSelector(state => state.auth);
+
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [actionSheet, setActionSheet] = useState(false);
   const closeActionSheet = () => setActionSheet(false);
 
@@ -119,64 +124,66 @@ const UploadImage = ({
 
 export default UploadImage;
 
-const styles = StyleSheet.create({
-  container: {
-    gap: hp(35),
-  },
-  imageBox: {
-    height: hp(90),
-    width: hp(90),
-    backgroundColor: Colors._F9F9F9,
-    borderRadius: hp(15),
-  },
-  uploadBox: {
-    gap: wp(21),
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderRadius: hp(15),
-    paddingVertical: hp(24),
-    paddingHorizontal: wp(30),
-    backgroundColor: Colors._F9F9F9,
-  },
-  plusIconBox: {
-    width: wp(37),
-    height: hp(37),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  plusIconText: {
-    fontSize: 22,
-    color: Colors._525252,
-  },
-  uploadPictureText: {
-    ...commonFontStyle(500, 1.8, Colors._525252),
-  },
-  uploadRow: {
-    gap: hp(23),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  certificateBox: {
-    width: '47%',
-    gap: hp(16),
-    height: hp(145),
-    padding: hp(23),
-    borderRadius: hp(15),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._F9F9F9,
-  },
-  iconBox: {
-    width: wp(51),
-    height: hp(51),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  uploadCertificateText: {
-    ...commonFontStyle(500, 1.8, Colors._525252),
-  },
-  imageStyle: {
-    height: hp(90),
-    width: hp(90),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      gap: hp(35),
+    },
+    imageBox: {
+      height: hp(90),
+      width: hp(90),
+      backgroundColor: Colors._F9F9F9,
+      borderRadius: hp(15),
+    },
+    uploadBox: {
+      gap: wp(21),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      borderRadius: hp(15),
+      paddingVertical: hp(24),
+      paddingHorizontal: wp(30),
+      backgroundColor: Colors._F9F9F9,
+    },
+    plusIconBox: {
+      width: wp(37),
+      height: hp(37),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    plusIconText: {
+      fontSize: 22,
+      color: Colors._525252,
+    },
+    uploadPictureText: {
+      ...commonFontStyle(500, 1.8, Colors._525252),
+    },
+    uploadRow: {
+      gap: hp(23),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    certificateBox: {
+      width: '47%',
+      gap: hp(16),
+      height: hp(145),
+      padding: hp(23),
+      borderRadius: hp(15),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._F9F9F9,
+    },
+    iconBox: {
+      width: wp(51),
+      height: hp(51),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    uploadCertificateText: {
+      ...commonFontStyle(500, 1.8, Colors._525252),
+    },
+    imageStyle: {
+      height: hp(90),
+      width: hp(90),
+    },
+  });
+};

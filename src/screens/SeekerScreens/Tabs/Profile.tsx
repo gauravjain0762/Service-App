@@ -17,11 +17,13 @@ import {useLogoutMutation} from '@/api/Seeker/authApi';
 import {resetStore} from '@/store';
 import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import {clearToken} from '@/features/authSlice';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const Profile = () => {
-  const {userInfo} = useAppSelector(state => state.auth);
+  const {userInfo, language} = useAppSelector(state => state.auth);
   const [logout, {isLoading}] = useLogoutMutation();
 
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const dispatch = useAppDispatch();
   const [isLanguageModalVisible, setIsLanguageModalVisible] =
     useState<boolean>(false);
@@ -236,35 +238,37 @@ const Profile = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: hp(100),
-  },
-  avatarSection: {
-    alignItems: 'center',
-    marginTop: hp(24),
-    marginBottom: hp(32),
-  },
-  avatar: {
-    borderRadius: hp(40),
-    backgroundColor: Colors._EBFCF4,
-    marginBottom: hp(12),
-    overflow: 'hidden',
-  },
-  name: {
-    ...commonFontStyle(700, 2.4, Colors.black),
-  },
-  actionList: {
-    marginTop: 0,
-  },
-  languageSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(2),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    scrollView: {
+      flex: 1,
+    },
+    scrollContent: {
+      paddingBottom: hp(100),
+    },
+    avatarSection: {
+      alignItems: 'center',
+      marginTop: hp(24),
+      marginBottom: hp(32),
+    },
+    avatar: {
+      borderRadius: hp(40),
+      backgroundColor: Colors._EBFCF4,
+      marginBottom: hp(12),
+      overflow: 'hidden',
+    },
+    name: {
+      ...commonFontStyle(700, 2.4, Colors.black),
+    },
+    actionList: {
+      marginTop: 0,
+    },
+    languageSection: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(2),
+    },
+  });
+};
 
 export default Profile;

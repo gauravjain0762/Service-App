@@ -29,7 +29,7 @@ const Offers = () => {
   const [isModalId, setIsModalId] = useState<any>(null);
 
   const {language} = useAppSelector(state => state.auth);
-
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {
     data: requestData,
     isLoading: requestLoading,
@@ -152,36 +152,38 @@ const Offers = () => {
 
 export default Offers;
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  topContainer: {
-    paddingHorizontal: wp(24),
-  },
-  requestCard: {
-    marginVertical: hp(27),
-    backgroundColor: Colors.white,
-    elevation: 5,
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 1,
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  titleStyle: {
-    ...commonFontStyle(600, 2.1, Colors.black),
-  },
-  subtitleStyle: {
-    ...commonFontStyle(600, 1.9, Colors._898989),
-  },
-  offersContainer: {
-    flex: 1,
-    paddingVertical: hp(20),
-    paddingHorizontal: wp(20),
-    backgroundColor: Colors._f4f4f5,
-  },
-});
+    topContainer: {
+      paddingHorizontal: wp(24),
+    },
+    requestCard: {
+      marginVertical: hp(27),
+      backgroundColor: Colors.white,
+      elevation: 5,
+      shadowColor: Colors.black,
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    titleStyle: {
+      ...commonFontStyle(600, 2.1, Colors.black),
+    },
+    subtitleStyle: {
+      ...commonFontStyle(600, 1.9, Colors._898989),
+    },
+    offersContainer: {
+      flex: 1,
+      paddingVertical: hp(20),
+      paddingHorizontal: wp(20),
+      backgroundColor: Colors._f4f4f5,
+    },
+  });
+};

@@ -46,12 +46,11 @@ const LoyaltyCreditTransaction = ({item, style}: Props) => {
             styles.priceText,
             item?.points_type === 'reward' && {color: Colors._03B463},
           ]}>
-          <CommonText
-            text="pts"
-            style={[
-              styles.ptsText,
-              item?.points_type === 'reward' && {color: Colors._03B463},
-            ]}
+          <CustomImage
+            source={IMAGES.currency}
+            imageStyle={{width: '100%', height: '100%'}}
+            containerStyle={{width: wp(18), height: wp(18)}}
+            tintColor={Colors._03B463}
           />
         </CommonText>
       </View>

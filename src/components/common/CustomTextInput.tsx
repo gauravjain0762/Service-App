@@ -47,6 +47,10 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   const {t, i18n} = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
+  const styles = React.useMemo(
+    () => getGlobalStyles(i18n.language),
+    [i18n.language],
+  );
   return (
     <View style={[styles.container, mainStyle]}>
       {label && (
@@ -61,7 +65,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           isError && {borderColor: Colors.red},
           containerStyle,
         ]}>
-        {i18n?.language === 'en' ? leftIcon : rightIcon}
+        {leftIcon}
         <TextInput
           style={[styles.input, inputStyle]}
           placeholder={placeholder ? t(placeholder) : ''}
@@ -69,7 +73,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           secureTextEntry={secureTextEntry ? !showPassword : false}
           {...rest}
         />
-        {i18n?.language === 'en' ? rightIcon : leftIcon}
+        {rightIcon}
         {secureTextEntry && (
           <CustomImage
             onPress={() => {
@@ -85,37 +89,39 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    // marginBottom: hp(10),
-    // flex: 1,
-  },
-  label: {
-    marginBottom: hp(5),
-    ...commonFontStyle(400, 1.9, Colors._5E5D5D),
-  },
-  required: {
-    color: 'red',
-  },
-  input: {
-    backgroundColor: Colors._F9F9F9,
-    height: '100%',
-    ...commonFontStyle(400, 1.9, Colors.black),
-    flex: 1,
-    ...textRTL(),
-  },
-  inputContainer: {
-    backgroundColor: Colors._F9F9F9,
-    borderRadius: hp(100),
-    paddingHorizontal: wp(30),
-    // marginTop: hp(5),
-    height: hp(55),
-    alignItems: 'center',
-    ...rowReverseRTL(),
-    // flex: 1,
-    borderWidth: 1,
-    borderColor: Colors._F9F9F9,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      // marginBottom: hp(10),
+      // flex: 1,
+    },
+    label: {
+      marginBottom: hp(5),
+      ...commonFontStyle(400, 1.9, Colors._5E5D5D),
+    },
+    required: {
+      color: 'red',
+    },
+    input: {
+      backgroundColor: Colors._F9F9F9,
+      height: '100%',
+      ...commonFontStyle(400, 1.9, Colors.black),
+      flex: 1,
+      ...textRTL(_language),
+    },
+    inputContainer: {
+      backgroundColor: Colors._F9F9F9,
+      borderRadius: hp(100),
+      paddingHorizontal: wp(30),
+      // marginTop: hp(5),
+      height: hp(55),
+      alignItems: 'center',
+      ...rowReverseRTL(_language),
+      // flex: 1,
+      borderWidth: 1,
+      borderColor: Colors._F9F9F9,
+    },
+  });
+};
 
 export default CustomTextInput;

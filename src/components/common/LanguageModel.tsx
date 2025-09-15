@@ -7,6 +7,8 @@ import CommonText from '@/components/common/CommonText';
 import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
 import CustomImage from './CustomImage';
+import { setLanguages } from '@/Hooks/asyncStorage';
+import { useAppDispatch } from '@/Hooks/hooks';
 
 type LanguageModalProps = {
   visible: boolean;
@@ -21,11 +23,17 @@ const LanguageModal = ({
   isProvider,
   onLanguageSelect,
 }: LanguageModalProps) => {
+  const dispatch = useAppDispatch();
   const [selectedLanguage, setSelectedLanguage] = useState('English');
 
   const handleLanguageSelect = (language: string) => {
     setSelectedLanguage(language);
     onLanguageSelect(language);
+    if (language == 'Arabic') {
+      dispatch(setLanguages('ar'));
+    } else {
+      dispatch(setLanguages('en'));
+    }
   };
 
   return (

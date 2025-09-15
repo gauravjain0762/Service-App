@@ -100,6 +100,23 @@
     "See all": "See all",
     "Ready to Logout?": "Ready to Logout?",
     "Subscription Plans": "Subscription Plans",
-    "No Service Found": "No Service Found"
+    "No Service Found": "No Service Found",
+    "Business Type":"Business Type",
+    "Type of Emirates":"Type of Emirates",
+    "About Your Self":"About Your Self",
+
+    "Loyalty Credits":"Loyalty Credits",
+    "Language":"Language",
+    "Contact us":"Contact us",
+    "About us":"About us",
+    "Privacy Policy":"Privacy Policy",
+    "Terms & Conditions":"Terms & Conditions",
+    "Delete Account":"Delete Account",
+    "Logout":"Logout",
+    "My Requests":"My Requests",
+    "Request Offer":"Request Offer",
+    "Cashback":"Cashback",
+    "Cashback Credit":"Cashback Credit",
+    "Cashback Transaction History":"Cashback Transaction History"
   }
 }

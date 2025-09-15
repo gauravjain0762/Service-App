@@ -21,6 +21,7 @@ import {useAppSelector} from '@/Hooks/hooks';
 import CustomImage from '@/components/common/CustomImage';
 import moment from 'moment';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
+import { alignItemsLTR, alignItemsRTL, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 const JobDetails = () => {
   const {language} = useAppSelector(state => state.auth);
@@ -42,6 +43,7 @@ const JobDetails = () => {
       refetchOnFocus: true,
     },
   );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const jobDetails = jobData?.data?.job;
   console.log(jobDetails, 'jobDetails');
 
@@ -182,7 +184,8 @@ const JobDetails = () => {
 
 export default JobDetails;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -191,10 +194,11 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: wp(16),
     marginTop: hp(27),
-    alignItems: 'flex-start',
+    ...alignItemsRTL(_language),
   },
   rowWithGap: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(20),
   },
@@ -204,13 +208,16 @@ const styles = StyleSheet.create({
   },
   jobTitle: {
     ...commonFontStyle(600, 1.9, Colors.black),
+    ...textRTL(_language)
   },
   jobSubTitle: {
     ...commonFontStyle(400, 1.7, Colors._898989),
+    ...textRTL(_language)
   },
   jobLocation: {
     flexShrink: 1,
     ...commonFontStyle(400, 1.6, Colors._7D7D7D),
+    ...textRTL(_language)
   },
   bookingContainer: {
     gap: hp(22),
@@ -218,7 +225,7 @@ const styles = StyleSheet.create({
     marginVertical: hp(27),
   },
   bookingRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -231,6 +238,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginTop: hp(30),
     ...commonFontStyle(600, 2.2, Colors.black),
+    ...textRTL(_language)
   },
 
   backToHomeBtn: {
@@ -238,4 +246,4 @@ const styles = StyleSheet.create({
     marginHorizontal: wp(24),
     backgroundColor: Colors.seeker_primary,
   },
-});
+})}

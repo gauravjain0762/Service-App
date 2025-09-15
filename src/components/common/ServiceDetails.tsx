@@ -18,6 +18,7 @@ import {getLocalizedText} from './commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
 import CustomButton from './CustomButton';
+import {alignItemsRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   style?: ViewStyle;
@@ -27,7 +28,7 @@ type Props = {
 
 const ServiceDetails = ({style, jobDetails, isProvider = false}: Props) => {
   const {language} = useAppSelector(state => state.auth);
-
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const ServiceDetail = [
     {'Payment Method': jobDetails?.pay_method},
     {
@@ -106,7 +107,7 @@ const ServiceDetails = ({style, jobDetails, isProvider = false}: Props) => {
               <View style={styles.paymentInfo}>
                 <View
                   style={{
-                    flexDirection: 'row',
+                    ...rowReverseRTL(language),
                     justifyContent: 'space-between',
                     width: '100%',
                   }}>
@@ -148,33 +149,39 @@ const ServiceDetails = ({style, jobDetails, isProvider = false}: Props) => {
 
 export default ServiceDetails;
 
-const styles = StyleSheet.create({
-  paymentCard: {
-    width: '95%',
-    marginTop: hp(17),
-    alignItems: 'flex-start',
-    paddingHorizontal: wp(20),
-  },
-  paymentInfo: {
-    gap: hp(13),
-  },
-  paymentLabel: {
-    ...commonFontStyle(700, 2, Colors.black),
-  },
-  paymentValue: {
-    ...commonFontStyle(400, 2.2, Colors._828282),
-  },
-  changeBtn: {
-    flexShrink: 1,
-    borderRadius: hp(50),
-    paddingVertical: hp(6),
-    paddingHorizontal: wp(12),
-    backgroundColor: Colors._EBFCF4,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  changeBtnText: {
-    ...commonFontStyle(400, 1.2, Colors._039B55),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    paymentCard: {
+      width: '95%',
+      marginTop: hp(17),
+      ...alignItemsRTL(_language),
+      paddingHorizontal: wp(20),
+    },
+    paymentInfo: {
+      gap: hp(13),
+      width: '100%',
+    },
+    paymentLabel: {
+      ...commonFontStyle(700, 2, Colors.black),
+      ...textRTL(_language),
+    },
+    paymentValue: {
+      ...commonFontStyle(400, 2.2, Colors._828282),
+      ...textRTL(_language),
+    },
+    changeBtn: {
+      flexShrink: 1,
+      borderRadius: hp(50),
+      paddingVertical: hp(6),
+      paddingHorizontal: wp(12),
+      backgroundColor: Colors._EBFCF4,
+      alignSelf: 'flex-end',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    changeBtnText: {
+      ...commonFontStyle(400, 1.2, Colors._039B55),
+      ...textRTL(_language),
+    },
+  });
+};

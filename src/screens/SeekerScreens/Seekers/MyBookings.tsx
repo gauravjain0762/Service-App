@@ -24,6 +24,7 @@ import {useTranslation} from 'react-i18next';
 import CustomButton from '@/components/common/CustomButton';
 import {
   errorToast,
+  getLocalizedText,
   navigateTo,
   resetNavigation,
 } from '@/components/common/commonFunction';
@@ -40,15 +41,14 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const MyBookings = () => {
   const {t} = useTranslation();
-  const {userInfo, dashboard,userCurrentLocation} = useAppSelector(state => state.auth);
+  const {userInfo, dashboard,userCurrentLocation,language} = useAppSelector(state => state.auth);
 
   const {
-    params: {category_id, category_name, category_image, title, _id},
+    params: {category_id, category_name, category_image, title, _id,title_ar},
   } = useRoute<any>();
   const categoryData = dashboard?.categories?.find(
     val => val?._id === category_id,
   );
-console.log(userCurrentLocation,'userCurrentLocation');
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
   const [isLocationType, setIsLocationType] = useState('Your Location');
@@ -225,6 +225,7 @@ console.log(userCurrentLocation,'userCurrentLocation');
       );
     }
   };
+console.log(category_name,title_ar,title,'category_namecategory_namecategory_name');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -249,7 +250,7 @@ console.log(userCurrentLocation,'userCurrentLocation');
           }}>
           <RequestCard
             text1={category_name}
-            text2={title}
+            text2={getLocalizedText(title,title_ar,language)}
             imageSource={category_image}
             style={styles.requestCard}
           />
@@ -395,7 +396,6 @@ console.log(userCurrentLocation,'userCurrentLocation');
           onPress={() => onSend()}
         />
       </KeyboardAwareScrollView>
-      {console.log(category_name, 'category_name', 'title', title)}
       <BottomModal
         close
         style={{paddingTop: hp(40)}}

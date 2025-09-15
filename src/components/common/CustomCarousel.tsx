@@ -5,6 +5,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import {hp, wp} from '@/utils/responsiveFn';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const {width} = Dimensions.get('window');
 
@@ -16,8 +17,10 @@ const data = [
 
 const CustomCarousel = () => {
   const carouselRef = useRef<any>(null);
+  const {language} = useAppSelector(state => state.auth);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   useEffect(() => {
     const intervalId = setInterval(() => {
       let nextIndex = activeIndex + 1;
@@ -30,7 +33,7 @@ const CustomCarousel = () => {
     return () => clearInterval(intervalId);
   }, [activeIndex]);
 
-  const renderItem = ({item,index}:any) => {
+  const renderItem = ({item, index}: any) => {
     return (
       <View style={styles.imageWrapper}>
         <Image
@@ -58,6 +61,8 @@ const CustomCarousel = () => {
           inactiveSlideOpacity={1}
           enableMomentum={false}
           lockScrollWhileSnapping={true}
+          firstItem={language == 'ar' ? data.length - 1 : 0}
+          inverted={language == 'ar'}
         />
       </View>
       <Pagination
@@ -85,32 +90,34 @@ const CustomCarousel = () => {
 
 export default CustomCarousel;
 
-const styles = StyleSheet.create({
-  container: {
-    overflow: 'hidden',
-    borderBottomLeftRadius: hp(35),
-    borderBottomRightRadius: hp(35),
-    backgroundColor: Colors.seeker_primary,
-  },
-  imageWrapper: {
-    width,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: hp(370),
-  },
-  logoImage: {
-    width: '100%',
-    height: '100%',
-    marginTop:100,
-  },
-  stickyBottomImage: {
-    width: '100%',
-    height: '100%',
-    marginTop:25,
-  },
-  pagination: {
-    marginTop: hp(21),
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      overflow: 'hidden',
+      borderBottomLeftRadius: hp(35),
+      borderBottomRightRadius: hp(35),
+      backgroundColor: Colors.seeker_primary,
+    },
+    imageWrapper: {
+      width,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: hp(370),
+    },
+    logoImage: {
+      width: '100%',
+      height: '100%',
+      marginTop: 100,
+    },
+    stickyBottomImage: {
+      width: '100%',
+      height: '100%',
+      marginTop: 25,
+    },
+    pagination: {
+      marginTop: hp(21),
+      paddingVertical: 0,
+      paddingHorizontal: 0,
+    },
+  });
+};

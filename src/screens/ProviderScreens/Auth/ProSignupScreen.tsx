@@ -28,6 +28,7 @@ import {
   useSignUpMutation,
 } from '@/api/Provider/authApi';
 import {useAppSelector} from '@/Hooks/hooks';
+import { flipImage, rowReverseRTL } from '@/utils/arabicStyles';
 
 const ServiceList = [
   {label: 'Company', value: 'Company'},
@@ -49,10 +50,14 @@ type UserProps = {
 };
 
 const ProSignupScreen = () => {
-  const {dropDownCategories, emirates, dropDownSubCategories, fcmToken} =
+  const {dropDownCategories, emirates, dropDownSubCategories, fcmToken,language} =
     useAppSelector(state => state.auth);
   const [signUp, {isLoading}] = useSignUpMutation();
 
+  const styles = React.useMemo(
+        () => getGlobalStyles(language),
+        [language],
+      );
   const {} = useCategoryQuery({});
   const {} = useEmiratesQuery({});
   const [subCatTrigger] = useLazySubCategoryQuery();
@@ -186,6 +191,7 @@ const ProSignupScreen = () => {
             disabled={false}
             onPress={() => goBack()}
             source={IMAGES.backArrow2}
+            imageStyle={{...flipImage(language)}}
           />
           <CommonText text="Create New Account" style={styles.topLabel} />
         </View>
@@ -304,7 +310,8 @@ const ProSignupScreen = () => {
 
 export default ProSignupScreen;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     backgroundColor: Colors.white,
   },
@@ -316,7 +323,7 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     alignItems: 'center',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     justifyContent: 'space-between',
   },
   topLabel: {
@@ -334,7 +341,7 @@ const styles = StyleSheet.create({
   uploadSection: {
     marginTop: hp(0),
     marginBottom: hp(20),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     justifyContent: 'space-between',
   },
   aboutInput: {
@@ -357,4 +364,4 @@ const styles = StyleSheet.create({
   signUpAccountText: {
     ...commonFontStyle(600, 2, Colors.provider_primary),
   },
-});
+})}

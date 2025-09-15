@@ -1,83 +1,82 @@
-import i18n from '@/i18n/i18n';
-import {ViewStyle} from 'react-native';
+import {ImageStyle, TextStyle, ViewStyle} from 'react-native';
 
-export const textRTL = (): any => {
-  return {textAlign: i18n.language === 'ar' ? 'right' : 'left'};
+export const textRTL = (language: string|any): TextStyle => {
+  return {textAlign: language === 'ar' ? 'right' : 'left'};
 };
-export const textLTR = (): any => {
-  return {textAlign: i18n.language === 'en' ? 'right' : 'left'};
+export const textLTR = (language: string|any): TextStyle => {
+  return {textAlign: language === 'en' ? 'right' : 'left'};
 };
-export const flipImage = (): any => {
-  return {transform: [{scaleX: i18n.language == 'en' ? 1 : -1}]};
+export const flipImage = (language: string|any): ViewStyle|any => {
+  return {transform: [{scaleX: language == 'en' ? 1 : -1}]};
 };
 
-export const rowReverseRTL = (): ViewStyle => {
+export const rowReverseRTL = (language: string|any): ViewStyle => {
   return {
-    flexDirection: i18n.language === 'ar' ? 'row-reverse' : 'row',
+    flexDirection: language === 'ar' ? 'row-reverse' : 'row',
   };
 };
-export const alignItemsRTL = (): any => {
+export const alignItemsRTL = (language: string|any): ViewStyle => {
   return {
-    alignItems: i18n.language === 'ar' ? 'flex-start' : 'flex-end',
-  };
-};
-
-export const alignItemsLTR = (): any => {
-  return {
-    alignItems: i18n.language === 'en' ? 'flex-end' : 'flex-start',
+    alignItems: language === 'en' ? 'flex-start' : 'flex-end',
   };
 };
 
-export const alignSelfRTL = (): any => {
+export const alignItemsLTR = (language: string|any): ViewStyle => {
   return {
-    alignSelf: i18n.language === 'en' ? 'flex-start' : 'flex-end',
+    alignItems: language === 'en' ? 'flex-end' : 'flex-start',
   };
 };
 
-export const alignSelfLTR = (): any => {
+export const alignSelfRTL = (language: string|any): ViewStyle => {
   return {
-    alignSelf: i18n.language === 'ar' ? 'flex-end' : 'flex-start',
+    alignSelf: language === 'ar' ? 'flex-start' : 'flex-end',
   };
 };
 
-export const marginRTLRight = (number: any): any => {
+export const alignSelfLTR = (language:string|any): ViewStyle => {
   return {
-    marginRight: i18n.language == 'ar' ? 0 : number,
-    marginLeft: i18n.language == 'en' ? 0 : number,
+    alignSelf: language === 'ar' ? 'flex-end' : 'flex-start',
   };
 };
 
-export const paddingRTLRight = (number: any): any => {
+export const marginRTLRight = (language: string|any, number: any): ViewStyle => {
   return {
-    paddingRight: i18n.language == 'ar' ? 0 : number,
-    paddingLeft: i18n.language == 'en' ? 0 : number,
+    marginRight: language == 'en' ? 0 : number,
+    marginLeft: language == 'ar' ? 0 : number,
   };
 };
 
-export const marginRTLLeft = (number: any): any => {
+export const paddingRTLRight = (language: string|any, number: any): ViewStyle => {
   return {
-    marginLeft: i18n.language == 'ar' ? 0 : number,
-    marginRight: i18n.language == 'en' ? 0 : number,
+    paddingRight: language == 'ar' ? 0 : number,
+    paddingLeft: language == 'en' ? 0 : number,
   };
 };
 
-export const paddingRTLLeft = (number: any): any => {
+export const marginRTLLeft = (language: string|any, number: any): ViewStyle => {
   return {
-    paddingLeft: i18n.language == 'ar' ? 0 : number,
-    paddingRight: i18n.language == 'en' ? 0 : number,
+    marginLeft: language == 'en' ? 0 : number,
+    marginRight: language == 'ar' ? 0 : number,
   };
 };
 
-export const rightRTL = (number: any): any => {
+export const paddingRTLLeft = (language: string|any, number: any): ViewStyle => {
   return {
-    right: i18n.language === 'ar' ? undefined : number,
-    left: i18n.language === 'en' ? undefined : number,
+    paddingLeft: language == 'ar' ? 0 : number,
+    paddingRight: language == 'en' ? 0 : number,
   };
 };
-export const leftRTL = (number: any): any => {
+
+export const rightRTL = (language: string|any, number: any): ViewStyle => {
   return {
-    left: i18n.language === 'ar' ? undefined : number,
-    right: i18n.language === 'en' ? undefined : number,
+    right: language === 'ar' ? undefined : number,
+    left: language === 'en' ? undefined : number,
+  };
+};
+export const leftRTL = (language: string|any, number: any): ViewStyle => {
+  return {
+    left: language === 'ar' ? undefined : number,
+    right: language === 'en' ? undefined : number,
   };
 };
 

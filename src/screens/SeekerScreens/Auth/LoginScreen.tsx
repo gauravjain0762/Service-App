@@ -45,7 +45,7 @@ import {getAsyncFCMToken, setAsyncFCMToken} from '@/Hooks/asyncStorage';
 import {setFcmToken} from '@/features/authSlice';
 
 const LoginScreen = ({}: any) => {
-  const {fcmToken} = useAppSelector(state => state.auth);
+  const {fcmToken,language} = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
 
   const [details, setDetails] = useState({
@@ -58,6 +58,11 @@ const LoginScreen = ({}: any) => {
   const [googleLogin] = useGoogleSignInMutation();
   const [loading, setLoading] = useState(false);
 
+  const styles = React.useMemo(
+      () => getGlobalStyles(language),
+      [language],
+    );
+  
   React.useEffect(() => {
     getFcmToken();
   }, []);
@@ -199,9 +204,9 @@ const LoginScreen = ({}: any) => {
         size={getFontSize(2.5)}
         containerStyle={{
           padding: getFontSize(2),
-          ...alignSelfLTR(),
+          ...alignSelfLTR(language),
         }}
-        imageStyle={{...flipImage()}}
+        imageStyle={{...flipImage(language)}}
       />
       <KeyboardAwareScrollView
         nestedScrollEnabled
@@ -291,7 +296,8 @@ const LoginScreen = ({}: any) => {
 
 export default LoginScreen;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -302,14 +308,6 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 3.4, Colors.black),
     textAlign: 'center',
     paddingBottom: getFontSize(5),
-  },
-
-  midContainer: {
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    gap: 10,
-    marginLeft: getFontSize(0.5),
-    marginTop: hp(10),
   },
 
   accountText: {
@@ -329,7 +327,7 @@ const styles = StyleSheet.create({
   },
 
   dividerContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     paddingVertical: hp(30),
     marginHorizontal: wp(23),
@@ -346,7 +344,7 @@ const styles = StyleSheet.create({
   },
 
   socialContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     alignSelf: 'center',
     gap: getFontSize(3),
@@ -363,9 +361,9 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     ...commonFontStyle(400, 1.9, Colors.seeker_primary),
-    ...textLTR(),
-    ...paddingRTLRight(getFontSize(0.5)),
+    ...textLTR(_language),
+    ...paddingRTLRight(_language,getFontSize(0.5)),
     // paddingRight: getFontSize(0.5),
     marginTop: hp(4),
   },
-});
+})}

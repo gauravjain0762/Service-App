@@ -19,6 +19,7 @@ import CommonText from './CommonText';
 import FastImage from 'react-native-fast-image';
 import {marginRTLRight, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 import {useAppSelector} from '@/Hooks/hooks';
+import { useTranslation } from 'react-i18next';
 
 export type DropdownItem = {
   label: string;
@@ -58,7 +59,10 @@ const CustomDropdown = ({
   setSelected,
   multiSelect = false,
 }: Props) => {
+  const {t, i18n} = useTranslation();
   const {language} = useAppSelector(state => state.auth);
+
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const handleChange = (item: DropdownItem) => {
     setSelected?.(item.value); // only call if setSelected is passed
     onChange(item);
@@ -130,7 +134,7 @@ const CustomDropdown = ({
             disable={disabled}
             labelField={labelField ? labelField : valueField}
             valueField={valueField}
-            placeholder={placeholder}
+            placeholder={placeholder ? t(placeholder) : ''}
             inputSearchStyle={{
               ...commonFontStyle(400, 2, Colors._5E5D5D),
               height: 40,
@@ -221,7 +225,7 @@ const CustomDropdown = ({
           disable={disabled}
           labelField={labelField}
           valueField={valueField}
-          placeholder={placeholder}
+          placeholder={placeholder ? t(placeholder) : ''}
           placeholderStyle={styles.placeholder}
           selectedTextStyle={styles.selectedText}
           iconStyle={styles.iconStyle}
@@ -231,30 +235,30 @@ const CustomDropdown = ({
           keyboardAvoiding
           itemContainerStyle={{}}
           onFocus={() => Keyboard.dismiss}
-           renderRightIcon={() =>
-              language === 'en' ? (
-                <FastImage
-                  source={IMAGES.downArrow}
-                  defaultSource={IMAGES.downArrow}
-                  style={styles.arrowIcon}
-                  resizeMode={'contain'}
-                />
-              ) : (
-                <></>
-              )
-            }
-            renderLeftIcon={() =>
-              language === 'en' ? (
-                <></>
-              ) : (
-                <FastImage
-                  source={IMAGES.downArrow}
-                  defaultSource={IMAGES.downArrow}
-                  style={styles.arrowIcon}
-                  resizeMode={'contain'}
-                />
-              )
-            }
+          renderRightIcon={() =>
+            language === 'en' ? (
+              <FastImage
+                source={IMAGES.downArrow}
+                defaultSource={IMAGES.downArrow}
+                style={styles.arrowIcon}
+                resizeMode={'contain'}
+              />
+            ) : (
+              <></>
+            )
+          }
+          renderLeftIcon={() =>
+            language === 'en' ? (
+              <></>
+            ) : (
+              <FastImage
+                source={IMAGES.downArrow}
+                defaultSource={IMAGES.downArrow}
+                style={styles.arrowIcon}
+                resizeMode={'contain'}
+              />
+            )
+          }
           renderItem={(item: any, selected: any): any => {
             if (item[labelField] && item[labelField] !== '') {
               return (
@@ -291,117 +295,119 @@ const CustomDropdown = ({
 
 export default CustomDropdown;
 
-const styles = StyleSheet.create({
-  container: {},
-  label: {
-    ...commonFontStyle(500, 1.8, Colors.black),
-  },
-  required: {
-    color: 'red',
-  },
-  dropdown: {
-    minHeight: hp(55),
-    borderRadius: hp(50),
-    paddingHorizontal: wp(16),
-    backgroundColor: Colors._F9F9F9,
-    paddingVertical: hp(8),
-    ...textRTL()
-  },
-  placeholder: {
-    ...commonFontStyle(400, 1.9, '#969595'),
-    ...textRTL()
-  },
-  selectedText: {
-    ...commonFontStyle(400, 1.9, Colors.black),
-    ...textRTL()
-  },
-  arrowIcon: {
-    width: wp(20),
-    height: hp(20),
-    tintColor: '#3B4256',
-  },
-  iconStyle: {
-    width: wp(20),
-    height: hp(20),
-  },
-  itemContainer: {
-    paddingVertical: hp(10),
-    paddingHorizontal: wp(10),
-  },
-  itemText: {
-    ...commonFontStyle(400, 1.9, Colors.black),
-  },
-  noData: {
-    ...commonFontStyle(400, 1.9, Colors._CDCDCD),
-    textAlign: 'center',
-    paddingVertical: hp(10),
-  },
-  // New styles for selected items display
-  selectedItemsContainer: {
-    marginTop: hp(8),
-    maxHeight: hp(100),
-  },
-  chipContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: wp(8),
-  },
-  chip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors._F9F9F9,
-    borderRadius: hp(15),
-    paddingHorizontal: wp(12),
-    paddingVertical: hp(6),
-    marginRight: wp(8),
-    marginBottom: hp(8),
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-  },
-  chipText: {
-    ...commonFontStyle(400, 1.6, Colors.black),
-    marginRight: wp(6),
-  },
-  removeButton: {
-    width: wp(16),
-    height: wp(16),
-    borderRadius: wp(8),
-    backgroundColor: '#FF6B6B',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  removeButtonText: {
-    color: 'white',
-    fontSize: getFontSize(1.2),
-    fontWeight: 'bold',
-    lineHeight: getFontSize(1.2),
-  },
-  // Styles for selected items inside dropdown
-  selectedItemChip: {
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    backgroundColor: '#E8F4FD',
-    borderRadius: hp(12),
-    paddingHorizontal: wp(8),
-    paddingVertical: hp(4),
-    ...marginRTLRight(wp(4)),
-    marginBottom: hp(4),
-    borderWidth: 1,
-    borderColor: '#B3D9F2',
-  },
-  selectedItemText: {
-    ...commonFontStyle(400, 1.4, '#1976D2'),
-    ...marginRTLRight(wp(4)),
-  },
-  removeIcon: {
-    color: '#1976D2',
-    fontSize: getFontSize(1.6),
-    fontWeight: 'bold',
-    width: wp(16),
-    textAlign: 'center',
-  },
-  selectedItemsDropdown: {
-    padding: getFontSize(1.5),
-  },
-  inputContainer: {},
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {},
+    label: {
+      ...commonFontStyle(500, 1.8, Colors.black),
+    },
+    required: {
+      color: 'red',
+    },
+    dropdown: {
+      minHeight: hp(55),
+      borderRadius: hp(50),
+      paddingHorizontal: wp(16),
+      backgroundColor: Colors._F9F9F9,
+      paddingVertical: hp(8),
+      ...textRTL(_language),
+    },
+    placeholder: {
+      ...commonFontStyle(400, 1.9, '#969595'),
+      ...textRTL(_language),
+    },
+    selectedText: {
+      ...commonFontStyle(400, 1.9, Colors.black),
+      ...textRTL(_language),
+    },
+    arrowIcon: {
+      width: wp(20),
+      height: hp(20),
+      tintColor: '#3B4256',
+    },
+    iconStyle: {
+      width: wp(20),
+      height: hp(20),
+    },
+    itemContainer: {
+      paddingVertical: hp(10),
+      paddingHorizontal: wp(10),
+    },
+    itemText: {
+      ...commonFontStyle(400, 1.9, Colors.black),
+    },
+    noData: {
+      ...commonFontStyle(400, 1.9, Colors._CDCDCD),
+      textAlign: 'center',
+      paddingVertical: hp(10),
+    },
+    // New styles for selected items display
+    selectedItemsContainer: {
+      marginTop: hp(8),
+      maxHeight: hp(100),
+    },
+    chipContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: wp(8),
+    },
+    chip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: Colors._F9F9F9,
+      borderRadius: hp(15),
+      paddingHorizontal: wp(12),
+      paddingVertical: hp(6),
+      marginRight: wp(8),
+      marginBottom: hp(8),
+      borderWidth: 1,
+      borderColor: '#E0E0E0',
+    },
+    chipText: {
+      ...commonFontStyle(400, 1.6, Colors.black),
+      marginRight: wp(6),
+    },
+    removeButton: {
+      width: wp(16),
+      height: wp(16),
+      borderRadius: wp(8),
+      backgroundColor: '#FF6B6B',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    removeButtonText: {
+      color: 'white',
+      fontSize: getFontSize(1.2),
+      fontWeight: 'bold',
+      lineHeight: getFontSize(1.2),
+    },
+    // Styles for selected items inside dropdown
+    selectedItemChip: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      backgroundColor: '#E8F4FD',
+      borderRadius: hp(12),
+      paddingHorizontal: wp(8),
+      paddingVertical: hp(4),
+      ...marginRTLRight(_language, wp(4)),
+      marginBottom: hp(4),
+      borderWidth: 1,
+      borderColor: '#B3D9F2',
+    },
+    selectedItemText: {
+      ...commonFontStyle(400, 1.4, '#1976D2'),
+      ...marginRTLRight(_language, wp(4)),
+    },
+    removeIcon: {
+      color: '#1976D2',
+      fontSize: getFontSize(1.6),
+      fontWeight: 'bold',
+      width: wp(16),
+      textAlign: 'center',
+    },
+    selectedItemsDropdown: {
+      padding: getFontSize(1.5),
+    },
+    inputContainer: {},
+  });
+};

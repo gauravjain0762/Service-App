@@ -8,6 +8,8 @@ import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import Divider from './Divider';
 import { formatPriceIN } from './commonFunction';
+import { useAppSelector } from '@/Hooks/hooks';
+import { flipImage, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   style?: ViewStyle;
@@ -17,6 +19,8 @@ type Props = {
 };
 
 const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const summaryDetails = [
     {label: 'Platform Fees', amount: jobDetails?.service_charges ?? ''},
     {label: 'Sub Total', amount: jobDetails?.sub_total ?? ''},
@@ -81,7 +85,8 @@ const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
 
 export default ServiceBillSummary;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   card: {
     // marginTop: hp(17),
     paddingVertical: hp(16),
@@ -94,29 +99,31 @@ const styles = StyleSheet.create({
     marginBottom: hp(15),
   },
   row: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   label: {
     flex: 3,
     ...commonFontStyle(400, 2.2, Colors._828282),
+    ...textRTL(_language)
   },
   amountRow: {
     flex: 1,
     gap: wp(4),
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
   totalAmountRow: {
     gap: wp(4),
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   currencyIcon: {
     width: wp(20),
     height: hp(20),
+    // ...flipImage(_language)
   },
   amountText: {
     ...commonFontStyle(400, 2.2, Colors._828282),
@@ -124,7 +131,7 @@ const styles = StyleSheet.create({
   totalRow: {
     width: '100%',
     marginTop: hp(24),
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -134,4 +141,4 @@ const styles = StyleSheet.create({
   totalAmountText: {
     ...commonFontStyle(700, 2.2, Colors.black),
   },
-});
+})}

@@ -4,7 +4,7 @@ import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
-import {alignSelfLTR, flipImage, rowReverseRTL} from '@/utils/arabicStyles';
+import {alignSelfLTR, flipImage, rowReverseRTL, textLTR} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import {
   emailCheck,
@@ -26,7 +26,7 @@ import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 
 const ProLoginScreen = ({}: any) => {
-  const {fcmToken} = useAppSelector(state => state.auth);
+  const {fcmToken,language}:any = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
@@ -35,6 +35,10 @@ const ProLoginScreen = ({}: any) => {
     password: __DEV__ ? 'user@123' : '',
   });
 
+  const styles = React.useMemo(
+      () => getGlobalStyles(language),
+      [language],
+    );
   const [login, {isLoading}] = useLoginMutation();
 
   React.useEffect(() => {
@@ -86,9 +90,9 @@ const ProLoginScreen = ({}: any) => {
         size={getFontSize(2.5)}
         containerStyle={{
           padding: getFontSize(2),
-          ...alignSelfLTR(),
+          ...alignSelfLTR(language),
         }}
-        imageStyle={{...flipImage()}}
+        imageStyle={{...flipImage(language)}}
       />
       <KeyboardAwareScrollView
         nestedScrollEnabled
@@ -152,7 +156,8 @@ const ProLoginScreen = ({}: any) => {
 
 export default ProLoginScreen;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: getFontSize(10),
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
   },
 
   midContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: 10,
     marginLeft: getFontSize(0.5),
@@ -189,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   dividerContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     paddingVertical: hp(30),
     marginHorizontal: wp(23),
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
   },
 
   socialContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     alignSelf: 'center',
     gap: getFontSize(3),
@@ -223,7 +228,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     marginTop: hp(4),
-    textAlign: 'right',
+    ...textLTR(_language),
     ...commonFontStyle(400, 1.9, Colors.provider_primary),
   },
-});
+})}

@@ -10,6 +10,7 @@ import {IMAGES} from '@/assets/images';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {hp} from '@/utils/responsiveFn';
 import {setGuestLogin} from '@/features/authSlice';
+import {setLanguages} from '@/Hooks/asyncStorage';
 
 const SplashScreen = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ const SplashScreen = () => {
     token: authToken,
     isProvider,
     guestUser,
+    language,
   } = useAppSelector(state => state.auth);
 
   useEffect(() => {
@@ -27,6 +29,7 @@ const SplashScreen = () => {
 
   const getToken = async () => {
     try {
+      await dispatch(setLanguages(language));
       if (authToken) {
         if (guestUser) {
           dispatch(setGuestLogin(true));
