@@ -209,6 +209,7 @@ const LoginScreen = ({}: any) => {
       />
       <KeyboardAwareScrollView
         nestedScrollEnabled
+        enableResetScrollToCoords={false}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid

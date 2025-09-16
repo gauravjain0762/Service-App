@@ -14,10 +14,12 @@ import {useRoute} from '@react-navigation/native';
 import {getLocalizedText} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import ProRequestDetailSkeleton from '@/components/skeleton/ProRequestDetailSkeleton';
+import { alignItemsRTL, marginRTLLeft, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 const ProRequestDetail = () => {
   const {params} = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
 
   const {
     data: requestData,
@@ -86,6 +88,7 @@ const ProRequestDetail = () => {
               style={{
                 marginBottom: hp(23),
                 ...commonFontStyle(700, 2.2, Colors.black),
+                 ...textRTL(language)
               }}
             />
             <ServiceDetailCard
@@ -102,36 +105,42 @@ const ProRequestDetail = () => {
 
 export default ProRequestDetail;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   sectionContainer: {
     paddingHorizontal: wp(24),
     marginBottom: hp(30),
   },
   sectionLabel: {
-    marginLeft: wp(32),
+    // marginLeft: wp(32),
+    ...marginRTLLeft(_language,wp(32)),
     ...commonFontStyle(400, 1.9, Colors._919191),
+     ...textRTL(_language)
   },
   card: {
     width: '100%',
     gap: hp(10),
     padding: hp(22),
     marginTop: hp(21),
-    alignItems: 'flex-start',
+    ...alignItemsRTL(_language)
   },
   cardHeader: {
     width: '100%',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   serviceTitle: {
     ...commonFontStyle(600, 2, Colors.black),
+    ...textRTL(_language)
   },
   requestId: {
     ...commonFontStyle(600, 1.9, Colors._55B4FD),
+     ...textRTL(_language)
   },
   serviceSubtitle: {
     ...commonFontStyle(400, 1.7, Colors._898989),
+     ...textRTL(_language)
   },
   bottomContainer: {
     flex: 1,
@@ -139,4 +148,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(24),
     backgroundColor: Colors._F5F5F5,
   },
-});
+})}

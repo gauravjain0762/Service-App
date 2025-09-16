@@ -16,6 +16,8 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomImage from './CustomImage';
 import {IMAGES} from '@/assets/images';
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignItemsRTL, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   title?: string;
@@ -23,6 +25,7 @@ type Props = {
   cardStyle?: StyleProp<ViewStyle>;
   textInputStyle?: TextInputProps['style'];
   isLeftImage?: boolean;
+  placeholder?: string;
 } & TextInputProps &
   TextProps;
 
@@ -31,10 +34,13 @@ const AddSpecialNote = ({
   title,
   cardStyle,
   textInputStyle,
+  placeholder='Describe here...',
   isLeftImage = false,
   ...rest
 }: Props) => {
   const {t} = useTranslation();
+  const {language} = useAppSelector(state => state.auth);
+      const styles = React.useMemo(() => getGlobalStyles(language), [language]);
 
   return (
     <View style={[styles.card, cardStyle]}>
@@ -44,7 +50,7 @@ const AddSpecialNote = ({
           <View
             style={[
               styles.textInput,
-              {flexDirection: 'row', alignItems: 'center'},
+              {...rowReverseRTL(language), alignItems: 'center'},
               textInputStyle,
             ]}>
             <CustomImage
@@ -54,7 +60,7 @@ const AddSpecialNote = ({
             />
             <TextInput
               multiline
-              placeholder={t('Describe here...')}
+              placeholder={t(`${placeholder}`)}
               style={[textInputStyle]}
               scrollEnabled
               // textAlignVertical="top"
@@ -73,7 +79,7 @@ const AddSpecialNote = ({
         /> */}
           <TextInput
             multiline
-            placeholder={t('Describe here...')}
+             placeholder={t(`${placeholder}`)}
             style={[styles.textInput, textInputStyle]}
             scrollEnabled
             // textAlignVertical="top"
@@ -87,18 +93,22 @@ const AddSpecialNote = ({
 
 export default AddSpecialNote;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   card: {
     paddingHorizontal: wp(22),
   },
   shadowCard: {
     padding: hp(20),
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
+    ...alignItemsRTL(_language),
     height: hp(125),
     minHeight: hp(60),
+    
   },
   specialNoteTitle: {
     ...commonFontStyle(600, 2.2, Colors.black),
+    ...textRTL(_language)
   },
   textInput: {
     width: '100%',
@@ -110,5 +120,6 @@ const styles = StyleSheet.create({
     borderRadius: hp(10),
     textAlignVertical: 'top',
     borderColor: Colors._BFC2C1,
+    ...textRTL(_language)
   },
-});
+})}

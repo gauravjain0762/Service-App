@@ -7,6 +7,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import CommonText from './CommonText';
+import { useAppSelector } from '@/Hooks/hooks';
+import { textRTL } from '@/utils/arabicStyles';
 
 const generateDates = () => {
   const dates = [];
@@ -38,7 +40,8 @@ type Props = {
 
 const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
   const flatListRef = useRef<FlatList>(null);
-
+const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   useEffect(() => {
     if (!selectedDate && !isProvider) {
       const currentDate = moment().format('DDMM');
@@ -98,7 +101,7 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
     <View style={styles.container}>
       <CommonText
         text={'Select Date'}
-        style={commonFontStyle(700, 2.2, Colors.black)}
+        style={[commonFontStyle(700, 2.2, Colors.black),{...textRTL(language)}]}
       />
 
       <View style={styles.listWrapper}>
@@ -142,6 +145,7 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
             );
           }}
           keyExtractor={item => item.key}
+          inverted={language==='ar'}
         />
       </View>
     </View>
@@ -150,7 +154,8 @@ const CustomDates = ({selectedDate, setSelectedDate, isProvider}: Props) => {
 
 export default CustomDates;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     gap: hp(22),
   },
@@ -208,4 +213,4 @@ const styles = StyleSheet.create({
     width: wp(40),
     zIndex: 2,
   },
-});
+})}

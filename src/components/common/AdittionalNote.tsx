@@ -5,15 +5,19 @@ import ShadowCard from './ShadowCard';
 import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp} from '@/utils/responsiveFn';
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignItemsRTL } from '@/utils/arabicStyles';
 
 const AdittionalNote = ({title, additionalNotes, style}: any) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <ShadowCard
       style={[
         {
           padding: hp(19),
           width: '100%',
-          alignItems: 'flex-start',
+          ...alignItemsRTL(language),
           gap: hp(12),
         },
         style,
@@ -36,4 +40,7 @@ const AdittionalNote = ({title, additionalNotes, style}: any) => {
 
 export default AdittionalNote;
 
-const styles = StyleSheet.create({});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+
+})}

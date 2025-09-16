@@ -20,9 +20,11 @@ import {resetStore} from '@/store';
 import {clearToken} from '@/features/authSlice';
 import {useAppDispatch, useAppSelector} from '@/Hooks/hooks';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const ProProfile = () => {
-  const {userInfo} = useAppSelector<any>(state => state.auth);
+  const {userInfo,language} = useAppSelector<any>(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
 
   const route = useRoute<any>();
   const {isProvider} = route.params ?? {};
@@ -206,7 +208,8 @@ const ProProfile = () => {
 
 export default ProProfile;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: hp(20),
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     borderRadius: getFontSize(2),
     marginVertical: getFontSize(3),
     marginHorizontal: getFontSize(2),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     backgroundColor: Colors.provider_primary,
     paddingVertical: getFontSize(2),
     justifyContent: 'space-evenly',
@@ -277,7 +280,7 @@ const styles = StyleSheet.create({
   availableView: {
     borderRadius: getFontSize(1.8),
     marginHorizontal: getFontSize(2),
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     backgroundColor: Colors._F6FFFB,
     borderWidth: 1,
     borderColor: Colors._EEEEEE,
@@ -299,4 +302,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: getFontSize(3),
     paddingTop: getFontSize(2),
   },
-});
+})}

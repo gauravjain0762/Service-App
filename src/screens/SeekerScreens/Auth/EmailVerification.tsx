@@ -49,6 +49,7 @@ const EmailVerification = () => {
       }}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
+        enableResetScrollToCoords={false}
         showsVerticalScrollIndicator={false}
         style={styles.container}
         contentContainerStyle={styles.scrollContent}

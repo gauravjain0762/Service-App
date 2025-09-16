@@ -22,6 +22,7 @@ const ProviderTabNavigation = () => {
   const dashboard: any = useSelector(
     (state: RootState) => state.auth?.dashboard,
   );
+  const language: any = useSelector((state: RootState) => state.auth?.language);
 
   const tabs = [
     {
@@ -69,6 +70,7 @@ const ProviderTabNavigation = () => {
       </TouchableWithoutFeedback>
     );
   };
+  const orderedScreens = language === 'ar' ? [...tabs].reverse() : tabs;
 
   return (
     <SafeAreaView
@@ -95,7 +97,7 @@ const ProviderTabNavigation = () => {
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {
             const {icon, iconUnSelected} =
-              tabs.find(tab => tab.name === route.name) || {};
+              orderedScreens.find(tab => tab.name === route.name) || {};
             const tabIcon = focused ? icon : iconUnSelected;
             return (
               <View style={[styles.iconContainer]}>
@@ -116,7 +118,7 @@ const ProviderTabNavigation = () => {
           ),
         })}
         initialRouteName={PROVIDER_SCREENS.ProDashboard}>
-        {tabs.map(tab => (
+        {orderedScreens.map(tab => (
           <Tab.Screen
             key={tab.name}
             name={tab.name}

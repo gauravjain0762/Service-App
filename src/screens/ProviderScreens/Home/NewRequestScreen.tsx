@@ -13,9 +13,12 @@ import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 import {useIsFocused} from '@react-navigation/native';
 import CommonText from '@/components/common/CommonText';
 import {Colors} from '@/constants/Colors';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const NewRequestScreen = () => {
   const isFocus = useIsFocused();
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allRequestData, setAllRequestData] = React.useState([]);
   const {
@@ -32,7 +35,7 @@ const NewRequestScreen = () => {
       refetchOnFocus: true,
     },
   );
-  
+
   React.useEffect(() => {
     if (isFocus) {
       refetchRequestList();
@@ -130,14 +133,16 @@ const NewRequestScreen = () => {
 
 export default NewRequestScreen;
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
-  contentContainer: {
-    paddingHorizontal: getFontSize(2),
-    paddingTop: getFontSize(2),
-    paddingBottom: getFontSize(12),
-    gap: getFontSize(1.5),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+    },
+    contentContainer: {
+      paddingHorizontal: getFontSize(2),
+      paddingTop: getFontSize(2),
+      paddingBottom: getFontSize(12),
+      gap: getFontSize(1.5),
+    },
+  });
+};

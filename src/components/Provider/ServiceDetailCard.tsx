@@ -13,12 +13,14 @@ import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import moment from 'moment';
 import CustomImage from '../common/CustomImage';
 import {IMAGES} from '@/assets/images';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const ServiceDetailCard = ({
   requestDetails,
   language,
   requestMyOffersDetails,
 }: any) => {
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const start = moment(
     `${moment(requestDetails?.date).format('YYYY-MM-DD')} ${
       requestDetails?.time
@@ -157,7 +159,8 @@ const ServiceDetailCard = ({
 
 export default ServiceDetailCard;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   card: {
     width: '100%',
     borderRadius: hp(20),
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
   },
   row: {
     width: '100%',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: hp(25),
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
   bottomRow: {
     width: '100%',
     marginTop: hp(15),
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 1.7, Colors.white),
   },
   priceRow: {
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(7),
   },
@@ -209,4 +212,4 @@ const styles = StyleSheet.create({
   priceText: {
     ...commonFontStyle(700, 3.7, Colors.black),
   },
-});
+})}

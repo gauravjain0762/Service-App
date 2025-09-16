@@ -187,6 +187,7 @@ const ProSignupScreen = () => {
     <SafeareaProvider style={styles.safeArea}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
+        enableResetScrollToCoords={false}
         style={styles.container}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid
@@ -355,7 +356,7 @@ const getGlobalStyles = (_language: any) => {
       backgroundColor: Colors.white,
     },
     container: {
-      flex: 1,
+      flexGrow: 1,
       backgroundColor: Colors.white,
       paddingHorizontal: getFontSize(2.2),
       paddingTop: getFontSize(3),

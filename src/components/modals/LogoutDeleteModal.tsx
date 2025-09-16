@@ -8,6 +8,8 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import {Colors} from '@/constants/Colors';
 import CustomButton from '../common/CustomButton';
+import { useAppSelector } from '@/Hooks/hooks';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 type Props = {
   image?: any;
@@ -30,6 +32,8 @@ const LogoutDeleteModal = ({
   image,
   onPressConfirm,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <BottomModal onClose={() => {}} onPressCancel={() => {}} visible={visible}>
       <CustomImage
@@ -68,7 +72,8 @@ const LogoutDeleteModal = ({
 
 export default LogoutDeleteModal;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   closeIcon: {
     alignSelf: 'flex-end',
   },
@@ -88,7 +93,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 2.2, Colors._767676),
   },
   buttonRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(13),
     marginTop: hp(20),
@@ -103,4 +108,4 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     ...commonFontStyle(500, 1.8, Colors._7C7C7C),
   },
-});
+})}

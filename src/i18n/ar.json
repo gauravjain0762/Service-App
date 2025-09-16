@@ -158,6 +158,17 @@
     "Pay by Card":"الدفع عن طريق البطاقة",
     "Apple Pay":"أبل الدفع",
     "Confirm & Pay":"تأكيد والدفع",
-    "Offer Summary":"ملخص العرض"
+    "Offer Summary":"ملخص العرض",
+    "Select Emirates":"اختر طيران الإمارات",
+    "business Emirates":"إمارات الأعمال",
+    "Cancel":"يلغي",
+    "New Request":"طلب جديد",
+    "Service Category":"فئة الخدمة",
+    "No. of Hour":"رقم الساعة",
+    "No. of Professional":"عدد المحترفين",
+    "Additional Note":"ملاحظة إضافية",
+    "Upload PDF's here.":"قم بتحميل ملفات PDF هنا.",
+     "Edit Profile":"تحرير الملف الشخصي",
+    "Change Password":"تغيير كلمة المرور"
   }
 }

@@ -185,6 +185,7 @@ const SignUpScreen = () => {
     <SafeareaProvider loading={loading} style={{backgroundColor: Colors.white}}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
+        enableResetScrollToCoords={false}
         style={styles.container}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid

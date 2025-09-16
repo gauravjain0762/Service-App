@@ -110,4 +110,6 @@ export const IMAGES = {
   service_splash: require('./Images/service_splash.png'),
 };
 
-export const Animation = {};
+export const Animation = {
+  splash_animation:require('./animations/splash_animation.json')
+};

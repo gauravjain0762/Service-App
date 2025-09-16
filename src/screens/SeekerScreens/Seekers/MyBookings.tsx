@@ -246,6 +246,7 @@ const MyBookings = () => {
 
       <KeyboardAwareScrollView
         nestedScrollEnabled
+        enableResetScrollToCoords={false}
         style={{flex: 1}}
         contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
         enableOnAndroid

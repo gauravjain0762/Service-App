@@ -6,6 +6,8 @@ import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import moment from 'moment';
+import { useAppSelector } from '@/Hooks/hooks';
+import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   isProvider?: boolean;
@@ -48,6 +50,8 @@ const TimeSlots = ({
   selectedTime,
   setSelectedTime,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const timeSlots = useMemo(() => {
     if (!date) return [];
     return generateTimeSlots(date);
@@ -71,6 +75,7 @@ const TimeSlots = ({
         data={timeSlots}
         numColumns={3}
         scrollEnabled={false}
+       columnWrapperStyle={{...rowReverseRTL(language)}}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item, index}) => {
           const isLastColumn = (index + 1) % 3 === 0;
@@ -98,12 +103,14 @@ const TimeSlots = ({
 
 export default TimeSlots;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     gap: hp(22),
   },
   headerText: {
     ...commonFontStyle(700, 2.2, Colors.black),
+    ...textRTL(_language)
   },
   timeContainer: {
     flexBasis: '30%',
@@ -130,4 +137,4 @@ const styles = StyleSheet.create({
   selectedTimeText: {
     color: Colors.white,
   },
-});
+})}

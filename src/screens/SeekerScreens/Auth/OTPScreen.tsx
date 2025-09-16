@@ -130,6 +130,7 @@ const OTPScreen = () => {
       <View style={styles.subContainer}>
         <KeyboardAwareScrollView
           nestedScrollEnabled
+          enableResetScrollToCoords={false}
           showsVerticalScrollIndicator={false}
           enableOnAndroid
           extraHeight={hp(200)}
