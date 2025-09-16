@@ -18,6 +18,8 @@ import {hp, wp} from '@/utils/responsiveFn';
 import Modal from 'react-native-modal';
 import Toast from 'react-native-toast-message';
 import ToastComponent from '../ToastComponent';
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignSelfLTR } from '@/utils/arabicStyles';
 
 type BottomModalProps = {
   close?: boolean;
@@ -38,6 +40,8 @@ const BottomModal = ({
   onPressCancel,
   backgroundColor = '#fff',
 }: BottomModalProps) => {
+  const {language} = useAppSelector<any>(state => state.auth);
+      const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const lineAnim = React.useRef(new Animated.Value(1)).current;
   const toastConfig = {
     success: ({text1, ...rest}: any) => (
@@ -91,7 +95,8 @@ const BottomModal = ({
 
 export default BottomModal;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   modal: {
     margin: 0,
     justifyContent: 'flex-end',
@@ -116,8 +121,8 @@ const styles = StyleSheet.create({
     margin: hp(20),
     borderRadius: hp(38),
     alignItems: 'center',
-    alignSelf: 'flex-end',
+    ...alignSelfLTR(_language),
     justifyContent: 'center',
     backgroundColor: Colors.white,
   },
-});
+})}

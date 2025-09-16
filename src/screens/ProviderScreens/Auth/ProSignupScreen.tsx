@@ -1,7 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Colors} from '@/constants/Colors';
-import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
+import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import PhoneInput from '@/components/common/PhoneInput';
@@ -12,6 +12,7 @@ import {IMAGES} from '@/assets/images';
 import {
   emailCheck,
   errorToast,
+  getLocalizedText,
   goBack,
   navigateTo,
   successToast,
@@ -28,7 +29,8 @@ import {
   useSignUpMutation,
 } from '@/api/Provider/authApi';
 import {useAppSelector} from '@/Hooks/hooks';
-import { flipImage, rowReverseRTL } from '@/utils/arabicStyles';
+import {flipImage, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import EmiratesModal from '@/components/modals/EmiratesModal';
 
 const ServiceList = [
   {label: 'Company', value: 'Company'},
@@ -40,7 +42,7 @@ type UserProps = {
   phone: string;
   password: string;
   service: string;
-  emirates: string | any;
+  emirates: string[] | number[] | any;
   category: string[] | number[] | any;
   subCategory: string[] | number[] | any;
   license: any;
@@ -50,17 +52,20 @@ type UserProps = {
 };
 
 const ProSignupScreen = () => {
-  const {dropDownCategories, emirates, dropDownSubCategories, fcmToken,language} =
-    useAppSelector(state => state.auth);
+  const {
+    dropDownCategories,
+    emirates,
+    dropDownSubCategories,
+    fcmToken,
+    language,
+  } = useAppSelector(state => state.auth);
   const [signUp, {isLoading}] = useSignUpMutation();
 
-  const styles = React.useMemo(
-        () => getGlobalStyles(language),
-        [language],
-      );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {} = useCategoryQuery({});
   const {} = useEmiratesQuery({});
   const [subCatTrigger] = useLazySubCategoryQuery();
+  const [showEmiratesModal, setShowEmiratesModal] = useState(false);
   const [callingCode, setCallingCode] = useState('971');
   const [userData, setUserData] = useState<UserProps>({
     name: '',
@@ -68,7 +73,7 @@ const ProSignupScreen = () => {
     phone: '',
     password: '',
     service: '',
-    emirates: '',
+    emirates: [],
     category: [],
     subCategory: [],
     license: null,
@@ -112,11 +117,11 @@ const ProSignupScreen = () => {
         errorToast('Please select at least one subcategory');
       } else if (!userData.service) {
         errorToast('Please select service type');
-      } else if (!userData.emirates) {
+      } else if (!userData.emirates || userData.emirates.length === 0) {
         errorToast('Please select emirates');
       } else if (!userData.category || userData.category.length === 0) {
         errorToast('Please select category');
-      }else if (!userData.picture) {
+      } else if (!userData.picture) {
         errorToast('Please upload profile picture');
       } else if (!userData.certificate) {
         errorToast('Please upload certificate');
@@ -131,7 +136,10 @@ const ProSignupScreen = () => {
         formData.append('password', userData.password);
         formData.append('phone_code', callingCode);
         formData.append('phone', userData.phone);
-        formData.append('emirates', userData.emirates);
+        formData.append(
+          'emirates',
+          userData.emirates.map(item => item._id),
+        );
         formData.append('categories', userData.category.join(','));
         formData.append('sub_categories', userData.subCategory.join(','));
         formData.append('service_type', userData.service);
@@ -154,7 +162,6 @@ const ProSignupScreen = () => {
         });
 
         const response = await signUp(formData).unwrap();
-        console.log('response-----', response);
 
         if (response?.status) {
           navigateTo(PROVIDER_SCREENS.OtpScreen, {
@@ -229,11 +236,31 @@ const ProSignupScreen = () => {
             placeholder="Business Type"
             onChange={item => setUserData({...userData, service: item.label})}
           />
-          <CustomDropdown
-            data={emirates}
-            value={userData?.emirates}
-            placeholder="Type of Emirates"
-            onChange={item => setUserData({...userData, emirates: item.value})}
+          <CustomButton
+            title={
+              userData?.emirates?.length > 0
+                ? userData.emirates
+                    .map(item =>
+                      getLocalizedText(item?.name, item?.name_ar, language),
+                    )
+                    .join(', ')
+                : 'business Emirates'
+            }
+            btnStyle={[styles.inputContainerStyle]}
+            onPress={() => setShowEmiratesModal(true)}
+            RightImg={
+              <CustomImage
+                onPress={() => setShowEmiratesModal(true)}
+                source={IMAGES.downArrow}
+                imageStyle={{width: '100%', height: '100%'}}
+                containerStyle={{
+                  width: wp(20),
+                  height: hp(20),
+                }}
+                tintColor={'#3B4256'}
+              />
+            }
+            textStyle={styles.emiratesText}
           />
           <CustomDropdown
             data={dropDownCategories}
@@ -304,6 +331,18 @@ const ProSignupScreen = () => {
           <CommonText text={'Sign In'} style={styles.signUpAccountText} />
         </CommonText>
       </KeyboardAwareScrollView>
+      <EmiratesModal
+        visible={showEmiratesModal} 
+        onClose={() => {
+          setShowEmiratesModal(false);
+        }}
+        onChangeEmirates={(selectedEmirates: any) => {
+          setUserData({...userData, emirates: selectedEmirates});
+          setShowEmiratesModal(false);
+        }}
+        selectedEmirates={userData.emirates}
+        isProvider={true}
+      />
     </SafeareaProvider>
   );
 };
@@ -312,56 +351,70 @@ export default ProSignupScreen;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    backgroundColor: Colors.white,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-    paddingHorizontal: getFontSize(2.2),
-    paddingTop: getFontSize(3),
-  },
-  headerRow: {
-    alignItems: 'center',
-    ...rowReverseRTL(_language),
-    justifyContent: 'space-between',
-  },
-  topLabel: {
-    flex: 3,
-    textAlign: 'center',
-    ...commonFontStyle(600, 3.4, Colors.black),
-  },
-  inputSection: {
-    gap: hp(20),
-    marginTop: hp(45),
-  },
-  phoneInput: {
-    marginBottom: 0,
-  },
-  uploadSection: {
-    marginTop: hp(0),
-    marginBottom: hp(20),
-    ...rowReverseRTL(_language),
-    justifyContent: 'space-between',
-  },
-  aboutInput: {
-    height: hp(120),
-    borderRadius: hp(14),
-    paddingVertical: hp(12),
-  },
-  buttonSection: {
-    marginTop: hp(52),
-    gap: hp(20),
-  },
-  createBtn: {
-    backgroundColor: Colors.provider_primary,
-  },
-  accountText: {
-    textAlign: 'center',
-    paddingTop: hp(35),
-    ...commonFontStyle(400, 2, Colors._909090),
-  },
-  signUpAccountText: {
-    ...commonFontStyle(600, 2, Colors.provider_primary),
-  },
-})}
+    safeArea: {
+      backgroundColor: Colors.white,
+    },
+    container: {
+      flex: 1,
+      backgroundColor: Colors.white,
+      paddingHorizontal: getFontSize(2.2),
+      paddingTop: getFontSize(3),
+    },
+    headerRow: {
+      alignItems: 'center',
+      ...rowReverseRTL(_language),
+      justifyContent: 'space-between',
+    },
+    topLabel: {
+      flex: 3,
+      textAlign: 'center',
+      ...commonFontStyle(600, 3.4, Colors.black),
+    },
+    inputSection: {
+      gap: hp(20),
+      marginTop: hp(45),
+    },
+    phoneInput: {
+      marginBottom: 0,
+    },
+    uploadSection: {
+      marginTop: hp(0),
+      marginBottom: hp(20),
+      ...rowReverseRTL(_language),
+      justifyContent: 'space-between',
+    },
+    aboutInput: {
+      height: hp(120),
+      borderRadius: hp(14),
+      paddingVertical: hp(12),
+    },
+    buttonSection: {
+      marginTop: hp(52),
+      gap: hp(20),
+    },
+    createBtn: {
+      backgroundColor: Colors.provider_primary,
+    },
+    accountText: {
+      textAlign: 'center',
+      paddingTop: hp(35),
+      ...commonFontStyle(400, 2, Colors._909090),
+    },
+    signUpAccountText: {
+      ...commonFontStyle(600, 2, Colors.provider_primary),
+    },
+    inputContainerStyle: {
+      minHeight: hp(55),
+      borderRadius: hp(50),
+      paddingHorizontal: wp(16),
+      backgroundColor: Colors._F9F9F9,
+      paddingVertical: hp(8),
+      justifyContent: 'space-between',
+    },
+    emiratesText: {
+      ...commonFontStyle(400, 1.9, '#969595'),
+      ...textRTL(_language),
+      flexShrink: 1,
+    },
+  });
+};

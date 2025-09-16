@@ -7,6 +7,7 @@ import {SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import {rowReverseRTL} from '@/utils/arabicStyles';
+import {useAppSelector} from '@/Hooks/hooks';
 
 type Props = {
   isSeeker?: boolean;
@@ -20,6 +21,8 @@ const TermsCheckBox = ({
   isSeeker,
   ...rest
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={styles.midContainer}>
       <CheckBox
@@ -54,18 +57,20 @@ const TermsCheckBox = ({
 
 export default TermsCheckBox;
 
-const styles = StyleSheet.create({
-  midContainer: {
-    gap: 10,
-    marginTop: hp(10),
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    marginLeft: getFontSize(0.5),
-  },
-  checkBoxText: {
-    ...commonFontStyle(400, 1.9, Colors._5E5D5D),
-  },
-  checkBoxText2: {
-    ...commonFontStyle(400, 1.9, Colors.provider_primary),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    midContainer: {
+      gap: 10,
+      marginTop: hp(10),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginLeft: getFontSize(0.5),
+    },
+    checkBoxText: {
+      ...commonFontStyle(400, 1.9, Colors._5E5D5D),
+    },
+    checkBoxText2: {
+      ...commonFontStyle(400, 1.9, Colors.provider_primary),
+    },
+  });
+};

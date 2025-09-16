@@ -61,7 +61,6 @@ const CustomDropdown = ({
 }: Props) => {
   const {t, i18n} = useTranslation();
   const {language} = useAppSelector(state => state.auth);
-
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const handleChange = (item: DropdownItem) => {
     setSelected?.(item.value); // only call if setSelected is passed
@@ -187,7 +186,7 @@ const CustomDropdown = ({
                   <CommonText
                     style={{
                       ...commonFontStyle(400, 2, Colors.black),
-                      ...textRTL(),
+                      ...textRTL(language),
                       paddingHorizontal: 10,
                     }}
                     text={item?.label}
@@ -266,7 +265,7 @@ const CustomDropdown = ({
                   <CommonText
                     style={{
                       ...commonFontStyle(400, 2, Colors.black),
-                      ...textRTL(),
+                      ...textRTL(language),
                       paddingHorizontal: 10,
                     }}
                     text={item[labelField]}

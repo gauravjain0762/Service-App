@@ -29,13 +29,13 @@ export const alignItemsLTR = (language: string|any): ViewStyle => {
 
 export const alignSelfRTL = (language: string|any): ViewStyle => {
   return {
-    alignSelf: language === 'ar' ? 'flex-start' : 'flex-end',
+    alignSelf: language === 'en' ? 'flex-start' : 'flex-end',
   };
 };
 
 export const alignSelfLTR = (language:string|any): ViewStyle => {
   return {
-    alignSelf: language === 'ar' ? 'flex-end' : 'flex-start',
+    alignSelf: language === 'en' ? 'flex-end' : 'flex-start',
   };
 };
 

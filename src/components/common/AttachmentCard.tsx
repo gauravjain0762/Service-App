@@ -12,10 +12,12 @@ import {navigateTo} from './commonFunction';
 import ImageListModal from '../modals/ImageListModal';
 import ImageViewer from '../modals/ImageViewer';
 import Video from 'react-native-video';
-
-const images = [IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2, IMAGES.dummy2];
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignSelfRTL, rowReverseRTL } from '@/utils/arabicStyles';
 
 const AttachmentCard = ({requestImages = [], title}: any) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState({
     isOpen: false,
@@ -27,9 +29,9 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
         <CommonText
           text={title ? title : 'Additional Attachment'}
           style={{
-            textAlign: 'left',
             marginBottom: hp(17),
-            alignSelf: 'flex-start',
+            // alignSelf: 'flex-start',
+            ...alignSelfRTL(language),
             paddingHorizontal: wp(12),
             ...commonFontStyle(600, 1.7, Colors._202020),
           }}
@@ -134,11 +136,12 @@ const AttachmentCard = ({requestImages = [], title}: any) => {
 
 export default AttachmentCard;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   imageRow: {
     gap: wp(12),
     width: '95%',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -170,4 +173,4 @@ const styles = StyleSheet.create({
   overlayText: {
     ...commonFontStyle(700, 2.5, Colors.white),
   },
-});
+})}

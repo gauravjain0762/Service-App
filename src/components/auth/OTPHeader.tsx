@@ -8,10 +8,12 @@ import {flipImage, rowReverseRTL} from '../../utils/arabicStyles';
 import {Colors} from '../../constants/Colors';
 import CustomImage from '../common/CustomImage';
 import {goBack} from '../common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const OTPHeader = () => {
   const {t} = useTranslation();
-
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={styles.headerContainer}>
       <CustomImage
@@ -21,7 +23,7 @@ const OTPHeader = () => {
         source={IMAGES.backArrow}
         size={getFontSize(2.5)}
         containerStyle={{alignSelf: 'center'}}
-        imageStyle={{...flipImage()}}
+        imageStyle={{...flipImage(language)}}
       />
       <Text style={styles.headerText}>{t('Verification')}</Text>
       <CustomImage
@@ -37,14 +39,16 @@ const OTPHeader = () => {
 
 export default OTPHeader;
 
-const styles = StyleSheet.create({
-  headerContainer: {
-    paddingVertical: getFontSize(1.8),
-    ...rowReverseRTL(),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerText: {
-    ...commonFontStyle(600, 3.4, Colors.black),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    headerContainer: {
+      paddingVertical: getFontSize(1.8),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    headerText: {
+      ...commonFontStyle(600, 3.4, Colors.black),
+    },
+  });
+};

@@ -10,7 +10,9 @@ import BookingCard from '@/components/Provider/BookingCard';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 import {Colors} from '@/constants/Colors';
 import {GeneralStyle} from '@/constants/GeneralStyle';
+import {useAppSelector} from '@/Hooks/hooks';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {useFocusEffect, useRoute} from '@react-navigation/native';
 import React, {useCallback, useState} from 'react';
@@ -56,6 +58,8 @@ export const DATA = [
 const ProMyBookings = () => {
   const {params} = useRoute<any>();
   const status = params?.status as {status: undefined | string}['status'];
+  const {language} = useAppSelector<any>(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState('All');
   const [allOptions] = useState(['All', 'Active', 'Completed', 'Cancelled']);
@@ -222,79 +226,81 @@ const ProMyBookings = () => {
 
 export default ProMyBookings;
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
-  contentContainer: {
-    flexGrow: 1,
-    paddingHorizontal: getFontSize(2),
-    paddingTop: getFontSize(2),
-    paddingBottom: getFontSize(12),
-    gap: getFontSize(1.5),
-  },
-  modalContainer: {
-    paddingTop: hp(30),
-    paddingBottom: hp(40),
-    paddingHorizontal: wp(20),
-    position: 'relative',
-  },
-  title: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-    textAlign: 'left',
-    marginBottom: hp(25),
-    marginTop: hp(10),
-    marginLeft: wp(5),
-  },
-  paymentContainer: {
-    gap: hp(23),
-  },
-  paymentOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: wp(10),
-    borderRadius: hp(12),
-    backgroundColor: Colors.white,
-  },
-  paymentInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconCard: {
-    width: wp(32),
-    height: hp(22),
-    resizeMode: 'contain',
-  },
-  iconApple: {
-    width: wp(28),
-    height: hp(28),
-    resizeMode: 'contain',
-  },
-  iconCash: {
-    width: wp(28),
-    height: hp(28),
-    resizeMode: 'contain',
-  },
-  paymentText: {
-    ...commonFontStyle(500, 2.0, Colors.black),
-  },
-  radioButton: {
-    width: wp(25),
-    height: hp(25),
-    borderRadius: wp(100),
-    borderWidth: 2,
-    borderColor: Colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  radioButtonSelected: {
-    borderColor: '#000000',
-  },
-  radioButtonInner: {
-    width: wp(12),
-    height: hp(12),
-    borderRadius: wp(100),
-    backgroundColor: Colors.black,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    mainContainer: {
+      flex: 1,
+    },
+    contentContainer: {
+      flexGrow: 1,
+      paddingHorizontal: getFontSize(2),
+      paddingTop: getFontSize(2),
+      paddingBottom: getFontSize(12),
+      gap: getFontSize(1.5),
+    },
+    modalContainer: {
+      paddingTop: hp(30),
+      paddingBottom: hp(40),
+      paddingHorizontal: wp(20),
+      position: 'relative',
+    },
+    title: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+      textAlign: 'left',
+      marginBottom: hp(25),
+      marginTop: hp(10),
+      marginLeft: wp(5),
+    },
+    paymentContainer: {
+      gap: hp(23),
+    },
+    paymentOption: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: wp(10),
+      borderRadius: hp(12),
+      backgroundColor: Colors.white,
+    },
+    paymentInfo: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    iconCard: {
+      width: wp(32),
+      height: hp(22),
+      resizeMode: 'contain',
+    },
+    iconApple: {
+      width: wp(28),
+      height: hp(28),
+      resizeMode: 'contain',
+    },
+    iconCash: {
+      width: wp(28),
+      height: hp(28),
+      resizeMode: 'contain',
+    },
+    paymentText: {
+      ...commonFontStyle(500, 2.0, Colors.black),
+    },
+    radioButton: {
+      width: wp(25),
+      height: hp(25),
+      borderRadius: wp(100),
+      borderWidth: 2,
+      borderColor: Colors.black,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    radioButtonSelected: {
+      borderColor: '#000000',
+    },
+    radioButtonInner: {
+      width: wp(12),
+      height: hp(12),
+      borderRadius: wp(100),
+      backgroundColor: Colors.black,
+    },
+  });
+};

@@ -41,10 +41,12 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const MyBookings = () => {
   const {t} = useTranslation();
-  const {userInfo, dashboard,userCurrentLocation,language} = useAppSelector(state => state.auth);
-
+  const {userInfo, dashboard, userCurrentLocation, language} = useAppSelector(
+    state => state.auth,
+  );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {
-    params: {category_id, category_name, category_image, title, _id,title_ar},
+    params: {category_id, category_name, category_image, title, _id, title_ar},
   } = useRoute<any>();
   const categoryData = dashboard?.categories?.find(
     val => val?._id === category_id,
@@ -196,7 +198,7 @@ const MyBookings = () => {
         };
         formData.append('media_files', fileObject); // <-- use same key for all
       });
-      if(isLocationType === 'Your Location'){
+      if (isLocationType === 'Your Location') {
         formData.append('lat', userCurrentLocation?.latitude);
         formData.append('lng', userCurrentLocation?.longitude);
       }
@@ -225,7 +227,12 @@ const MyBookings = () => {
       );
     }
   };
-console.log(category_name,title_ar,title,'category_namecategory_namecategory_name');
+  console.log(
+    category_name,
+    title_ar,
+    title,
+    'category_namecategory_namecategory_name',
+  );
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -250,7 +257,7 @@ console.log(category_name,title_ar,title,'category_namecategory_namecategory_nam
           }}>
           <RequestCard
             text1={category_name}
-            text2={getLocalizedText(title,title_ar,language)}
+            text2={getLocalizedText(title, title_ar, language)}
             imageSource={category_image}
             style={styles.requestCard}
           />
@@ -429,24 +436,11 @@ console.log(category_name,title_ar,title,'category_namecategory_namecategory_nam
 
 export default MyBookings;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.white,
-  },
-  headerContainer: {
-    marginTop: hp(20),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  headerLeft: {
-    gap: wp(16),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerTitle: {
-    ...commonFontStyle(700, 2.4, Colors.black),
   },
   searchIcon: {
     height: hp(40),
@@ -474,7 +468,7 @@ const styles = StyleSheet.create({
   },
   locationSubContainer: {
     gap: wp(15),
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     flex: 1,
   },
@@ -613,4 +607,4 @@ const styles = StyleSheet.create({
     borderColor: Colors._F2EDED,
     backgroundColor: Colors.white,
   },
-});
+})}

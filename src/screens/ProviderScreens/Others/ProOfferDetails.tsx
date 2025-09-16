@@ -31,9 +31,11 @@ import {
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
+import {alignItemsRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 const ProOfferDetails = () => {
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {params} = useRoute<any>();
   const job_id = params?.job_id;
   const {
@@ -98,7 +100,11 @@ const ProOfferDetails = () => {
             }}>
             <ShadowCard style={styles.jobCard}>
               <View style={styles.rowWithGap}>
-                <CustomImage source={IMAGES.dummy} size={hp(70)} />
+                <CustomImage
+                  source={IMAGES.dummy}
+                  uri={jobDetails?.category_id?.image}
+                  size={hp(70)}
+                />
                 <View style={styles.jobInfoContainer}>
                   <CommonText
                     text={getLocalizedText(
@@ -279,61 +285,70 @@ const ProOfferDetails = () => {
 
 export default ProOfferDetails;
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  jobCard: {
-    width: '100%',
-    padding: wp(16),
-    marginVertical: hp(27),
-    alignItems: 'flex-start',
-  },
-  rowWithGap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(20),
-  },
-  jobInfoContainer: {
-    flexShrink: 1,
-    gap: hp(11),
-  },
-  jobTitle: {
-    ...commonFontStyle(600, 1.9, Colors.black),
-  },
-  jobSubTitle: {
-    ...commonFontStyle(400, 1.7, Colors._898989),
-  },
-  jobLocation: {
-    flexShrink: 1,
-    ...commonFontStyle(400, 1.6, Colors._7D7D7D),
-  },
-  bookingContainer: {
-    gap: hp(22),
-    width: '100%',
-    marginTop: hp(27),
-  },
-  bookingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  bookingLabel: {
-    ...commonFontStyle(400, 1.9, Colors._5E5E5E),
-  },
-  bookingValue: {
-    ...commonFontStyle(700, 1.9, Colors._2C2C2C),
-  },
-  sectionTitle: {
-    marginTop: hp(30),
-    paddingHorizontal: wp(24),
-    ...commonFontStyle(600, 2.2, Colors.black),
-  },
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
+    },
+    jobCard: {
+      width: '100%',
+      padding: wp(16),
+      marginVertical: hp(27),
+      // alignItems: 'flex-start',
+      ...alignItemsRTL(_language),
+    },
+    rowWithGap: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(20),
+    },
+    jobInfoContainer: {
+      flexShrink: 1,
+      gap: hp(11),
+    },
+    jobTitle: {
+      ...commonFontStyle(600, 1.9, Colors.black),
+      ...textRTL(_language),
+    },
+    jobSubTitle: {
+      ...commonFontStyle(400, 1.7, Colors._898989),
+      ...textRTL(_language),
+    },
+    jobLocation: {
+      flexShrink: 1,
+      ...commonFontStyle(400, 1.6, Colors._7D7D7D),
+      ...textRTL(_language),
+    },
+    bookingContainer: {
+      gap: hp(22),
+      width: '100%',
+      marginTop: hp(27),
+    },
+    bookingRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    bookingLabel: {
+      ...commonFontStyle(400, 1.9, Colors._5E5E5E),
+      ...textRTL(_language),
+    },
+    bookingValue: {
+      ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+      ...textRTL(_language),
+    },
+    sectionTitle: {
+      marginTop: hp(30),
+      paddingHorizontal: wp(24),
+      ...commonFontStyle(600, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
 
-  backToHomeBtn: {
-    marginTop: hp(40),
-    marginHorizontal: wp(24),
-    backgroundColor: Colors.provider_primary,
-  },
-});
+    backToHomeBtn: {
+      marginTop: hp(40),
+      marginHorizontal: wp(24),
+      backgroundColor: Colors.provider_primary,
+    },
+  });
+};

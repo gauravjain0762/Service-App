@@ -9,6 +9,7 @@ import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   item?: any;
@@ -36,6 +37,7 @@ const ProviderHeader = ({
   const {userInfo, dropDownCategories, language} = useAppSelector(
     state => state.auth,
   );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const categoryData = dropDownCategories?.find(
     val => val?._id === userInfo?.category_id,
   );
@@ -102,50 +104,54 @@ const ProviderHeader = ({
 
 export default ProviderHeader;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: hp(20),
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(17),
-    flex: 1,
-  },
-  avatarContainer: {
-    width: wp(80),
-    height: hp(80),
-    borderRadius: hp(17),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._f4f4fe,
-    overflow: 'hidden',
-  },
-  infoContainer: {
-    flex: 1,
-    gap: hp(8),
-  },
-  title: {
-    ...commonFontStyle(600, 2.4, Colors.black),
-  },
-  subtitle: {
-    flexShrink: 1,
-    ...commonFontStyle(400, 2.1, Colors._848484),
-  },
-  starRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(5),
-  },
-  bellContainer: {
-    width: wp(38),
-    height: hp(38),
-    borderRadius: hp(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors._EDFAFF,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: hp(20),
+    },
+    leftSection: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(17),
+      flex: 1,
+    },
+    avatarContainer: {
+      width: wp(80),
+      height: hp(80),
+      borderRadius: hp(17),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._f4f4fe,
+      overflow: 'hidden',
+    },
+    infoContainer: {
+      flex: 1,
+      gap: hp(8),
+    },
+    title: {
+      ...commonFontStyle(600, 2.4, Colors.black),
+      ...textRTL(_language)
+    },
+    subtitle: {
+      flexShrink: 1,
+      ...commonFontStyle(400, 2.1, Colors._848484),
+      ...textRTL(_language)
+    },
+    starRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(5),
+    },
+    bellContainer: {
+      width: wp(38),
+      height: hp(38),
+      borderRadius: hp(10),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors._EDFAFF,
+    },
+  });
+};

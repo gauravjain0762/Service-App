@@ -9,19 +9,25 @@ import CommonText from '@/components/common/CommonText';
 import Divider from '@/components/common/Divider';
 import {IMAGES} from '@/assets/images';
 import CustomButton from '@/components/common/CustomButton';
-import {formatPriceIN, getLocalizedText, navigateTo} from '@/components/common/commonFunction';
+import {
+  formatPriceIN,
+  getLocalizedText,
+  navigateTo,
+} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {useRoute} from '@react-navigation/native';
 import moment from 'moment';
 import AttachmentCard from '@/components/common/AttachmentCard';
 import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 const OffersDetails = () => {
   const {
     params: {requestDetails, offerDetail},
   } = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [isEditRequest, setIsEditRequest] = useState(false);
   const start = moment(
     `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
@@ -36,7 +42,7 @@ const OffersDetails = () => {
           text={'Offers Detail'}
           rightIcon={
             <View style={styles.rightIcon}>
-              <CommonText text={'Offer 1'} style={styles.offerLabel} />
+              <CommonText text={'Offer'} style={styles.offerLabel} />
             </View>
           }
         />
@@ -66,10 +72,12 @@ const OffersDetails = () => {
         <Divider />
 
         <View style={styles.titleRow}>
-          <CommonText
-            text={offerDetail?.company_id?.category_id?.title}
-            style={styles.titleText}
-          />
+          {offerDetail?.company_id?.category_id?.title && (
+            <CommonText
+              text={offerDetail?.company_id?.category_id?.title}
+              style={styles.titleText}
+            />
+          )}
           <View style={styles.ratingRow}>
             <Image source={IMAGES.star} />
             <CommonText
@@ -123,14 +131,14 @@ const OffersDetails = () => {
           <View
             style={{marginVertical: getFontSize(1.5), gap: getFontSize(0.8)}}>
             <CommonText
-              text={`Additional Note:- `}
+              text={`Additional Note:-`}
               style={[
                 styles.description,
                 {...commonFontStyle(600, 1.6, Colors._676767)},
               ]}
             />
             <CommonText
-              text={`${offerDetail?.notes}`}
+              text={` ${offerDetail?.notes}`}
               style={styles.description}
             />
           </View>
@@ -213,183 +221,191 @@ const OffersDetails = () => {
 
 export default OffersDetails;
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  topContainer: {
-    paddingHorizontal: wp(24),
-  },
-  scrollContainer: {
-    paddingBottom: '15%',
-    paddingHorizontal: wp(24),
-  },
-  requestCard: {
-    marginVertical: hp(27),
-    backgroundColor: Colors.white,
-    elevation: 5,
-    shadowColor: Colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 1,
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  titleStyle: {
-    ...commonFontStyle(600, 2.1, Colors.black),
-  },
-  subtitleStyle: {
-    ...commonFontStyle(600, 1.9, Colors._898989),
-  },
-  rightIcon: {
-    borderRadius: hp(50),
-    paddingVertical: hp(10),
-    paddingHorizontal: wp(16),
-    backgroundColor: Colors.black,
-  },
-  offerLabel: {
-    ...commonFontStyle(600, 1.3, Colors.white),
-  },
-  titleRow: {
-    gap: wp(40),
-    marginTop: hp(35),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  titleText: {
-    ...commonFontStyle(500, 2.2, Colors.black),
-  },
-  ratingRow: {
-    gap: wp(5),
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingText: {
-    ...commonFontStyle(500, 2, Colors.black),
-  },
-  referenceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: hp(11),
-  },
-  refLabel: {
-    ...commonFontStyle(400, 1.9, Colors._868686),
-  },
-  refValue: {
-    ...commonFontStyle(400, 1.9, Colors.black),
-  },
-  featuresRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: hp(20),
-    flexWrap: 'wrap',
-    gap: wp(10),
-  },
-  featureBadge: {
-    borderRadius: hp(50),
-    paddingVertical: hp(10),
-    paddingHorizontal: wp(18),
-    backgroundColor: Colors._F5F5F5,
-  },
-  featureSpacing: {
-    marginRight: wp(10),
-  },
-  featureText: {
-    ...commonFontStyle(500, 1.3, Colors.black),
-  },
-  description: {
-    // marginVertical: hp(20),
-    ...commonFontStyle(400, 1.6, Colors._676767),
-  },
-  bookingContainer: {
-    marginVertical: hp(27),
-    gap: hp(22),
-  },
-  bookingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  bookingLabel: {
-    ...commonFontStyle(400, 1.9, Colors._5E5E5E),
-  },
-  bookingValue: {
-    ...commonFontStyle(700, 1.9, Colors._2C2C2C),
-  },
-  shadowCard: {
-    width: '100%',
-    alignItems: 'flex-start',
-    paddingHorizontal: wp(17),
-    paddingVertical: hp(20),
-  },
-  watchTitle: {
-    paddingBottom: hp(17),
-    ...commonFontStyle(600, 1.7, Colors._202020),
-  },
-  imageRow: {
-    gap: wp(12),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  imageBox: {
-    width: '48%',
-    height: hp(100),
-    borderRadius: hp(10),
-  },
-  bottomRow: {
-    width: '100%',
-    // marginTop: hp(45),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    position: 'absolute',
-    backgroundColor: Colors.white,
-    bottom: 0,
-    alignSelf: 'center',
-    paddingHorizontal: wp(24),
-    paddingVertical: hp(5),
-  },
-  acceptBtn: {
-    height: hp(50),
-    paddingHorizontal: wp(27),
-    backgroundColor: Colors.seeker_primary,
-    minWidth: '30%',
-  },
-  acceptText: {
-    ...commonFontStyle(600, 1.7, Colors.white),
-  },
-  priceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(7),
-  },
-  currencyIcon: {
-    height: hp(30),
-    width: wp(30),
-  },
-  priceText: {
-    ...commonFontStyle(700, 3.7, Colors.black),
-  },
-  secondImageWrapper: {
-    position: 'relative',
-    width: '48%',
-    height: hp(100),
-  },
-  blurredImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: hp(10),
-  },
-  overlay: {
-    borderRadius: hp(10),
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  overlayText: {
-    ...commonFontStyle(700, 2.5, Colors.white),
-  },
-});
+    topContainer: {
+      paddingHorizontal: wp(24),
+    },
+    scrollContainer: {
+      paddingBottom: '15%',
+      paddingHorizontal: wp(24),
+    },
+    requestCard: {
+      marginVertical: hp(27),
+      backgroundColor: Colors.white,
+      elevation: 5,
+      shadowColor: Colors.black,
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    titleStyle: {
+      ...commonFontStyle(600, 2.1, Colors.black),
+      ...textRTL(_language),
+    },
+    subtitleStyle: {
+      ...commonFontStyle(600, 1.9, Colors._898989),
+      ...textRTL(_language),
+    },
+    rightIcon: {
+      borderRadius: hp(50),
+      paddingVertical: hp(10),
+      paddingHorizontal: wp(16),
+      backgroundColor: Colors.black,
+    },
+    offerLabel: {
+      ...commonFontStyle(600, 1.3, Colors.white),
+      ...textRTL(_language),
+    },
+    titleRow: {
+      gap: wp(40),
+      marginTop: hp(35),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    titleText: {
+      ...commonFontStyle(500, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
+    ratingRow: {
+      gap: wp(5),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    ratingText: {
+      ...commonFontStyle(500, 2, Colors.black),
+      ...textRTL(_language),
+    },
+    referenceRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginTop: hp(11),
+    },
+    refLabel: {
+      ...commonFontStyle(400, 1.9, Colors._868686),
+    },
+    refValue: {
+      ...commonFontStyle(400, 1.9, Colors.black),
+    },
+    featuresRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginVertical: hp(20),
+      flexWrap: 'wrap',
+      gap: wp(10),
+    },
+    featureBadge: {
+      borderRadius: hp(50),
+      paddingVertical: hp(10),
+      paddingHorizontal: wp(18),
+      backgroundColor: Colors._F5F5F5,
+    },
+    featureSpacing: {
+      marginRight: wp(10),
+    },
+    featureText: {
+      ...commonFontStyle(500, 1.3, Colors.black),
+    },
+    description: {
+      // marginVertical: hp(20),
+      ...commonFontStyle(400, 1.6, Colors._676767),
+      ...textRTL(_language)
+    },
+    bookingContainer: {
+      marginVertical: hp(27),
+      gap: hp(22),
+    },
+    bookingRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    bookingLabel: {
+      ...commonFontStyle(400, 1.9, Colors._5E5E5E),
+    },
+    bookingValue: {
+      ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+    },
+    shadowCard: {
+      width: '100%',
+      alignItems: 'flex-start',
+      paddingHorizontal: wp(17),
+      paddingVertical: hp(20),
+    },
+    watchTitle: {
+      paddingBottom: hp(17),
+      ...commonFontStyle(600, 1.7, Colors._202020),
+    },
+    imageRow: {
+      gap: wp(12),
+      ...rowReverseRTL(_language),
+      justifyContent: 'space-between',
+    },
+    imageBox: {
+      width: '48%',
+      height: hp(100),
+      borderRadius: hp(10),
+    },
+    bottomRow: {
+      width: '100%',
+      // marginTop: hp(45),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      position: 'absolute',
+      backgroundColor: Colors.white,
+      bottom: 0,
+      alignSelf: 'center',
+      paddingHorizontal: wp(24),
+      paddingVertical: hp(5),
+    },
+    acceptBtn: {
+      height: hp(50),
+      paddingHorizontal: wp(27),
+      backgroundColor: Colors.seeker_primary,
+      minWidth: '30%',
+    },
+    acceptText: {
+      ...commonFontStyle(600, 1.7, Colors.white),
+    },
+    priceRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(7),
+    },
+    currencyIcon: {
+      height: hp(30),
+      width: wp(30),
+    },
+    priceText: {
+      ...commonFontStyle(700, 3.7, Colors.black),
+    },
+    secondImageWrapper: {
+      position: 'relative',
+      width: '48%',
+      height: hp(100),
+    },
+    blurredImage: {
+      width: '100%',
+      height: '100%',
+      borderRadius: hp(10),
+    },
+    overlay: {
+      borderRadius: hp(10),
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    overlayText: {
+      ...commonFontStyle(700, 2.5, Colors.white),
+    },
+  });
+};

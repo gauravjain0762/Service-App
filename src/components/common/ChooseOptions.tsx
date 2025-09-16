@@ -15,6 +15,8 @@ import CustomButton from './CustomButton';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CustomImage from './CustomImage';
 import {IMAGES} from '@/assets/images';
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignSelfLTR, marginRTLLeft, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   close?: any;
@@ -40,6 +42,8 @@ const ChooseOptions = ({
   setIsChooseOptionsModal,
   ...buttonProps
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <BottomModal
       close={close}
@@ -51,7 +55,7 @@ const ChooseOptions = ({
         <CustomImage
           source={IMAGES.close}
           size={hp(16)}
-          imageStyle={{alignSelf: 'flex-end'}}
+          imageStyle={{...alignSelfLTR(language)}}
           onPress={() => setIsChooseOptionsModal(false)}
         />
       )}
@@ -61,6 +65,7 @@ const ChooseOptions = ({
           style={{
             marginBottom: hp(40),
             ...commonFontStyle(700, 2.4, Colors.black),
+            ...textRTL(language)
           }}
         />
       )}
@@ -97,7 +102,8 @@ const ChooseOptions = ({
 
 export default ChooseOptions;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   modalContainer: {
     paddingTop: hp(30),
     position: 'relative',
@@ -105,8 +111,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp(20),
   },
   title: {
-    textAlign: 'left',
-    marginLeft: wp(5),
+    ...textRTL(_language),
+    ...marginRTLLeft(_language,wp(5)),
     marginTop: hp(10),
     marginBottom: hp(25),
     ...commonFontStyle(700, 2.2, Colors.black),
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
     gap: hp(23),
   },
   Option: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     borderRadius: hp(12),
     paddingHorizontal: wp(10),
@@ -143,4 +149,4 @@ const styles = StyleSheet.create({
   text: {
     ...commonFontStyle(500, 2.0, Colors.black),
   },
-});
+})}

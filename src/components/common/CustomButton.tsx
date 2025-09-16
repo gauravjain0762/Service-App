@@ -14,6 +14,7 @@ import {rowReverseRTL} from '@/utils/arabicStyles';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp} from '@/utils/responsiveFn';
 import CommonText from './CommonText';
+import { useAppSelector } from '@/Hooks/hooks';
 
 type Props = {
   disabled?: boolean;
@@ -40,6 +41,8 @@ const CustomButton: FC<Props> = ({
   loading,
   isPrimary,
 }) => {
+   const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return type === 'fill' ? (
     <TouchableOpacity
       disabled={loading || disabled}
@@ -109,7 +112,8 @@ const CustomButton: FC<Props> = ({
 };
 export default memo(CustomButton);
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   buttonStyle: {
     backgroundColor: Colors.provider_primary,
     justifyContent: 'center',
@@ -117,11 +121,11 @@ const styles = StyleSheet.create({
     borderRadius: hp(100),
     gap: getFontSize(1.5),
     height: hp(55),
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
   },
   outline_buttonStyle: {
     backgroundColor: Colors.white,
     borderWidth: 1.3,
     borderColor: Colors._878787,
   },
-});
+})}

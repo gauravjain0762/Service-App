@@ -99,7 +99,7 @@ const getGlobalStyles = (_language: any) => {
       marginBottom: getFontSize(2),
     },
     buttonContainer: {
-      ...rowReverseRTL(),
+      ...rowReverseRTL(_language),
       alignItems: 'center',
       gap: getFontSize(1.5),
     },

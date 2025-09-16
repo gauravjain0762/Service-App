@@ -8,6 +8,8 @@ import {Colors} from '@/constants/Colors';
 import CustomButton from './CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import { formatPriceIN } from './commonFunction';
+import { useAppSelector } from '@/Hooks/hooks';
+import { alignItemsRTL, rowReverseRTL } from '@/utils/arabicStyles';
 
 type Props = {
   item?: any;
@@ -26,11 +28,12 @@ const OfferCard = ({
   onPressAcceptOffer,
   onPressEdit,
 }: Props) => {
-  
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <ShadowCard onCardPress={onCardPress} style={styles.card}>
       <View style={styles.offerBadge}>
-        <CommonText text={`Offer ${index + 1}`} style={styles.offerText} />
+        <CommonText text={'Offer'} style={styles.offerText}> <CommonText text={index + 1} style={styles.offerText} /></CommonText>
       </View>
 
       <View style={styles.titleRow}>
@@ -60,7 +63,7 @@ const OfferCard = ({
       {item?.notes && (
         <View style={{marginTop: getFontSize(1.5)}}>
           <CommonText
-            text={`Additional Note:- `}
+            text={`Additional Note:-`}
             style={[
               styles.description,
               {...commonFontStyle(600, 1.6, Colors._676767)},
@@ -126,10 +129,11 @@ const OfferCard = ({
 
 export default OfferCard;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   card: {
     width: '100%',
-    alignItems: 'flex-start',
+    ...alignItemsRTL(_language),
     paddingHorizontal: wp(24),
   },
   offerBadge: {
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
   titleRow: {
     gap: wp(10),
     marginTop: hp(15),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 2.2, Colors.black),
   },
   ratingRow: {
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(5),
   },
@@ -161,7 +165,7 @@ const styles = StyleSheet.create({
   },
   featuresRow: {
     flexWrap: 'wrap',
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     marginTop: hp(20),
     gap: wp(10),
@@ -183,14 +187,14 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.6, Colors._676767),
   },
   bottomRow: {
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
     marginTop: getFontSize(1.5),
   },
   buttonContainer: {
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: getFontSize(1),
   },
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 1.5, Colors.white),
   },
   priceRow: {
-    flexDirection: 'row',
+     ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(7),
   },
@@ -214,4 +218,4 @@ const styles = StyleSheet.create({
   priceText: {
     ...commonFontStyle(700, 2.7, Colors.black),
   },
-});
+})}

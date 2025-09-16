@@ -6,7 +6,6 @@ import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 
 import {Colors} from '@/constants/Colors';
 import {
-  alignSelfLTR,
   alignSelfRTL,
   flipImage,
   paddingRTLRight,
@@ -204,7 +203,7 @@ const LoginScreen = ({}: any) => {
         size={getFontSize(2.5)}
         containerStyle={{
           padding: getFontSize(2),
-          ...alignSelfLTR(language),
+          ...alignSelfRTL(language),
         }}
         imageStyle={{...flipImage(language)}}
       />

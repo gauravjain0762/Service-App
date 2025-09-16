@@ -25,12 +25,13 @@ import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
 import {useGetProfileQuery} from '@/api/Provider/profileApi';
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 import ProHomeSkeleton from '@/components/skeleton/ProHomeSkeleton';
+import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 const ProDashboard = () => {
-  const {userInfo, dashboard = {}} = useAppSelector<any>(state => state.auth);
+  const {userInfo, dashboard = {},language} = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
   const {refetch: profileRefetch} = useGetProfileQuery({});
-
+const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {isLoading, isFetching, refetch} = useGetDashboardQuery(
     {},
     {
@@ -151,7 +152,8 @@ const ProDashboard = () => {
 
 export default ProDashboard;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safearea: {
     flex: 1,
     // padding: hp(25),
@@ -160,7 +162,7 @@ const styles = StyleSheet.create({
   dashboardContainer: {
     gap: wp(16),
     flexWrap: 'wrap',
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     marginBottom: hp(34),
     paddingHorizontal: hp(20),
   },
@@ -172,5 +174,6 @@ const styles = StyleSheet.create({
   headingText: {
     ...commonFontStyle(700, 2.2, Colors.black),
     paddingHorizontal: hp(20),
+    ...textRTL(_language)
   },
-});
+})}

@@ -20,11 +20,14 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
 import {useForgotPasswordMutation} from '@/api/Seeker/authApi';
 import {useProForgotPasswordMutation} from '@/api/Provider/authApi';
+import {useAppSelector} from '@/Hooks/hooks';
+import { alignSelfRTL, flipImage } from '@/utils/arabicStyles';
 
 const ForgotPassword = () => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
-
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [forgotPassword, {isLoading}] = useForgotPasswordMutation();
   const [proForgotPassword, {isLoading: isProLoading}] =
     useProForgotPasswordMutation();
@@ -121,55 +124,59 @@ const ForgotPassword = () => {
 
 export default ForgotPassword;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: hp(100),
-  },
-  headerContainer: {
-    paddingTop: hp(10),
-    paddingHorizontal: wp(5),
-    paddingBottom: hp(20),
-  },
-  backButton: {
-    marginBottom: hp(10),
-  },
-  backArrow: {
-    width: hp(24),
-    height: hp(24),
-    resizeMode: 'contain',
-  },
-  mainContent: {
-    paddingHorizontal: wp(20),
-    paddingTop: hp(20),
-  },
-  headerText: {
-    ...commonFontStyle(700, 3.2, Colors.black),
-    textAlign: 'center',
-    marginBottom: hp(30),
-    marginTop: hp(50),
-  },
-  description: {
-    ...commonFontStyle(400, 2.2, Colors._5E5D5D),
-    textAlign: 'center',
-    lineHeight: hp(25),
-    marginBottom: hp(45),
-    paddingHorizontal: wp(10),
-  },
-  textInput: {
-    marginBottom: hp(40),
-  },
-  inputContainer: {
-    marginBottom: hp(40),
-  },
-  buttonContainer: {
-    marginBottom: hp(10),
-  },
-  sendButton: {
-    borderRadius: hp(50),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.white,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      paddingBottom: hp(100),
+    },
+    headerContainer: {
+      paddingTop: hp(10),
+      paddingHorizontal: wp(10),
+      paddingBottom: hp(20),
+      ...alignSelfRTL(_language)
+    },
+    backButton: {
+      marginBottom: hp(10),
+    },
+    backArrow: {
+      width: hp(24),
+      height: hp(24),
+      resizeMode: 'contain',
+      ...flipImage(_language)
+    },
+    mainContent: {
+      paddingHorizontal: wp(20),
+      paddingTop: hp(20),
+    },
+    headerText: {
+      ...commonFontStyle(700, 3.2, Colors.black),
+      textAlign: 'center',
+      marginBottom: hp(30),
+      marginTop: hp(50),
+    },
+    description: {
+      ...commonFontStyle(400, 2.2, Colors._5E5D5D),
+      textAlign: 'center',
+      lineHeight: hp(25),
+      marginBottom: hp(45),
+      paddingHorizontal: wp(10),
+    },
+    textInput: {
+      marginBottom: hp(40),
+    },
+    inputContainer: {
+      marginBottom: hp(40),
+    },
+    buttonContainer: {
+      marginBottom: hp(10),
+    },
+    sendButton: {
+      borderRadius: hp(50),
+    },
+  });
+};

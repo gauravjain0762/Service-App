@@ -9,6 +9,7 @@ import {getLocalizedText, navigateTo} from '../common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
+import { alignSelfRTL, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 type Props = {
   item: any;
@@ -26,6 +27,7 @@ const BookingCard = ({
   onPress,
 }: Props) => {
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
 
   const formatBookingTime = (date: any, time: any, no_hours: any) => {
     const start = moment(
@@ -156,84 +158,91 @@ const BookingCard = ({
 
 export default BookingCard;
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Colors.white,
-    borderRadius: 16,
-    padding: 16,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 4},
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: getFontSize(1),
-  },
-  image: {
-    backgroundColor: Colors._E5E5E5,
-    height: getFontSize(8),
-    width: getFontSize(8),
-    borderRadius: getFontSize(2),
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
-  textContainer: {
-    flex: 1,
-    gap: 7,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    card: {
+      backgroundColor: Colors.white,
+      borderRadius: 16,
+      padding: 16,
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowRadius: 10,
+      shadowOffset: {width: 0, height: 4},
+    },
+    row: {
+      ...rowReverseRTL(_language),
+      gap: 12,
+      marginBottom: getFontSize(1),
+    },
+    image: {
+      backgroundColor: Colors._E5E5E5,
+      height: getFontSize(8),
+      width: getFontSize(8),
+      borderRadius: getFontSize(2),
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+    },
+    textContainer: {
+      flex: 1,
+      gap: 7,
+    },
+    titleRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
 
-  title: {
-    ...commonFontStyle(600, 2, Colors.black),
-    flex: 1,
-  },
-  subtitle: {
-    ...commonFontStyle(600, 1.9, Colors._898989),
-  },
-  id: {
-    ...commonFontStyle(500, 1.7, Colors.provider_primary),
-    marginTop: 4,
-  },
-  status: {
-    height: getFontSize(3.5),
-    width: getFontSize(12),
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // paddingHorizontal: getFontSize(2),
-  },
-  statusText: {
-    ...commonFontStyle(600, 1.5, Colors.white),
-  },
-  detailView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: getFontSize(2),
-    gap: getFontSize(1),
-  },
+    title: {
+      ...commonFontStyle(600, 2, Colors.black),
+      flex: 1,
+      ...textRTL(_language),
+    },
+    subtitle: {
+      ...commonFontStyle(600, 1.9, Colors._898989),
+      ...textRTL(_language),
+    },
+    id: {
+      ...commonFontStyle(500, 1.7, Colors.provider_primary),
+      marginTop: 4,
+      ...textRTL(_language),
+    },
+    status: {
+      height: getFontSize(3.5),
+      width: getFontSize(12),
+      ...alignSelfRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'center',
+      // paddingHorizontal: getFontSize(2),
+    },
+    statusText: {
+      ...commonFontStyle(600, 1.5, Colors.white),
+    },
+    detailView: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: getFontSize(2),
+      gap: getFontSize(1),
+    },
 
-  label: {
-    ...commonFontStyle(500, 2.2, Colors._868686),
-    width: '30%',
-  },
-  value: {
-    ...commonFontStyle(500, 2, Colors._333333),
-    textAlign: 'left',
-    flex: 1,
-  },
+    label: {
+      ...commonFontStyle(500, 2.2, Colors._868686),
+      width: '30%',
+      ...textRTL(_language),
+    },
+    value: {
+      ...commonFontStyle(500, 2, Colors._333333),
+      // textAlign: 'left',
+      ...textRTL(_language),
+      flex: 1,
+    },
 
-  btn: {
-    height: getFontSize(6),
-    marginHorizontal: getFontSize(3),
-    marginTop: getFontSize(2),
-  },
-});
+    btn: {
+      height: getFontSize(6),
+      marginHorizontal: getFontSize(3),
+      marginTop: getFontSize(2),
+    },
+  });
+};

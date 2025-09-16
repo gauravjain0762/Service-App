@@ -12,6 +12,7 @@ import CustomButton from '@/components/common/CustomButton';
 import {useUpdateProfileMutation} from '@/api/Seeker/profileApi';
 import {errorToast, goBack, successToast} from '../common/commonFunction';
 import {rowReverseRTL} from '@/utils/arabicStyles';
+import { useAppSelector } from '@/Hooks/hooks';
 
 interface AddLocationProps {
   selectedType: string;
@@ -32,6 +33,8 @@ const AddLocation: React.FC<AddLocationProps> = ({
   setIsLocationModalVisible,
   regions
 }) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   console.log(regions,'regionsregionsregions');
   
   const [details, setDetails] = React.useState({
@@ -170,7 +173,8 @@ const AddLocation: React.FC<AddLocationProps> = ({
 
 export default AddLocation;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
     paddingTop: hp(10),
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
     marginBottom: hp(20),
   },
   buttonContainer: {
-    ...rowReverseRTL(),
+    ...rowReverseRTL(_language),
     justifyContent: 'space-between',
     marginBottom: getFontSize(2),
   },
@@ -270,4 +274,4 @@ const styles = StyleSheet.create({
   changeBtnText: {
     ...commonFontStyle(500, 1.4, Colors._039B55),
   },
-});
+})}
