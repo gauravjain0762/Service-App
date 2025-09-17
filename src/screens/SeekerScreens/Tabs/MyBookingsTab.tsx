@@ -23,8 +23,12 @@ import MyRequestSkeleton from '@/components/skeleton/MyRequestSkeleton';
 import CommonText from '@/components/common/CommonText';
 import CustomTextInput from '@/components/common/CustomTextInput';
 import BottomModal from '@/components/common/BottomModal';
+import {rowReverseRTL} from '@/utils/arabicStyles';
+import {useAppSelector} from '@/Hooks/hooks';
 
 const MyBookingsTab = () => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allJobData, setAllJobData] = React.useState([]);
@@ -183,81 +187,83 @@ const MyBookingsTab = () => {
 
 export default MyBookingsTab;
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: wp(24),
-    backgroundColor: Colors.white,
-  },
-  searchIcon: {
-    width: wp(40),
-    height: hp(40),
-  },
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      paddingHorizontal: wp(24),
+      backgroundColor: Colors.white,
+    },
+    searchIcon: {
+      width: wp(40),
+      height: hp(40),
+    },
 
-  contentContainer: {
-    marginTop: hp(25),
-    alignItems: 'center',
-  },
-  dummyText: {
-    ...commonFontStyle(400, 2.2, Colors._909090),
-  },
-  cardsContainer: {
-    flex: 1,
-    marginTop: hp(20),
-  },
-  scrollContent: {
-    paddingBottom: '20%',
-  },
-  noData: {
-    ...commonFontStyle(500, 2.5, Colors.black),
-  },
-  modalContainer: {
-    paddingTop: hp(30),
-    paddingBottom: hp(40),
-    paddingHorizontal: wp(20),
-    position: 'relative',
-  },
-  title: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-    textAlign: 'left',
-    marginBottom: hp(25),
-    marginTop: hp(10),
-    marginLeft: wp(5),
-  },
-  paymentContainer: {
-    gap: hp(23),
-  },
-  paymentOption: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: wp(10),
-    borderRadius: hp(12),
-    backgroundColor: Colors.white,
-  },
-  paymentInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  paymentText: {
-    ...commonFontStyle(500, 2.0, Colors.black),
-  },
-  radioButton: {
-    width: wp(25),
-    height: hp(25),
-    borderRadius: wp(100),
-    borderWidth: 2,
-    borderColor: Colors.black,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  radioButtonSelected: {
-    borderColor: '#000000',
-  },
-  radioButtonInner: {
-    width: wp(12),
-    height: hp(12),
-    borderRadius: wp(100),
-    backgroundColor: Colors.black,
-  },
-});
+    contentContainer: {
+      marginTop: hp(25),
+      alignItems: 'center',
+    },
+    dummyText: {
+      ...commonFontStyle(400, 2.2, Colors._909090),
+    },
+    cardsContainer: {
+      flex: 1,
+      marginTop: hp(20),
+    },
+    scrollContent: {
+      paddingBottom: '20%',
+    },
+    noData: {
+      ...commonFontStyle(500, 2.5, Colors.black),
+    },
+    modalContainer: {
+      paddingTop: hp(30),
+      paddingBottom: hp(40),
+      paddingHorizontal: wp(20),
+      position: 'relative',
+    },
+    title: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+      textAlign: 'left',
+      marginBottom: hp(25),
+      marginTop: hp(10),
+      marginLeft: wp(5),
+    },
+    paymentContainer: {
+      gap: hp(23),
+    },
+    paymentOption: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: wp(10),
+      borderRadius: hp(12),
+      backgroundColor: Colors.white,
+    },
+    paymentInfo: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    paymentText: {
+      ...commonFontStyle(500, 2.0, Colors.black),
+    },
+    radioButton: {
+      width: wp(25),
+      height: hp(25),
+      borderRadius: wp(100),
+      borderWidth: 2,
+      borderColor: Colors.black,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    radioButtonSelected: {
+      borderColor: '#000000',
+    },
+    radioButtonInner: {
+      width: wp(12),
+      height: hp(12),
+      borderRadius: wp(100),
+      backgroundColor: Colors.black,
+    },
+  });
+};

@@ -4,6 +4,7 @@ import {hp} from '@/utils/responsiveFn';
 import ServiceCard from '../common/ServiceCard';
 import {useAppSelector} from '@/Hooks/hooks';
 import { rowReverseRTL } from '@/utils/arabicStyles';
+import { getLocalizedText } from '../common/commonFunction';
 
 const CategoryList = ({
   data,
@@ -46,7 +47,7 @@ const CategoryList = ({
 
         return (
           <ServiceCard
-            text={item?.title ?? ''}
+            text={getLocalizedText(item?.title,item?.title_ar,language) ?? ''}
             source={item?.image ?? ''}
             handleCardPress={() => onPress(item)}
           />

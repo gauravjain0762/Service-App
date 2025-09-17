@@ -52,7 +52,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
     <View style={[styles.container, {...containerStyle}]}>
       {label && (
         <CommonText text={label} style={styles.label}>
-          {required && <Text style={styles.required}>*</Text>}
+          {required &&  <Text style={styles.required}>*</Text>}
         </CommonText>
       )}
       <View style={[styles.inputContainer, {...inputContainerStyle}]}>

@@ -9,6 +9,7 @@ import {Colors} from '../../constants/Colors';
 import CustomImage from '../common/CustomImage';
 import {goBack} from '../common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
+import CommonText from '../common/CommonText';
 
 const OTPHeader = () => {
   const {t} = useTranslation();
@@ -25,7 +26,7 @@ const OTPHeader = () => {
         containerStyle={{alignSelf: 'center'}}
         imageStyle={{...flipImage(language)}}
       />
-      <Text style={styles.headerText}>{t('Verification')}</Text>
+      <CommonText style={styles.headerText} text={'Verification'} />
       <CustomImage
         source={IMAGES.backArrow}
         size={getFontSize(2.5)}

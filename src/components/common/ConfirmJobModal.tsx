@@ -13,6 +13,8 @@ import CommonText from '@/components/common/CommonText';
 import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
 import CustomImage from './CustomImage';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 Dimensions.get('window');
 
@@ -29,6 +31,8 @@ const ConfirmJobModal = ({
   onConfirm,
   onCancel,
 }: ConfirmJobModalProps) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <BottomModal
       visible={visible}
@@ -43,10 +47,7 @@ const ConfirmJobModal = ({
         </View>
       </View>
 
-      <CommonText
-        text="Confirm Job Completion"
-        style={styles.title}
-      />
+      <CommonText text="Confirm Job Completion" style={styles.title} />
 
       <CommonText
         text="Once confirmed, the job will be closed & you may proceed to rate the service."
@@ -55,10 +56,10 @@ const ConfirmJobModal = ({
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <CommonText style={styles.cancelButtonText} text={'Cancel'} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.confirmButton} onPress={onConfirm}>
-          <Text style={styles.confirmButtonText}>Yes Completed</Text>
+          <CommonText style={styles.confirmButtonText} text={'Yes Completed'} />
         </TouchableOpacity>
       </View>
     </BottomModal>
@@ -67,81 +68,83 @@ const ConfirmJobModal = ({
 
 export default ConfirmJobModal;
 
-const styles = StyleSheet.create({
-  modalContainer: {
-    paddingTop: hp(50),
-    paddingBottom: hp(40),
-    paddingHorizontal: wp(20),
-    alignItems: 'center',
-  },
-  dashedCircle: {
-    width: wp(130),
-    height: hp(130),
-    borderWidth: hp(3),
-    borderStyle: 'dashed',
-    borderRadius: wp(65),
-    borderColor: '#03B463',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: hp(25),
-  },
-  innerCircle: {
-    width: wp(110),
-    height: hp(110),
-    borderRadius: wp(55),
-    backgroundColor: '#03B463',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkmarkContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkmark: {
-    color: Colors.white,
-    fontSize: hp(45),
-    fontWeight: 'bold',
-  },
-  title: {
-    ...commonFontStyle(700, 2.6, Colors.black),
-    textAlign: 'center',
-    marginBottom: hp(20),
-    lineHeight: hp(32),
-  },
-  description: {
-    ...commonFontStyle(400, 2.1, '#666666'),
-    textAlign: 'center',
-    lineHeight: hp(25),
-    marginBottom: hp(35),
-    paddingHorizontal: wp(10),
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: wp(20),
-    width: '100%',
-    justifyContent: 'center',
-    paddingHorizontal: wp(10),
-  },
-  cancelButton: {
-    backgroundColor: '#E0E0E0',
-    borderRadius: hp(30),
-    paddingHorizontal: wp(30),
-    paddingVertical: hp(15),
-    minWidth: wp(120),
-    alignItems: 'center',
-  },
-  cancelButtonText: {
-    ...commonFontStyle(600, 2.1, '#858585'),
-  },
-  confirmButton: {
-    backgroundColor: '#03B463',
-    borderRadius: hp(30),
-    paddingHorizontal: wp(30),
-    paddingVertical: hp(15),
-    minWidth: wp(140),
-    alignItems: 'center'
-  },
-  confirmButtonText: {
-    ...commonFontStyle(600, 2.1, Colors.white),
-  },
-}); 
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    modalContainer: {
+      paddingTop: hp(50),
+      paddingBottom: hp(40),
+      paddingHorizontal: wp(20),
+      alignItems: 'center',
+    },
+    dashedCircle: {
+      width: wp(130),
+      height: hp(130),
+      borderWidth: hp(3),
+      borderStyle: 'dashed',
+      borderRadius: wp(65),
+      borderColor: '#03B463',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: hp(25),
+    },
+    innerCircle: {
+      width: wp(110),
+      height: hp(110),
+      borderRadius: wp(55),
+      backgroundColor: '#03B463',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    checkmarkContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    checkmark: {
+      color: Colors.white,
+      fontSize: hp(45),
+      fontWeight: 'bold',
+    },
+    title: {
+      ...commonFontStyle(700, 2.6, Colors.black),
+      textAlign: 'center',
+      marginBottom: hp(20),
+      lineHeight: hp(32),
+    },
+    description: {
+      ...commonFontStyle(400, 2.1, '#666666'),
+      textAlign: 'center',
+      lineHeight: hp(25),
+      marginBottom: hp(35),
+      paddingHorizontal: wp(10),
+    },
+    buttonContainer: {
+      ...rowReverseRTL(_language),
+      gap: wp(20),
+      width: '100%',
+      justifyContent: 'center',
+      paddingHorizontal: wp(10),
+    },
+    cancelButton: {
+      backgroundColor: '#E0E0E0',
+      borderRadius: hp(30),
+      paddingHorizontal: wp(30),
+      paddingVertical: hp(15),
+      minWidth: wp(120),
+      alignItems: 'center',
+    },
+    cancelButtonText: {
+      ...commonFontStyle(600, 2.1, '#858585'),
+    },
+    confirmButton: {
+      backgroundColor: '#03B463',
+      borderRadius: hp(30),
+      paddingHorizontal: wp(30),
+      paddingVertical: hp(15),
+      minWidth: wp(140),
+      alignItems: 'center',
+    },
+    confirmButtonText: {
+      ...commonFontStyle(600, 2.1, Colors.white),
+    },
+  });
+};

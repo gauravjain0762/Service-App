@@ -8,6 +8,7 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import NotificationCard from '@/components/common/NotificationCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
+import {useGetNotificationsQuery} from '@/api/Seeker/homeApi';
 
 const Notifications = () => {
   const {params} = useRoute<any>();
@@ -15,6 +16,45 @@ const Notifications = () => {
   const readTextColor = isProvider
     ? Colors.provider_primary
     : Colors.seeker_primary;
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [allNotification, setAllNotification] = React.useState([]);
+
+  const {
+    data: notifications,
+    isLoading: notificationLoading,
+    refetch: refetchNotificationList,
+  } = useGetNotificationsQuery<any>(
+    {page: currentPage},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+
+  React.useEffect(() => {
+    if (notifications) {
+      const newData = notifications.data.notifications;
+      setAllNotification(prev =>
+        currentPage === 1 ? newData : [...prev, ...newData],
+      );
+    }
+  }, [notifications, currentPage]);
+
+  const handleLoadMore = () => {
+    // Check if there are more pages to load
+    if (
+      notifications &&
+      notifications.data?.pagination?.current_page <
+        notifications.data?.pagination?.total_pages &&
+      !notificationLoading
+    ) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+    }
+  };
+console.log(allNotification,'allNotification');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -31,7 +71,7 @@ const Notifications = () => {
         }
       />
       <View style={{marginTop: hp(40), flex: 1}}>
-        <NotificationCard />
+        <NotificationCard allNotification={allNotification}/>
       </View>
     </SafeareaProvider>
   );

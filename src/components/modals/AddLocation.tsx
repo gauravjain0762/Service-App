@@ -222,7 +222,7 @@ const getGlobalStyles = (_language: any) => {
   },
 
   addressTypeRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginTop: hp(16),
   },

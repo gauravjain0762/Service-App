@@ -7,9 +7,9 @@ import CommonText from './CommonText';
 import {IMAGES} from '@/assets/images';
 import {Colors} from '@/constants/Colors';
 import Divider from './Divider';
-import { formatPriceIN } from './commonFunction';
-import { useAppSelector } from '@/Hooks/hooks';
-import { flipImage, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {formatPriceIN} from './commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import {flipImage, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   style?: ViewStyle;
@@ -74,7 +74,11 @@ const ServiceBillSummary = ({style, jobDetails, data, totalAmount}: Props) => {
             style={styles.currencyIcon}
           />
           <CommonText
-            text={formatPriceIN(jobDetails?.pay_amount) ?? formatPriceIN(totalAmount) ?? ''}
+            text={
+              (totalAmount
+                ? formatPriceIN(totalAmount)
+                : formatPriceIN(jobDetails?.pay_amount)) ?? ''
+            }
             style={styles.totalAmountText}
           />
         </View>
@@ -87,58 +91,59 @@ export default ServiceBillSummary;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  card: {
-    // marginTop: hp(17),
-    paddingVertical: hp(16),
-    paddingHorizontal: wp(25),
-  },
-  rowWrapper: {
-    width: '100%',
-  },
-  rowSpacing: {
-    marginBottom: hp(15),
-  },
-  row: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  label: {
-    flex: 3,
-    ...commonFontStyle(400, 2.2, Colors._828282),
-    ...textRTL(_language)
-  },
-  amountRow: {
-    flex: 1,
-    gap: wp(4),
-     ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-  },
-  totalAmountRow: {
-    gap: wp(4),
-     ...rowReverseRTL(_language),
-    alignItems: 'center',
-  },
-  currencyIcon: {
-    width: wp(20),
-    height: hp(20),
-    // ...flipImage(_language)
-  },
-  amountText: {
-    ...commonFontStyle(400, 2.2, Colors._828282),
-  },
-  totalRow: {
-    width: '100%',
-    marginTop: hp(24),
-     ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  totalLabel: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-  },
-  totalAmountText: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-  },
-})}
+    card: {
+      // marginTop: hp(17),
+      paddingVertical: hp(16),
+      paddingHorizontal: wp(25),
+    },
+    rowWrapper: {
+      width: '100%',
+    },
+    rowSpacing: {
+      marginBottom: hp(15),
+    },
+    row: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    label: {
+      flex: 3,
+      ...commonFontStyle(400, 2.2, Colors._828282),
+      ...textRTL(_language),
+    },
+    amountRow: {
+      flex: 1,
+      gap: wp(4),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+    },
+    totalAmountRow: {
+      gap: wp(4),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    currencyIcon: {
+      width: wp(20),
+      height: hp(20),
+      // ...flipImage(_language)
+    },
+    amountText: {
+      ...commonFontStyle(400, 2.2, Colors._828282),
+    },
+    totalRow: {
+      width: '100%',
+      marginTop: hp(24),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    totalLabel: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+    },
+    totalAmountText: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+    },
+  });
+};

@@ -169,6 +169,12 @@
     "Additional Note":"ملاحظة إضافية",
     "Upload PDF's here.":"قم بتحميل ملفات PDF هنا.",
      "Edit Profile":"تحرير الملف الشخصي",
-    "Change Password":"تغيير كلمة المرور"
+    "Change Password":"تغيير كلمة المرور",
+    "Select Language":"اختر اللغة",
+    "Mark All As Read":"وضع علامة على الكل كمقروءة",
+    "Store Location":"موقع المتجر",
+    "Upload Video/Image":"تحميل الفيديو/الصورة",
+    "Upload videos, images, or PDFs here.":"قم بتحميل مقاطع الفيديو والصور وملفات PDF هنا.",
+    "Send Request":"إرسال الطلب"
   }
 }

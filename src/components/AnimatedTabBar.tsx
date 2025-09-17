@@ -4,6 +4,7 @@ import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize} from '@/utils/responsiveFn';
 import {useTranslation} from 'react-i18next';
 import {rowReverseRTL} from '@/utils/arabicStyles';
+import CommonText from './common/CommonText';
 
 const AnimatedTabBar = ({
   tabs = ['Tab 1', 'Tab 2'],
@@ -76,7 +77,7 @@ const AnimatedTabBar = ({
             ]}
             onPress={() => handleTabPress(index)}
             activeOpacity={0.7}>
-            <Text
+            <CommonText
               style={[
                 styles.tabText,
                 textStyle,
@@ -84,9 +85,9 @@ const AnimatedTabBar = ({
                   styles.activeTabText,
                   activeTextStyle,
                 ],
-              ]}>
-              {tab}
-            </Text>
+              ]}
+              text={tab}
+            />
           </TouchableOpacity>
         ))}
       </View>

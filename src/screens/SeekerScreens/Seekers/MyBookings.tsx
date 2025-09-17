@@ -35,7 +35,7 @@ import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
 import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
 import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@/Hooks/hooks';
-import {rowReverseRTL} from '@/utils/arabicStyles';
+import {alignItemsRTL, alignSelfRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 import CustomImage from '@/components/common/CustomImage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -75,7 +75,6 @@ const MyBookings = () => {
 
   const renderDynamicField = (field: any) => {
     const {title, name, type, options} = field;
-
     switch (type) {
       case 'options':
         return (
@@ -227,12 +226,7 @@ const MyBookings = () => {
       );
     }
   };
-  console.log(
-    category_name,
-    title_ar,
-    title,
-    'category_namecategory_namecategory_name',
-  );
+console.log(categoryData?.fields,'categoryData?.fields');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -267,6 +261,7 @@ const MyBookings = () => {
             text={'Choose Location'}
             style={{
               ...commonFontStyle(700, 2.2, Colors.black),
+              ...textRTL(language)
             }}
           />
           <View style={styles.locationTab}>
@@ -462,7 +457,7 @@ const getGlobalStyles = (_language: any) => {
     shadowOffset: {width: 0, height: 4},
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     backgroundColor: Colors.white,
     justifyContent: 'space-between',
@@ -488,7 +483,7 @@ const getGlobalStyles = (_language: any) => {
     paddingVertical: hp(6),
     paddingHorizontal: wp(12),
     backgroundColor: Colors._EBFCF4,
-    alignSelf: 'flex-start',
+    ...alignSelfRTL(_language),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -500,6 +495,7 @@ const getGlobalStyles = (_language: any) => {
   },
   sectionTitle: {
     ...commonFontStyle(700, 2.2, Colors.black),
+    ...textRTL(_language)
   },
   carInput: {
     height: hp(60),
@@ -509,9 +505,10 @@ const getGlobalStyles = (_language: any) => {
     paddingHorizontal: wp(25),
     borderColor: Colors._F2EDED,
     ...commonFontStyle(500, 1.7, Colors.black),
+    ...textRTL(_language)
   },
   mileageRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginTop: hp(15),
   },
@@ -534,7 +531,7 @@ const getGlobalStyles = (_language: any) => {
     ...commonFontStyle(500, 2.2, Colors.black),
   },
   circleRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginTop: hp(17),
     gap: getFontSize(2),
@@ -562,7 +559,7 @@ const getGlobalStyles = (_language: any) => {
   },
   shadowCard: {
     padding: hp(20),
-    alignItems: 'flex-start',
+    ...alignItemsRTL(_language)
   },
   specialNoteTitle: {
     ...commonFontStyle(600, 2.2, Colors.black),
@@ -576,6 +573,7 @@ const getGlobalStyles = (_language: any) => {
     borderRadius: hp(10),
     textAlignVertical: 'top',
     borderColor: Colors._BFC2C1,
+    ...textRTL(_language)
   },
   sendRequestBtn: {
     marginTop: hp(50),
@@ -592,7 +590,7 @@ const getGlobalStyles = (_language: any) => {
   locationTab: {
     gap: wp(23),
     marginTop: hp(18),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginBottom: hp(30),
   },

@@ -8,6 +8,7 @@ import CustomImage from '../common/CustomImage';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {getLocalizedText} from '../common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   item?: any;
@@ -16,6 +17,7 @@ type Props = {
 
 const LoyaltyCreditTransaction = ({item, style}: Props) => {
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={[styles.container, style]}>
       <View style={styles.leftSection}>
@@ -60,42 +62,46 @@ const LoyaltyCreditTransaction = ({item, style}: Props) => {
 
 export default LoyaltyCreditTransaction;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(13),
-    flexShrink: 1,
-  },
-  imageContainer: {
-    height: hp(68),
-    width: wp(68),
-    borderRadius: hp(10),
-    backgroundColor: Colors._E5E5E5,
-  },
-  textContainer: {
-    gap: hp(11),
-  },
-  titleText: {
-    ...commonFontStyle(600, 1.9, Colors.black),
-  },
-  subtitleText: {
-    ...commonFontStyle(400, 1.7, Colors._898989),
-  },
-  priceSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: wp(5),
-  },
-  priceText: {
-    ...commonFontStyle(600, 2.7, Colors.red),
-  },
-  ptsText: {
-    ...commonFontStyle(600, 2, Colors.red),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    leftSection: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(13),
+      flexShrink: 1,
+    },
+    imageContainer: {
+      height: hp(68),
+      width: wp(68),
+      borderRadius: hp(10),
+      backgroundColor: Colors._E5E5E5,
+    },
+    textContainer: {
+      gap: hp(11),
+    },
+    titleText: {
+      ...commonFontStyle(600, 1.9, Colors.black),
+      ...textRTL(_language),
+    },
+    subtitleText: {
+      ...commonFontStyle(400, 1.7, Colors._898989),
+      ...textRTL(_language),
+    },
+    priceSection: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(5),
+    },
+    priceText: {
+      ...commonFontStyle(600, 2.7, Colors.red),
+    },
+    ptsText: {
+      ...commonFontStyle(600, 2, Colors.red),
+    },
+  });
+};

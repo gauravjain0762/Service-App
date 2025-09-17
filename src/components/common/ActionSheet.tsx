@@ -1,13 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
+import CommonText from './CommonText';
 
 const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
 const BORDER_COLOR = '#DBDBDB';
 
 const ActionSheet = (props: any) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {actionItems} = props;
   const actionSheetItems = [
     ...actionItems,
@@ -45,7 +50,7 @@ const ActionSheet = (props: any) => {
             underlayColor={'#f7f7f7'}
             key={index}
             onPress={actionItem.onPress}>
-            <Text
+            <CommonText
               allowFontScaling={false}
               style={[
                 styles.actionSheetText,
@@ -55,9 +60,9 @@ const ActionSheet = (props: any) => {
                 index === actionSheetItems.length - 1 && {
                   color: '#fa1616',
                 },
-              ]}>
-              {actionItem.label}
-            </Text>
+              ]}
+              text={actionItem.label}
+            />
           </TouchableHighlight>
         );
       })}
@@ -65,32 +70,34 @@ const ActionSheet = (props: any) => {
   );
 };
 
-const styles = StyleSheet.create({
-  modalContent: {
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-    marginLeft: 8,
-    marginRight: 8,
-    marginBottom: 20,
-  },
-  actionSheetText: {
-    fontSize: 18,
-    color: PRIMARY_COLOR,
-  },
-  actionSheetView: {
-    backgroundColor: WHITE,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: BORDER_COLOR,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    modalContent: {
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+      borderBottomLeftRadius: 12,
+      borderBottomRightRadius: 12,
+      marginLeft: 8,
+      marginRight: 8,
+      marginBottom: 20,
+    },
+    actionSheetText: {
+      fontSize: 18,
+      color: PRIMARY_COLOR,
+    },
+    actionSheetView: {
+      backgroundColor: WHITE,
+      display: 'flex',
+      ...rowReverseRTL(_language),
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: 16,
+      paddingBottom: 16,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderColor: BORDER_COLOR,
+    },
+  });
+};
 
 ActionSheet.propTypes = {
   actionItems: PropTypes.arrayOf(

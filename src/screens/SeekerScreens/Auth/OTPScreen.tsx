@@ -176,7 +176,7 @@ const OTPScreen = () => {
               keyboardType="number-pad"
               textContentType="oneTimeCode"
               renderCell={({index, symbol, isFocused}) => (
-                <Text
+                <CommonText
                   key={index}
                   style={[
                     styles.cell,
@@ -192,7 +192,7 @@ const OTPScreen = () => {
                   ]}
                   onLayout={getCellOnLayoutHandler(index)}>
                   {symbol || (isFocused ? <Cursor /> : null)}
-                </Text>
+                </CommonText>
               )}
             />
           </View>

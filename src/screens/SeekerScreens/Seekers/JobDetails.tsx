@@ -197,7 +197,6 @@ const getGlobalStyles = (_language: any) => {
     ...alignItemsRTL(_language),
   },
   rowWithGap: {
-    // flexDirection: 'row',
     ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(20),

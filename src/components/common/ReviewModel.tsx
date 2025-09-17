@@ -12,6 +12,8 @@ import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '@/components/common/CommonText';
 import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 Dimensions.get('window');
 
@@ -30,6 +32,8 @@ const tags = [
 ];
 
 const ReviewModal = ({visible, onClose}: ReviewModalProps) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [] = useState(5);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -61,20 +65,20 @@ const ReviewModal = ({visible, onClose}: ReviewModalProps) => {
               selectedTags.includes(tag) && styles.tagSelected,
             ]}
             onPress={() => toggleTag(tag)}>
-            <Text
+            <CommonText
               style={[
                 styles.tagText,
                 selectedTags.includes(tag) && styles.tagTextSelected,
-              ]}>
-              {tag}
-            </Text>
+              ]}
+              text={tag}
+            />
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.submitButton} onPress={onClose}>
-          <Text style={styles.submitButtonText}>Submit</Text>
+          <CommonText style={styles.submitButtonText} text={'Submit'} />
         </TouchableOpacity>
       </View>
     </BottomModal>
@@ -83,76 +87,78 @@ const ReviewModal = ({visible, onClose}: ReviewModalProps) => {
 
 export default ReviewModal;
 
-const styles = StyleSheet.create({
-  modalContainer: {
-    paddingTop: hp(40),
-    paddingBottom: hp(40),
-    paddingHorizontal: wp(20),
-    alignItems: 'center',
-  },
-  title: {
-    ...commonFontStyle(700, 2.7, Colors.black),
-    textAlign: 'center',
-    marginBottom: hp(18),
-  },
-  description: {
-    ...commonFontStyle(500, 2.1, '#000000'),
-    textAlign: 'center',
-    marginBottom: hp(10),
-  },
-  rowText: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  stars: {
-    width: wp(220),
-    height: hp(80),
-    alignSelf: 'center',
-  },
-  tagsWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: wp(10),
-    marginTop: hp(20),
-    marginBottom: hp(20),
-  },
-  tag: {
-    borderWidth: 1,
-    borderColor: '#E0E0E0',
-    borderRadius: hp(30),
-    paddingHorizontal: wp(18),
-    paddingVertical: hp(10),
-    marginBottom: hp(10),
-    backgroundColor: Colors.white,
-  },
-  tagSelected: {
-    borderColor: Colors.seeker_primary,
-    backgroundColor: '#E6F9F0',
-  },
-  tagText: {
-    ...commonFontStyle(500, 1.7, Colors.black),
-    textAlign: 'center',
-  },
-  tagTextSelected: {
-    ...commonFontStyle(500, 1.7, Colors.black),
-  },
-  buttonContainer: {
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: hp(10),
-  },
-  submitButton: {
-    backgroundColor: Colors.seeker_primary,
-    borderRadius: hp(30),
-    paddingVertical: hp(15),
-    width: '100%',
-    alignItems: 'center',
-  },
-  submitButtonText: {
-    ...commonFontStyle(600, 2.1, Colors.white),
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    modalContainer: {
+      paddingTop: hp(40),
+      paddingBottom: hp(40),
+      paddingHorizontal: wp(20),
+      alignItems: 'center',
+    },
+    title: {
+      ...commonFontStyle(700, 2.7, Colors.black),
+      textAlign: 'center',
+      marginBottom: hp(18),
+    },
+    description: {
+      ...commonFontStyle(500, 2.1, '#000000'),
+      textAlign: 'center',
+      marginBottom: hp(10),
+    },
+    rowText: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    stars: {
+      width: wp(220),
+      height: hp(80),
+      alignSelf: 'center',
+    },
+    tagsWrapper: {
+      ...rowReverseRTL(_language),
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+      gap: wp(10),
+      marginTop: hp(20),
+      marginBottom: hp(20),
+    },
+    tag: {
+      borderWidth: 1,
+      borderColor: '#E0E0E0',
+      borderRadius: hp(30),
+      paddingHorizontal: wp(18),
+      paddingVertical: hp(10),
+      marginBottom: hp(10),
+      backgroundColor: Colors.white,
+    },
+    tagSelected: {
+      borderColor: Colors.seeker_primary,
+      backgroundColor: '#E6F9F0',
+    },
+    tagText: {
+      ...commonFontStyle(500, 1.7, Colors.black),
+      textAlign: 'center',
+    },
+    tagTextSelected: {
+      ...commonFontStyle(500, 1.7, Colors.black),
+    },
+    buttonContainer: {
+      width: '100%',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: hp(10),
+    },
+    submitButton: {
+      backgroundColor: Colors.seeker_primary,
+      borderRadius: hp(30),
+      paddingVertical: hp(15),
+      width: '100%',
+      alignItems: 'center',
+    },
+    submitButtonText: {
+      ...commonFontStyle(600, 2.1, Colors.white),
+    },
+  });
+};

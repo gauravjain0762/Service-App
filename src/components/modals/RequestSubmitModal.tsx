@@ -5,6 +5,8 @@ import RequestCard from '../common/RequestCard';
 import {IMAGES} from '@/assets/images';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
+import { rowReverseRTL } from '@/utils/arabicStyles';
+import { useAppSelector } from '@/Hooks/hooks';
 
 type Props = {
   color?: string;
@@ -31,6 +33,8 @@ const RequestSubmitModal = ({
   imageSource,
   jobCode,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={styles.submitModalContainer}>
       <CommonText
@@ -82,7 +86,8 @@ const RequestSubmitModal = ({
 
 export default RequestSubmitModal;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   submitModalContainer: {
     alignItems: 'center',
   },
@@ -119,7 +124,7 @@ const styles = StyleSheet.create({
   },
   referenceRow: {
     marginTop: hp(11),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   referenceLabel: {
@@ -131,4 +136,4 @@ const styles = StyleSheet.create({
   requestCardMargin: {
     marginVertical: hp(25),
   },
-});
+})}

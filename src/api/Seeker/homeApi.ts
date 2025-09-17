@@ -174,4 +174,5 @@ export const {
   useGetUserLoyaltyQuery,
   useStripePaymentMutation,
   useGetOffersDetailsQuery,
+  useGetNotificationsQuery
 } = homeApi;

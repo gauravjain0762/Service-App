@@ -55,7 +55,7 @@ const Profile = () => {
       title: 'Language',
       languageSection: (
         <View style={styles.languageSection}>
-          <CustomImage source={IMAGES.flag} size={hp(20)} />
+          <CustomImage source={language ==='en' ? IMAGES.flag :IMAGES.flag2} size={hp(20)} />
           <CustomImage source={IMAGES.downArrow} size={hp(20)} />
         </View>
       ),

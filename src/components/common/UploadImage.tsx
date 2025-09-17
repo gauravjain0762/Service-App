@@ -98,7 +98,7 @@ const UploadImage = ({
           <ImageBackground
             source={IMAGES.dashed_rec}
             style={styles.plusIconBox}>
-            <Text style={styles.plusIconText}>+</Text>
+            <CommonText style={styles.plusIconText} text={'+'} />
           </ImageBackground>
           <CommonText
             text={'Upload Your Picture'}

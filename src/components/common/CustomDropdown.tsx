@@ -346,12 +346,12 @@ const getGlobalStyles = (_language: any) => {
       maxHeight: hp(100),
     },
     chipContainer: {
-      flexDirection: 'row',
+      ...rowReverseRTL(_language),
       flexWrap: 'wrap',
       gap: wp(8),
     },
     chip: {
-      flexDirection: 'row',
+      ...rowReverseRTL(_language),
       alignItems: 'center',
       backgroundColor: Colors._F9F9F9,
       borderRadius: hp(15),

@@ -7,6 +7,8 @@ import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import CommonText from '../common/CommonText';
 import {Colors} from '@/constants/Colors';
 import CustomButton from '../common/CustomButton';
+import { useAppSelector } from '@/Hooks/hooks';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 type Props = {
   close?: boolean;
@@ -25,6 +27,8 @@ const CompleteBookingModal = ({
   close,
   serviceName = '',
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <BottomModal
       close={false}
@@ -68,7 +72,8 @@ const CompleteBookingModal = ({
 
 export default CompleteBookingModal;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   closeIcon: {
     alignSelf: 'flex-end',
   },
@@ -90,7 +95,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(500, 2.2, Colors.provider_primary),
   },
   buttonContainer: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginVertical: hp(15),
     gap: wp(12),
@@ -106,4 +111,4 @@ const styles = StyleSheet.create({
   completeBtn: {
     flex: 1,
   },
-});
+})}

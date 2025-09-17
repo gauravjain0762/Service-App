@@ -30,9 +30,11 @@ import {
   PlatformPay,
   presentPaymentSheet,
 } from '@stripe/stripe-react-native';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const Subscription = () => {
-  const {packages} = useAppSelector<any>(state => state.auth);
+  const {packages, language} = useAppSelector<any>(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {isLoading} = useGetPackagesQuery({});
   const [buyPackage, {isLoading: isBuyLoading}] = useBuyPackageMutation();
   const [stripePayment, {isLoading: stripeLoading}] =
@@ -241,7 +243,8 @@ const Subscription = () => {
 
 export default Subscription;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     flex: 1,
     paddingHorizontal: wp(24),
@@ -267,7 +270,7 @@ const styles = StyleSheet.create({
   },
   priceRow: {
     gap: wp(5),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   priceText: {
@@ -286,7 +289,7 @@ const styles = StyleSheet.create({
   },
   benefitItem: {
     gap: wp(10),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   benefitText: {
@@ -297,4 +300,4 @@ const styles = StyleSheet.create({
     borderWidth: hp(1.2),
     borderColor: Colors.white,
   },
-});
+})}

@@ -39,9 +39,7 @@ const SearchLocationModal: React.FC<SearchLocationModalProps> = ({
       <TouchableOpacity
         onPress={() => onSelectPlace(item)}
         style={styles.searchItem}>
-        <Text numberOfLines={1} style={styles.searchItemText}>
-          {item?.description}
-        </Text>
+        <CommonText numberOfLines={1} style={styles.searchItemText} text={item?.description}/>
       </TouchableOpacity>
     );
   };

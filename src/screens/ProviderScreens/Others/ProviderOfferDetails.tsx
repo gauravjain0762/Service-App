@@ -18,12 +18,14 @@ import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetRequestsDetailsQuery} from '@/api/Provider/homeApi';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const ProviderOfferDetails = () => {
   const {
     params: {request_id},
   } = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const {
     data: requestData,
     isLoading: requestLoading,
@@ -210,7 +212,8 @@ const ProviderOfferDetails = () => {
 
 export default ProviderOfferDetails;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -252,7 +255,7 @@ const styles = StyleSheet.create({
   titleRow: {
     gap: wp(40),
     marginTop: hp(35),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   titleText: {
@@ -260,14 +263,14 @@ const styles = StyleSheet.create({
   },
   ratingRow: {
     gap: wp(5),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   ratingText: {
     ...commonFontStyle(500, 2, Colors.black),
   },
   referenceRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginTop: hp(11),
   },
@@ -278,7 +281,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.9, Colors.black),
   },
   featuresRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     marginVertical: hp(20),
     flexWrap: 'wrap',
@@ -305,7 +308,7 @@ const styles = StyleSheet.create({
     gap: hp(22),
   },
   bookingRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -327,7 +330,7 @@ const styles = StyleSheet.create({
   },
   imageRow: {
     gap: wp(12),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     justifyContent: 'space-between',
   },
   imageBox: {
@@ -338,7 +341,7 @@ const styles = StyleSheet.create({
   bottomRow: {
     width: '100%',
     // marginTop: hp(45),
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
     position: 'absolute',
@@ -358,7 +361,7 @@ const styles = StyleSheet.create({
     ...commonFontStyle(600, 1.7, Colors.white),
   },
   priceRow: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(7),
   },
@@ -389,4 +392,4 @@ const styles = StyleSheet.create({
   overlayText: {
     ...commonFontStyle(700, 2.5, Colors.white),
   },
-});
+})}

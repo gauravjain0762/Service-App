@@ -169,6 +169,12 @@
     "Additional Note":"Additional Note",
     "Upload PDF's here.":"Upload PDF's here.",
     "Edit Profile":"Edit Profile",
-    "Change Password":"Change Password"
+    "Change Password":"Change Password",
+    "Select Language":"Select Language",
+    "Mark All As Read":"Mark All As Read",
+    "Store Location":"Store Location",
+    "Upload Video/Image":"Upload Video/Image",
+    "Upload videos, images, or PDFs here.":"Upload videos, images, or PDFs here.",
+    "Send Request":"Send Request"
   }
 }

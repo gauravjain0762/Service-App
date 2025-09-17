@@ -6,12 +6,16 @@ import {Colors} from '@/constants/Colors';
 import CommonText from '../common/CommonText';
 import CustomImage from '../common/CustomImage';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
+import { useAppSelector } from '@/Hooks/hooks';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 type Props = {
   style?: ViewStyle;
 };
 
 const TransactionReceipt = ({style}: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   return (
     <View style={[styles.container, style]}>
       <View style={styles.leftSection}>
@@ -39,14 +43,15 @@ const TransactionReceipt = ({style}: Props) => {
 
 export default TransactionReceipt;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   leftSection: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(13),
   },
@@ -66,11 +71,11 @@ const styles = StyleSheet.create({
     ...commonFontStyle(400, 1.7, Colors._898989),
   },
   priceSection: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     gap: wp(5),
   },
   priceText: {
     ...commonFontStyle(600, 2.7, Colors.seeker_primary),
   },
-});
+})}

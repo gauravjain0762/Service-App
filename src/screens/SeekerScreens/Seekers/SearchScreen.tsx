@@ -15,6 +15,9 @@ import {HeaderBackButton} from '@react-navigation/elements';
 import {goBack} from '@/components/common/commonFunction';
 import CustomImage from '@/components/common/CustomImage';
 import CustomTextInput from '@/components/common/CustomTextInput';
+import {useAppSelector} from '@/Hooks/hooks';
+import {flipImage, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import CommonText from '@/components/common/CommonText';
 
 const initialSearches = [
   'Spark plug replacement',
@@ -30,6 +33,8 @@ const initialSearches = [
 ];
 
 const SearchScreen = () => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [search, setSearch] = useState('');
   const [recentSearches, setRecentSearches] = useState(initialSearches);
 
@@ -56,7 +61,11 @@ const SearchScreen = () => {
         <HeaderBackButton
           onPress={() => goBack()}
           backImage={() => (
-            <CustomImage source={IMAGES.backArrow2} size={hp(24)} />
+            <CustomImage
+              source={IMAGES.backArrow2}
+              size={hp(24)}
+              imageStyle={{...flipImage(language)}}
+            />
           )}
         />
 
@@ -73,9 +82,9 @@ const SearchScreen = () => {
       </View>
 
       <View style={styles.headerRow}>
-        <Text style={styles.headerText}>Recent Search</Text>
+        <CommonText text={'Recent Search'} style={styles.headerText} />
         <TouchableOpacity onPress={handleClearAll}>
-          <Text style={styles.clearAll}>Clear All</Text>
+          <CommonText text={'Clear All'} style={styles.clearAll} />
         </TouchableOpacity>
       </View>
 
@@ -84,7 +93,7 @@ const SearchScreen = () => {
         keyExtractor={item => item}
         renderItem={({item}) => (
           <View style={styles.itemRow}>
-            <Text style={styles.itemText}>{item}</Text>
+            <CommonText text={item} style={styles.itemText} />
             <TouchableOpacity onPress={() => handleRemove(item)}>
               <Image source={IMAGES.close2} style={styles.removeIcon} />
             </TouchableOpacity>
@@ -97,80 +106,83 @@ const SearchScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-    paddingHorizontal: wp(20),
-    paddingTop: hp(30),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors._E7E7E7,
-    borderRadius: hp(25),
-    height: hp(50),
-    marginRight: 20,
-    marginBottom: hp(25),
-    width: '90%',
-  },
-  searchIcon: {
-    width: wp(20),
-    height: hp(25),
-    marginRight: wp(8),
-    marginLeft: wp(12),
-    tintColor: Colors._4C4C4C,
-  },
-  input: {
-    flex: 1,
-    ...commonFontStyle(400, 2, Colors.black),
-    color: Colors.black,
-  },
-  filterIcon: {
-    width: wp(22),
-    height: hp(18),
-    marginRight: wp(15),
-    tintColor: Colors.black,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: hp(20),
-    marginTop: hp(38),
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: Colors.white,
+      paddingHorizontal: wp(20),
+      paddingTop: hp(30),
+    },
+    header: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    searchBar: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      backgroundColor: Colors._E7E7E7,
+      borderRadius: hp(25),
+      height: hp(50),
+      marginRight: 20,
+      marginBottom: hp(25),
+      width: '90%',
+    },
+    searchIcon: {
+      width: wp(20),
+      height: hp(25),
+      marginRight: wp(8),
+      marginLeft: wp(12),
+      tintColor: Colors._4C4C4C,
+    },
+    input: {
+      flex: 1,
+      ...commonFontStyle(400, 2, Colors.black),
+      color: Colors.black,
+    },
+    filterIcon: {
+      width: wp(22),
+      height: hp(18),
+      marginRight: wp(15),
+      tintColor: Colors.black,
+    },
+    headerRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginBottom: hp(20),
+      marginTop: hp(38),
 
-    justifyContent: 'space-between',
-  },
-  headerText: {
-    ...commonFontStyle(600, 2.5, Colors.black),
-  },
-  clearAll: {
-    ...commonFontStyle(400, 1.7, '#313131'),
-  },
-  flatList: {
-    flexGrow: 0,
-  },
-  itemRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: hp(12),
-  },
-  itemText: {
-    ...commonFontStyle(400, 1.9, '#868686'),
-    flex: 1,
-  },
-  removeIcon: {
-    width: wp(12),
-    height: hp(12),
-    color: Colors._888888,
-    marginLeft: wp(10),
-    fontWeight: 'bold',
-    tintColor: '#AAAAAA',
-  },
-});
+      justifyContent: 'space-between',
+    },
+    headerText: {
+      ...commonFontStyle(600, 2.5, Colors.black),
+    },
+    clearAll: {
+      ...commonFontStyle(400, 1.7, '#313131'),
+    },
+    flatList: {
+      flexGrow: 0,
+    },
+    itemRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: hp(12),
+    },
+    itemText: {
+      ...commonFontStyle(400, 1.9, '#868686'),
+      flex: 1,
+      ...textRTL(_language),
+    },
+    removeIcon: {
+      width: wp(12),
+      height: hp(12),
+      color: Colors._888888,
+      marginLeft: wp(10),
+      fontWeight: 'bold',
+      tintColor: '#AAAAAA',
+    },
+  });
+};
 
 export default SearchScreen;

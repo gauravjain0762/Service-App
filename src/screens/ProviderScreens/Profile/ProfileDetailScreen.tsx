@@ -13,6 +13,7 @@ import TabSwitch from '@/components/common/TabSwitch';
 import BookingCard from '@/components/Provider/BookingCard';
 import {DATA} from '../Tabs/ProMyBookings';
 import {useAppSelector} from '@/Hooks/hooks';
+import { rowReverseRTL, textLTR } from '@/utils/arabicStyles';
 
 const REVIEW_DATA = [
   {
@@ -36,7 +37,8 @@ const REVIEW_DATA = [
 ];
 
 const ProfileDetailScreen = () => {
-  const {userInfo} = useAppSelector<any>(state => state.auth);
+  const {userInfo,language} = useAppSelector<any>(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [activeTab, setActiveTab] = useState<'My Jobs' | 'Reviews'>('My Jobs');
 
   return (
@@ -115,9 +117,10 @@ const ProfileDetailScreen = () => {
 
 export default ProfileDetailScreen;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   detailView: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: getFontSize(2),
@@ -130,8 +133,8 @@ const styles = StyleSheet.create({
   },
   value: {
     flex: 2,
-    textAlign: 'right',
     ...commonFontStyle(500, 2.2, Colors._333333),
+    ...textLTR(_language)
   },
   contentContainer: {
     gap: hp(17),
@@ -139,4 +142,4 @@ const styles = StyleSheet.create({
     paddingBottom: hp(400),
     paddingHorizontal: hp(5),
   },
-});
+})}

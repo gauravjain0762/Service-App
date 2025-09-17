@@ -57,7 +57,7 @@ const SetLocation = () => {
 
   // Get user data and language from Redux store (uncomment when available)
   const {userData, language} = useAppSelector((state: any) => state.auth);
-
+const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   // API calls (uncomment when available)
   const {
     data: googleAddressData,
@@ -337,7 +337,8 @@ const SetLocation = () => {
 
 export default SetLocation;
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: Colors.white,
@@ -404,4 +405,4 @@ const styles = StyleSheet.create({
     marginVertical: hp(30),
     backgroundColor: Colors.seeker_primary,
   },
-});
+})}

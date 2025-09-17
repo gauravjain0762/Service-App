@@ -1,3 +1,5 @@
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -12,6 +14,7 @@ import {
 } from 'react-native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
+import CommonText from './CommonText';
 
 const PRIMARY_COLOR = 'rgb(0,98,255)';
 const WHITE = '#ffffff';
@@ -30,6 +33,8 @@ const EditPicture = ({
   onChangeText,
   style,
 }: Props) => {
+  const {language} = useAppSelector(state => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   // const [actionSheet, setActionSheet] = useState(false);
   const [image, setImage] = useState<any>(undefined);
   const {t} = useTranslation();
@@ -161,7 +166,7 @@ const EditPicture = ({
               underlayColor={'#f7f7f7'}
               key={index}
               onPress={actionItem.onPress}>
-              <Text
+              <CommonText
                 allowFontScaling={false}
                 style={[
                   styles.actionSheetText,
@@ -169,9 +174,9 @@ const EditPicture = ({
                   index === actionSheetItems.length - 1 && {
                     color: '#fa1616',
                   },
-                ]}>
-                {actionItem.label}
-              </Text>
+                ]}
+                text={actionItem.label}
+              />
             </TouchableHighlight>
           );
         })}
@@ -182,41 +187,43 @@ const EditPicture = ({
   );
 };
 
-const styles = StyleSheet.create({
-  modalContent: {
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
-    marginLeft: 8,
-    marginRight: 8,
-    marginBottom: 20,
-  },
-  actionSheetText: {
-    fontSize: 18,
-    color: PRIMARY_COLOR,
-  },
-  actionSheetView: {
-    backgroundColor: WHITE,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 16,
-    paddingBottom: 16,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: BORDER_COLOR,
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    // marginTop: 100,
-  },
-  imageUser: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-  },
-});
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    modalContent: {
+      borderTopLeftRadius: 12,
+      borderTopRightRadius: 12,
+      borderBottomLeftRadius: 12,
+      borderBottomRightRadius: 12,
+      marginLeft: 8,
+      marginRight: 8,
+      marginBottom: 20,
+    },
+    actionSheetText: {
+      fontSize: 18,
+      color: PRIMARY_COLOR,
+    },
+    actionSheetView: {
+      backgroundColor: WHITE,
+      display: 'flex',
+      ...rowReverseRTL(_language),
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingTop: 16,
+      paddingBottom: 16,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderColor: BORDER_COLOR,
+    },
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      // marginTop: 100,
+    },
+    imageUser: {
+      width: 200,
+      height: 200,
+      borderRadius: 100,
+    },
+  });
+};
 
 export default EditPicture;

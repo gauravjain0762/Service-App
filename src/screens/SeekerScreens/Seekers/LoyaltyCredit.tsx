@@ -13,9 +13,13 @@ import LoyaltyCreditTransaction from '@/components/Seeker/LoyaltyCreditTransacti
 import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
 import {useGetUserLoyaltyQuery} from '@/api/Seeker/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
-import { formatePrice } from '@/components/common/commonFunction';
+import {formatePrice} from '@/components/common/commonFunction';
+import {useAppSelector} from '@/Hooks/hooks';
+import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
 
 const LoyaltyCredit = () => {
+  const {language} = useAppSelector((state: any) => state.auth);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allLoyaltyData, setAllLoyaltyData] = React.useState([]);
   const {
@@ -75,7 +79,9 @@ const LoyaltyCredit = () => {
               </AnimatedCircleProgress>
               <View>
                 <CommonText
-                  text={`${formatePrice(loyaltyDetails?.current_loyalty_points)} AED`}
+                  text={`${formatePrice(
+                    loyaltyDetails?.current_loyalty_points,
+                  )} AED`}
                   style={styles.creditPoint}
                 />
                 <CommonText
@@ -131,65 +137,71 @@ const LoyaltyCredit = () => {
 
 export default LoyaltyCredit;
 
-const styles = StyleSheet.create({
-  mainContainer: {},
-  imageStyle: {
-    width: SCREEN_WIDTH - hp(60),
-    height: hp(200),
-    alignSelf: 'center',
-    overflow: 'hidden',
-    borderRadius: hp(20),
-    justifyContent: 'space-between',
-  },
-  cardBgView: {
-    backgroundColor: Colors._FBC943,
-    width: '100%',
-  },
-  cardBottomText: {
-    ...commonFontStyle(500, 1.6, Colors.black),
-    padding: hp(10),
-    color: Colors.black,
-    textAlign: 'center',
-  },
-  headingText: {
-    ...commonFontStyle(700, 2.8, Colors.white),
-    paddingHorizontal: hp(25),
-    paddingTop: hp(20),
-  },
-  creditView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    gap: hp(10),
-  },
-  creditPoint: {
-    ...commonFontStyle(600, 2.5, Colors.white),
-  },
-  creditText: {
-    ...commonFontStyle(400, 1.9, Colors.white),
-  },
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
+    mainContainer: {},
+    imageStyle: {
+      width: SCREEN_WIDTH - hp(60),
+      height: hp(200),
+      alignSelf: 'center',
+      overflow: 'hidden',
+      borderRadius: hp(20),
+      justifyContent: 'space-between',
+    },
+    cardBgView: {
+      backgroundColor: Colors._FBC943,
+      width: '100%',
+    },
+    cardBottomText: {
+      ...commonFontStyle(500, 1.6, Colors.black),
+      padding: hp(10),
+      color: Colors.black,
+      textAlign: 'center',
+    },
+    headingText: {
+      ...commonFontStyle(700, 2.8, Colors.white),
+      paddingHorizontal: hp(25),
+      paddingTop: hp(20),
+      ...textRTL(_language)
+    },
+    creditView: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+      gap: hp(10),
+    },
+    creditPoint: {
+      ...commonFontStyle(600, 2.5, Colors.white),
+      ...textRTL(_language)
+    },
+    creditText: {
+      ...commonFontStyle(400, 1.9, Colors.white),
+      ...textRTL(_language)
+    },
 
-  transactionTitle: {
-    ...commonFontStyle(600, 2.4, Colors._323232),
-    paddingHorizontal: hp(20),
-    marginTop: hp(25),
-  },
+    transactionTitle: {
+      ...commonFontStyle(600, 2.4, Colors._323232),
+      paddingHorizontal: hp(20),
+      marginTop: hp(25),
+      ...textRTL(_language)
+    },
 
-  scrollView: {
-    marginTop: hp(15),
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingBottom: '20%',
-  },
-  transactionItem: {
-    paddingBottom: hp(34),
-    paddingHorizontal: hp(20),
-  },
-  noData: {
-    textAlign: 'center',
-    ...commonFontStyle(500, 2, Colors._898989),
-  },
-});
+    scrollView: {
+      marginTop: hp(15),
+      flex: 1,
+    },
+    scrollContent: {
+      flexGrow: 1,
+      paddingBottom: '20%',
+    },
+    transactionItem: {
+      paddingBottom: hp(34),
+      paddingHorizontal: hp(20),
+    },
+    noData: {
+      textAlign: 'center',
+      ...commonFontStyle(500, 2, Colors._898989),
+    },
+  });
+};

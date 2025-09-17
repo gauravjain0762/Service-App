@@ -1,6 +1,8 @@
 import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import {useState} from 'react';
+import { useAppSelector } from '@/Hooks/hooks';
+import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const CustomCheckBox = ({
   onChange,
@@ -10,6 +12,8 @@ const CustomCheckBox = ({
   onChange: (checked: boolean) => void;
   checked: boolean;
 }) => {
+  const {language} = useAppSelector(state => state.auth);
+    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [isChecked, setIsChecked] = useState(checked);
 
   const checkBoxStyle = isChecked ? styles.checkedBox : styles.unCheckedBox;
@@ -26,9 +30,10 @@ const CustomCheckBox = ({
   );
 };
 
-const styles = StyleSheet.create({
+const getGlobalStyles = (_language: any) => {
+  return StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    ...rowReverseRTL(_language),
     alignItems: 'center',
   },
   checkedBox: {
@@ -47,6 +52,6 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 10,
   },
-});
+})}
 
 export default CustomCheckBox;

@@ -11,7 +11,7 @@ import CustomButton from '@/components/common/CustomButton';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
-import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
+import {navigateTo} from '@/components/common/commonFunction';
 import {SCREENS} from '@/navigation/screenNames';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomCarousel from '@/components/common/CustomCarousel';
