@@ -48,7 +48,7 @@ const CompleteBookingModal = ({
 
         <CommonText style={styles.descriptionText}>
           {`Are you sure you have completed the `}
-          <CommonText style={styles.highlightText}>{serviceName} </CommonText>
+          <CommonText style={styles.highlightText} text={serviceName}/>
           Service?
         </CommonText>
 

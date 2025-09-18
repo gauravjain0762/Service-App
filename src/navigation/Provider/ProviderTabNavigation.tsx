@@ -1,7 +1,12 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
@@ -87,7 +92,7 @@ const ProviderTabNavigation = () => {
             paddingTop: hp(10),
             alignItems: 'center',
             position: 'absolute',
-            marginBottom: hp(-14),
+            marginBottom: Platform.OS === 'android' ? hp(10) : hp(-14),
             borderRadius: hp(100),
             paddingBottom: hp(10),
             justifyContent: 'center',

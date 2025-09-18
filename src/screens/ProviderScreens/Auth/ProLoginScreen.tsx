@@ -31,8 +31,8 @@ const ProLoginScreen = ({}: any) => {
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
   const [details, setDetails] = useState({
-    email: __DEV__ ? 'user001@gmail.com' : '',
-    password: __DEV__ ? 'user@123' : '',
+    email: __DEV__ ? 'company@devicebee.com' : '',
+    password: __DEV__ ? '123456' : '',
   });
 
   const styles = React.useMemo(

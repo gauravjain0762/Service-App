@@ -175,6 +175,19 @@
     "Store Location":"Store Location",
     "Upload Video/Image":"Upload Video/Image",
     "Upload videos, images, or PDFs here.":"Upload videos, images, or PDFs here.",
-    "Send Request":"Send Request"
+    "Send Request":"Send Request",
+    "Are you sure want to logout? Make sure all your work is saved.":"Are you sure want to logout? Make sure all your work is saved.",
+    "Delete Now":"Delete Now",
+    "Are you sure want to delete your account?":"Are you sure want to delete your account?",
+    "Delete":"Delete",
+    "Are you sure you have completed the":"Are you sure you have completed the",
+    "Service?":"Service?",
+    "Please login or create new account to use this feature.":"Please login or create new account to use this feature.",
+    "Thanks for signing up! Our team is reviewing your provider account. We’ll notify you as soon as it’s activated.":"Thanks for signing up! Our team is reviewing your provider account. We’ll notify you as soon as it’s activated.",
+    "Your request has been Submitted wait for the offers!":"Your request has been Submitted wait for the offers!",
+    "Booking Number: ":"Booking Number: ",
+    "Search Location":"Search Location",
+    "Confirm Location":"Confirm Location",
+    "Request edit":"Request edit"
   }
 }

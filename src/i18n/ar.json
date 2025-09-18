@@ -175,6 +175,19 @@
     "Store Location":"موقع المتجر",
     "Upload Video/Image":"تحميل الفيديو/الصورة",
     "Upload videos, images, or PDFs here.":"قم بتحميل مقاطع الفيديو والصور وملفات PDF هنا.",
-    "Send Request":"إرسال الطلب"
+    "Send Request":"إرسال الطلب",
+     "Are you sure want to logout? Make sure all your work is saved.":"هل أنت متأكد من رغبتك في تسجيل الخروج؟ تأكد من حفظ جميع أعمالك.",
+    "Delete Now":"احذف الآن",
+    "Are you sure want to delete your account?":"هل أنت متأكد أنك تريد حذف حسابك؟",
+    "Delete":"يمسح",
+    "Are you sure you have completed the":"هل أنت متأكد من أنك أكملت؟",
+    "Service?":"خدمة؟",
+    "Please login or create new account to use this feature.":"يرجى تسجيل الدخول أو إنشاء حساب جديد لاستخدام هذه الميزة.",
+    "Thanks for signing up! Our team is reviewing your provider account. We’ll notify you as soon as it’s activated.":"شكرًا لتسجيلك! يقوم فريقنا بمراجعة حساب مزود الخدمة الخاص بك. سنُعلمك فور تفعيله.",
+    "Your request has been Submitted wait for the offers!":"لقد تم تقديم طلبك انتظر العروض!",
+    "Booking Number: ":"رقم الحجز:",
+    "Search Location":"موقع البحث",
+    "Confirm Location":"تأكيد الموقع",
+    "Request edit":"طلب التعديل"
   }
 }
