@@ -232,7 +232,7 @@ console.log(categoryData?.fields,'categoryData?.fields');
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
         text={'Create Request'}
-        rightIcon={<Image source={IMAGES.search} style={styles.searchIcon} />}
+        // rightIcon={<Image source={IMAGES.search} style={styles.searchIcon} />}
         style={{
           paddingHorizontal: wp(24),
         }}

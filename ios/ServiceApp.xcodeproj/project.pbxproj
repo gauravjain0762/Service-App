@@ -324,7 +324,7 @@
 				CODE_SIGN_ENTITLEMENTS = ServiceApp/ServiceAppDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = DGB65FCA99;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = ServiceApp/Info.plist;
@@ -358,7 +358,7 @@
 				CODE_SIGN_ENTITLEMENTS = ServiceApp/ServiceApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = DGB65FCA99;
 				INFOPLIST_FILE = ServiceApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Service App";

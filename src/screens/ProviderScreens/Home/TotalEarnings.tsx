@@ -1,5 +1,11 @@
 import React from 'react';
-import {ImageBackground, ScrollView, StyleSheet, View} from 'react-native';
+import {
+  FlatList,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {GeneralStyle} from '@/constants/GeneralStyle';
 import ProviderHeader from '@/components/Provider/ProviderHeader';
@@ -10,18 +16,62 @@ import CommonText from '@/components/common/CommonText';
 import CustomImage from '@/components/common/CustomImage';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import TransactionReceipt from '@/components/Provider/TransactionReceipt';
-import {goBack} from '@/components/common/commonFunction';
+import {formatPriceIN, goBack} from '@/components/common/commonFunction';
 import BackHeader from '@/components/common/BackHeader';
 import {useAppSelector} from '@/Hooks/hooks';
-import { rowReverseRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL} from '@/utils/arabicStyles';
+import {useGetEarningsQuery} from '@/api/Provider/homeApi';
+import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 
 const TotalEarnings = () => {
   const {language} = useAppSelector(state => state.auth);
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [allEarnings, setAllEarnings] = React.useState([]);
+
+  const {
+    data: earnings,
+    isLoading: earningLoading,
+    refetch: refetchEarningList,
+  } = useGetEarningsQuery<any>(
+    {page: currentPage},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
+
+  React.useEffect(() => {
+    if (earnings) {
+      const newData = earnings.data.latest_transactions;
+      setAllEarnings(prev =>
+        currentPage === 1 ? newData : [...prev, ...newData],
+      );
+    }
+  }, [earnings, currentPage]);
+
+  const handleLoadMore = () => {
+    // Check if there are more pages to load
+    if (
+      earnings &&
+      earnings.data?.pagination?.current_page <
+        earnings.data?.pagination?.total_pages &&
+      !earningLoading
+    ) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+    }
+  };
   return (
     <SafeAreaView edges={[]} style={GeneralStyle.container}>
       <ImageBackground source={IMAGES.earning_bg} style={styles.imageBg}>
-        {/* <ProviderHeader
+        {earningLoading ? (
+          <ProMyBookingsSkeleton />
+        ) : (
+          <>
+            {/* <ProviderHeader
           size={hp(20)}
           isBell={false}
           onPressProfile={() => goBack()}
@@ -29,44 +79,49 @@ const TotalEarnings = () => {
           subtitleStyle={styles.headerSubtitle}
           avatarContainerStyle={styles.avatarContainer}
         /> */}
-
-        <BackHeader
-          tintColor={Colors.white}
-          style={{paddingHorizontal: wp(24)}}
-        />
-
-        <View style={styles.centerContent}>
-          <CommonText text="Total Earning" style={styles.totalEarningText} />
-          <View style={styles.amountRow}>
-            <CustomImage
-              size={hp(40)}
-              source={IMAGES.currency}
+            <BackHeader
               tintColor={Colors.white}
+              style={{paddingHorizontal: wp(24)}}
             />
-            <CommonText text="5800,652" style={styles.amountText} />
-          </View>
-        </View>
 
-        <View style={styles.whiteBottomContainer}>
-          <View style={styles.transactionHeader}>
-            <CommonText
-              text="Last Transaction"
-              style={styles.transactionTitle}
-            />
-            {/* <CommonText text="See all" style={styles.seeAllText} /> */}
-          </View>
-
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}>
-            {Array.from({length: 7}).map((_, index) => (
-              <View key={index} style={styles.transactionItem}>
-                <TransactionReceipt />
+            <View style={styles.centerContent}>
+              <CommonText
+                text="Total Earning"
+                style={styles.totalEarningText}
+              />
+              <View style={styles.amountRow}>
+                <CustomImage
+                  size={hp(40)}
+                  source={IMAGES.currency}
+                  tintColor={Colors.white}
+                />
+                <CommonText
+                  text={formatPriceIN(earnings?.data?.total_earnings)}
+                  style={styles.amountText}
+                />
               </View>
-            ))}
-          </ScrollView>
-        </View>
+            </View>
+
+            <View style={styles.whiteBottomContainer}>
+              <View style={styles.transactionHeader}>
+                <CommonText
+                  text="Last Transaction"
+                  style={styles.transactionTitle}
+                />
+                {/* <CommonText text="See all" style={styles.seeAllText} /> */}
+              </View>
+              <FlatList
+                data={allEarnings}
+                keyExtractor={item => item?._id}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.transactionItem}
+                renderItem={({item}) => <TransactionReceipt item={item} />}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
+              />
+            </View>
+          </>
+        )}
       </ImageBackground>
     </SafeAreaView>
   );
@@ -137,6 +192,7 @@ const getGlobalStyles = (_language: any) => {
       paddingBottom: '20%',
     },
     transactionItem: {
+      marginTop: hp(38),
       paddingBottom: hp(34),
     },
   });

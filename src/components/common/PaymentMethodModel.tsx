@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Platform,
 } from 'react-native';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
@@ -12,7 +13,7 @@ import CommonText from '@/components/common/CommonText';
 import {IMAGES} from '@/assets/images';
 import BottomModal from '@/components/common/BottomModal';
 import {useAppSelector} from '@/Hooks/hooks';
-import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 Dimensions.get('window');
 
@@ -64,23 +65,25 @@ const PaymentMethodModal = ({
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.paymentOption}
-          onPress={() => handlePaymentSelect('applePay')}>
-          <View style={styles.paymentInfo}>
-            <Image source={IMAGES.apple} style={styles.iconApple} />
-            <CommonText text="Apple Pay" style={styles.paymentText} />
-          </View>
-          <View
-            style={[
-              styles.radioButton,
-              selectedPayment === 'applePay' && styles.radioButtonSelected,
-            ]}>
-            {selectedPayment === 'applePay' && (
-              <View style={styles.radioButtonInner} />
-            )}
-          </View>
-        </TouchableOpacity>
+        {Platform.OS === 'ios' && (
+          <TouchableOpacity
+            style={styles.paymentOption}
+            onPress={() => handlePaymentSelect('applePay')}>
+            <View style={styles.paymentInfo}>
+              <Image source={IMAGES.apple} style={styles.iconApple} />
+              <CommonText text="Apple Pay" style={styles.paymentText} />
+            </View>
+            <View
+              style={[
+                styles.radioButton,
+                selectedPayment === 'applePay' && styles.radioButtonSelected,
+              ]}>
+              {selectedPayment === 'applePay' && (
+                <View style={styles.radioButtonInner} />
+              )}
+            </View>
+          </TouchableOpacity>
+        )}
 
         {/* <TouchableOpacity
           style={styles.paymentOption}

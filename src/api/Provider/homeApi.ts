@@ -16,6 +16,7 @@ export const providerHomeApi = createApi({
     'getProviderRequestsDetails',
     'getProviderJobs',
     'getProviderJobDetails',
+    'getEarnings',
   ],
   // keepUnusedDataFor: 300, // 5 minutes
   // refetchOnFocus: true,
@@ -45,7 +46,7 @@ export const providerHomeApi = createApi({
     }),
 
     // Notifications API
-    getNotifications: builder.query<any, any>({
+    getProviderNotifications: builder.query<any, any>({
       query: () => ({
         url: PROVIDER_API.DASHBOARD.NOTIFICATIONS,
         method: HTTP_METHOD.GET,
@@ -165,6 +166,14 @@ export const providerHomeApi = createApi({
       }),
       invalidatesTags: [],
     }),
+    // Earnings API
+    getEarnings: builder.query<any, any>({
+      query: () => ({
+        url: PROVIDER_API.DASHBOARD.EARNINGS,
+        method: HTTP_METHOD.GET,
+      }),
+      providesTags: ['getEarnings'],
+    }),
   }),
 });
 
@@ -183,5 +192,7 @@ export const {
   useGetPackagesQuery,
   useUpdateJobStatusMutation,
   useModifyOfferMutation,
-  useStripePaymentMutation
+  useStripePaymentMutation,
+  useGetEarningsQuery,
+  useGetProviderNotificationsQuery
 } = providerHomeApi;

@@ -6,7 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-
 import {Colors} from '@/constants/Colors';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CommonText from '@/components/common/CommonText';

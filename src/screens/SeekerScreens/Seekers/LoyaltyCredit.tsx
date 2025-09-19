@@ -5,7 +5,7 @@ import BackHeader from '@/components/common/BackHeader';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import {commonFontStyle, hp, SCREEN_WIDTH} from '@/utils/responsiveFn';
+import {commonFontStyle, hp, SCREEN_WIDTH, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
 import CommonText from '@/components/common/CommonText';
 // import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
@@ -77,7 +77,7 @@ const LoyaltyCredit = () => {
                 value={loyaltyDetails?.remaining_orders_for_reward}>
                 <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
               </AnimatedCircleProgress>
-              <View>
+              <View style={{flexShrink:1}}>
                 <CommonText
                   text={`${formatePrice(
                     loyaltyDetails?.current_loyalty_points,
@@ -170,6 +170,7 @@ const getGlobalStyles = (_language: any) => {
       justifyContent: 'center',
       flex: 1,
       gap: hp(10),
+      paddingHorizontal:wp(10)
     },
     creditPoint: {
       ...commonFontStyle(600, 2.5, Colors.white),

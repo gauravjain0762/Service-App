@@ -62,11 +62,11 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
           withFlag
           withCallingCode
           withEmoji
-          onSelect={onSelect}
+          // onSelect={onSelect}
           renderFlagButton={(props: any) => {
             return (
               <TouchableOpacity
-                onPress={props.onOpen}
+                // onPress={props.onOpen}
                 style={styles.customFlagButton}>
                 <FastImage
                   source={{

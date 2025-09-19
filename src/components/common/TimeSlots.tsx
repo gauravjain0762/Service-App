@@ -6,8 +6,8 @@ import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, hp, wp} from '@/utils/responsiveFn';
 import moment from 'moment';
-import { useAppSelector } from '@/Hooks/hooks';
-import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {useAppSelector} from '@/Hooks/hooks';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 type Props = {
   isProvider?: boolean;
@@ -51,7 +51,7 @@ const TimeSlots = ({
   setSelectedTime,
 }: Props) => {
   const {language} = useAppSelector(state => state.auth);
-    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const timeSlots = useMemo(() => {
     if (!date) return [];
     return generateTimeSlots(date);
@@ -59,7 +59,11 @@ const TimeSlots = ({
 
   // Reset selectedTime if it's no longer available in the current timeSlots
   useEffect(() => {
-    if (selectedTime && timeSlots.length > 0 && !timeSlots.includes(selectedTime)) {
+    if (
+      selectedTime &&
+      timeSlots.length > 0 &&
+      !timeSlots.includes(selectedTime)
+    ) {
       setSelectedTime?.('');
     }
   }, [timeSlots, selectedTime, setSelectedTime]);
@@ -70,12 +74,14 @@ const TimeSlots = ({
 
   return (
     <View style={styles.container}>
-      <CommonText text={'Select Time Slot'} style={styles.headerText} />
+      <CommonText text={'Select Time Slot'} style={styles.headerText}>
+        <CommonText text={' *'} style={styles.headerText} />
+      </CommonText>
       <FlatList
         data={timeSlots}
         numColumns={3}
         scrollEnabled={false}
-       columnWrapperStyle={{...rowReverseRTL(language)}}
+        columnWrapperStyle={{...rowReverseRTL(language)}}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item, index}) => {
           const isLastColumn = (index + 1) % 3 === 0;
@@ -105,36 +111,37 @@ export default TimeSlots;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  container: {
-    gap: hp(22),
-  },
-  headerText: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-    ...textRTL(_language)
-  },
-  timeContainer: {
-    flexBasis: '30%',
-    marginRight: wp(15),
-    borderWidth: hp(1),
-    borderRadius: hp(25),
-    alignItems: 'center',
-    marginBottom: hp(18),
-    paddingVertical: hp(14),
-    justifyContent: 'center',
-    borderColor: Colors._F2EDED,
-  },
-  time: {
-    ...commonFontStyle(500, 1.8, Colors.black),
-  },
-  selectedContainer: {
-    backgroundColor: Colors.seeker_primary,
-    borderColor: Colors.seeker_primary,
-  },
-  selectedContainerProvider: {
-    borderColor: Colors.provider_primary,
-    backgroundColor: Colors.provider_primary,
-  },
-  selectedTimeText: {
-    color: Colors.white,
-  },
-})}
+    container: {
+      gap: hp(22),
+    },
+    headerText: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
+    timeContainer: {
+      flexBasis: '30%',
+      marginRight: wp(15),
+      borderWidth: hp(1),
+      borderRadius: hp(25),
+      alignItems: 'center',
+      marginBottom: hp(18),
+      paddingVertical: hp(14),
+      justifyContent: 'center',
+      borderColor: Colors._F2EDED,
+    },
+    time: {
+      ...commonFontStyle(500, 1.8, Colors.black),
+    },
+    selectedContainer: {
+      backgroundColor: Colors.seeker_primary,
+      borderColor: Colors.seeker_primary,
+    },
+    selectedContainerProvider: {
+      borderColor: Colors.provider_primary,
+      backgroundColor: Colors.provider_primary,
+    },
+    selectedTimeText: {
+      color: Colors.white,
+    },
+  });
+};

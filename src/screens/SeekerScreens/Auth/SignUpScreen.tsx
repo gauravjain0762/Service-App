@@ -34,7 +34,7 @@ import {WEB_CLIENT_ID} from '@/utils/constants/api';
 
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
-  const {fcmToken,language} = useAppSelector(state => state.auth);
+  const {fcmToken, language} = useAppSelector(state => state.auth);
   const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();
   const [appleLogin] = useAppleSignInMutation();
   const [googleLogin] = useGoogleSignInMutation();
@@ -49,10 +49,7 @@ const SignUpScreen = () => {
     password: '',
   });
 
-  const styles = React.useMemo(
-        () => getGlobalStyles(language),
-        [language],
-      );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const onSignUp = async () => {
     try {
       if (!userData?.name.trim()) {
@@ -66,8 +63,11 @@ const SignUpScreen = () => {
       } else if (userData?.phone.length < 9 || userData?.phone.length > 12) {
         errorToast('Enter a valid phone number');
         return;
-      } else if (userData?.password === '') {
+      } else if (!userData?.password.trim()) {
         errorToast('Please enter password');
+      } else if (userData?.password.length < 6) {
+        errorToast('Password must be at least 6 characters');
+        return;
       } else {
         let obj = {
           name: userData?.name.trim(),
@@ -269,12 +269,14 @@ const SignUpScreen = () => {
             onPress={onGoogleButtonPress}
           />
 
-          <CustomImage
-            source={IMAGES.apple}
-            size={getFontSize(2.5)}
-            containerStyle={styles.socialBtn}
-            onPress={onAppleButtonPress}
-          />
+          {Platform.OS === 'ios' && (
+            <CustomImage
+              source={IMAGES.apple}
+              size={getFontSize(2.5)}
+              containerStyle={styles.socialBtn}
+              onPress={onAppleButtonPress}
+            />
+          )}
         </View>
 
         <CommonText
@@ -293,62 +295,63 @@ export default SignUpScreen;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.white,
-    paddingHorizontal: getFontSize(2.2),
-    paddingTop: getFontSize(3),
-  },
-  headerRow: {
-    alignItems: 'center',
-    ...rowReverseRTL(_language),
-    justifyContent: 'space-between',
-  },
-  topLabel: {
-    flex: 3,
-    ...commonFontStyle(600, 3.4, Colors.black),
-    textAlign: 'center',
-  },
+    container: {
+      flex: 1,
+      backgroundColor: Colors.white,
+      paddingHorizontal: getFontSize(2.2),
+      paddingTop: getFontSize(3),
+    },
+    headerRow: {
+      alignItems: 'center',
+      ...rowReverseRTL(_language),
+      justifyContent: 'space-between',
+    },
+    topLabel: {
+      flex: 3,
+      ...commonFontStyle(600, 3.4, Colors.black),
+      textAlign: 'center',
+    },
 
-  dividerContainer: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    marginHorizontal: wp(23),
-    paddingVertical: getFontSize(3),
-  },
-  label: {
-    ...commonFontStyle(400, 1.9, Colors._6B6969),
-    paddingHorizontal: getFontSize(1.4),
-  },
-  divider: {
-    height: hp(1),
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-    flex: 1,
-  },
+    dividerContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginHorizontal: wp(23),
+      paddingVertical: getFontSize(3),
+    },
+    label: {
+      ...commonFontStyle(400, 1.9, Colors._6B6969),
+      paddingHorizontal: getFontSize(1.4),
+    },
+    divider: {
+      height: hp(1),
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      flex: 1,
+    },
 
-  socialContainer: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: getFontSize(3),
-  },
+    socialContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      alignSelf: 'center',
+      gap: getFontSize(3),
+    },
 
-  socialBtn: {
-    borderWidth: 1.5,
-    borderColor: Colors._F3F3F3,
-    borderRadius: getFontSize(2),
-    height: getFontSize(6),
-    width: getFontSize(9),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  accountText: {
-    ...commonFontStyle(400, 2, Colors._909090),
-    textAlign: 'center',
-    paddingTop: hp(35),
-  },
+    socialBtn: {
+      borderWidth: 1.5,
+      borderColor: Colors._F3F3F3,
+      borderRadius: getFontSize(2),
+      height: getFontSize(6),
+      width: getFontSize(9),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    accountText: {
+      ...commonFontStyle(400, 2, Colors._909090),
+      textAlign: 'center',
+      paddingTop: hp(35),
+    },
 
-  signUpAccountText: {
-    ...commonFontStyle(600, 2, Colors.seeker_primary),
-  },
-})}
+    signUpAccountText: {
+      ...commonFontStyle(600, 2, Colors.seeker_primary),
+    },
+  });
+};

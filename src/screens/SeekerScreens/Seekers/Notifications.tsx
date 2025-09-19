@@ -9,6 +9,8 @@ import NotificationCard from '@/components/common/NotificationCard';
 import SafeareaProvider from '@/components/common/SafeareaProvider';
 import {useRoute} from '@react-navigation/native';
 import {useGetNotificationsQuery} from '@/api/Seeker/homeApi';
+import {useGetProviderNotificationsQuery} from '@/api/Provider/homeApi';
+import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 
 const Notifications = () => {
   const {params} = useRoute<any>();
@@ -24,14 +26,23 @@ const Notifications = () => {
     data: notifications,
     isLoading: notificationLoading,
     refetch: refetchNotificationList,
-  } = useGetNotificationsQuery<any>(
-    {page: currentPage},
-    {
-      refetchOnReconnect: true,
-      refetchOnMountOrArgChange: true,
-      refetchOnFocus: true,
-    },
-  );
+  } = isProvider
+    ? useGetProviderNotificationsQuery(
+        {page: currentPage},
+        {
+          refetchOnReconnect: true,
+          refetchOnMountOrArgChange: true,
+          refetchOnFocus: true,
+        },
+      )
+    : useGetNotificationsQuery(
+        {page: currentPage},
+        {
+          refetchOnReconnect: true,
+          refetchOnMountOrArgChange: true,
+          refetchOnFocus: true,
+        },
+      );
 
   React.useEffect(() => {
     if (notifications) {
@@ -54,7 +65,7 @@ const Notifications = () => {
       setCurrentPage(nextPage);
     }
   };
-console.log(allNotification,'allNotification');
+  console.log(allNotification, 'allNotification');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -70,9 +81,16 @@ console.log(allNotification,'allNotification');
           />
         }
       />
-      <View style={{marginTop: hp(40), flex: 1}}>
-        <NotificationCard allNotification={allNotification}/>
-      </View>
+      {notificationLoading ? (
+        <ProMyBookingsSkeleton />
+      ) : (
+        <View style={{marginTop: hp(40), flex: 1}}>
+          <NotificationCard
+            allNotification={allNotification}
+            handleLoadMore={handleLoadMore}
+          />
+        </View>
+      )}
     </SafeareaProvider>
   );
 };

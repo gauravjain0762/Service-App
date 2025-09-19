@@ -41,6 +41,7 @@ const OTPScreen = () => {
   const isProvider = params?.isProvider;
   const {t} = useTranslation();
   const {isLoadingS} = useGetPackagesQuery({});
+console.log(params,'params');
 
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [verifyOTP, {isLoading}] = useVerifyOTPMutation();
@@ -92,6 +93,8 @@ const OTPScreen = () => {
             isProvider: isProvider,
           },
         );
+      }else{
+        errorToast(response?.message)
       }
     } catch (error: any) {
       errorToast(
