@@ -29,7 +29,7 @@ import {
 } from '@/api/Provider/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
 import moment from 'moment';
-import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 const MakeOffer = () => {
   const {
@@ -131,7 +131,7 @@ const MakeOffer = () => {
         ? modifyOffer(formData)
         : sendOffer(formData)
       ).unwrap();
-      
+
       if (response?.status) {
         setIsSubmitModalVisible(true);
       } else {
@@ -253,7 +253,7 @@ const MakeOffer = () => {
             />
 
             <CustomButton
-              title={myOffer ? 'Update Offer' :'Submit Offer'}
+              title={myOffer ? 'Update Offer' : 'Submit Offer'}
               btnStyle={{marginVertical: hp(27)}}
               onPress={onSubmitOffer}
               loading={isLoading || isModifyOfferLoading}
@@ -314,40 +314,41 @@ export default MakeOffer;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    paddingHorizontal: wp(23),
-  },
-  attachmentSection: {
-    marginTop: hp(40),
-    paddingHorizontal: wp(23),
-  },
-  attachTitle: {
-    marginBottom: hp(18),
-    ...commonFontStyle(600, 2.2, Colors.black),
-    ...textRTL(_language)
-  },
-  uploadBox: {
-    width: '100%',
-  },
-  uploadBtn: {
-    backgroundColor: Colors.provider_primary,
-  },
-  specialNoteTitle: {
-    paddingHorizontal: wp(23),
-    ...commonFontStyle(600, 2.2, Colors.black),
-    ...textRTL(_language)
-  },
-  noteContainer: {
-    padding: 0,
-    width: '100%',
-    height: hp(85),
-    paddingVertical: 0,
-  },
-  noteInput: {
-    marginTop: 0,
-    borderWidth: 0,
-    paddingHorizontal: wp(22),
-    ...commonFontStyle(400, 1.9, Colors._818181),
-    ...textRTL(_language)
-  },
-})}
+    safeArea: {
+      paddingHorizontal: wp(23),
+    },
+    attachmentSection: {
+      marginTop: hp(40),
+      paddingHorizontal: wp(23),
+    },
+    attachTitle: {
+      marginBottom: hp(18),
+      ...commonFontStyle(600, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
+    uploadBox: {
+      width: '100%',
+    },
+    uploadBtn: {
+      backgroundColor: Colors.provider_primary,
+    },
+    specialNoteTitle: {
+      paddingHorizontal: wp(23),
+      ...commonFontStyle(600, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
+    noteContainer: {
+      padding: 0,
+      width: '100%',
+      height: hp(85),
+      paddingVertical: 0,
+    },
+    noteInput: {
+      marginTop: 0,
+      borderWidth: 0,
+      paddingHorizontal: wp(22),
+      ...commonFontStyle(400, 1.9, Colors._818181),
+      ...textRTL(_language),
+    },
+  });
+};

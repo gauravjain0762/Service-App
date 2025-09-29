@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Platform, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Colors} from '@/constants/Colors';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
@@ -162,6 +162,7 @@ const ProSignupScreen = () => {
         });
 
         const response = await signUp(formData).unwrap();
+console.log(userData,'userDatauserDatauserData',response);
 
         if (response?.status) {
           navigateTo(PROVIDER_SCREENS.OtpScreen, {
@@ -182,16 +183,16 @@ const ProSignupScreen = () => {
       );
     }
   };
-
+console.log(userData,'userDatauserDatauserData',userData.emirates.map(item => item._id),);
   return (
-    <SafeareaProvider style={styles.safeArea}>
+    <SafeareaProvider style={styles.safeArea} edges={['top','bottom']}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
         enableResetScrollToCoords={false}
         style={styles.container}
-        contentContainerStyle={{paddingBottom: hp(30), flexGrow: 1}}
+        contentContainerStyle={{paddingBottom: Platform.OS === 'ios' ? hp(50): hp(100), flexGrow: 1}}
         enableOnAndroid
-        extraHeight={hp(200)}
+        extraHeight={Platform.OS === 'ios' ? hp(200):hp(300)}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headerRow}>
           <CustomImage
@@ -312,6 +313,7 @@ const ProSignupScreen = () => {
           placeholder="About Your Self"
           value={userData.about}
           onChangeText={e => setUserData({...userData, about: e})}
+          inputStyle={{}}
         />
 
         <View style={styles.buttonSection}>
@@ -387,7 +389,8 @@ const getGlobalStyles = (_language: any) => {
     aboutInput: {
       height: hp(120),
       borderRadius: hp(14),
-      paddingVertical: hp(12),
+      paddingVertical: hp(10),
+      paddingHorizontal:wp(10)
     },
     buttonSection: {
       marginTop: hp(52),

@@ -75,7 +75,7 @@ const TimeSlots = ({
   return (
     <View style={styles.container}>
       <CommonText text={'Select Time Slot'} style={styles.headerText}>
-        <CommonText text={' *'} style={styles.headerText} />
+        <CommonText text={' *'} style={[styles.headerText,{color:Colors.red}]} />
       </CommonText>
       <FlatList
         data={timeSlots}

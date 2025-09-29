@@ -108,6 +108,7 @@ const getGlobalStyles = (_language: any) => {
       ...commonFontStyle(400, 1.9, Colors.black),
       flex: 1,
       ...textRTL(_language),
+      verticalAlign:'top'
     },
     inputContainer: {
       backgroundColor: Colors._F9F9F9,

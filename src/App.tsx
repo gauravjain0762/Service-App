@@ -45,6 +45,7 @@ const App = ({}) => {
             config={ToastConfig(lineAnim)}
             position="bottom"
             topOffset={0}
+            bottomOffset={60}
             visibilityTime={3000}
             onShow={() => {
               startLineAnimation();

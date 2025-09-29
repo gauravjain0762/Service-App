@@ -69,7 +69,7 @@ const BottomModal = ({
       // useNativeDriverForBackdrop={true}
       isVisible={visible}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
         style={styles.keyboardAvoiding}>
         {close && (
           <Pressable onPress={onPressCancel} style={styles.closeContainer}>

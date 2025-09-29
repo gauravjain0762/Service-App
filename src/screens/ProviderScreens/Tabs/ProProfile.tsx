@@ -40,6 +40,7 @@ const ProProfile = () => {
   const [selectedModal, setSelectedModal] = useState<'LOGOUT' | 'DELETE'>(
     'LOGOUT',
   );
+console.log(userInfo,'userInfo');
 
   const List = [
     {

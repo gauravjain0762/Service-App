@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Platform,
   StyleProp,
   StyleSheet,
   TextInput,
@@ -50,8 +51,8 @@ const AddSpecialNote = ({
           <View
             style={[
               styles.textInput,
-              {...rowReverseRTL(language), alignItems: 'center'},
-              textInputStyle,
+              {...rowReverseRTL(language), alignItems: 'center',borderWidth:0,marginTop: hp(0)},
+              // textInputStyle,
             ]}>
             <CustomImage
               source={IMAGES.currency}
@@ -61,9 +62,8 @@ const AddSpecialNote = ({
             <TextInput
               multiline
               placeholder={t(`${placeholder}`)}
-              style={[textInputStyle]}
+              style={[{flex:1,height:'100%'},textInputStyle]}
               scrollEnabled
-              // textAlignVertical="top"
               {...rest}
             />
           </View>
@@ -120,6 +120,9 @@ const getGlobalStyles = (_language: any) => {
     borderRadius: hp(10),
     textAlignVertical: 'top',
     borderColor: Colors._BFC2C1,
-    ...textRTL(_language)
+    ...textRTL(_language),
+     ...(Platform.OS === 'android' && {
+        includeFontPadding: false,
+      }),
   },
 })}
