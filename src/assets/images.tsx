@@ -77,6 +77,7 @@ export const IMAGES = {
   cashPay: require('./icons/cashPay.png'),
   loyalty_card: require('./icons/loyalty_card.png'),
   cardPay: require('./icons/cardPay.png'),
+  whatsapp: require('./icons/whatsapp.png'),
 
   // Images
   // splashScreen: require("./Images/splashScreen.png"),
@@ -108,6 +109,7 @@ export const IMAGES = {
   subs_bg: require('./Images/subs_bg.png'),
   subs_bg2: require('./Images/subs_bg2.png'),
   service_splash: require('./Images/service_splash.png'),
+  onBoard4: require('./Images/Handyman.png'),
 };
 
 export const Animation = {

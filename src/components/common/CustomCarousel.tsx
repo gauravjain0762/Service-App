@@ -11,8 +11,8 @@ const {width} = Dimensions.get('window');
 
 const data = [
   {id: '1', image: IMAGES.Welcome_bg1},
-  {id: '2', image: IMAGES.Welcome_bg2},
-  {id: '3', image: IMAGES.Welcome_bg1},
+  // {id: '2', image: IMAGES.Welcome_bg2},
+  {id: '3', image: IMAGES.onBoard4},
 ];
 
 const CustomCarousel = () => {

@@ -5,7 +5,14 @@ import CommonText from './CommonText';
 import {Colors} from '@/constants/Colors';
 import {hp, wp, commonFontStyle} from '@/utils/responsiveFn';
 import {useAppSelector} from '@/Hooks/hooks';
-import {flipImage, marginRTLLeft, marginRTLRight, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import {
+  flipImage,
+  marginRTLLeft,
+  marginRTLRight,
+  rowReverseRTL,
+  textRTL,
+} from '@/utils/arabicStyles';
+import {IMAGES} from '@/assets/images';
 
 type Props = {
   leftIcon: any;
@@ -14,6 +21,7 @@ type Props = {
   onPress?: () => void;
   isDelete?: boolean;
   languageSection?: React.ReactNode;
+  whatsappIcon?: boolean;
 };
 
 const ProfileActionItem: React.FC<Props> = ({
@@ -23,6 +31,7 @@ const ProfileActionItem: React.FC<Props> = ({
   onPress,
   isDelete = false,
   languageSection,
+  whatsappIcon = false,
 }) => {
   const {language} = useAppSelector(state => state.auth);
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
@@ -34,6 +43,8 @@ const ProfileActionItem: React.FC<Props> = ({
       <CommonText text={title} style={styles.actionText} />
       {languageSection ? (
         languageSection
+      ) : whatsappIcon ? (
+        <CustomImage source={IMAGES.whatsapp} size={hp(25)} />
       ) : rightIcon ? (
         <CustomImage
           source={rightIcon}
@@ -58,9 +69,9 @@ const getGlobalStyles = (_language: any) => {
     },
     actionText: {
       flex: 1,
-      ...marginRTLRight(_language,wp(12)),
+      ...marginRTLRight(_language, wp(12)),
       ...commonFontStyle(500, 2, Colors.black),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
     deleteRow: {
       backgroundColor: Colors._FFEAEA,

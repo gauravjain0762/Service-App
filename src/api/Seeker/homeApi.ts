@@ -1,7 +1,7 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {axiosBaseQuery} from '../../services/api/baseQuery';
 import {SEEKER_API, HTTP_METHOD} from '@/utils/constants/api';
-import {setDashboard} from '@/features/authSlice';
+import {setAppData, setDashboard} from '@/features/authSlice';
 
 export const homeApi = createApi({
   reducerPath: 'homeApi',
@@ -16,7 +16,8 @@ export const homeApi = createApi({
     'getJobs',
     'getUserLoyalty',
     'getSubCategories',
-    'getNotifications'
+    'getNotifications',
+    'GetAppData',
   ],
   keepUnusedDataFor: 300, // 5 minutes
   refetchOnFocus: true,
@@ -157,6 +158,26 @@ export const homeApi = createApi({
       }),
       invalidatesTags: [],
     }),
+
+    getAppData: builder.query<any, any>({
+      query: () => ({
+        url: SEEKER_API.DASHBOARD.GET_APP_DATA,
+        method: HTTP_METHOD.GET,
+        skipLoader: false,
+      }),
+      providesTags: ['GetAppData'],
+      async onQueryStarted(_, {dispatch, queryFulfilled}) {
+        try {
+          const {data} = await queryFulfilled;
+          console.log(data, 'datadatadatadatadata');
+          if (data?.status) {
+            dispatch(setAppData(data.data));
+          }
+        } catch (error) {
+          console.log('verify OTP Error', error);
+        }
+      },
+    }),
   }),
 });
 
@@ -174,5 +195,6 @@ export const {
   useGetUserLoyaltyQuery,
   useStripePaymentMutation,
   useGetOffersDetailsQuery,
-  useGetNotificationsQuery
+  useGetNotificationsQuery,
+  useGetAppDataQuery
 } = homeApi;

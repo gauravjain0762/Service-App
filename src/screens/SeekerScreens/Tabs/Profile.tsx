@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {View, StyleSheet, ScrollView, Pressable, FlatList} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  FlatList,
+  Linking,
+} from 'react-native';
 import BackHeader from '@/components/common/BackHeader';
 import CustomImage from '@/components/common/CustomImage';
 import CommonText from '@/components/common/CommonText';
@@ -20,7 +27,7 @@ import {clearToken} from '@/features/authSlice';
 import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const Profile = () => {
-  const {userInfo, language} = useAppSelector(state => state.auth);
+  const {userInfo, language, appData} = useAppSelector(state => state.auth);
   const [logout, {isLoading}] = useLogoutMutation();
 
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
@@ -55,7 +62,10 @@ const Profile = () => {
       title: 'Language',
       languageSection: (
         <View style={styles.languageSection}>
-          <CustomImage source={language ==='en' ? IMAGES.flag :IMAGES.flag2} size={hp(20)} />
+          <CustomImage
+            source={language === 'en' ? IMAGES.flag : IMAGES.flag2}
+            size={hp(20)}
+          />
           <CustomImage source={IMAGES.downArrow} size={hp(20)} />
         </View>
       ),
@@ -66,10 +76,14 @@ const Profile = () => {
       leftIcon: IMAGES.phone,
       title: 'Contact us',
       rightIcon: IMAGES.rightArrow,
+      whatsappIcon: true,
       onPress: () => {
-        navigateTo(SCREENS.WebViewScreen, {
-          url: 'https://www.devicebee.com/contact-us/',
-          title: 'Contact us',
+        const message = encodeURIComponent(
+          `Thanks for reaching out to Helpio! How can we help you today?`,
+        );
+        const url = `whatsapp://send?phone=${appData?.support_phone}&text=${message}`;
+        Linking.openURL(url).catch(() => {
+          // alert('Make sure WhatsApp is installed on your device');
         });
       },
     },
@@ -80,7 +94,7 @@ const Profile = () => {
       rightIcon: IMAGES.rightArrow,
       onPress: () => {
         navigateTo(SCREENS.WebViewScreen, {
-          url: 'https://www.devicebee.com/about-us/',
+          url: 'https://helpio.ae',
           title: 'About us',
         });
       },
@@ -92,7 +106,10 @@ const Profile = () => {
       rightIcon: IMAGES.rightArrow,
       onPress: () => {
         navigateTo(SCREENS.WebViewScreen, {
-          url: '',
+          url:
+            language === 'en'
+              ? 'https://helpio.ae/privacy'
+              : 'https://helpio.ae/privacy?lang=ar',
           title: 'Privacy Policy',
         });
       },
@@ -104,7 +121,10 @@ const Profile = () => {
       rightIcon: IMAGES.rightArrow,
       onPress: () => {
         navigateTo(SCREENS.WebViewScreen, {
-          url: '',
+          url:
+            language === 'en'
+              ? 'https://helpio.ae/terms'
+              : 'https://helpio.ae/terms?lang=ar',
           title: 'Terms & Conditions',
         });
       },
@@ -172,6 +192,7 @@ const Profile = () => {
       languageSection={item.languageSection}
       isDelete={item.isDelete}
       onPress={item.onPress}
+      whatsappIcon={item.whatsappIcon}
     />
   );
 

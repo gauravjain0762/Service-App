@@ -23,7 +23,7 @@ import SafeareaProvider from '@/components/common/SafeareaProvider';
 import { rowReverseRTL } from '@/utils/arabicStyles';
 
 const ProProfile = () => {
-  const {userInfo,language} = useAppSelector<any>(state => state.auth);
+  const {userInfo,language,dashboard = {},} = useAppSelector<any>(state => state.auth);
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
 
   const route = useRoute<any>();
@@ -139,13 +139,13 @@ console.log(userInfo,'userInfo');
 
         <View style={styles.serviceContainer}>
           <View style={styles.serviceView}>
-            <CommonText text={'331'} style={styles.value} />
+            <CommonText text={dashboard?.stats ? dashboard?.stats?.total_jobs.toString() : '0'} style={styles.value} />
             <CommonText text={'Services Delivered'} style={styles.label} />
           </View>
           <View style={styles.line} />
           <View style={styles.line} />
           <View style={styles.serviceView}>
-            <CommonText text={'5'} style={styles.value} />
+            <CommonText text={dashboard?.stats ? dashboard?.stats?.total_jobs.toString() : '0'} style={styles.value} />
             <CommonText text={'Years of Experience'} style={styles.label} />
           </View>
         </View>

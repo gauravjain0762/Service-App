@@ -64,6 +64,7 @@ export const SEEKER_SCREENS = {
   Subscription: 'Subscription',
   LoyaltyCredit: 'LoyaltyCredit',
   OfferSummary: 'OfferSummary',
+  ContactUs:'ContactUs'
 };
 
 export const PROVIDER_SCREENS = {

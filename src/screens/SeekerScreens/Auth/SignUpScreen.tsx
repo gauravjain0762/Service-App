@@ -85,6 +85,7 @@ const SignUpScreen = () => {
             userId: response?.data?.user?._id,
             phone: callingCode + userData.phone,
             isProvider: false,
+            email: userData?.email.trim().toLowerCase(),
           });
           // successToast(response?.message);
         } else {

@@ -162,13 +162,13 @@ const ProSignupScreen = () => {
         });
 
         const response = await signUp(formData).unwrap();
-console.log(userData,'userDatauserDatauserData',response);
 
         if (response?.status) {
           navigateTo(PROVIDER_SCREENS.OtpScreen, {
             userId: response?.data?.company?._id,
             phone: callingCode + userData.phone,
             isProvider: true,
+            email:userData.email.toLowerCase(),
           });
           // navigateTo(PROVIDER_SCREENS.OtpScreen, {isProvider: true});
           // successToast(response?.message);
@@ -269,10 +269,10 @@ console.log(userData,'userDatauserDatauserData',userData.emirates.map(item => it
             value={userData?.category}
             placeholder="Type of Category"
             onChange={selectedItems => {
-              if (selectedItems?.length > 3) {
-                errorToast('You can select a maximum of 3 categories');
-                return;
-              }
+              // if (selectedItems?.length > 3) {
+              //   errorToast('You can select a maximum of 3 categories');
+              //   return;
+              // }
               setUserData({...userData, category: selectedItems});
             }}
             multiSelect

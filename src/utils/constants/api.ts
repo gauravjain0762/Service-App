@@ -34,7 +34,8 @@ export const SEEKER_API = {
     REQUEST_CHANGE: '/requestChange',
     LOYALTY: '/getUserLoyalty',
     STRIPE_PAYMENT: '/stripePayment',
-    OFFER_DETAILS:'/getOfferDetails'
+    OFFER_DETAILS:'/getOfferDetails',
+    GET_APP_DATA:'/getAppData'
   },
 } as const;
 
@@ -140,9 +141,12 @@ export const ITEMS_PER_PAGE = 10;
 export const GOOGLE_MAP_API_KEY = 'AIzaSyBTXj_nx06ltbjSW54sGM6GYYfaZPXFtaI'; //'AIzaSyDI54CSbb2x46H2986nVnG15-E0iqgONwc'
 export const WEB_CLIENT_ID =
   '594792561785-n9meqmlbipigp53o7hfgm6npa6osao68.apps.googleusercontent.com';
-export const livePublishKey = '';
+export const livePublishKey = 'pk_live_51SA46h4mS0EJ2jjYUmj8eg3jenjrEEMCBjY8KMESw8EdxMyAzhDchtztTkE3FdTaqWsyVN3BKWw40NItqt2eXjJU00R11gb5tJ';
 export const testPublishKey =
   'pk_test_51QrPz7BtUwgqucKCMxBHGoSsqQtZ7TszLNsJv5ndPzTxLxZe3o1B77zuvI9px72dAFTY8UmT5UOaKVZfi79sHqce00sUfqrhvF';
 export type HttpMethod = keyof typeof HTTP_METHOD;
 export type HttpStatus = (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS];
 export type ApiErrorCode = (typeof API_ERROR_CODE)[keyof typeof API_ERROR_CODE];
+
+// STRIPE_KEY_LIVE="pk_live_51SA46h4mS0EJ2jjYUmj8eg3jenjrEEMCBjY8KMESw8EdxMyAzhDchtztTkE3FdTaqWsyVN3BKWw40NItqt2eXjJU00R11gb5tJ"
+// STRIPE_SECRET_LIVE="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"

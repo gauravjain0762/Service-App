@@ -24,6 +24,7 @@ export interface AuthState {
   guestUser?: boolean;
   guestUserModal?: boolean;
   userCurrentLocation: any;
+  appData?:any
 }
 
 // Initial state
@@ -47,7 +48,8 @@ const initialState: AuthState = {
   packages:[],
   guestUser: false,
   guestUserModal: false,
-  userCurrentLocation:{} 
+  userCurrentLocation:{} ,
+  appData:{}
 };
 
 // Create the auth slice
@@ -75,6 +77,9 @@ const authSlice = createSlice({
     },
     setUserInfo: (state, action: PayloadAction<any>) => {
       state.userInfo = action.payload;
+    },
+    setAppData: (state, action: PayloadAction<any>) => {
+      state.appData = action.payload;
     },
     setIsProvider: (state, action: PayloadAction<any>) => {
       state.isProvider = action.payload;
@@ -135,7 +140,8 @@ export const {
   setGuestLogin,
   setGuestUserModal,
   setEmirates,
-  setUserLocation
+  setUserLocation,
+  setAppData
 } = authSlice.actions;
 
 // Selectors

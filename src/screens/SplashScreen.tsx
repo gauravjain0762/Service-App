@@ -13,9 +13,12 @@ import {setGuestLogin} from '@/features/authSlice';
 import {setLanguages} from '@/Hooks/asyncStorage';
 import LottieView from 'lottie-react-native';
 import {Colors} from '@/constants/Colors';
+import { useGetAppDataQuery } from '@/api/Seeker/homeApi';
 
 const SplashScreen = () => {
   const dispatch = useAppDispatch();
+  const {} = useGetAppDataQuery({});
+
   const {
     token: authToken,
     isProvider,

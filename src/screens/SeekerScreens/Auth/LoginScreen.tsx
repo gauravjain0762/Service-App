@@ -109,6 +109,7 @@ const LoginScreen = ({}: any) => {
             phone:
               response?.data?.user?.phone_code + response?.data?.user?.phone,
             isProvider: false,
+            email:response?.data?.user?.email
           });
         } else {
           errorToast(response?.message);

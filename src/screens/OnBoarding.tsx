@@ -97,7 +97,7 @@ const OnBoarding = () => {
             <View style={{gap: hp(23)}}>
               <CustomButton
                 isPrimary="seeker"
-                title={'Job Seeker'}
+                title={'Service Seeker'}
                 onPress={() => {
                   dispatch(setIsProvider(false));
                   navigateTo(SCREENS.SeekerNavigator);

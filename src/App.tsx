@@ -10,10 +10,28 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {getLanguageKey} from '@/components/common/commonFunction';
 import ToastConfig from '@/components/ToastConfig';
 import {StripeProvider} from '@stripe/stripe-react-native';
-import {livePublishKey, testPublishKey} from './utils/constants/api';
+import {livePublishKey, SERVICE_BASE_URL, testPublishKey} from './utils/constants/api';
 
 LogBox.ignoreAllLogs();
 const App = ({}) => {
+  const [data, setData] = React.useState<any>(undefined);
+
+  useEffect(() => {
+    fetch(SERVICE_BASE_URL + '/getAppData', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json())
+      .then(json => {
+        console.log('json', json);
+        setData(json?.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
   const lineAnim = useRef(new Animated.Value(1)).current;
   useEffect(() => {
     getLanguageKey();
@@ -31,11 +49,11 @@ const App = ({}) => {
       useNativeDriver: false, // width anim can't use native driver
     }).start();
   };
-  const publishKey = false ? livePublishKey : testPublishKey;
+  const publishKey = data?.payment_mode === 'test' ? testPublishKey : livePublishKey;
   return (
     <StripeProvider
       publishableKey={publishKey}
-      merchantIdentifier="merchant.com.services.marketplace.app" // required for Apple Pay
+      merchantIdentifier="merchant.com.helpio" // required for Apple Pay
     >
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>

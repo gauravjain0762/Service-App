@@ -40,7 +40,9 @@ const TermsCheckBox = ({
         <CommonText
           onPress={() =>
             navigateTo(SCREENS.WebViewScreen, {
-              url: 'https://www.devicebee.com/about-us/',
+              url: language === 'en'
+              ? 'https://helpio.ae/terms'
+              : 'https://helpio.ae/terms?lang=ar',
               title: 'Terms of Use',
             })
           }
