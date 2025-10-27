@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import CustomTextInput from '../common/CustomTextInput';
@@ -11,15 +11,26 @@ import CheckBox from 'react-native-check-box';
 import {navigateTo} from '../common/commonFunction';
 import {SCREENS} from '../../navigation/screenNames';
 import CustomImage from '../common/CustomImage';
+import { useAppSelector } from '@/Hooks/hooks';
+import { useGuestLoginMutation } from '@/api/Seeker/authApi';
 
 const LoginFlow = ({setActiveTab}: any) => {
   const {t, i18n} = useTranslation();
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const {fcmToken, language} = useAppSelector(state => state.auth);
+    const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();
 
   const styles = React.useMemo(
     () => getGlobalStyles(i18n.language),
     [i18n.language],
   );
+  const onGuestUser = async () => {
+      let data = {
+        device_token: fcmToken || 's',
+        device_type: Platform.OS,
+      };
+      const response = await guestLogin(data).unwrap();
+    };
 
   return (
     <View style={styles.container}>
@@ -49,7 +60,7 @@ const LoginFlow = ({setActiveTab}: any) => {
       <CustomButton
         title={t('Login as a Guest')}
         type="outline"
-        onPress={() => navigateTo(SCREENS.OtpScreen)}
+        onPress={onGuestUser}
       />
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />

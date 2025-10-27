@@ -15,7 +15,7 @@ import {useGetUserLoyaltyQuery} from '@/api/Seeker/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
 import {formatePrice} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
-import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 
 const LoyaltyCredit = () => {
   const {language} = useAppSelector((state: any) => state.auth);
@@ -77,7 +77,7 @@ const LoyaltyCredit = () => {
                 value={loyaltyDetails?.remaining_orders_for_reward}>
                 <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
               </AnimatedCircleProgress>
-              <View style={{flexShrink:1}}>
+              <View style={{flexShrink: 1}}>
                 <CommonText
                   text={`${formatePrice(
                     loyaltyDetails?.current_loyalty_points,
@@ -85,7 +85,7 @@ const LoyaltyCredit = () => {
                   style={styles.creditPoint}
                 />
                 <CommonText
-                  text={`these cashback earned in ${loyaltyDetails?.pagination?.total_records} orders`}
+                  text={`Earn cashback on every booking`}
                   style={styles.creditText}
                 />
               </View>
@@ -93,9 +93,16 @@ const LoyaltyCredit = () => {
             <View style={styles.cardBgView}>
               <CommonText
                 numberOfLines={1}
-                text={`After ${loyaltyDetails?.remaining_orders_for_reward} order you have get full cashback credit`}
-                style={styles.cardBottomText}
-              />
+                text={`Minimum cashout balance limit is AED`}
+                style={styles.cardBottomText}>
+                <CommonText
+                  numberOfLines={1}
+                  text={` ${
+                    loyaltyDetails?.remaining_orders_for_reward ?? '0'
+                  }`}
+                  style={styles.cardBottomText}
+                />
+              </CommonText>
             </View>
           </ImageBackground>
           <CommonText
@@ -162,7 +169,7 @@ const getGlobalStyles = (_language: any) => {
       ...commonFontStyle(700, 2.8, Colors.white),
       paddingHorizontal: hp(25),
       paddingTop: hp(20),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
     creditView: {
       ...rowReverseRTL(_language),
@@ -170,22 +177,22 @@ const getGlobalStyles = (_language: any) => {
       justifyContent: 'center',
       flex: 1,
       gap: hp(10),
-      paddingHorizontal:wp(10)
+      paddingHorizontal: wp(10),
     },
     creditPoint: {
       ...commonFontStyle(600, 2.5, Colors.white),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
     creditText: {
       ...commonFontStyle(400, 1.9, Colors.white),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
 
     transactionTitle: {
       ...commonFontStyle(600, 2.4, Colors._323232),
       paddingHorizontal: hp(20),
       marginTop: hp(25),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
 
     scrollView: {

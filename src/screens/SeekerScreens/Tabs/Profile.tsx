@@ -78,10 +78,7 @@ const Profile = () => {
       rightIcon: IMAGES.rightArrow,
       whatsappIcon: true,
       onPress: () => {
-        const message = encodeURIComponent(
-          `Thanks for reaching out to Helpio! How can we help you today?`,
-        );
-        const url = `whatsapp://send?phone=${appData?.support_phone}&text=${message}`;
+        const url = `whatsapp://send?phone=${appData?.support_phone}`;
         Linking.openURL(url).catch(() => {
           // alert('Make sure WhatsApp is installed on your device');
         });

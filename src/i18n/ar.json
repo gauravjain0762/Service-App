@@ -188,6 +188,9 @@
     "Booking Number: ":"رقم الحجز:",
     "Search Location":"موقع البحث",
     "Confirm Location":"تأكيد الموقع",
-    "Request edit":"طلب التعديل"
+    "Request edit":"طلب التعديل",
+    "Service Seeker":"باحث عن الخدمة",
+    "Earn cashback on every booking":"احصل على استرداد نقدي على كل حجز",
+    "Minimum cashout balance limit is AED":"الحد الأدنى لرصيد السحب النقدي هو درهم إماراتي"
   }
 }
