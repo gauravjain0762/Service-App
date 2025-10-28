@@ -109,7 +109,7 @@ const LoginScreen = ({}: any) => {
             phone:
               response?.data?.user?.phone_code + response?.data?.user?.phone,
             isProvider: false,
-            email:response?.data?.user?.email
+            email: response?.data?.user?.email,
           });
         } else {
           errorToast(response?.message);
@@ -157,7 +157,7 @@ const LoginScreen = ({}: any) => {
   const onAppleButtonPress = async () => {
     try {
       // Start the sign-in request
-      setLoading(true);
+      // setLoading(true);
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -184,15 +184,18 @@ const LoginScreen = ({}: any) => {
 
         const response = await appleLogin(data).unwrap();
         if (response?.status) {
-          setLoading(false);
+          // setLoading(false);
 
           // successToast(response?.message);
           // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
           resetNavigation(SCREENS.SeekerNavigator);
+        } else {
+          errorToast(response?.message);
+          // setLoading(false);
         }
       }
     } catch (error: any) {
-      setLoading(false);
+      // setLoading(false);
       console.log('onAppleButtonPress => error => ', error);
       errorToast(
         error?.message || error?.data?.message || 'Apple Sign-In failed',
