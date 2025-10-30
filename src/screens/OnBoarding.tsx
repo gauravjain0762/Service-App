@@ -5,6 +5,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Image,
+  ScrollView,
 } from 'react-native';
 
 import CustomButton from '@/components/common/CustomButton';
@@ -61,63 +62,69 @@ const OnBoarding = () => {
           paddingTop: insets?.top,
           backgroundColor: Colors.seeker_primary,
         }}>
-        <View style={styles.wrapper}>
-          <TouchableOpacity
-            onPress={openLanguageModal}
-            style={styles.topRightContainer}>
-            <View style={styles.flagContainer}>
-              <Image
-                source={language === 'en' ? IMAGES.flag : IMAGES.flag2}
-                style={styles.flagIcon}
-              />
-            </View>
-            <View style={styles.dropdownContainer}>
-              <Image source={IMAGES.dropDown} style={styles.dropdownIcon} />
-            </View>
-          </TouchableOpacity>
+        <ScrollView
+          style={styles.wrapper}
+          scrollEnabled
+          bounces={false}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.wrapper}>
+            <TouchableOpacity
+              onPress={openLanguageModal}
+              style={styles.topRightContainer}>
+              <View style={styles.flagContainer}>
+                <Image
+                  source={language === 'en' ? IMAGES.flag : IMAGES.flag2}
+                  style={styles.flagIcon}
+                />
+              </View>
+              <View style={styles.dropdownContainer}>
+                <Image source={IMAGES.dropDown} style={styles.dropdownIcon} />
+              </View>
+            </TouchableOpacity>
 
-          <LanguageModal
-            visible={isLanguageModalVisible}
-            onClose={closeLanguageModal}
-            onLanguageSelect={handleLanguageSelect}
-          />
-
-          <CustomCarousel />
-
-          <View style={styles.bottomSection}>
-            <CommonText
-              text="Welcome to Home Services"
-              style={styles.heading1}
-            />
-            <CommonText
-              text="Our services is to help you to clean your house as quick as possible."
-              style={styles.description}
+            <LanguageModal
+              visible={isLanguageModalVisible}
+              onClose={closeLanguageModal}
+              onLanguageSelect={handleLanguageSelect}
             />
 
-            <View style={{gap: hp(23)}}>
-              <CustomButton
-                isPrimary="seeker"
-                title={'Service Seeker'}
-                onPress={() => {
-                  dispatch(setIsProvider(false));
-                  navigateTo(SCREENS.SeekerNavigator);
-                }}
-                textStyle={styles.btnText}
+            <CustomCarousel />
+
+            <View style={styles.bottomSection}>
+              <CommonText
+                text="Welcome to Home Services"
+                style={styles.heading1}
               />
-              <CustomButton
-                title={'Service Provider'}
-                btnStyle={{backgroundColor: Colors.provider_primary}}
-                onPress={() => {
-                  dispatch(setIsProvider(true));
-                  navigateTo(SCREENS.ProviderNavigator, {
-                    isProvider: true,
-                  });
-                }}
-                textStyle={styles.btnText}
+              <CommonText
+                text="Our services is to help you to clean your house as quick as possible."
+                style={styles.description}
               />
+
+              <View style={{gap: hp(23)}}>
+                <CustomButton
+                  isPrimary="seeker"
+                  title={'Service Seeker'}
+                  onPress={() => {
+                    dispatch(setIsProvider(false));
+                    navigateTo(SCREENS.SeekerNavigator);
+                  }}
+                  textStyle={styles.btnText}
+                />
+                <CustomButton
+                  title={'Service Provider'}
+                  btnStyle={{backgroundColor: Colors.provider_primary}}
+                  onPress={() => {
+                    dispatch(setIsProvider(true));
+                    navigateTo(SCREENS.ProviderNavigator, {
+                      isProvider: true,
+                    });
+                  }}
+                  textStyle={styles.btnText}
+                />
+              </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </SafeareaProvider>
     </>
   );

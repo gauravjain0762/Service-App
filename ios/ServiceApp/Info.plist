@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.594792561785-3q19f9uppi39ej6jmp1t38ht5p02fgij</string>
+				<string>com.googleusercontent.apps.594792561785-vhmlt3rrof0uvlo641s9gfk8hnld6hcf</string>
 			</array>
 		</dict>
 	</array>
@@ -45,9 +45,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>We need camera access to take pictures</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your location is required for benefits for you</string>
+	<string>Your location is used to find nearby service providers and help them reach you efficiently for home services.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Need to show user current location on map</string>
+	<string>This app uses your location to provide home services near you, help our professionals reach your location, and ensure timely service—similar to Urban Company.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library</string>
 	<key>UIAppFonts</key>

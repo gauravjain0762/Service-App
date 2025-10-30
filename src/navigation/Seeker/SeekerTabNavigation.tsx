@@ -13,11 +13,12 @@ import {navigateTo} from '@/components/common/commonFunction';
 import {SEEKER_SCREENS} from '../screenNames';
 import MyRequest from '@/screens/SeekerScreens/Tabs/MyRequest';
 import MyBookingsTab from '@/screens/SeekerScreens/Tabs/MyBookingsTab';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import {setGuestLogin, setGuestUserModal} from '@/features/authSlice';
 import {useAppDispatch} from '@/Hooks/hooks';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
+import DeviceInfo from 'react-native-device-info'
 
 const Tab = createBottomTabNavigator();
 
@@ -78,7 +79,7 @@ const SeekerTabNavigation = () => {
 
   // Reverse the order for RTL
   const orderedScreens = language === 'ar' ? [...tabScreens].reverse() : tabScreens;
-
+ 
   return (
     <SafeAreaView
       edges={['bottom']}
@@ -95,7 +96,7 @@ const SeekerTabNavigation = () => {
             paddingTop: hp(10),
             alignItems: 'center',
             position: 'absolute',
-            marginBottom: Platform.OS === 'android' ? hp(10) : hp(-14),
+            marginBottom: Platform.OS === 'android' ? hp(10) : hp(-10),
             borderRadius: hp(100),
             paddingBottom: hp(10),
             justifyContent: 'center',

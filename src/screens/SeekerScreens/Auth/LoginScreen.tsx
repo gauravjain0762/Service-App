@@ -76,6 +76,7 @@ const LoginScreen = ({}: any) => {
     const response = await guestLogin(data).unwrap();
   };
   const onLogin = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
     try {
       if (!emailCheck(details.email)) {
         errorToast('Please enter valid email');
@@ -93,7 +94,7 @@ const LoginScreen = ({}: any) => {
       let obj = {
         email: details.email.toLowerCase(),
         password: details.password,
-        device_token: fcmToken,
+        device_token: fcmToken ?? oldFcmToken,
       };
       const response = await login(obj).unwrap();
       console.log('response', response);
@@ -124,19 +125,19 @@ const LoginScreen = ({}: any) => {
   };
 
   const onGoogleButtonPress = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
     setLoading(true);
     GoogleSignin.configure({webClientId: WEB_CLIENT_ID});
     try {
       await GoogleSignin.hasPlayServices();
 
       const {data: userInfo} = await GoogleSignin.signIn();
-
       let data = {
         name: userInfo?.user?.name,
         email: userInfo?.user.email,
         googleId: userInfo?.user?.id,
-        device_token: fcmToken,
-        device_type: Platform.OS.toUpperCase(),
+        device_token: fcmToken ?? oldFcmToken,
+        device_type: Platform.OS,
       };
       console.log('data', data);
 
@@ -155,6 +156,7 @@ const LoginScreen = ({}: any) => {
     }
   };
   const onAppleButtonPress = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
     try {
       // Start the sign-in request
       // setLoading(true);
@@ -179,7 +181,8 @@ const LoginScreen = ({}: any) => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          device_token: fcmToken,
+          device_token: fcmToken ?? oldFcmToken,
+          device_type: Platform.OS,
         };
 
         const response = await appleLogin(data).unwrap();

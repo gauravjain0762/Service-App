@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {RootState} from '../store';
+import {RootState, store} from '../store';
 
 // Auth state interface
 export interface AuthState {
@@ -108,7 +108,7 @@ const authSlice = createSlice({
       state.guestUserModal = action.payload;
     },
 
-    clearToken: () => ({...initialState}),
+    clearToken: () => ({...initialState})
   },
 });
 
@@ -116,7 +116,7 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   // Only persist these fields
-  whitelist: ['token', 'userInfo', 'language', 'isProvider','guestUser'],
+  whitelist: ['token', 'userInfo', 'language', 'isProvider','guestUser','fcmToken'],
 };
 
 // Create the persisted reducer
