@@ -67,7 +67,7 @@ const LoginFlow = ({setActiveTab}: any) => {
         <Text style={styles.label}>{t('Or Sign In With')}</Text>
         <View style={styles.divider} />
       </View>
-      <View style={styles.socialContainer}>
+      {/* <View style={styles.socialContainer}>
         <CustomButton
           title={t('Google')}
           btnStyle={styles.socialButton}
@@ -84,7 +84,7 @@ const LoginFlow = ({setActiveTab}: any) => {
           }
           textStyle={styles.socialBtnText}
         />
-      </View>
+      </View> */}
       <Text
         suppressHighlighting={true}
         onPress={() => {

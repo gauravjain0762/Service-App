@@ -256,13 +256,13 @@ const SignUpScreen = () => {
           />
         </View>
 
-        <View style={styles.dividerContainer}>
+        {/* <View style={styles.dividerContainer}>
           <View style={styles.divider} />
           <CommonText text="or continue with" style={styles.label} />
           <View style={styles.divider} />
-        </View>
+        </View> */}
 
-        <View style={styles.socialContainer}>
+        {/* <View style={styles.socialContainer}>
           <CustomImage
             source={IMAGES.google}
             size={getFontSize(2.5)}
@@ -278,7 +278,7 @@ const SignUpScreen = () => {
               onPress={onAppleButtonPress}
             />
           )}
-        </View>
+        </View> */}
 
         <CommonText
           onPress={() => goBack()}
