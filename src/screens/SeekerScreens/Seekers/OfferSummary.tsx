@@ -85,6 +85,7 @@ const OfferSummary = () => {
 
   const offerDetails = offerData?.data;
   const offerDetail = offerData?.data?.offer;
+console.log(offerData,'offerDataofferData');
 
   React.useEffect(() => {
     if (offerDetails?.can_apply_loyalty) {

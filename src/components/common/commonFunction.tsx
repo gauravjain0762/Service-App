@@ -2,7 +2,8 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigationRef} from '@/navigation/RootContainer';
 import i18n from '@/i18n/i18n';
-import {asyncKeys} from '@/Hooks/asyncStorage';
+import {asyncKeys, getRecentSearches, setRecentSearches} from '@/Hooks/asyncStorage';
+import { setRecentSearch } from '@/features/authSlice';
 
 export const successToast = (message: string) => {
   Toast.show({type: 'success', text1: message});
@@ -139,4 +140,23 @@ export const formatePrice = (num: string | number | undefined): string => {
 export const formatPriceIN = (num: string | number | undefined): string => {
   const value = Number(num || 0);
   return new Intl.NumberFormat("en-IN").format(value);
+};
+
+
+export const updateRecentSearches = (search: any) => async (dispatch: any) => {
+  if (!search.trim()) return;
+
+  let recentSearches = await getRecentSearches();
+  recentSearches = [
+    search,
+    ...recentSearches.filter((item: any) => item !== search),
+  ].slice(0, 5);
+
+  await setRecentSearches(recentSearches);
+  dispatch(setRecentSearch(recentSearches));
+};
+
+export const loadRecentSearches = () => async (dispatch: any) => {
+  const searches = await getRecentSearches();
+  dispatch(setRecentSearch(searches));
 };

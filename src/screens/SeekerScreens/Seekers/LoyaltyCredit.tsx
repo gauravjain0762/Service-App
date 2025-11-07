@@ -11,17 +11,29 @@ import CommonText from '@/components/common/CommonText';
 // import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
 import LoyaltyCreditTransaction from '@/components/Seeker/LoyaltyCreditTransaction';
 import AnimatedCircleProgress from '@/components/common/AnimatedCircleProgress';
-import {useGetUserLoyaltyQuery} from '@/api/Seeker/homeApi';
+import {
+  useCreatePaymentRequestMutation,
+  useGetUserLoyaltyQuery,
+} from '@/api/Seeker/homeApi';
 import ProMyBookingsSkeleton from '@/components/skeleton/ProMyBookingsSkeleton';
-import {formatePrice} from '@/components/common/commonFunction';
+import {
+  errorToast,
+  formatePrice,
+  navigateTo,
+  successToast,
+} from '@/components/common/commonFunction';
 import {useAppSelector} from '@/Hooks/hooks';
 import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import CustomButton from '@/components/common/CustomButton';
+import {SEEKER_SCREENS} from '@/navigation/screenNames';
 
 const LoyaltyCredit = () => {
-  const {language} = useAppSelector((state: any) => state.auth);
+  const {language, userInfo} = useAppSelector((state: any) => state.auth);
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [allLoyaltyData, setAllLoyaltyData] = React.useState([]);
+  const [createPaymentRequestMutation, {isLoading: isCreateLoading}] =
+    useCreatePaymentRequestMutation();
   const {
     data: loyaltyData,
     isLoading,
@@ -58,6 +70,23 @@ const LoyaltyCredit = () => {
     }
   };
 
+  const onSubmit = async () => {
+    // if (loyaltyDetails?.current_wallet_balance?.toString() >= '50') {
+    //   let obj = {
+    //     amount: loyaltyDetails?.current_loyalty_points,
+    //   };
+    //   const response = await createPaymentRequestMutation(obj).unwrap();
+    //   if (response?.status) {
+    //     successToast(response?.message);
+    //   } else {
+    //     errorToast(response?.message);
+    //     navigateTo(SEEKER_SCREENS.CashOutForm);
+    //   }
+    // } else {
+    //   errorToast('Minimum cashout balance limit is AED 50');
+    // }
+  };
+
   return (
     <SafeareaProvider>
       <BackHeader text={'Cashback'} style={GeneralStyle.back} />
@@ -73,14 +102,14 @@ const LoyaltyCredit = () => {
             <CommonText text={'Cashback Credit'} style={styles.headingText} />
             <View style={styles.creditView}>
               <AnimatedCircleProgress
-                total={loyaltyDetails?.total_orders_for_reward}
-                value={loyaltyDetails?.remaining_orders_for_reward}>
+                total={loyaltyDetails?.bookings_for_cashback}
+                value={loyaltyDetails?.total_completed_bookings}>
                 <CustomImage size={hp(40)} source={IMAGES.loyalty_credit} />
               </AnimatedCircleProgress>
               <View style={{flexShrink: 1}}>
                 <CommonText
                   text={`${formatePrice(
-                    loyaltyDetails?.current_loyalty_points,
+                    loyaltyDetails?.current_wallet_balance,
                   )} AED`}
                   style={styles.creditPoint}
                 />
@@ -97,14 +126,25 @@ const LoyaltyCredit = () => {
                 style={styles.cardBottomText}>
                 <CommonText
                   numberOfLines={1}
-                  text={` ${
-                    loyaltyDetails?.remaining_orders_for_reward ?? '0'
-                  }`}
+                  text={` ${'50'}`}
                   style={styles.cardBottomText}
                 />
               </CommonText>
             </View>
           </ImageBackground>
+          <CustomButton
+            isPrimary="seeker"
+            title={'Request to Cashout'}
+            onPress={() => {
+              // userInfo?.bank_info?.bank_name
+              //   ? onSubmit()
+              // :
+              navigateTo(SEEKER_SCREENS.CashOutForm);
+            }}
+            loading={isCreateLoading}
+            btnStyle={styles.btnStyle}
+            textStyle={styles.btnText}
+          />
           <CommonText
             text="Cashback Transaction History"
             style={styles.transactionTitle}
@@ -210,6 +250,14 @@ const getGlobalStyles = (_language: any) => {
     noData: {
       textAlign: 'center',
       ...commonFontStyle(500, 2, Colors._898989),
+    },
+    btnText: {...commonFontStyle(600, 2, Colors.seeker_primary)},
+    btnStyle: {
+      marginHorizontal: 25,
+      marginTop: 20,
+      borderWidth: 1,
+      backgroundColor: Colors.white,
+      borderColor: Colors.seeker_primary,
     },
   });
 };

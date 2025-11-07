@@ -21,7 +21,13 @@ import {useAppSelector} from '@/Hooks/hooks';
 import CustomImage from '@/components/common/CustomImage';
 import moment from 'moment';
 import JobDetailsSkeleton from '@/components/skeleton/JobDetailsSkeleton';
-import { alignItemsLTR, alignItemsRTL, rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {
+  alignItemsLTR,
+  alignItemsRTL,
+  rowReverseRTL,
+  textRTL,
+} from '@/utils/arabicStyles';
+import StepTracker from '@/components/common/StepTracker';
 
 const JobDetails = () => {
   const {language} = useAppSelector(state => state.auth);
@@ -45,7 +51,6 @@ const JobDetails = () => {
   );
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const jobDetails = jobData?.data?.job;
-  console.log(jobDetails, 'jobDetails');
 
   return (
     <SafeareaProvider style={[styles.safeArea]}>
@@ -129,7 +134,11 @@ const JobDetails = () => {
           </View>
 
           <Divider />
-
+          <View style={{paddingHorizontal: wp(24)}}>
+            {jobDetails?.statuses?.length > 0 && (
+              <StepTracker trackingData={jobDetails?.statuses} />
+            )}
+          </View>
           <View style={{paddingHorizontal: wp(24)}}>
             <CommonText text={'Service Provider'} style={styles.sectionTitle} />
             <ServiceProvider
@@ -186,63 +195,64 @@ export default JobDetails;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  jobCard: {
-    width: '100%',
-    padding: wp(16),
-    marginTop: hp(27),
-    ...alignItemsRTL(_language),
-  },
-  rowWithGap: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    gap: wp(20),
-  },
-  jobInfoContainer: {
-    gap: hp(11),
-    flexShrink: 1,
-  },
-  jobTitle: {
-    ...commonFontStyle(600, 1.9, Colors.black),
-    ...textRTL(_language)
-  },
-  jobSubTitle: {
-    ...commonFontStyle(400, 1.7, Colors._898989),
-    ...textRTL(_language)
-  },
-  jobLocation: {
-    flexShrink: 1,
-    ...commonFontStyle(400, 1.6, Colors._7D7D7D),
-    ...textRTL(_language)
-  },
-  bookingContainer: {
-    gap: hp(22),
-    width: '100%',
-    marginVertical: hp(27),
-  },
-  bookingRow: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  bookingLabel: {
-    ...commonFontStyle(400, 1.9, Colors._5E5E5E),
-  },
-  bookingValue: {
-    ...commonFontStyle(700, 1.9, Colors._2C2C2C),
-  },
-  sectionTitle: {
-    marginTop: hp(30),
-    ...commonFontStyle(600, 2.2, Colors.black),
-    ...textRTL(_language)
-  },
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
+    },
+    jobCard: {
+      width: '100%',
+      padding: wp(16),
+      marginTop: hp(27),
+      ...alignItemsRTL(_language),
+    },
+    rowWithGap: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(20),
+    },
+    jobInfoContainer: {
+      gap: hp(11),
+      flexShrink: 1,
+    },
+    jobTitle: {
+      ...commonFontStyle(600, 1.9, Colors.black),
+      ...textRTL(_language),
+    },
+    jobSubTitle: {
+      ...commonFontStyle(400, 1.7, Colors._898989),
+      ...textRTL(_language),
+    },
+    jobLocation: {
+      flexShrink: 1,
+      ...commonFontStyle(400, 1.6, Colors._7D7D7D),
+      ...textRTL(_language),
+    },
+    bookingContainer: {
+      gap: hp(22),
+      width: '100%',
+      marginVertical: hp(27),
+    },
+    bookingRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    bookingLabel: {
+      ...commonFontStyle(400, 1.9, Colors._5E5E5E),
+    },
+    bookingValue: {
+      ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+    },
+    sectionTitle: {
+      marginTop: hp(30),
+      ...commonFontStyle(600, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
 
-  backToHomeBtn: {
-    marginTop: hp(40),
-    marginHorizontal: wp(24),
-    backgroundColor: Colors.seeker_primary,
-  },
-})}
+    backToHomeBtn: {
+      marginTop: hp(40),
+      marginHorizontal: wp(24),
+      backgroundColor: Colors.seeker_primary,
+    },
+  });
+};

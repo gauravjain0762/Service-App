@@ -32,10 +32,18 @@ import {SCREENS, SEEKER_SCREENS} from '@/navigation/screenNames';
 import BackHeader from '@/components/common/BackHeader';
 import BottomModal from '@/components/common/BottomModal';
 import RequestSubmitModal from '@/components/modals/RequestSubmitModal';
-import {useCreateRequestMutation} from '@/api/Seeker/homeApi';
+import {
+  useCreateRequestMutation,
+  useGetSubCategoriesQuery,
+} from '@/api/Seeker/homeApi';
 import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@/Hooks/hooks';
-import {alignItemsRTL, alignSelfRTL, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import {
+  alignItemsRTL,
+  alignSelfRTL,
+  rowReverseRTL,
+  textRTL,
+} from '@/utils/arabicStyles';
 import CustomImage from '@/components/common/CustomImage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -48,9 +56,11 @@ const MyBookings = () => {
   const {
     params: {category_id, category_name, category_image, title, _id, title_ar},
   } = useRoute<any>();
-  const categoryData = dashboard?.categories?.find(
-    val => val?._id === category_id,
-  );
+
+  const {data, refetch} = useGetSubCategoriesQuery({categories: category_id});
+  const subCategories = data?.data?.sub_categories;
+  const categoryData =
+    subCategories && subCategories?.find((val: any) => val?._id === _id);
 
   const [createRequest, {isLoading}] = useCreateRequestMutation();
   const [isLocationType, setIsLocationType] = useState('Your Location');
@@ -213,7 +223,6 @@ const MyBookings = () => {
       });
 
       const response = await createRequest(formData).unwrap();
-      console.log('response', response);
 
       if (response?.status) {
         setIsSubmitModalVisible(true);
@@ -226,7 +235,6 @@ const MyBookings = () => {
       );
     }
   };
-console.log(categoryData?.fields,'categoryData?.fields');
 
   return (
     <SafeareaProvider style={styles.safeArea}>
@@ -261,7 +269,7 @@ console.log(categoryData?.fields,'categoryData?.fields');
             text={'Choose Location'}
             style={{
               ...commonFontStyle(700, 2.2, Colors.black),
-              ...textRTL(language)
+              ...textRTL(language),
             }}
           />
           <View style={styles.locationTab}>
@@ -434,176 +442,177 @@ export default MyBookings;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  searchIcon: {
-    height: hp(40),
-    width: wp(40),
-  },
-  scrollViewContent: {
-    paddingBottom: hp(25),
-  },
-  requestCard: {
-    marginVertical: hp(35),
-  },
-  locationContainer: {
-    gap: wp(20),
-    elevation: 5,
-    padding: hp(12),
-    borderRadius: hp(20),
-    shadowColor: Colors.black,
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.1,
-    shadowRadius: 3.84,
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    backgroundColor: Colors.white,
-    justifyContent: 'space-between',
-  },
-  locationSubContainer: {
-    gap: wp(15),
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    flex: 1,
-  },
-  locationDetails: {
-    gap: hp(2),
-  },
-  locationTitle: {
-    ...commonFontStyle(600, 2.2, Colors.black),
-  },
-  locationSubtitle: {
-    ...commonFontStyle(400, 1.7, Colors._7D7D7D),
-  },
-  changeBtn: {
-    flexShrink: 1,
-    borderRadius: hp(50),
-    paddingVertical: hp(6),
-    paddingHorizontal: wp(12),
-    backgroundColor: Colors._EBFCF4,
-    ...alignSelfRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  changeBtnText: {
-    ...commonFontStyle(500, 1.4, Colors._039B55),
-  },
-  sectionSpacing: {
-    marginTop: hp(30),
-  },
-  sectionTitle: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-    ...textRTL(_language)
-  },
-  carInput: {
-    height: hp(60),
-    marginTop: hp(22),
-    borderWidth: hp(1),
-    borderRadius: hp(35),
-    paddingHorizontal: wp(25),
-    borderColor: Colors._F2EDED,
-    ...commonFontStyle(500, 1.7, Colors.black),
-    ...textRTL(_language)
-  },
-  mileageRow: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    marginTop: hp(15),
-  },
-  mileageBox: {
-    flex: 1,
-    borderWidth: hp(1),
-    borderRadius: hp(25),
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: hp(15),
-    borderColor: Colors._F2EDED,
-  },
-  mileageBoxSpacing: {
-    marginRight: wp(15),
-  },
-  mileageText: {
-    ...commonFontStyle(500, 1.7, Colors.black),
-  },
-  subTitle: {
-    ...commonFontStyle(500, 2.2, Colors.black),
-  },
-  circleRow: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    marginTop: hp(17),
-    gap: getFontSize(2),
-    flexWrap: 'wrap',
-  },
-  circleBox: {
-    width: wp(40),
-    height: hp(40),
-    borderWidth: hp(1),
-    borderRadius: hp(40),
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: Colors._F2EDED,
-    backgroundColor: Colors.white,
-  },
-  selectedCircleBox: {
-    backgroundColor: Colors.seeker_primary,
-    borderColor: Colors.seeker_primary,
-  },
-  circleText: {
-    ...commonFontStyle(500, 1.8, Colors.black),
-  },
-  selectedCircleText: {
-    color: Colors.white,
-  },
-  shadowCard: {
-    padding: hp(20),
-    ...alignItemsRTL(_language)
-  },
-  specialNoteTitle: {
-    ...commonFontStyle(600, 2.2, Colors.black),
-  },
-  textInput: {
-    width: '100%',
-    height: hp(125),
-    padding: hp(16),
-    marginTop: hp(18),
-    borderWidth: hp(1),
-    borderRadius: hp(10),
-    textAlignVertical: 'top',
-    borderColor: Colors._BFC2C1,
-    ...textRTL(_language)
-  },
-  sendRequestBtn: {
-    marginTop: hp(50),
-    marginHorizontal: wp(24),
-    backgroundColor: Colors.seeker_primary,
-  },
-  selectedMileageBox: {
-    borderColor: Colors.seeker_primary,
-    backgroundColor: Colors.seeker_primary,
-  },
-  selectedMileageText: {
-    color: Colors.white,
-  },
-  locationTab: {
-    gap: wp(23),
-    marginTop: hp(18),
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    marginBottom: hp(30),
-  },
-  myLocationBtn: {
-    flex: 1,
-    borderWidth: hp(1),
-    borderColor: Colors.seeker_primary,
-    backgroundColor: Colors.seeker_primary,
-  },
-  yourLocationBtn: {
-    flex: 1,
-    borderWidth: hp(1),
-    borderColor: Colors._F2EDED,
-    backgroundColor: Colors.white,
-  },
-})}
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
+    },
+    searchIcon: {
+      height: hp(40),
+      width: wp(40),
+    },
+    scrollViewContent: {
+      paddingBottom: hp(25),
+    },
+    requestCard: {
+      marginVertical: hp(35),
+    },
+    locationContainer: {
+      gap: wp(20),
+      elevation: 5,
+      padding: hp(12),
+      borderRadius: hp(20),
+      shadowColor: Colors.black,
+      shadowOffset: {width: 0, height: 4},
+      shadowOpacity: 0.1,
+      shadowRadius: 3.84,
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      backgroundColor: Colors.white,
+      justifyContent: 'space-between',
+    },
+    locationSubContainer: {
+      gap: wp(15),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      flex: 1,
+    },
+    locationDetails: {
+      gap: hp(2),
+    },
+    locationTitle: {
+      ...commonFontStyle(600, 2.2, Colors.black),
+    },
+    locationSubtitle: {
+      ...commonFontStyle(400, 1.7, Colors._7D7D7D),
+    },
+    changeBtn: {
+      flexShrink: 1,
+      borderRadius: hp(50),
+      paddingVertical: hp(6),
+      paddingHorizontal: wp(12),
+      backgroundColor: Colors._EBFCF4,
+      ...alignSelfRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    changeBtnText: {
+      ...commonFontStyle(500, 1.4, Colors._039B55),
+    },
+    sectionSpacing: {
+      marginTop: hp(30),
+    },
+    sectionTitle: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+      ...textRTL(_language),
+    },
+    carInput: {
+      height: hp(60),
+      marginTop: hp(22),
+      borderWidth: hp(1),
+      borderRadius: hp(35),
+      paddingHorizontal: wp(25),
+      borderColor: Colors._F2EDED,
+      ...commonFontStyle(500, 1.7, Colors.black),
+      ...textRTL(_language),
+    },
+    mileageRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginTop: hp(15),
+    },
+    mileageBox: {
+      flex: 1,
+      borderWidth: hp(1),
+      borderRadius: hp(25),
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: hp(15),
+      borderColor: Colors._F2EDED,
+    },
+    mileageBoxSpacing: {
+      marginRight: wp(15),
+    },
+    mileageText: {
+      ...commonFontStyle(500, 1.7, Colors.black),
+    },
+    subTitle: {
+      ...commonFontStyle(500, 2.2, Colors.black),
+    },
+    circleRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginTop: hp(17),
+      gap: getFontSize(2),
+      flexWrap: 'wrap',
+    },
+    circleBox: {
+      width: wp(40),
+      height: hp(40),
+      borderWidth: hp(1),
+      borderRadius: hp(40),
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderColor: Colors._F2EDED,
+      backgroundColor: Colors.white,
+    },
+    selectedCircleBox: {
+      backgroundColor: Colors.seeker_primary,
+      borderColor: Colors.seeker_primary,
+    },
+    circleText: {
+      ...commonFontStyle(500, 1.8, Colors.black),
+    },
+    selectedCircleText: {
+      color: Colors.white,
+    },
+    shadowCard: {
+      padding: hp(20),
+      ...alignItemsRTL(_language),
+    },
+    specialNoteTitle: {
+      ...commonFontStyle(600, 2.2, Colors.black),
+    },
+    textInput: {
+      width: '100%',
+      height: hp(125),
+      padding: hp(16),
+      marginTop: hp(18),
+      borderWidth: hp(1),
+      borderRadius: hp(10),
+      textAlignVertical: 'top',
+      borderColor: Colors._BFC2C1,
+      ...textRTL(_language),
+    },
+    sendRequestBtn: {
+      marginTop: hp(50),
+      marginHorizontal: wp(24),
+      backgroundColor: Colors.seeker_primary,
+    },
+    selectedMileageBox: {
+      borderColor: Colors.seeker_primary,
+      backgroundColor: Colors.seeker_primary,
+    },
+    selectedMileageText: {
+      color: Colors.white,
+    },
+    locationTab: {
+      gap: wp(23),
+      marginTop: hp(18),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      marginBottom: hp(30),
+    },
+    myLocationBtn: {
+      flex: 1,
+      borderWidth: hp(1),
+      borderColor: Colors.seeker_primary,
+      backgroundColor: Colors.seeker_primary,
+    },
+    yourLocationBtn: {
+      flex: 1,
+      borderWidth: hp(1),
+      borderColor: Colors._F2EDED,
+      backgroundColor: Colors.white,
+    },
+  });
+};

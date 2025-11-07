@@ -24,6 +24,7 @@ export const SEEKER_API = {
     NOTIFICATIONS: 'getNotifications',
     CLEAR_ALL_NOTIFICATIONS: 'clearAllNotifications',
     DASHBOARD: '/getDashboard',
+    CATEGORIES: '/getCategories',
     SUB_CATEGORIES: '/getSubCategories',
     REQUESTS: '/getRequests',
     REQUEST_DETAILS: '/getRequestDetails',
@@ -35,7 +36,8 @@ export const SEEKER_API = {
     LOYALTY: '/getUserLoyalty',
     STRIPE_PAYMENT: '/stripePayment',
     OFFER_DETAILS:'/getOfferDetails',
-    GET_APP_DATA:'/getAppData'
+    GET_APP_DATA:'/getAppData',
+    CREATE_PAYMENT_REQUEST:'/createPaymentRequest'
   },
 } as const;
 

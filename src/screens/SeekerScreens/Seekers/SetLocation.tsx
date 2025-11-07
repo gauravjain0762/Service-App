@@ -29,6 +29,7 @@ import {
   useGetPlaceDetailsQuery,
 } from '@/api/Seeker/addressApi';
 import {useAppSelector} from '@/Hooks/hooks';
+import {goBack} from '@/components/common/commonFunction';
 
 const isIos = Platform.OS === 'ios';
 
@@ -57,7 +58,7 @@ const SetLocation = () => {
 
   // Get user data and language from Redux store (uncomment when available)
   const {userData, language} = useAppSelector((state: any) => state.auth);
-const styles = React.useMemo(() => getGlobalStyles(language), [language]);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   // API calls (uncomment when available)
   const {
     data: googleAddressData,
@@ -300,7 +301,17 @@ const styles = React.useMemo(() => getGlobalStyles(language), [language]);
           )}
 
           {isLocationModalVisible && (
-            <BottomModal visible={isLocationModalVisible}>
+            <BottomModal
+              visible={isLocationModalVisible}
+              close
+              onClose={() => {
+                setIsLocationModalVisible(false);
+                goBack();
+              }}
+              onPressCancel={() => {
+                setIsLocationModalVisible(false);
+                goBack();
+              }}>
               <SearchLocationModal
                 search={search}
                 searchData={searchData}
@@ -315,7 +326,17 @@ const styles = React.useMemo(() => getGlobalStyles(language), [language]);
           )}
 
           {isAddressModalVisible && (
-            <BottomModal visible={isAddressModalVisible}>
+            <BottomModal
+              visible={isAddressModalVisible}
+              close
+              onClose={() => {
+                setIsAddressModalVisible(false);
+                setIsLocationModalVisible(true);
+              }}
+              onPressCancel={() => {
+                setIsAddressModalVisible(false);
+                setIsLocationModalVisible(true);
+              }}>
               <AddLocation
                 selectedType={selectedType}
                 setSelectedType={setSelectedType}
@@ -339,70 +360,71 @@ export default SetLocation;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.white,
-  },
-  headerPadding: {
-    paddingHorizontal: wp(24),
-  },
-  backIcon: {
-    height: hp(22),
-    width: wp(15),
-    resizeMode: 'contain',
-  },
-  keyboardContainer: {
-    flex: 1,
-    marginTop: hp(21),
-  },
-  flexContainer: {
-    flex: 1,
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...StyleSheet.absoluteFillObject,
-  },
-  mapStyle: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  locationContainer: {
-    position: 'absolute',
-    bottom: hp(76),
-    right: wp(22),
-  },
-  currentLocationButton: {
-    width: wp(47),
-    height: wp(47),
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.white,
-    borderRadius: 100,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
+    safeArea: {
+      flex: 1,
+      backgroundColor: Colors.white,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  locationIcon: {
-    width: wp(22),
-    height: wp(22),
-    resizeMode: 'contain',
-  },
-  textInput: {
-    marginTop: hp(38),
-    borderRadius: hp(10),
-  },
-  continueButton: {
-    marginVertical: hp(30),
-    backgroundColor: Colors.seeker_primary,
-  },
-})}
+    headerPadding: {
+      paddingHorizontal: wp(24),
+    },
+    backIcon: {
+      height: hp(22),
+      width: wp(15),
+      resizeMode: 'contain',
+    },
+    keyboardContainer: {
+      flex: 1,
+      marginTop: hp(21),
+    },
+    flexContainer: {
+      flex: 1,
+    },
+    container: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      ...StyleSheet.absoluteFillObject,
+    },
+    mapStyle: {
+      ...StyleSheet.absoluteFillObject,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    locationContainer: {
+      position: 'absolute',
+      bottom: hp(76),
+      right: wp(22),
+    },
+    currentLocationButton: {
+      width: wp(47),
+      height: wp(47),
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: Colors.white,
+      borderRadius: 100,
+      elevation: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+    },
+    locationIcon: {
+      width: wp(22),
+      height: wp(22),
+      resizeMode: 'contain',
+    },
+    textInput: {
+      marginTop: hp(38),
+      borderRadius: hp(10),
+    },
+    continueButton: {
+      marginVertical: hp(30),
+      backgroundColor: Colors.seeker_primary,
+    },
+  });
+};

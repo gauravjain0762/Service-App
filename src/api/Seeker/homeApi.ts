@@ -18,6 +18,7 @@ export const homeApi = createApi({
     'getSubCategories',
     'getNotifications',
     'GetAppData',
+    'getCategories'
   ],
   keepUnusedDataFor: 300, // 5 minutes
   refetchOnFocus: true,
@@ -45,6 +46,14 @@ export const homeApi = createApi({
         params: query,
       }),
       providesTags: ['getSubCategories'],
+    }),
+    getCategories: builder.query<any, any>({
+      query: query => ({
+        url: SEEKER_API.DASHBOARD.CATEGORIES,
+        method: HTTP_METHOD.GET,
+        params: query,
+      }),
+      providesTags: ['getCategories'],
     }),
 
     // Notifications API
@@ -178,6 +187,14 @@ export const homeApi = createApi({
         }
       },
     }),
+    createPaymentRequest: builder.mutation<any, any>({
+      query: credentials => ({
+        url: SEEKER_API.DASHBOARD.CREATE_PAYMENT_REQUEST,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+      }),
+      invalidatesTags: ['homeApi'],
+    }),
   }),
 });
 
@@ -196,5 +213,7 @@ export const {
   useStripePaymentMutation,
   useGetOffersDetailsQuery,
   useGetNotificationsQuery,
-  useGetAppDataQuery
+  useGetAppDataQuery,
+  useGetCategoriesQuery,
+  useCreatePaymentRequestMutation
 } = homeApi;

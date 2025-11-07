@@ -26,8 +26,8 @@
     "Create New Account": "Create New Account",
     "Didn't receive code?": "Didn't receive code?",
     "Resend": "Resend",
-    "Welcome to Home Services": "Welcome to \nOn Demand Services",
-    "Our services is to help you to clean your house as quick as possible.": "Our services is to help you to clean your house as quick as possible.",
+    "Welcome to Home Services": "Welcome to \nHelpio On Demand Services",
+    "Our services is to help you to clean your house as quick as possible.": "Connecting you to the services you need. \nProfessional services. Anywhere. Anytime",
     "Job Seeker": "Job Seeker",
     "Service Provider": "Service Provider",
     "Search by Services or Category": "Search by Services or Category",
@@ -191,6 +191,8 @@
     "Request edit":"Request edit",
     "Service Seeker":"Service Seeker",
     "Earn cashback on every booking":"Earn cashback on every booking",
-    "Minimum cashout balance limit is AED":"Minimum cashout balance limit is AED"
+    "Minimum cashout balance limit is AED":"Minimum cashout balance limit is AED",
+    "you don't have any cashback credit available yet":"you don't have any cashback credit available yet",
+    "Request to Cashout":"Request to Cashout"
   }
 }

@@ -68,6 +68,7 @@ const HomeScreen = () => {
   useEffect(() => {
     getCurrentLocation();
   }, []);
+console.log(selectedCatId,'selectedCatId');
 
   const getCurrentLocation = async () => {
     await requestLocationPermission(
@@ -165,7 +166,6 @@ const HomeScreen = () => {
           />
         </ScrollView>
       )}
-
       <ServicesModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

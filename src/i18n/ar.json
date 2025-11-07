@@ -26,8 +26,8 @@
     "Create New Account": "إنشاء حساب جديد",
     "Didn't receive code?": "لم تستلم الرمز؟",
     "Resend": "إعادة الإرسال",
-    "Welcome to Home Services": "مرحباً بكم في خدمات حسب الطلب",
-    "Our services is to help you to clean your house as quick as possible.": "خدماتنا تهدف إلى مساعدتك في تنظيف منزلك بأسرع وقت ممكن.",
+    "Welcome to Home Services": "نوصلك بالخدمات التي تحتاجها",
+    "Our services is to help you to clean your house as quick as possible.": "خدمات احترافية. في أي مكان .في أي وقت.",
     "Job Seeker": "الباحث عن عمل",
     "Service Provider": "مزود الخدمة",
     "Search by Services or Category": "ابحث حسب الخدمات أو الفئة",
@@ -191,6 +191,8 @@
     "Request edit":"طلب التعديل",
     "Service Seeker":"باحث عن الخدمة",
     "Earn cashback on every booking":"احصل على استرداد نقدي على كل حجز",
-    "Minimum cashout balance limit is AED":"الحد الأدنى لرصيد السحب النقدي هو درهم إماراتي"
+    "Minimum cashout balance limit is AED":"الحد الأدنى لرصيد السحب النقدي هو درهم إماراتي",
+    "you don't have any cashback credit available yet":"ليس لديك أي رصيد استرداد نقدي متاح حتى الآن",
+     "Request to Cashout":"طلب صرف"
   }
 }

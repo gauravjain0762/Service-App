@@ -24,7 +24,8 @@ export interface AuthState {
   guestUser?: boolean;
   guestUserModal?: boolean;
   userCurrentLocation: any;
-  appData?:any
+  appData?: any;
+  recentSearch?: any[];
 }
 
 // Initial state
@@ -39,17 +40,18 @@ const initialState: AuthState = {
   dashboard: {
     banners: [],
     categories: [],
-    offers_unread: null
+    offers_unread: null,
   },
 
   dropDownCategories: [],
   dropDownSubCategories: [],
   emirates: [],
-  packages:[],
+  packages: [],
   guestUser: false,
   guestUserModal: false,
-  userCurrentLocation:{} ,
-  appData:{}
+  userCurrentLocation: {},
+  appData: {},
+  recentSearch: [],
 };
 
 // Create the auth slice
@@ -101,6 +103,9 @@ const authSlice = createSlice({
     setEmirates: (state, action: PayloadAction<any>) => {
       state.emirates = action.payload;
     },
+    setRecentSearch: (state, action: PayloadAction<any>) => {
+      state.recentSearch = action.payload;
+    },
     setPackages: (state, action: PayloadAction<any>) => {
       state.packages = action.payload;
     },
@@ -108,7 +113,7 @@ const authSlice = createSlice({
       state.guestUserModal = action.payload;
     },
 
-    clearToken: () => ({...initialState})
+    clearToken: () => ({...initialState}),
   },
 });
 
@@ -116,7 +121,15 @@ const authPersistConfig = {
   key: 'auth',
   storage: AsyncStorage,
   // Only persist these fields
-  whitelist: ['token', 'userInfo', 'language', 'isProvider','guestUser','fcmToken'],
+  whitelist: [
+    'token',
+    'userInfo',
+    'language',
+    'isProvider',
+    'guestUser',
+    'fcmToken',
+    'recentSearch',
+  ],
 };
 
 // Create the persisted reducer
@@ -141,7 +154,8 @@ export const {
   setGuestUserModal,
   setEmirates,
   setUserLocation,
-  setAppData
+  setAppData,
+  setRecentSearch,
 } = authSlice.actions;
 
 // Selectors

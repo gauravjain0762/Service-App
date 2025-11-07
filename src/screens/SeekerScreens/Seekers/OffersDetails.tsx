@@ -21,6 +21,7 @@ import AttachmentCard from '@/components/common/AttachmentCard';
 import RequestEditServiceModal from '@/components/modals/RequestEditServiceModal';
 import {SEEKER_SCREENS} from '@/navigation/screenNames';
 import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import StepTracker from '@/components/common/StepTracker';
 
 const OffersDetails = () => {
   const {
@@ -33,7 +34,7 @@ const OffersDetails = () => {
     `${moment(offerDetail?.date).format('YYYY-MM-DD')} ${offerDetail?.time}`,
     'YYYY-MM-DD hh:mm A',
   );
-  console.log(offerDetail, 'offerDetail');
+  console.log(requestDetails, 'offerDetail', offerDetail);
 
   return (
     <SafeareaProvider style={[styles.safeArea]}>
@@ -71,6 +72,9 @@ const OffersDetails = () => {
 
         <Divider />
 
+        {requestDetails?.statuses?.length > 0 && (
+          <StepTracker trackingData={requestDetails?.statuses} />
+        )}
         <View style={styles.titleRow}>
           {offerDetail?.company_id?.category_id?.title && (
             <CommonText
@@ -316,7 +320,7 @@ const getGlobalStyles = (_language: any) => {
     description: {
       // marginVertical: hp(20),
       ...commonFontStyle(400, 1.6, Colors._676767),
-      ...textRTL(_language)
+      ...textRTL(_language),
     },
     bookingContainer: {
       marginVertical: hp(27),

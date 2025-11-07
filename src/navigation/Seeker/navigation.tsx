@@ -24,6 +24,7 @@ import Subscription from '@/screens/Subscription';
 import {useAppSelector} from '@/Hooks/hooks';
 import LoyaltyCredit from '@/screens/SeekerScreens/Seekers/LoyaltyCredit';
 import OfferSummary from '@/screens/SeekerScreens/Seekers/OfferSummary';
+import CashOutForm from '@/screens/SeekerScreens/Seekers/CashOutForm';
 
 export type RootStackParamList = {
   Dashboard: undefined;
@@ -55,6 +56,7 @@ const SeekerNavigator: FC = ({}) => {
     {name: SEEKER_SCREENS.Subscription, component: Subscription},
     {name: SEEKER_SCREENS.LoyaltyCredit, component: LoyaltyCredit},
     {name: SEEKER_SCREENS.OfferSummary, component: OfferSummary},
+    {name: SEEKER_SCREENS.CashOutForm, component: CashOutForm},
   ];
   return (
     <Stack.Navigator

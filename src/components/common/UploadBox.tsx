@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import ShadowCard from './ShadowCard';
@@ -18,6 +19,7 @@ import CustomButton from './CustomButton';
 import CustomImage from './CustomImage';
 import {pick, types} from '@react-native-documents/picker';
 import Video from 'react-native-video';
+import BottomModal from './BottomModal';
 
 type Props = {
   desc?: string;
@@ -43,12 +45,44 @@ const UploadBox = ({
   selectedMedia,
 }: Props) => {
   const [files, setFiles] = useState<any[]>(selectedMedia || []);
+  const [showOptions, setShowOptions] = useState(false);
 
   React.useEffect(() => {
     if (selectedMedia && selectedMedia.length > 0) {
       setFiles(selectedMedia);
     }
   }, [selectedMedia]);
+
+  const handleCamera = () => {
+    ImagePicker.openCamera({
+      mediaType: 'any',
+      cropping: false,
+    })
+      .then(image => {
+        if (Platform.OS == 'android') {
+          image.sourceURL = image.path;
+        } else {
+          if (image.sourceURL == null) {
+            image.sourceURL = image.path;
+          }
+        }
+        let temp = {...image, name: 'image_' + new Date().getTime() + '.png'};
+        const newFile = {
+          uri: image.sourceURL || image.path,
+          type: image.mime,
+          name: (image.sourceURL || image.path).split('/').pop(),
+        };
+        setFiles(prev => [...prev, image]);
+        setSelectedMedia((prev: any) => [...prev, temp]);
+        setShowOptions(false);
+      })
+      .catch(error => {
+        if (error.code !== 'E_PICKER_CANCELLED') {
+          console.log('Error opening camera:', error);
+        }
+      });
+  };
+
   const handleBrowseFiles = () => {
     ImagePicker.openPicker({
       multiple: false,
@@ -63,6 +97,7 @@ const UploadBox = ({
           name: newFiles[0]?.sourceURL.split('/').pop(),
         };
         setSelectedMedia((prev: any) => [...prev, data]);
+        setShowOptions(false);
       })
       .catch(error => {
         if (error.code !== 'E_PICKER_CANCELLED') {
@@ -89,13 +124,14 @@ const UploadBox = ({
         name: pickerResult.name,
         type: pickerResult.type,
       };
-      // onSelect(newFile);
       setFiles(prev => [...prev, newFile]);
       setSelectedMedia((prev: any) => [...prev, newFile]);
+      setShowOptions(false);
     } catch (e) {
       console.log('error--', e);
     }
   };
+
   const openAllPicker = async () => {
     try {
       const [pickerResult] = await pick({
@@ -107,12 +143,16 @@ const UploadBox = ({
         name: pickerResult.name,
         type: pickerResult.type,
       };
-      // onSelect(newFile);
+      setShowOptions(false);
       setFiles(prev => [...prev, newFile]);
       setSelectedMedia((prev: any) => [...prev, newFile]);
     } catch (e) {
       console.log('error--', e);
     }
+  };
+
+  const handleUploadPress = () => {
+    setShowOptions(true);
   };
 
   const renderFile = ({item, index}: {item: any; index?: number}) => {
@@ -130,7 +170,6 @@ const UploadBox = ({
             size={hp(80)}
             resizeMode="cover"
             uri={item.path ?? item?.uri}
-            // imageStyle={styles.previewImg}
           />
         ) : isVideo ? (
           <Video
@@ -158,43 +197,100 @@ const UploadBox = ({
   };
 
   return (
-  <ShadowCard style={[style]}>
-    {title && <CommonText style={styles.title} text={title} />}
+    <>
+      <ShadowCard style={[style]}>
+        {title && <CommonText style={styles.title} text={title} />}
 
-    <FlatList
-      data={files}
-      renderItem={renderFile}
-      keyExtractor={(_, index) => index.toString()}
-      horizontal
-      contentContainerStyle={{
-        paddingVertical: hp(10),
-        gap: hp(10),
-        paddingHorizontal: hp(10),
-        alignItems: 'center',
-      }}
-      showsHorizontalScrollIndicator={false}
-      ListFooterComponent={
-        <CustomImage
-          resizeMode="contain"
-          source={IMAGES.photoUpload}
-          imageStyle={[styles.icon, { marginTop: 0, marginBottom: 0 }]}
-          onPress={
-            isAllDocument
-              ? openAllPicker
-              : isDocument
-              ? openDocPicker
-              : handleBrowseFiles
+        <FlatList
+          data={files}
+          renderItem={renderFile}
+          keyExtractor={(_, index) => index.toString()}
+          horizontal
+          contentContainerStyle={{
+            paddingVertical: hp(10),
+            gap: hp(10),
+            paddingHorizontal: hp(10),
+            alignItems: 'center',
+          }}
+          showsHorizontalScrollIndicator={false}
+          ListFooterComponent={
+            <CustomImage
+              resizeMode="contain"
+              source={IMAGES.photoUpload}
+              imageStyle={[styles.icon, {marginTop: 0, marginBottom: 0}]}
+              onPress={handleUploadPress}
+            />
           }
         />
-      }
-    />
 
-    <CommonText
-      style={styles.subText}
-      text={desc || 'Upload videos, images, or PDFs here.'}
-    />
-  </ShadowCard>
+        <CommonText
+          style={styles.subText}
+          text={desc || 'Upload videos, images, or PDFs here.'}
+        />
+      </ShadowCard>
 
+      {/* Options Modal */}
+      <BottomModal
+        visible={showOptions}
+        onClose={() => setShowOptions(false)}
+        onPressCancel={() => setShowOptions(false)}>
+        <View style={styles.optionsContainer}>
+          <CommonText style={styles.modalTitle} text="Choose an option" />
+
+          {/* Camera Option - Show for all except isDocument only mode */}
+          {!isDocument && (
+            <TouchableOpacity
+              style={styles.optionButton}
+              onPress={handleCamera}>
+              <CustomImage
+                source={IMAGES.camera || IMAGES.photoUpload}
+                size={hp(24)}
+                resizeMode="contain"
+              />
+              <CommonText style={styles.optionText} text="Take Photo/Video" />
+            </TouchableOpacity>
+          )}
+
+          {/* Gallery/Media Picker - Show when not document mode or when isAllDocument */}
+          {(!isDocument || isAllDocument) && (
+            <TouchableOpacity
+              style={styles.optionButton}
+              onPress={handleBrowseFiles}>
+              <CustomImage
+                source={IMAGES.gallery || IMAGES.photoUpload}
+                size={hp(24)}
+                resizeMode="contain"
+              />
+              <CommonText
+                style={styles.optionText}
+                text="Choose from Gallery"
+              />
+            </TouchableOpacity>
+          )}
+
+          {/* Document Picker - Show for document or all document mode */}
+          {(isDocument || isAllDocument) && (
+            <TouchableOpacity
+              style={styles.optionButton}
+              onPress={isAllDocument ? openAllPicker : openDocPicker}>
+              <CustomImage
+                source={IMAGES.pdfIcon || IMAGES.photoUpload}
+                size={hp(24)}
+                resizeMode="contain"
+              />
+              <CommonText style={styles.optionText} text="Choose Document" />
+            </TouchableOpacity>
+          )}
+
+          <CustomButton
+            title="Cancel"
+            onPress={() => setShowOptions(false)}
+            btnStyle={styles.cancelButton}
+            textStyle={styles.cancelText}
+          />
+        </View>
+      </BottomModal>
+    </>
   );
 };
 
@@ -211,7 +307,6 @@ const styles = StyleSheet.create({
     marginBottom: hp(10),
   },
   fileContainer: {
-    // marginRight: wp(8),
     borderRadius: hp(2),
     overflow: 'hidden',
     paddingVertical: hp(10),
@@ -257,5 +352,38 @@ const styles = StyleSheet.create({
   pdfIcon: {
     height: hp(80),
     width: hp(80),
+  },
+  optionsContainer: {
+    paddingHorizontal: wp(20),
+    paddingBottom: hp(20),
+    width: '100%',
+  },
+  modalTitle: {
+    ...commonFontStyle(700, 2.5, Colors.black),
+    marginBottom: hp(20),
+    textAlign: 'center',
+  },
+  optionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: hp(16),
+    paddingHorizontal: wp(20),
+    borderRadius: hp(12),
+    backgroundColor: Colors._F2F2F2 || '#f5f5f5',
+    marginBottom: hp(12),
+    gap: wp(15),
+  },
+  optionText: {
+    ...commonFontStyle(500, 2, Colors.black),
+    flex: 1,
+  },
+  cancelButton: {
+    marginTop: hp(10),
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.red || '#ddd',
+  },
+  cancelText: {
+    ...commonFontStyle(500, 1.8, Colors.red),
   },
 });

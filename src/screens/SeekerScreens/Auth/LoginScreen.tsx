@@ -48,8 +48,8 @@ const LoginScreen = ({}: any) => {
   const dispatch = useAppDispatch();
 
   const [details, setDetails] = useState({
-    email: __DEV__ ? 'test@gmail.com' : '',
-    password: __DEV__ ? 'Test@123' : '',
+    email: __DEV__ ? 'bilal@devicebee.com' : '',
+    password: __DEV__ ? '12345678' : '',
   });
   const [login, {isLoading}] = useLoginMutation();
   const [guestLogin, {isLoading: isGuestLoading}] = useGuestLoginMutation();

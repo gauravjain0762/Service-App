@@ -1,4 +1,4 @@
-import { setLanguage } from '@/features/authSlice';
+import { setLanguage, setRecentSearch } from '@/features/authSlice';
 import i18n from '@/i18n/i18n';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18next from 'i18next';
@@ -156,3 +156,15 @@ export const getRecentLocationSearches = async () => {
   const searches = await AsyncStorage.getItem(asyncKeys.recentLocationSearches);
   return searches ? JSON.parse(searches) : [];
 };
+
+export const removeRecentSearch = (search: string) => async (dispatch: any) => {
+  let recentSearches = await getRecentSearches();
+  recentSearches = recentSearches.filter((item: string) => item !== search);
+  await setRecentSearches(recentSearches);
+  dispatch(setRecentSearch(recentSearches));
+};
+export const clearRecentSearches = () => async (dispatch: any) => {
+  await AsyncStorage.removeItem(asyncKeys.recentSearches);
+  dispatch(setRecentSearch([]));
+};
+
