@@ -1,4 +1,4 @@
-package com.services.marketplace.app
+package com.helpio
 
 import android.app.Application
 import com.facebook.react.PackageList

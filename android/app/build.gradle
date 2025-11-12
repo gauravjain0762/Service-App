@@ -78,9 +78,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.services.marketplace.app"
+    namespace "com.helpio"
     defaultConfig {
-        applicationId "com.services.marketplace.app"
+        applicationId "com.helpio"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
