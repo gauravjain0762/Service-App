@@ -104,7 +104,7 @@ const LoginScreen = ({}: any) => {
         // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
         resetNavigation(SCREENS.SeekerNavigator);
       } else {
-        if (response?.data?.phone_verified === false) {
+        if (response?.data?.email_verified === false) {
           navigateTo(SEEKER_SCREENS.OtpScreen, {
             userId: response?.data?.user?._id,
             phone:

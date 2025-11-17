@@ -68,7 +68,7 @@ const HomeScreen = () => {
   useEffect(() => {
     getCurrentLocation();
   }, []);
-console.log(selectedCatId,'selectedCatId');
+  console.log(selectedCatId, 'selectedCatId');
 
   const getCurrentLocation = async () => {
     await requestLocationPermission(
@@ -150,7 +150,9 @@ console.log(selectedCatId,'selectedCatId');
               editable={false}
             />
           </View>
-          <MiniCarousel data={dashboard?.banners ?? []} />
+          {dashboard && dashboard?.banners?.length > 0 && (
+            <MiniCarousel data={dashboard?.banners ?? []} />
+          )}
           <CategoryList
             data={dashboard?.categories ?? []}
             onPress={item => {

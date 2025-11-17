@@ -31,6 +31,7 @@ import {jwtDecode} from 'jwt-decode';
 import appleAuth from '@invertase/react-native-apple-authentication';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {WEB_CLIENT_ID} from '@/utils/constants/api';
+import TermsCheckBox from '@/components/common/TermsCheckBox';
 
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
@@ -41,6 +42,7 @@ const SignUpScreen = () => {
   const [loading, setLoading] = React.useState(false);
 
   const [callingCode, setCallingCode] = React.useState('971');
+  const [toggleCheckBox, setToggleCheckBox] = React.useState(false);
 
   const [userData, setUserData] = React.useState<any>({
     name: '',
@@ -52,7 +54,10 @@ const SignUpScreen = () => {
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const onSignUp = async () => {
     try {
-      if (!userData?.name.trim()) {
+      if (!toggleCheckBox) {
+        errorToast('Please check the terms of use');
+        return;
+      } else if (!userData?.name.trim()) {
         errorToast('Enter a full name');
       } else if (!userData?.email.trim()) {
         errorToast('Enter a Email');
@@ -240,6 +245,14 @@ const SignUpScreen = () => {
         </View>
 
         <View style={{marginTop: hp(52), gap: hp(20)}}>
+          <TermsCheckBox
+            toggleCheckBox={toggleCheckBox}
+            setToggleCheckBox={setToggleCheckBox}
+            checkedCheckBoxColor={Colors.seeker_primary}
+            isChecked={toggleCheckBox}
+            isSeeker={true}
+            onClick={() => setToggleCheckBox(!toggleCheckBox)}
+          />
           <CustomButton
             isPrimary="seeker"
             loading={isLoading}

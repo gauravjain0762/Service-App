@@ -81,6 +81,7 @@ export const PROVIDER_API = {
     UPDATE_JOB_STATUS: '/company/updateJobStatus',
     MODIFY_OFFER: '/company/modifyOffer',
     STRIPE_PAYMENT:'/company/stripePayment',
+    STRIPE_PAYMENT_OFF_SESSION:'/company/stripePaymentOffSession',
     EARNINGS:'/company/getEarnings'
   },
 } as const;

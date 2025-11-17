@@ -152,14 +152,23 @@ export const providerHomeApi = createApi({
       query: credentials => ({
         url: PROVIDER_API.DASHBOARD.BUY_PACKAGE,
         method: HTTP_METHOD.POST,
-        params: credentials,
+        data: credentials,
       }),
-      invalidatesTags: [],
+      invalidatesTags: ['getProviderDashboard'],
     }),
     // Stripe
     stripePayment: builder.mutation<any, any>({
       query: credentials => ({
         url: PROVIDER_API.DASHBOARD.STRIPE_PAYMENT,
+        method: HTTP_METHOD.POST,
+        data: credentials,
+        skipLoader: false,
+      }),
+      invalidatesTags: [],
+    }),
+    stripePaymentOffSession: builder.mutation<any, any>({
+      query: credentials => ({
+        url: PROVIDER_API.DASHBOARD.STRIPE_PAYMENT_OFF_SESSION,
         method: HTTP_METHOD.POST,
         data: credentials,
         skipLoader: false,
@@ -194,5 +203,6 @@ export const {
   useModifyOfferMutation,
   useStripePaymentMutation,
   useGetEarningsQuery,
-  useGetProviderNotificationsQuery
+  useGetProviderNotificationsQuery,
+  useStripePaymentOffSessionMutation
 } = providerHomeApi;

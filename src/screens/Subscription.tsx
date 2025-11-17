@@ -18,8 +18,10 @@ import {PROVIDER_SCREENS, SCREENS} from '@/navigation/screenNames';
 import {useAppSelector} from '@/Hooks/hooks';
 import {
   useBuyPackageMutation,
+  useGetDashboardQuery,
   useGetPackagesQuery,
   useStripePaymentMutation,
+  useStripePaymentOffSessionMutation,
 } from '@/api/Provider/homeApi';
 import PaymentMethodModal from '@/components/common/PaymentMethodModel';
 import PaymentSuccessModal from '@/components/common/PaymentSuccessModel';
@@ -30,7 +32,7 @@ import {
   PlatformPay,
   presentPaymentSheet,
 } from '@stripe/stripe-react-native';
-import { rowReverseRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const Subscription = () => {
   const {packages, language} = useAppSelector<any>(state => state.auth);
@@ -39,10 +41,25 @@ const Subscription = () => {
   const [buyPackage, {isLoading: isBuyLoading}] = useBuyPackageMutation();
   const [stripePayment, {isLoading: stripeLoading}] =
     useStripePaymentMutation();
+  const [stripePaymentOffSession, {isLoading: stripePaymentOffSessionLoading}] =
+    useStripePaymentOffSessionMutation();
   const [isPaymentMethodModalVisible, setIsPaymentMethodModalVisible] =
     React.useState(false);
   const [isPaymentSuccessModalVisible, setIsPaymentSuccessModalVisible] =
     React.useState(false);
+  const {
+    data: data,
+    isLoading: loading,
+    isFetching,
+    refetch,
+  } = useGetDashboardQuery(
+    {},
+    {
+      refetchOnReconnect: true,
+      refetchOnMountOrArgChange: true,
+      refetchOnFocus: true,
+    },
+  );
   const packageDetails = packages[0];
 
   const openPaymentMethodModal = async () => {
@@ -60,8 +77,10 @@ const Subscription = () => {
     let data = {
       amount: packageDetails?.price.toString(),
     };
-
-    const paymentResponse = await stripePayment(data).unwrap();
+    const paymentResponse = await (packageDetails?.is_free_trial
+      ? stripePaymentOffSession(data) // Provider API
+      : stripePayment(data)
+    ).unwrap();
     console.log('paymentResponse-->', paymentResponse);
     return paymentResponse;
   };
@@ -72,7 +91,7 @@ const Subscription = () => {
         return;
       }
       const {paymentIntent} = await fetchPaymentSheetParams();
-
+      const transactionId = paymentIntent?.split('_secret')[0];
       const {error} = await confirmPlatformPayPayment(paymentIntent, {
         applePay: {
           cartItems: [
@@ -91,7 +110,7 @@ const Subscription = () => {
         errorToast(error.message);
         return;
       } else {
-        acceptOffers();
+        acceptOffers(transactionId);
       }
     } catch (error) {
       console.log(error, 'error');
@@ -106,7 +125,7 @@ const Subscription = () => {
     try {
       const {paymentIntent, ephemeralKey, customer, publishableKey} =
         await fetchPaymentSheetParams();
-
+      const transactionId = paymentIntent?.split('_secret')[0];
       const {error, paymentOption} = await initPaymentSheet({
         merchantDisplayName: 'Helpio',
         customerId: customer,
@@ -119,7 +138,7 @@ const Subscription = () => {
         },
       });
       if (!error) {
-        presentSheet();
+        presentSheet(transactionId);
       } else {
         errorToast(error.message);
         console.log(error, 'errorerrorerrorerrorerror');
@@ -129,7 +148,7 @@ const Subscription = () => {
       console.log(error, 'errorerrorerrorerrorerror');
     }
   };
-  const presentSheet = async () => {
+  const presentSheet = async (package_payment_id: any) => {
     const {error, paymentOption} = await presentPaymentSheet();
     if (error) {
       console.log(error, 'errorerror');
@@ -137,21 +156,23 @@ const Subscription = () => {
         errorToast(error.message);
       }
     } else {
-      acceptOffers();
+      acceptOffers(package_payment_id);
     }
   };
 
-  const acceptOffers = async () => {
+  const acceptOffers = async (package_payment_id: any) => {
     try {
       const data = {
         package_id: packageDetails?._id,
+        payment_intent_id: package_payment_id,
       };
-
       const response = await buyPackage(data).unwrap();
       if (response?.status) {
         setIsPaymentSuccessModalVisible(true);
+        refetch();
       } else {
         setIsPaymentSuccessModalVisible(true);
+        refetch();
       }
     } catch (error: any) {
       console.log(error);
@@ -168,7 +189,7 @@ const Subscription = () => {
   return (
     <SafeareaProvider style={styles.safeArea}>
       <BackHeader
-        text={'Subscription Plans'}
+        text={'Subscription Plan'}
         onPressBack={() => resetNavigation(SCREENS.ProviderTabNavigation)}
       />
 
@@ -245,59 +266,60 @@ export default Subscription;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: wp(24),
-    backgroundColor: Colors.white,
-  },
-  container: {
-    flex: 1,
-    marginTop: hp(30),
-  },
-  bgImage: {
-    width: '100%',
-    height: hp(520),
-    aspectRatio: 0.8,
-    overflow: 'hidden',
-    alignSelf: 'center',
-    borderRadius: hp(20),
-  },
-  backgroundImageStyle: {
-    borderRadius: hp(20),
-  },
-  content: {
-    padding: hp(35),
-  },
-  priceRow: {
-    gap: wp(5),
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-  },
-  priceText: {
-    ...commonFontStyle(500, 3.7, Colors._F6F6F6),
-  },
-  description: {
-    marginTop: hp(12),
-    ...commonFontStyle(500, 2, Colors.white),
-  },
-  benefitsWrapper: {
-    gap: hp(22),
-  },
-  benefitsTitle: {
-    marginVertical: hp(26),
-    ...commonFontStyle(500, 2.2, Colors.white),
-  },
-  benefitItem: {
-    gap: wp(10),
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-  },
-  benefitText: {
-    ...commonFontStyle(400, 1.9, Colors.white),
-  },
-  btnStyle: {
-    marginTop: hp(30),
-    borderWidth: hp(1.2),
-    borderColor: Colors.white,
-  },
-})}
+    safeArea: {
+      flex: 1,
+      paddingHorizontal: wp(24),
+      backgroundColor: Colors.white,
+    },
+    container: {
+      flex: 1,
+      marginTop: hp(30),
+    },
+    bgImage: {
+      width: '100%',
+      height: hp(520),
+      aspectRatio: 0.8,
+      overflow: 'hidden',
+      alignSelf: 'center',
+      borderRadius: hp(20),
+    },
+    backgroundImageStyle: {
+      borderRadius: hp(20),
+    },
+    content: {
+      padding: hp(35),
+    },
+    priceRow: {
+      gap: wp(5),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    priceText: {
+      ...commonFontStyle(500, 3.7, Colors._F6F6F6),
+    },
+    description: {
+      marginTop: hp(12),
+      ...commonFontStyle(500, 2, Colors.white),
+    },
+    benefitsWrapper: {
+      gap: hp(22),
+    },
+    benefitsTitle: {
+      marginVertical: hp(26),
+      ...commonFontStyle(500, 2.2, Colors.white),
+    },
+    benefitItem: {
+      gap: wp(10),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+    },
+    benefitText: {
+      ...commonFontStyle(400, 1.9, Colors.white),
+    },
+    btnStyle: {
+      marginTop: hp(30),
+      borderWidth: hp(1.2),
+      borderColor: Colors.white,
+    },
+  });
+};

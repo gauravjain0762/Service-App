@@ -16,7 +16,7 @@ import CommonText from '@/components/common/CommonText';
 import ProviderHeader from '@/components/Provider/ProviderHeader';
 import ProviderCards from '@/components/Provider/ProviderCards';
 import BookingCard from '@/components/Provider/BookingCard';
-import {navigateTo} from '@/components/common/commonFunction';
+import {navigateTo, resetNavigation} from '@/components/common/commonFunction';
 import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import {useGetDashboardQuery} from '@/api/Provider/homeApi';
 import {useAppSelector} from '@/Hooks/hooks';
@@ -25,14 +25,25 @@ import ProvidersVerifyModal from '@/components/modals/ProvidersVerifyModal';
 import {useGetProfileQuery} from '@/api/Provider/profileApi';
 import HomeSkeleton from '@/components/skeleton/HomeSkeleton';
 import ProHomeSkeleton from '@/components/skeleton/ProHomeSkeleton';
-import { rowReverseRTL, textRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL, textRTL} from '@/utils/arabicStyles';
+import {useFocusEffect} from '@react-navigation/native';
 
 const ProDashboard = () => {
-  const {userInfo, dashboard = {},language} = useAppSelector<any>(state => state.auth);
+  const {
+    userInfo,
+    dashboard = {},
+    language,
+    isProvider,
+  } = useAppSelector<any>(state => state.auth);
   const {} = useCategoryQuery({});
   const {refetch: profileRefetch} = useGetProfileQuery({});
-const styles = React.useMemo(() => getGlobalStyles(language), [language]);
-  const {isLoading, isFetching, refetch} = useGetDashboardQuery(
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
+  const {
+    data: data,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetDashboardQuery(
     {},
     {
       refetchOnReconnect: true,
@@ -40,6 +51,16 @@ const styles = React.useMemo(() => getGlobalStyles(language), [language]);
       refetchOnFocus: true,
     },
   );
+  useFocusEffect(() => {
+    refetch();
+  });
+  React.useEffect(() => {
+    if (dashboard && dashboard?.current_package == null) {
+      resetNavigation(PROVIDER_SCREENS.Subscription, {
+        isProvider: isProvider,
+      });
+    }
+  }, []);
 
   const DashboarData = [
     {
@@ -138,12 +159,14 @@ const styles = React.useMemo(() => getGlobalStyles(language), [language]);
               </View>
             )}
           />
-          <ProvidersVerifyModal
-            visible={userInfo?.approval_status != 'Approved'}
-            onPressClose={() => {
-              // BackHandler.exitApp();
-            }}
-          />
+          {dashboard?.current_package != null && (
+            <ProvidersVerifyModal
+              visible={userInfo?.approval_status != 'Approved'}
+              onPressClose={() => {
+                // BackHandler.exitApp();
+              }}
+            />
+          )}
         </ScrollView>
       )}
     </SafeareaProvider>
@@ -154,26 +177,27 @@ export default ProDashboard;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  safearea: {
-    flex: 1,
-    // padding: hp(25),
-    backgroundColor: Colors.white,
-  },
-  dashboardContainer: {
-    gap: wp(16),
-    flexWrap: 'wrap',
-    ...rowReverseRTL(_language),
-    marginBottom: hp(34),
-    paddingHorizontal: hp(20),
-  },
-  contentContainer: {
-    gap: hp(20),
-    paddingVertical: hp(20),
-    paddingHorizontal: hp(20),
-  },
-  headingText: {
-    ...commonFontStyle(700, 2.2, Colors.black),
-    paddingHorizontal: hp(20),
-    ...textRTL(_language)
-  },
-})}
+    safearea: {
+      flex: 1,
+      // padding: hp(25),
+      backgroundColor: Colors.white,
+    },
+    dashboardContainer: {
+      gap: wp(16),
+      flexWrap: 'wrap',
+      ...rowReverseRTL(_language),
+      marginBottom: hp(34),
+      paddingHorizontal: hp(20),
+    },
+    contentContainer: {
+      gap: hp(20),
+      paddingVertical: hp(20),
+      paddingHorizontal: hp(20),
+    },
+    headingText: {
+      ...commonFontStyle(700, 2.2, Colors.black),
+      paddingHorizontal: hp(20),
+      ...textRTL(_language),
+    },
+  });
+};

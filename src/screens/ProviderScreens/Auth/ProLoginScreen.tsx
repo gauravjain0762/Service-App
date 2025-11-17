@@ -4,7 +4,12 @@ import CustomTextInput from '@/components/common/CustomTextInput';
 import CustomButton from '@/components/common/CustomButton';
 import {commonFontStyle, getFontSize, hp, wp} from '@/utils/responsiveFn';
 import {Colors} from '@/constants/Colors';
-import {alignSelfRTL, flipImage, rowReverseRTL, textLTR} from '@/utils/arabicStyles';
+import {
+  alignSelfRTL,
+  flipImage,
+  rowReverseRTL,
+  textLTR,
+} from '@/utils/arabicStyles';
 import CommonText from '@/components/common/CommonText';
 import {
   emailCheck,
@@ -26,7 +31,7 @@ import CustomImage from '@/components/common/CustomImage';
 import {IMAGES} from '@/assets/images';
 
 const ProLoginScreen = ({}: any) => {
-  const {fcmToken,language}:any = useAppSelector(state => state.auth);
+  const {fcmToken, language}: any = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
   const {params} = useRoute<any>();
   const isProvider = params?.isProvider;
@@ -35,10 +40,7 @@ const ProLoginScreen = ({}: any) => {
     password: __DEV__ ? '123456' : '',
   });
 
-  const styles = React.useMemo(
-      () => getGlobalStyles(language),
-      [language],
-    );
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const [login, {isLoading}] = useLoginMutation();
 
   React.useEffect(() => {
@@ -70,7 +72,18 @@ const ProLoginScreen = ({}: any) => {
         // resetNavigation(PROVIDER_SCREENS.ProviderTabNavigation);
         resetNavigation(SCREENS.ProviderNavigator);
       } else {
-        errorToast(response?.message);
+        if (response?.data?.email_verified === false) {
+          navigateTo(PROVIDER_SCREENS.OtpScreen, {
+            userId: response?.data?.company?._id,
+            phone:
+              response?.data?.company?.phone_code +
+              response?.data?.company?.phone,
+            isProvider: true,
+            email: response?.data?.company?.email.toLowerCase(),
+          });
+        } else {
+          errorToast(response?.message);
+        }
       }
     } catch (error: any) {
       console.log(error);
@@ -159,77 +172,78 @@ export default ProLoginScreen;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: getFontSize(10),
-    backgroundColor: Colors.white,
-    paddingHorizontal: getFontSize(2.2),
-  },
-  topLabel: {
-    textAlign: 'center',
-    ...commonFontStyle(600, 3.4, Colors.black),
-  },
+    container: {
+      flex: 1,
+      paddingTop: getFontSize(10),
+      backgroundColor: Colors.white,
+      paddingHorizontal: getFontSize(2.2),
+    },
+    topLabel: {
+      textAlign: 'center',
+      ...commonFontStyle(600, 3.4, Colors.black),
+    },
 
-  midContainer: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    gap: 10,
-    marginLeft: getFontSize(0.5),
-    marginTop: hp(10),
-  },
+    midContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: 10,
+      marginLeft: getFontSize(0.5),
+      marginTop: hp(10),
+    },
 
-  accountText: {
-    ...commonFontStyle(400, 2, Colors._909090),
-    textAlign: 'center',
-    paddingTop: hp(35),
-  },
+    accountText: {
+      ...commonFontStyle(400, 2, Colors._909090),
+      textAlign: 'center',
+      paddingTop: hp(35),
+    },
 
-  signUpAccountText: {
-    ...commonFontStyle(600, 2, Colors.provider_primary),
-  },
-  checkBoxText: {
-    ...commonFontStyle(400, 1.9, Colors._5E5D5D),
-  },
-  checkBoxText2: {
-    ...commonFontStyle(400, 1.9, Colors.provider_primary),
-  },
+    signUpAccountText: {
+      ...commonFontStyle(600, 2, Colors.provider_primary),
+    },
+    checkBoxText: {
+      ...commonFontStyle(400, 1.9, Colors._5E5D5D),
+    },
+    checkBoxText2: {
+      ...commonFontStyle(400, 1.9, Colors.provider_primary),
+    },
 
-  dividerContainer: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    paddingVertical: hp(30),
-    marginHorizontal: wp(23),
-  },
-  label: {
-    ...commonFontStyle(400, 1.9, Colors._6B6969),
-    paddingHorizontal: wp(15),
-  },
-  divider: {
-    flex: 1,
-    height: hp(1),
-    alignSelf: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-  },
+    dividerContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      paddingVertical: hp(30),
+      marginHorizontal: wp(23),
+    },
+    label: {
+      ...commonFontStyle(400, 1.9, Colors._6B6969),
+      paddingHorizontal: wp(15),
+    },
+    divider: {
+      flex: 1,
+      height: hp(1),
+      alignSelf: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    },
 
-  socialContainer: {
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    alignSelf: 'center',
-    gap: getFontSize(3),
-  },
+    socialContainer: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      alignSelf: 'center',
+      gap: getFontSize(3),
+    },
 
-  socialBtn: {
-    borderWidth: 1.5,
-    borderColor: Colors._F3F3F3,
-    borderRadius: getFontSize(2),
-    height: getFontSize(6),
-    width: getFontSize(9),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  forgotPasswordText: {
-    marginTop: hp(4),
-    ...textLTR(_language),
-    ...commonFontStyle(400, 1.9, Colors.provider_primary),
-  },
-})}
+    socialBtn: {
+      borderWidth: 1.5,
+      borderColor: Colors._F3F3F3,
+      borderRadius: getFontSize(2),
+      height: getFontSize(6),
+      width: getFontSize(9),
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    forgotPasswordText: {
+      marginTop: hp(4),
+      ...textLTR(_language),
+      ...commonFontStyle(400, 1.9, Colors.provider_primary),
+    },
+  });
+};

@@ -31,6 +31,7 @@ import {
 import {useAppSelector} from '@/Hooks/hooks';
 import {flipImage, rowReverseRTL, textRTL} from '@/utils/arabicStyles';
 import EmiratesModal from '@/components/modals/EmiratesModal';
+import TermsCheckBox from '@/components/common/TermsCheckBox';
 
 const ServiceList = [
   {label: 'Company', value: 'Company'},
@@ -66,6 +67,7 @@ const ProSignupScreen = () => {
   const {} = useEmiratesQuery({});
   const [subCatTrigger] = useLazySubCategoryQuery();
   const [showEmiratesModal, setShowEmiratesModal] = useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [callingCode, setCallingCode] = useState('971');
   const [userData, setUserData] = useState<UserProps>({
     name: '',
@@ -100,7 +102,10 @@ const ProSignupScreen = () => {
 
   const onSignUp = async () => {
     try {
-      if (!userData?.name.trim()) {
+      if (!toggleCheckBox) {
+        errorToast('Please check the terms of use');
+        return;
+      } else if (!userData?.name.trim()) {
         errorToast('Enter a full name');
       } else if (!userData?.email.trim()) {
         errorToast('Enter a Email');
@@ -168,7 +173,7 @@ const ProSignupScreen = () => {
             userId: response?.data?.company?._id,
             phone: callingCode + userData.phone,
             isProvider: true,
-            email:userData.email.toLowerCase(),
+            email: userData.email.toLowerCase(),
           });
           // navigateTo(PROVIDER_SCREENS.OtpScreen, {isProvider: true});
           // successToast(response?.message);
@@ -183,16 +188,23 @@ const ProSignupScreen = () => {
       );
     }
   };
-console.log(userData,'userDatauserDatauserData',userData.emirates.map(item => item._id),);
+  console.log(
+    userData,
+    'userDatauserDatauserData',
+    userData.emirates.map(item => item._id),
+  );
   return (
-    <SafeareaProvider style={styles.safeArea} edges={['top','bottom']}>
+    <SafeareaProvider style={styles.safeArea} edges={['top', 'bottom']}>
       <KeyboardAwareScrollView
         nestedScrollEnabled
         enableResetScrollToCoords={false}
         style={styles.container}
-        contentContainerStyle={{paddingBottom: Platform.OS === 'ios' ? hp(50): hp(100), flexGrow: 1}}
+        contentContainerStyle={{
+          paddingBottom: Platform.OS === 'ios' ? hp(50) : hp(100),
+          flexGrow: 1,
+        }}
         enableOnAndroid
-        extraHeight={Platform.OS === 'ios' ? hp(200):hp(300)}
+        extraHeight={Platform.OS === 'ios' ? hp(200) : hp(300)}
         showsVerticalScrollIndicator={false}>
         <View style={styles.headerRow}>
           <CustomImage
@@ -317,6 +329,13 @@ console.log(userData,'userDatauserDatauserData',userData.emirates.map(item => it
         />
 
         <View style={styles.buttonSection}>
+          <TermsCheckBox
+            toggleCheckBox={toggleCheckBox}
+            setToggleCheckBox={setToggleCheckBox}
+            checkedCheckBoxColor={Colors.provider_primary}
+            isChecked={toggleCheckBox}
+            onClick={() => setToggleCheckBox(!toggleCheckBox)}
+          />
           <CustomButton
             loading={isLoading}
             isPrimary="seeker"
@@ -335,7 +354,7 @@ console.log(userData,'userDatauserDatauserData',userData.emirates.map(item => it
         </CommonText>
       </KeyboardAwareScrollView>
       <EmiratesModal
-        visible={showEmiratesModal} 
+        visible={showEmiratesModal}
         onClose={() => {
           setShowEmiratesModal(false);
         }}
@@ -390,7 +409,7 @@ const getGlobalStyles = (_language: any) => {
       height: hp(120),
       borderRadius: hp(14),
       paddingVertical: hp(10),
-      paddingHorizontal:wp(10)
+      paddingHorizontal: wp(10),
     },
     buttonSection: {
       marginTop: hp(52),
