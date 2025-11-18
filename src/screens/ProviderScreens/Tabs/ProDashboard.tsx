@@ -55,12 +55,17 @@ const ProDashboard = () => {
     refetch();
   });
   React.useEffect(() => {
-    if (dashboard && dashboard?.current_package == null) {
+  if (!data?.data) return;
+
+  if (data?.data?.current_package == null) {
+    const timer = setTimeout(() => {
       resetNavigation(PROVIDER_SCREENS.Subscription, {
         isProvider: isProvider,
       });
-    }
-  }, []);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }
+}, []);
 
   const DashboarData = [
     {

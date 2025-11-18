@@ -58,14 +58,16 @@ PODS:
     - nanopb (~> 3.30910.0)
   - fmt (11.0.2)
   - glog (0.3.5)
-  - Google-Maps-iOS-Utils (6.1.0):
-    - GoogleMaps (~> 9.0)
+  - Google-Maps-iOS-Utils (5.0.0):
+    - GoogleMaps (~> 8.0)
   - GoogleDataTransport (10.1.0):
     - nanopb (~> 3.30910.0)
     - PromisesObjC (~> 2.4)
-  - GoogleMaps (9.4.0):
-    - GoogleMaps/Maps (= 9.4.0)
-  - GoogleMaps/Maps (9.4.0)
+  - GoogleMaps (8.4.0):
+    - GoogleMaps/Maps (= 8.4.0)
+  - GoogleMaps/Base (8.4.0)
+  - GoogleMaps/Maps (8.4.0):
+    - GoogleMaps/Base
   - GoogleSignIn (8.0.0):
     - AppAuth (< 2.0, >= 1.7.3)
     - AppCheckCore (~> 11.0)
@@ -1520,83 +1522,12 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-maps/Generated (1.26.18):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-google-maps (1.20.1):
+    - Google-Maps-iOS-Utils (= 5.0.0)
+    - GoogleMaps (= 8.4.0)
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - react-native-maps/Google (1.26.18):
-    - DoubleConversion
-    - glog
-    - Google-Maps-iOS-Utils (= 6.1.0)
-    - GoogleMaps (= 9.4.0)
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
+  - react-native-maps (1.20.1):
     - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - react-native-maps/Generated
-    - react-native-maps/Maps
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
-  - react-native-maps/Maps (1.26.18):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.11.18.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-hermes
-    - React-ImageManager
-    - React-jsi
-    - react-native-maps/Generated
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - react-native-safe-area-context (5.6.2):
     - DoubleConversion
     - glog
@@ -2095,7 +2026,7 @@ PODS:
     - React-perflogger (= 0.79.3)
     - React-utils (= 0.79.3)
   - RecaptchaInterop (101.0.0)
-  - RNAppleAuthentication (2.4.1):
+  - RNAppleAuthentication (2.5.0):
     - React-Core
   - RNCAsyncStorage (2.2.0):
     - DoubleConversion
@@ -2246,7 +2177,7 @@ PODS:
     - RNNotifee/NotifeeCore (= 9.1.8)
   - RNNotifee/NotifeeCore (9.1.8):
     - React-Core
-  - RNPermissions (5.4.3):
+  - RNPermissions (5.4.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2270,7 +2201,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated (4.1.3):
+  - RNReanimated (4.1.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2293,10 +2224,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 4.1.3)
+    - RNReanimated/reanimated (= 4.1.5)
     - RNWorklets
     - Yoga
-  - RNReanimated/reanimated (4.1.3):
+  - RNReanimated/reanimated (4.1.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2319,10 +2250,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 4.1.3)
+    - RNReanimated/reanimated/apple (= 4.1.5)
     - RNWorklets
     - Yoga
-  - RNReanimated/reanimated/apple (4.1.3):
+  - RNReanimated/reanimated/apple (4.1.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2666,7 +2597,8 @@ DEPENDENCIES:
   - "react-native-document-picker (from `../node_modules/@react-native-documents/picker`)"
   - react-native-drop-shadow (from `../node_modules/react-native-drop-shadow`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
-  - react-native-maps/Google (from `../node_modules/react-native-maps`)
+  - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
@@ -2847,6 +2779,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-drop-shadow"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-google-maps:
+    :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-safe-area-context:
@@ -2975,9 +2909,9 @@ SPEC CHECKSUMS:
   FirebaseMessaging: d33971b7bb252745ea6cd31ab190d1a1df4b8ed5
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
-  Google-Maps-iOS-Utils: 0a484b05ed21d88c9f9ebbacb007956edd508a96
+  Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
-  GoogleMaps: 0608099d4870cac8754bdba9b6953db543432438
+  GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
   GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
@@ -3022,7 +2956,8 @@ SPEC CHECKSUMS:
   react-native-document-picker: fa88145d1a1b3c214635908a36b0c47368bc299a
   react-native-drop-shadow: aeb76e4b46c09924b4a8ee3d454dd00fdb5c62d9
   react-native-geolocation: fcd6daeef13402b1cbb3aadc7711b4e6ed9d89e0
-  react-native-maps: 8fc58be8b3ae49a990005d288d1a032f126cbcc5
+  react-native-google-maps: c4f5c5b2dda17e7cb2cb2b37a81f140b039b3e7e
+  react-native-maps: 9febd31278b35cd21e4fad2cf6fa708993be5dab
   react-native-safe-area-context: 599ee84bd389d2a4230ab7b832fb1354f8eedaec
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   react-native-video: 0078f36d5424cfdd6567fa2ee277aa269c975180
@@ -3059,7 +2994,7 @@ SPEC CHECKSUMS:
   ReactCodegen: 338cfa0d67a821a9caec4888f6f83458dcc69771
   ReactCommon: 4dbe3f8218c0b6589e982081f503725057457d2b
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
-  RNAppleAuthentication: c3dddf5918126c9aae85dc2e2ce9fb87835e9e04
+  RNAppleAuthentication: 9027af8aa92b4719ef1b6030a8e954d37079473a
   RNCAsyncStorage: c1dca434eda758348a549efb46822b4091d76804
   RNCMaskedView: d72fac1c6517be910e8be1370ac324059bcbe677
   RNDeviceInfo: bcce8752b5043a623fe3c26789679b473f705d3c
@@ -3070,8 +3005,8 @@ SPEC CHECKSUMS:
   RNGoogleSignin: db4aa231a90bdc4cea8b749ec68b168c8f747ec2
   RNImageCropPicker: b219389d3a300679b396e81d501e8c8169ffa3c0
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
-  RNPermissions: 9e4e0c3981ba92935ef4aa4e472eafaf63480afc
-  RNReanimated: 3f2bab215585dc163bfcc97660466db62db411b5
+  RNPermissions: fd7a2c0410230c9b2fe6bd6bdd3de782346425e4
+  RNReanimated: 767ad97ffeb25a54095160a528576410d5f3c8cb
   RNScreens: e1459f3520b0e9a4f9ba6ee52fdb4a1f398be7d5
   RNSVG: ca807495c5219c05c747254200b89a4e3078db31
   RNWorklets: 0725839ad8fe67a05ce4b9f2a7db4f5b95312068
@@ -3090,6 +3025,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   Yoga: b2eaabf17044cd4273a661b14eb83f9fd2c90491
 
-PODFILE CHECKSUM: e21b5696d643bc2fbee7736bc09e52c9d3ab2ee7
+PODFILE CHECKSUM: 969ea0a3c850ff54eb06846f62ab9fa3c32d29e5
 
 COCOAPODS: 1.15.2
