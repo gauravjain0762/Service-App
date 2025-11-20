@@ -25,7 +25,7 @@ import StepTracker from '@/components/common/StepTracker';
 
 const OffersDetails = () => {
   const {
-    params: {requestDetails, offerDetail},
+    params: {requestDetails, offerDetail, isRequestDetails},
   } = useRoute<any>();
   const {language} = useAppSelector(state => state.auth);
   const styles = React.useMemo(() => getGlobalStyles(language), [language]);
@@ -36,15 +36,22 @@ const OffersDetails = () => {
   );
   console.log(requestDetails, 'offerDetail', offerDetail);
 
+  const subCategory = offerDetail?.company_id?.sub_categories || [
+    requestDetails?.sub_category_id,
+  ];
   return (
     <SafeareaProvider style={[styles.safeArea]}>
       <View style={styles.topContainer}>
         <BackHeader
-          text={'Offers Detail'}
+          text={isRequestDetails ? 'Request Detail' : 'Offers Detail'}
           rightIcon={
-            <View style={styles.rightIcon}>
-              <CommonText text={'Offer'} style={styles.offerLabel} />
-            </View>
+            isRequestDetails ? (
+              <></>
+            ) : (
+              <View style={styles.rightIcon}>
+                <CommonText text={'Offer'} style={styles.offerLabel} />
+              </View>
+            )
           }
         />
       </View>
@@ -76,19 +83,25 @@ const OffersDetails = () => {
           <StepTracker trackingData={requestDetails?.statuses} />
         )}
         <View style={styles.titleRow}>
-          {offerDetail?.company_id?.category_id?.title && (
+          {(offerDetail?.company_id?.category_id?.title ||
+            requestDetails?.category_id?.title) && (
             <CommonText
-              text={offerDetail?.company_id?.category_id?.title}
+              text={
+                offerDetail?.company_id?.category_id?.title ||
+                requestDetails?.category_id?.title
+              }
               style={styles.titleText}
             />
           )}
-          <View style={styles.ratingRow}>
-            <Image source={IMAGES.star} />
-            <CommonText
-              text={offerDetail?.company_id?.avg_rating?.toString()}
-              style={styles.ratingText}
-            />
-          </View>
+          {offerDetail?.company_id?.avg_rating && (
+            <View style={styles.ratingRow}>
+              <Image source={IMAGES.star} />
+              <CommonText
+                text={offerDetail?.company_id?.avg_rating?.toString()}
+                style={styles.ratingText}
+              />
+            </View>
+          )}
         </View>
 
         <View style={styles.referenceRow}>
@@ -97,8 +110,8 @@ const OffersDetails = () => {
         </View>
 
         <View style={styles.featuresRow}>
-          {offerDetail?.company_id?.sub_categories.map(
-            (item: any, index: any) => (
+          {subCategory &&
+            subCategory.map((item: any, index: any) => (
               <View
                 key={index}
                 style={[
@@ -107,8 +120,7 @@ const OffersDetails = () => {
                 ]}>
                 <CommonText text={item?.title} style={styles.featureText} />
               </View>
-            ),
-          )}
+            ))}
         </View>
         <Divider />
 
@@ -122,7 +134,10 @@ const OffersDetails = () => {
           </View>
           <View style={styles.bookingRow}>
             <CommonText text={'Booking Time'} style={styles.bookingLabel} />
-            <CommonText text={offerDetail?.time} style={styles.bookingValue} />
+            <CommonText
+              text={offerDetail?.time || requestDetails?.time}
+              style={styles.bookingValue}
+            />
           </View>
         </View>
         {offerDetail?.media_files?.length > 0 && (
@@ -172,7 +187,7 @@ const OffersDetails = () => {
             offer_id={offerDetail?._id}
           />
         )}
-        {!offerDetail?.request_change?.requested && (
+        {!isRequestDetails && !offerDetail?.request_change?.requested && (
           <CustomButton
             isPrimary="seeker"
             title={'Request To Edit Service'}
@@ -190,35 +205,37 @@ const OffersDetails = () => {
           />
         )}
       </ScrollView>
-      <View style={styles.bottomRow}>
-        {!offerDetail?.request_change?.requested ? (
-          <CustomButton
-            title={'Accept Offer'}
-            btnStyle={styles.acceptBtn}
-            textStyle={styles.acceptText}
-            onPress={() => {
-              navigateTo(SEEKER_SCREENS.OfferSummary, {
-                offer_id: offerDetail?._id,
-                requestDetails: requestDetails,
-              });
-            }}
-          />
-        ) : (
-          <CustomButton
-            title={'Change Requested'}
-            btnStyle={styles.acceptBtn}
-            textStyle={styles.acceptText}
-            disabled
-          />
-        )}
-        <View style={styles.priceRow}>
-          <Image source={IMAGES.currency} style={styles.currencyIcon} />
-          <CommonText
-            text={formatPriceIN(offerDetail?.offer_price)}
-            style={styles.priceText}
-          />
+      {!isRequestDetails && (
+        <View style={styles.bottomRow}>
+          {!offerDetail?.request_change?.requested ? (
+            <CustomButton
+              title={'Accept Offer'}
+              btnStyle={styles.acceptBtn}
+              textStyle={styles.acceptText}
+              onPress={() => {
+                navigateTo(SEEKER_SCREENS.OfferSummary, {
+                  offer_id: offerDetail?._id,
+                  requestDetails: requestDetails,
+                });
+              }}
+            />
+          ) : (
+            <CustomButton
+              title={'Change Requested'}
+              btnStyle={styles.acceptBtn}
+              textStyle={styles.acceptText}
+              disabled
+            />
+          )}
+          <View style={styles.priceRow}>
+            <Image source={IMAGES.currency} style={styles.currencyIcon} />
+            <CommonText
+              text={formatPriceIN(offerDetail?.offer_price)}
+              style={styles.priceText}
+            />
+          </View>
         </View>
-      </View>
+      )}
     </SafeareaProvider>
   );
 };

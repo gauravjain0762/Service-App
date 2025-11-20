@@ -330,7 +330,7 @@ const SearchScreen = () => {
           mainStyle={{flex: 1}}
           onChangeText={onTextSearch}
           placeholderTextColor="#3A3A3A"
-          placeholder="Car Battery Replacement"
+          placeholder="Search"
           containerStyle={{paddingHorizontal: wp(15), gap: wp(5)}}
           leftIcon={<CustomImage source={IMAGES.search} size={hp(28)} />}
         />

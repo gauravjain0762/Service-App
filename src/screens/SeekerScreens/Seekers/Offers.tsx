@@ -85,6 +85,14 @@ const Offers = () => {
               )}
               bookingId={requestDetails?.job_code}
               subtitleStyle={styles.subtitleStyle}
+              handleCardPress={() => {
+                navigateTo(SEEKER_SCREENS.OffersDetail, {
+                  requestDetails: requestDetails,
+                  offerDetail: requestDetailsOffers,
+                  offerIndex: 0 + 1,
+                  isRequestDetails: true
+                });
+              }}
             />
           </View>
 
@@ -102,6 +110,7 @@ const Offers = () => {
                         requestDetails: requestDetails,
                         offerDetail: item,
                         offerIndex: index + 1,
+                        isRequestDetails: false
                       });
                     }}
                     onPressAcceptOffer={() => {

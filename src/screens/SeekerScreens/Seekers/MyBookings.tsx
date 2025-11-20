@@ -76,15 +76,38 @@ const MyBookings = () => {
   const [jobCode, setJobCode] = useState<any>(null);
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
 
-  const handleDynamicFieldChange = (fieldName: string, value: any) => {
-    setDynamicFieldValues(prev => ({
-      ...prev,
-      [fieldName]: value,
-    }));
+  const handleDynamicFieldChange = (
+    fieldName: string,
+    value: any,
+    isMultiple: boolean = false,
+  ) => {
+    if (isMultiple) {
+      setDynamicFieldValues(prev => {
+        const currentValues = prev[fieldName] || [];
+        const valueIndex = currentValues.indexOf(value);
+
+        if (valueIndex > -1) {
+          return {
+            ...prev,
+            [fieldName]: currentValues.filter((v: any) => v !== value),
+          };
+        } else {
+          return {
+            ...prev,
+            [fieldName]: [...currentValues, value],
+          };
+        }
+      });
+    } else {
+      setDynamicFieldValues(prev => ({
+        ...prev,
+        [fieldName]: value,
+      }));
+    }
   };
 
   const renderDynamicField = (field: any) => {
-    const {title, name, type, options} = field;
+    const {title, name, type, options, is_multiple} = field;
     switch (type) {
       case 'options':
         return (
@@ -92,11 +115,17 @@ const MyBookings = () => {
             <CommonText text={title} style={styles.sectionTitle} />
             <View style={styles.circleRow}>
               {options.map((option: string, index: number) => {
-                const isSelected = dynamicFieldValues[name] === option;
+                // const isSelected = dynamicFieldValues[name] === option;
+                // Handle both single and multiple selection
+                const isSelected = is_multiple
+                  ? (dynamicFieldValues[name] || []).includes(option)
+                  : dynamicFieldValues[name] === option;
                 return (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => handleDynamicFieldChange(name, option)}
+                    onPress={() =>
+                      handleDynamicFieldChange(name, option, is_multiple)
+                    }
                     style={[
                       styles.circleBox,
                       isSelected && styles.selectedCircleBox,
@@ -141,12 +170,17 @@ const MyBookings = () => {
             <View style={styles.mileageRow}>
               {options.map((option: string, index: number, array: string[]) => {
                 const isLastItem = index === array.length - 1;
-                const isSelected = dynamicFieldValues[name] === option;
+                // const isSelected = dynamicFieldValues[name] === option;
+                const isSelected = is_multiple
+                  ? (dynamicFieldValues[name] || []).includes(option)
+                  : dynamicFieldValues[name] === option;
 
                 return (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => handleDynamicFieldChange(name, option)}
+                    onPress={() =>
+                      handleDynamicFieldChange(name, option, is_multiple)
+                    }
                     style={[
                       styles.mileageBox,
                       !isLastItem && styles.mileageBoxSpacing,
@@ -212,13 +246,21 @@ const MyBookings = () => {
         formData.append('lng', userCurrentLocation?.longitude);
       }
 
-      // Add dynamic field values to meta_data
+      // // Add dynamic field values to meta_data
+      // Object.keys(dynamicFieldValues).forEach(fieldName => {
+      //   if (dynamicFieldValues[fieldName]) {
+      //     formData.append(
+      //       `meta_data[${fieldName}]`,
+      //       dynamicFieldValues[fieldName],
+      //     );
+      //   }
+      // });
       Object.keys(dynamicFieldValues).forEach(fieldName => {
         if (dynamicFieldValues[fieldName]) {
-          formData.append(
-            `meta_data[${fieldName}]`,
-            dynamicFieldValues[fieldName],
-          );
+          const value = dynamicFieldValues[fieldName];
+          // Check if value is an array (multiple selection)
+          const formattedValue = Array.isArray(value) ? value.join(',') : value;
+          formData.append(`meta_data[${fieldName}]`, formattedValue);
         }
       });
 

@@ -75,7 +75,6 @@ const ProviderTabNavigation = () => {
       </TouchableWithoutFeedback>
     );
   };
-  const orderedScreens = language === 'ar' ? [...tabs].reverse() : tabs;
 
   return (
     <SafeAreaView
@@ -98,11 +97,12 @@ const ProviderTabNavigation = () => {
             justifyContent: 'center',
             marginHorizontal: wp(24),
             backgroundColor: Colors.provider_primary,
+            direction: language === 'ar' ? 'rtl' : 'ltr',
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {
             const {icon, iconUnSelected} =
-              orderedScreens.find(tab => tab.name === route.name) || {};
+              tabs.find(tab => tab.name === route.name) || {};
             const tabIcon = focused ? icon : iconUnSelected;
             return (
               <View style={[styles.iconContainer]}>
@@ -123,7 +123,7 @@ const ProviderTabNavigation = () => {
           ),
         })}
         initialRouteName={PROVIDER_SCREENS.ProDashboard}>
-        {orderedScreens.map(tab => (
+        {tabs.map(tab => (
           <Tab.Screen
             key={tab.name}
             name={tab.name}

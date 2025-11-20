@@ -1,7 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
-import {View, StyleSheet, TouchableWithoutFeedback, Platform} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import FastImage from 'react-native-fast-image';
 import {Colors} from '@/constants/Colors';
@@ -18,7 +23,8 @@ import {setGuestLogin, setGuestUserModal} from '@/features/authSlice';
 import {useAppDispatch} from '@/Hooks/hooks';
 import {useSelector} from 'react-redux';
 import {RootState} from '@/store';
-import DeviceInfo from 'react-native-device-info'
+import DeviceInfo from 'react-native-device-info';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,30 +62,28 @@ const SeekerTabNavigation = () => {
     {
       name: SEEKER_SCREENS.Home,
       component: HomeScreen,
-      options: {}
+      options: {},
     },
     {
       name: SEEKER_SCREENS.MyBookingsTab,
       component: MyBookingsTab,
-      options: {}
+      options: {},
     },
     {
       name: SEEKER_SCREENS.MyRequest,
       component: MyRequest,
-      options: dashboard?.offers_unread > 0
-        ? {tabBarBadge: dashboard?.offers_unread}
-        : {}
+      options:
+        dashboard?.offers_unread > 0
+          ? {tabBarBadge: dashboard?.offers_unread}
+          : {},
     },
     {
       name: SEEKER_SCREENS.Profile,
       component: Profile,
-      options: {}
-    }
+      options: {},
+    },
   ];
 
-  // Reverse the order for RTL
-  const orderedScreens = language === 'ar' ? [...tabScreens].reverse() : tabScreens;
- 
   return (
     <SafeAreaView
       edges={['bottom']}
@@ -102,6 +106,7 @@ const SeekerTabNavigation = () => {
             justifyContent: 'center',
             marginHorizontal: wp(24),
             backgroundColor: Colors.seeker_primary,
+            direction: language === 'ar' ? 'rtl' : 'ltr',
           },
           tabBarShowLabel: false,
           tabBarIcon: ({focused}) => {
@@ -136,9 +141,8 @@ const SeekerTabNavigation = () => {
             <CustomTabBarButton {...props} route={route} />
           ),
         })}>
-        
         {/* Render screens in the correct order based on RTL */}
-        {orderedScreens.map((screen, index) => (
+        {tabScreens.map((screen, index) => (
           <Tab.Screen
             key={screen.name}
             name={screen.name}
