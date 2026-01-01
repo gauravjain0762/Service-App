@@ -70,6 +70,7 @@ const MyBookings = () => {
   const [dynamicFieldValues, setDynamicFieldValues] = useState<{
     [key: string]: any;
   }>({});
+  console.log(categoryData, 'categoryDatacategoryData');
 
   const [note, setNote] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
@@ -107,29 +108,40 @@ const MyBookings = () => {
   };
 
   const renderDynamicField = (field: any) => {
-    const {title, name, type, options, is_multiple} = field;
+    const {title, title_ar, name, type, options, is_multiple} = field;
     switch (type) {
       case 'options':
         return (
           <View key={name} style={styles.sectionSpacing}>
-            <CommonText text={title} style={styles.sectionTitle} />
+            <CommonText
+              text={getLocalizedText(title, title_ar, language)}
+              style={styles.sectionTitle}
+            />
             <View style={styles.circleRow}>
-              {options.map((option: string, index: number) => {
+              {options.map((option: any, index: number) => {
                 // const isSelected = dynamicFieldValues[name] === option;
                 // Handle both single and multiple selection
                 const isSelected = is_multiple
-                  ? (dynamicFieldValues[name] || []).includes(option)
-                  : dynamicFieldValues[name] === option;
+                  ? (dynamicFieldValues[name] || []).includes(
+                      getLocalizedText(option?.en, option?.ar, language),
+                    )
+                  : dynamicFieldValues[name] ===
+                    getLocalizedText(option?.en, option?.ar, language);
                 return (
                   <TouchableOpacity
                     key={index}
                     onPress={() =>
-                      handleDynamicFieldChange(name, option, is_multiple)
+                      handleDynamicFieldChange(
+                        name,
+                        getLocalizedText(option?.en, option?.ar, language),
+                        is_multiple,
+                      )
                     }
                     style={[
                       styles.circleBox,
                       isSelected && styles.selectedCircleBox,
-                      option?.length > 2 && {
+                      getLocalizedText(option?.en, option?.ar, language)
+                        ?.length > 2 && {
                         paddingHorizontal: getFontSize(2),
                         paddingVertical: getFontSize(1),
                         width: 'auto',
@@ -137,7 +149,7 @@ const MyBookings = () => {
                       },
                     ]}>
                     <CommonText
-                      text={option}
+                      text={getLocalizedText(option?.en, option?.ar, language)}
                       style={[
                         styles.circleText,
                         isSelected && styles.selectedCircleText,
@@ -153,10 +165,17 @@ const MyBookings = () => {
       case 'input':
         return (
           <View key={name} style={styles.sectionSpacing}>
-            <CommonText text={title} style={styles.sectionTitle} />
+            <CommonText
+              text={getLocalizedText(title, title_ar, language)}
+              style={styles.sectionTitle}
+            />
             <TextInput
               style={styles.carInput}
-              placeholder={`Enter ${title.toLowerCase()}`}
+              placeholder={`Enter ${getLocalizedText(
+                title,
+                title_ar,
+                language,
+              ).toLowerCase()}`}
               onChangeText={value => handleDynamicFieldChange(name, value)}
               value={dynamicFieldValues[name] || ''}
             />
@@ -166,20 +185,30 @@ const MyBookings = () => {
       case 'select':
         return (
           <View key={name} style={styles.sectionSpacing}>
-            <CommonText text={title} style={styles.sectionTitle} />
+            <CommonText
+              text={getLocalizedText(title, title_ar, language)}
+              style={styles.sectionTitle}
+            />
             <View style={styles.mileageRow}>
-              {options.map((option: string, index: number, array: string[]) => {
+              {options.map((option: any, index: number, array: string[]) => {
                 const isLastItem = index === array.length - 1;
                 // const isSelected = dynamicFieldValues[name] === option;
                 const isSelected = is_multiple
-                  ? (dynamicFieldValues[name] || []).includes(option)
-                  : dynamicFieldValues[name] === option;
+                  ? (dynamicFieldValues[name] || []).includes(
+                      getLocalizedText(option?.en, option?.ar, language),
+                    )
+                  : dynamicFieldValues[name] ===
+                    getLocalizedText(option?.en, option?.ar, language);
 
                 return (
                   <TouchableOpacity
                     key={index}
                     onPress={() =>
-                      handleDynamicFieldChange(name, option, is_multiple)
+                      handleDynamicFieldChange(
+                        name,
+                        getLocalizedText(option?.en, option?.ar, language),
+                        is_multiple,
+                      )
                     }
                     style={[
                       styles.mileageBox,
@@ -187,7 +216,7 @@ const MyBookings = () => {
                       isSelected && styles.selectedMileageBox,
                     ]}>
                     <CommonText
-                      text={option}
+                      text={getLocalizedText(option?.en, option?.ar, language)}
                       style={[
                         styles.mileageText,
                         isSelected && styles.selectedMileageText,

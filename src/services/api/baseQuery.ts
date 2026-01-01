@@ -36,8 +36,12 @@ export const axiosBaseQuery: BaseQueryFn<
     ? (getState() as any).auth.token
     : null;
   const authHeaders = token ? {Authorization: `Bearer ${token}`} : {};
-  console.log('token', token);
-  
+  const language = (getState() as any).auth.language
+    ? (getState() as any).auth.language
+    : 'en';
+  const languages = token ? {Language: language} : {};
+  console.log(languages,'token', token);
+
   console.log('query params', params);
   console.log('url', url);
 
@@ -50,6 +54,7 @@ export const axiosBaseQuery: BaseQueryFn<
       headers: {
         ...headers,
         ...authHeaders,
+        ...languages,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     } as AxiosRequestConfig);
