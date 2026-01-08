@@ -32,6 +32,7 @@ import appleAuth from '@invertase/react-native-apple-authentication';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {WEB_CLIENT_ID} from '@/utils/constants/api';
 import TermsCheckBox from '@/components/common/TermsCheckBox';
+import {getAsyncFCMToken} from '@/Hooks/asyncStorage';
 
 const SignUpScreen = () => {
   const [signUp, {isLoading}] = useSignUpMutation();
@@ -106,6 +107,7 @@ const SignUpScreen = () => {
   };
 
   const onGoogleButtonPress = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
     setLoading(true);
     GoogleSignin.configure({webClientId: WEB_CLIENT_ID});
     try {
@@ -117,7 +119,7 @@ const SignUpScreen = () => {
         name: userInfo?.user?.name,
         email: userInfo?.user.email,
         googleId: userInfo?.user?.id,
-        device_token: fcmToken,
+        device_token: fcmToken ?? oldFcmToken ?? 's',
         device_type: Platform.OS.toUpperCase(),
       };
       console.log('data', data);
@@ -136,6 +138,7 @@ const SignUpScreen = () => {
     }
   };
   const onAppleButtonPress = async () => {
+    const oldFcmToken = await getAsyncFCMToken();
     try {
       // Start the sign-in request
       setLoading(true);
@@ -160,7 +163,7 @@ const SignUpScreen = () => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          device_token: fcmToken,
+          device_token: fcmToken ?? oldFcmToken ?? 's',
         };
 
         const response = await appleLogin(data).unwrap();

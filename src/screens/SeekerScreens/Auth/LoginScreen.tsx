@@ -181,7 +181,7 @@ const LoginScreen = ({}: any) => {
           name: fullName?.givenName || str[0],
           email: email || decoded?.email,
           appleId: appleAuthRequestResponse.user,
-          device_token: fcmToken ?? oldFcmToken,
+          device_token: fcmToken ?? oldFcmToken ??'s',
           device_type: Platform.OS,
         };
 
@@ -191,7 +191,9 @@ const LoginScreen = ({}: any) => {
 
           // successToast(response?.message);
           // resetNavigation(SEEKER_SCREENS.SeekerTabNavigation);
-          resetNavigation(SCREENS.SeekerNavigator);
+          if (response?.data?.auth_token) {
+            resetNavigation(SCREENS.SeekerNavigator);
+          }
         } else {
           errorToast(response?.message);
           // setLoading(false);

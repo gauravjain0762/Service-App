@@ -156,13 +156,13 @@ const ProLoginScreen = ({}: any) => {
           />
         </View>
 
-        <CommonText
+        {/* <CommonText
           onPress={() => navigateTo(PROVIDER_SCREENS.ProSignupScreen)}
           text="Already have an account?"
           style={styles.accountText}>
           {' '}
           <CommonText text="Sign Up" style={styles.signUpAccountText} />
-        </CommonText>
+        </CommonText> */}
       </KeyboardAwareScrollView>
     </SafeareaProvider>
   );
