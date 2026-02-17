@@ -39,6 +39,10 @@ const OffersDetails = () => {
   const subCategory = offerDetail?.company_id?.sub_categories || [
     requestDetails?.sub_category_id,
   ];
+
+  const formatKey = key =>
+    key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
   return (
     <SafeareaProvider style={[styles.safeArea]}>
       <View style={styles.topContainer}>
@@ -108,6 +112,18 @@ const OffersDetails = () => {
           <CommonText text={'Reference Id: '} style={styles.refLabel} />
           <CommonText text={requestDetails?.job_code} style={styles.refValue} />
         </View>
+        {requestDetails &&
+          Object.entries(requestDetails?.meta_data)
+            .filter(([key]) => key !== '') // remove empty key if you want
+            .map(([key, value]) => (
+              <View style={styles.referenceRow} key={key}>
+                <CommonText
+                  text={`${formatKey(key)}: `}
+                  style={styles.refLabel}
+                />
+                <CommonText text={String(value)} style={styles.refValue} />
+              </View>
+            ))}
 
         <View style={styles.featuresRow}>
           {subCategory &&
@@ -140,11 +156,33 @@ const OffersDetails = () => {
             />
           </View>
         </View>
+        {requestDetails?.media_files?.length > 0 && (
+          <AttachmentCard
+            requestImages={requestDetails?.media_files}
+            title="Attachments"
+          />
+        )}
         {offerDetail?.media_files?.length > 0 && (
           <AttachmentCard
             requestImages={offerDetail?.media_files}
             title="Attachments"
           />
+        )}
+        {requestDetails?.notes && (
+          <View
+            style={{marginVertical: getFontSize(1.5), gap: getFontSize(0.8)}}>
+            <CommonText
+              text={`Additional Note:-`}
+              style={[
+                styles.description,
+                {...commonFontStyle(600, 1.6, Colors.black)},
+              ]}
+            />
+            <CommonText
+              text={` ${requestDetails?.notes}`}
+              style={styles.description}
+            />
+          </View>
         )}
         {offerDetail?.notes && (
           <View

@@ -98,6 +98,8 @@ const ProDashboard = () => {
     profileRefetch();
     setRefreshing(false);
   }, [refetch]);
+  console.log(dashboard,'dashboard?.recent_bookings');
+  
   return (
     <SafeareaProvider style={styles.safearea}>
       <ProviderHeader item={{image: userInfo?.logo}} />

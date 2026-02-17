@@ -70,7 +70,6 @@ const MyBookings = () => {
   const [dynamicFieldValues, setDynamicFieldValues] = useState<{
     [key: string]: any;
   }>({});
-  console.log(categoryData, 'categoryDatacategoryData');
 
   const [note, setNote] = useState<string>('');
   const [selectedMedia, setSelectedMedia] = useState<any[]>([]);
@@ -109,6 +108,8 @@ const MyBookings = () => {
 
   const renderDynamicField = (field: any) => {
     const {title, title_ar, name, type, options, is_multiple} = field;
+    console.log(field,'fieldfield');
+    
     switch (type) {
       case 'options':
         return (

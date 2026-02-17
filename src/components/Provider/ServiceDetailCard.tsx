@@ -13,14 +13,14 @@ import {PROVIDER_SCREENS} from '@/navigation/screenNames';
 import moment from 'moment';
 import CustomImage from '../common/CustomImage';
 import {IMAGES} from '@/assets/images';
-import { rowReverseRTL } from '@/utils/arabicStyles';
+import {rowReverseRTL} from '@/utils/arabicStyles';
 
 const ServiceDetailCard = ({
   requestDetails,
   language,
   requestMyOffersDetails,
 }: any) => {
-    const styles = React.useMemo(() => getGlobalStyles(language), [language]);
+  const styles = React.useMemo(() => getGlobalStyles(language), [language]);
   const start = moment(
     `${moment(requestDetails?.date).format('YYYY-MM-DD')} ${
       requestDetails?.time
@@ -31,6 +31,7 @@ const ServiceDetailCard = ({
     Number(requestDetails?.meta_data?.no_hours),
     'hours',
   );
+  console.log(requestDetails, 'requestDetails');
 
   const serviceData = [
     {
@@ -63,6 +64,13 @@ const ServiceDetailCard = ({
             'No. of Professional': `${requestDetails?.meta_data?.no_professionals} Person`,
           },
         ]
+      : []),
+    ...(requestDetails?.meta_data
+      ? Object.entries(requestDetails.meta_data)
+          .filter(([key, value]) => key && value)
+          .map(([key, value]) => ({
+            [key.replace(/_/g, ' ')]: String(value),
+          }))
       : []),
   ];
 
@@ -161,55 +169,57 @@ export default ServiceDetailCard;
 
 const getGlobalStyles = (_language: any) => {
   return StyleSheet.create({
-  card: {
-    width: '100%',
-    borderRadius: hp(20),
-    paddingTop: hp(30),
-    paddingBottom: hp(20),
-    paddingHorizontal: wp(15),
-  },
-  row: {
-    width: '100%',
-    ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: hp(25),
-    gap: wp(15),
-  },
-  labelText: {
-    ...commonFontStyle(400, 1.9, Colors._919191),
-  },
-  valueText: {
-    flexShrink: 1,
-    ...commonFontStyle(700, 1.9, Colors._2C2C2C),
-    textAlign: 'right',
-  },
-  bottomRow: {
-    width: '100%',
-    marginTop: hp(15),
-     ...rowReverseRTL(_language),
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  acceptBtn: {
-    height: hp(50),
-    paddingHorizontal: wp(27),
-    backgroundColor: Colors.provider_primary,
-    minWidth: '30%',
-  },
-  acceptText: {
-    ...commonFontStyle(600, 1.7, Colors.white),
-  },
-  priceRow: {
-     ...rowReverseRTL(_language),
-    alignItems: 'center',
-    gap: wp(7),
-  },
-  currencyIcon: {
-    height: hp(30),
-    width: wp(30),
-  },
-  priceText: {
-    ...commonFontStyle(700, 3.7, Colors.black),
-  },
-})}
+    card: {
+      width: '100%',
+      borderRadius: hp(20),
+      paddingTop: hp(30),
+      paddingBottom: hp(20),
+      paddingHorizontal: wp(15),
+    },
+    row: {
+      width: '100%',
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: hp(25),
+      gap: wp(15),
+    },
+    labelText: {
+      ...commonFontStyle(400, 1.9, Colors._919191),
+      textTransform:'capitalize'
+    },
+    valueText: {
+      flexShrink: 1,
+      ...commonFontStyle(700, 1.9, Colors._2C2C2C),
+      textAlign: 'right',
+    },
+    bottomRow: {
+      width: '100%',
+      marginTop: hp(15),
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    acceptBtn: {
+      height: hp(50),
+      paddingHorizontal: wp(27),
+      backgroundColor: Colors.provider_primary,
+      minWidth: '30%',
+    },
+    acceptText: {
+      ...commonFontStyle(600, 1.7, Colors.white),
+    },
+    priceRow: {
+      ...rowReverseRTL(_language),
+      alignItems: 'center',
+      gap: wp(7),
+    },
+    currencyIcon: {
+      height: hp(30),
+      width: wp(30),
+    },
+    priceText: {
+      ...commonFontStyle(700, 3.7, Colors.black),
+    },
+  });
+};
